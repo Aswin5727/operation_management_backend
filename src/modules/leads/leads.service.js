@@ -40,7 +40,7 @@ function normalizePayload(payload = {}, existing = null, fallbackLeadId = null) 
   const classSchedule = payload.classSchedule ?? existing?.classSchedule;
   const courseMode = payload.courseMode ?? existing?.courseMode;
   const locationDistance = payload.locationDistance ?? existing?.locationDistance;
-  return { leadId, studentName, phoneNumber, alternativeNumber, email, qualification: optional(payload.qualification ?? existing?.qualification, 120), location: optional(payload.location ?? existing?.location, 160), callType: enumValue(payload.callType ?? existing?.callType, CALL_TYPES, "Call type"), status: enumValue(payload.status ?? existing?.status, STATUSES, "Lead status", "DRAFT"), stage: enumValue(payload.stage ?? existing?.stage, STAGES, "Lead stage", "COLD"), courseId: required(payload.courseId ?? existing?.courseId, "Course ID"), branchId: required(payload.branchId ?? existing?.branchId, "Branch ID"), leadSource: enumValue(payload.leadSource ?? existing?.leadSource, SOURCES, "Lead source"), referredBy: optional(payload.referredBy ?? existing?.referredBy, 120), paymentStatus: enumValue(payload.paymentStatus ?? existing?.paymentStatus, PAYMENT_STATUSES, "Payment status", "NOT_PAID"), classSchedule: enumValue(classSchedule, CLASS_SCHEDULES, "Class schedule"), courseMode: enumValue(courseMode, COURSE_MODES, "Course mode"), locationDistance: locationDistance ? enumValue(locationDistance, DISTANCES, "Location distance") : null, leadDate: dateValue(payload.leadDate ?? existing?.leadDate, "Lead date"), assignedToId: optional(payload.assignedToId ?? existing?.assignedToId) };
+  return { leadId, studentName, phoneNumber, alternativeNumber, email, qualification: optional(payload.qualification ?? existing?.qualification, 120), location: optional(payload.location ?? existing?.location, 160), callType: enumValue(payload.callType ?? existing?.callType, CALL_TYPES, "Call type"), status: enumValue(payload.status ?? existing?.status, STATUSES, "Lead status", "DRAFT"), stage: enumValue(payload.stage ?? existing?.stage, STAGES, "Lead stage", "COLD"), courseId: required(payload.courseId ?? existing?.courseId, "Course ID"), otherCourse: optional(payload.otherCourse ?? existing?.otherCourse, 160), nextFollowUpDate: dateValue(payload.nextFollowUpDate ?? existing?.nextFollowUpDate, "Next follow-up date", false), branchId: required(payload.branchId ?? existing?.branchId, "Branch ID"), leadSource: enumValue(payload.leadSource ?? existing?.leadSource, SOURCES, "Lead source"), referredBy: optional(payload.referredBy ?? existing?.referredBy, 120), paymentStatus: enumValue(payload.paymentStatus ?? existing?.paymentStatus, PAYMENT_STATUSES, "Payment status", "NOT_PAID"), classSchedule: enumValue(classSchedule, CLASS_SCHEDULES, "Class schedule"), courseMode: enumValue(courseMode, COURSE_MODES, "Course mode"), locationDistance: locationDistance ? enumValue(locationDistance, DISTANCES, "Location distance") : null, leadDate: dateValue(payload.leadDate ?? existing?.leadDate, "Lead date"), assignedToId: optional(payload.assignedToId ?? existing?.assignedToId) };
 }
 
 async function permittedBranches(actor) {
@@ -118,7 +118,7 @@ export async function addLeadRecording(id, file, actor) {
   if (!file?.buffer) throw new AppError("Call recording file is required", 400);
   const lead = await findLead(id, actor);
   const extension = path.extname(file.originalname || "").toLowerCase();
-  if (!/^\.(mp3|wav|m4a|aac)$/.test(extension)) throw new AppError("Unsupported call recording format", 400);
+  if (!/^\.(mp3|wav|m4a|aac|ogg)$/.test(extension)) throw new AppError("Unsupported call recording format", 400);
   const storageKey = `${lead.id}-${crypto.randomUUID()}${extension}`;
   await fs.mkdir(leadRecordingRoot, { recursive: true });
   await fs.writeFile(path.join(leadRecordingRoot, storageKey), file.buffer, { flag: "wx" });
@@ -134,9 +134,51 @@ export async function addLeadRecording(id, file, actor) {
   }
 }
 
+export async function addLeadRecordings(id, files, actor) {
+  if (!Array.isArray(files) || !files.length) throw new AppError("At least one call recording is required", 400);
+  const lead = await findLead(id, actor);
+  const storageKeys = [];
+  try {
+    await fs.mkdir(leadRecordingRoot, { recursive: true });
+    const prepared = [];
+    for (const file of files) {
+      const extension = path.extname(file.originalname || "").toLowerCase();
+      if (!/^\.(mp3|wav|m4a|aac|ogg)$/.test(extension)) throw new AppError("Unsupported call recording format", 400);
+      const storageKey = `${lead.id}-${crypto.randomUUID()}${extension}`;
+      storageKeys.push(storageKey);
+      await fs.writeFile(path.join(leadRecordingRoot, storageKey), file.buffer, { flag: "wx" });
+      prepared.push({ file, storageKey });
+    }
+    return await prisma.$transaction(async (tx) => {
+      const result = [];
+      for (const { file, storageKey } of prepared) {
+        const recording = await tx.leadRecording.create({ data: { leadId: lead.id, originalName: file.originalname, storageKey, mimeType: file.mimetype, sizeBytes: file.size || file.buffer.length, createdById: actor.userId } });
+        await tx.leadActivity.create({ data: { leadId: lead.id, action: "CALL_RECORDING_UPLOADED", newValue: { recordingId: recording.id, originalName: recording.originalName }, createdById: actor.userId } });
+        result.push({ id: recording.id, originalName: recording.originalName, mimeType: recording.mimeType, sizeBytes: recording.sizeBytes, createdAt: recording.createdAt });
+      }
+      return result;
+    });
+  } catch (error) {
+    await Promise.all(storageKeys.map((storageKey) => fs.rm(path.join(leadRecordingRoot, storageKey), { force: true })));
+    throw error;
+  }
+}
+
 export async function getLeadRecording(id, recordingId, actor) {
   const lead = await findLead(id, actor);
   const recording = await prisma.leadRecording.findFirst({ where: { id: recordingId, leadId: lead.id }, select: { storageKey: true, originalName: true, mimeType: true } });
   if (!recording) throw new AppError("Recording not found", 404);
   try { return { buffer: await fs.readFile(path.join(leadRecordingRoot, recording.storageKey)), fileName: recording.originalName, mimeType: recording.mimeType }; } catch { throw new AppError("Recording file is missing", 404); }
+}
+
+export async function deleteLeadRecording(id, recordingId, actor) {
+  const lead = await findLead(id, actor);
+  const recording = await prisma.leadRecording.findFirst({ where: { id: recordingId, leadId: lead.id }, select: { id: true, storageKey: true, originalName: true } });
+  if (!recording) throw new AppError("Recording not found", 404);
+  await prisma.$transaction(async (tx) => {
+    await tx.leadRecording.delete({ where: { id: recording.id } });
+    await tx.leadActivity.create({ data: { leadId: lead.id, action: "CALL_RECORDING_DELETED", previousValue: { recordingId: recording.id, originalName: recording.originalName }, createdById: actor.userId } });
+  });
+  await fs.rm(path.join(leadRecordingRoot, recording.storageKey), { force: true });
+  return { id: recording.id, originalName: recording.originalName };
 }

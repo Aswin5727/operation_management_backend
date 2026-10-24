@@ -1770,6 +1770,8 @@ model Lead {
   status            LeadStatus         @default(DRAFT)
   stage             LeadStage         @default(COLD)
   courseId          String
+  otherCourse       String?
+  nextFollowUpDate  DateTime?
   branchId          String
   leadSource        String
   referredBy        String?

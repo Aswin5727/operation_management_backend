@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { addFollowUp, addLeadRecording, createLead, deleteLead, getLead, getLeadOptions, getLeadRecording, listLeadActivities, listLeads, updateLead } from "./leads.service.js";
+import { addFollowUp, addLeadRecording, addLeadRecordings, createLead, deleteLead, deleteLeadRecording, getLead, getLeadOptions, getLeadRecording, listLeadActivities, listLeads, updateLead } from "./leads.service.js";
 
 const response = (res, message, data, status = 200, meta = undefined) => res.status(status).json({ status: "success", message, data, ...(meta ? { meta } : {}) });
 export const listLeadsHandler = asyncHandler(async (req, res) => { const result = await listLeads(req.query, req.auth); return response(res, "Leads fetched successfully", result.data, 200, result.meta); });
@@ -11,4 +11,6 @@ export const addFollowUpHandler = asyncHandler(async (req, res) => response(res,
 export const listLeadActivitiesHandler = asyncHandler(async (req, res) => response(res, "Lead activities fetched successfully", await listLeadActivities(req.params.id, req.auth)));
 export const leadOptionsHandler = asyncHandler(async (req, res) => response(res, "Lead options fetched successfully", await getLeadOptions(req.auth)));
 export const addLeadRecordingHandler = asyncHandler(async (req, res) => response(res, "Call recording uploaded successfully", await addLeadRecording(req.params.id, req.file, req.auth), 201));
+export const addLeadRecordingsHandler = asyncHandler(async (req, res) => response(res, "Call recordings uploaded successfully", await addLeadRecordings(req.params.id, req.files, req.auth), 201));
 export const getLeadRecordingHandler = asyncHandler(async (req, res) => { const file = await getLeadRecording(req.params.id, req.params.recordingId, req.auth); res.setHeader("Content-Type", file.mimeType); res.setHeader("Content-Disposition", `inline; filename="${String(file.fileName).replace(/[^a-zA-Z0-9._-]/g, "_")}"`); res.send(file.buffer); });
+export const deleteLeadRecordingHandler = asyncHandler(async (req, res) => response(res, "Call recording deleted successfully", await deleteLeadRecording(req.params.id, req.params.recordingId, req.auth)));
