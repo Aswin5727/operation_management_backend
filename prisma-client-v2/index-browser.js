@@ -1345,6 +1345,7 @@ exports.Prisma.LeadScalarFieldEnum = {
   courseId: 'courseId',
   otherCourse: 'otherCourse',
   nextFollowUpDate: 'nextFollowUpDate',
+  nextFollowUpTime: 'nextFollowUpTime',
   lastCallStatus: 'lastCallStatus',
   branchId: 'branchId',
   leadSource: 'leadSource',
@@ -1375,6 +1376,7 @@ exports.Prisma.LeadFollowUpScalarFieldEnum = {
   callStatus: 'callStatus',
   notes: 'notes',
   nextFollowUpDate: 'nextFollowUpDate',
+  nextFollowUpTime: 'nextFollowUpTime',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

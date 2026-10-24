@@ -1778,6 +1778,7 @@ model Lead {
   courseId              String
   otherCourse           String?
   nextFollowUpDate      DateTime?
+  nextFollowUpTime      String?
   lastCallStatus        String?
   branchId              String
   leadSource            String
@@ -1825,6 +1826,7 @@ model LeadFollowUp {
   callStatus       String
   notes            String
   nextFollowUpDate DateTime?
+  nextFollowUpTime String?
   createdById      String
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt

@@ -93640,6 +93640,7 @@ export namespace Prisma {
     courseId: string | null
     otherCourse: string | null
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     lastCallStatus: string | null
     branchId: string | null
     leadSource: string | null
@@ -93680,6 +93681,7 @@ export namespace Prisma {
     courseId: string | null
     otherCourse: string | null
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     lastCallStatus: string | null
     branchId: string | null
     leadSource: string | null
@@ -93720,6 +93722,7 @@ export namespace Prisma {
     courseId: number
     otherCourse: number
     nextFollowUpDate: number
+    nextFollowUpTime: number
     lastCallStatus: number
     branchId: number
     leadSource: number
@@ -93770,6 +93773,7 @@ export namespace Prisma {
     courseId?: true
     otherCourse?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     lastCallStatus?: true
     branchId?: true
     leadSource?: true
@@ -93810,6 +93814,7 @@ export namespace Prisma {
     courseId?: true
     otherCourse?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     lastCallStatus?: true
     branchId?: true
     leadSource?: true
@@ -93850,6 +93855,7 @@ export namespace Prisma {
     courseId?: true
     otherCourse?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     lastCallStatus?: true
     branchId?: true
     leadSource?: true
@@ -93977,6 +93983,7 @@ export namespace Prisma {
     courseId: string
     otherCourse: string | null
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     lastCallStatus: string | null
     branchId: string
     leadSource: string
@@ -94036,6 +94043,7 @@ export namespace Prisma {
     courseId?: boolean
     otherCourse?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
@@ -94087,6 +94095,7 @@ export namespace Prisma {
     courseId?: boolean
     otherCourse?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
@@ -94132,6 +94141,7 @@ export namespace Prisma {
     courseId?: boolean
     otherCourse?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
@@ -94177,6 +94187,7 @@ export namespace Prisma {
     courseId?: boolean
     otherCourse?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     lastCallStatus?: boolean
     branchId?: boolean
     leadSource?: boolean
@@ -94199,7 +94210,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "nextFollowUpTime" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -94260,6 +94271,7 @@ export namespace Prisma {
       courseId: string
       otherCourse: string | null
       nextFollowUpDate: Date | null
+      nextFollowUpTime: string | null
       lastCallStatus: string | null
       branchId: string
       leadSource: string
@@ -94730,6 +94742,7 @@ export namespace Prisma {
     readonly courseId: FieldRef<"Lead", 'String'>
     readonly otherCourse: FieldRef<"Lead", 'String'>
     readonly nextFollowUpDate: FieldRef<"Lead", 'DateTime'>
+    readonly nextFollowUpTime: FieldRef<"Lead", 'String'>
     readonly lastCallStatus: FieldRef<"Lead", 'String'>
     readonly branchId: FieldRef<"Lead", 'String'>
     readonly leadSource: FieldRef<"Lead", 'String'>
@@ -95345,6 +95358,7 @@ export namespace Prisma {
     callStatus: string | null
     notes: string | null
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     createdById: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -95358,6 +95372,7 @@ export namespace Prisma {
     callStatus: string | null
     notes: string | null
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     createdById: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -95371,6 +95386,7 @@ export namespace Prisma {
     callStatus: number
     notes: number
     nextFollowUpDate: number
+    nextFollowUpTime: number
     createdById: number
     createdAt: number
     updatedAt: number
@@ -95386,6 +95402,7 @@ export namespace Prisma {
     callStatus?: true
     notes?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     createdById?: true
     createdAt?: true
     updatedAt?: true
@@ -95399,6 +95416,7 @@ export namespace Prisma {
     callStatus?: true
     notes?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     createdById?: true
     createdAt?: true
     updatedAt?: true
@@ -95412,6 +95430,7 @@ export namespace Prisma {
     callStatus?: true
     notes?: true
     nextFollowUpDate?: true
+    nextFollowUpTime?: true
     createdById?: true
     createdAt?: true
     updatedAt?: true
@@ -95498,6 +95517,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate: Date | null
+    nextFollowUpTime: string | null
     createdById: string
     createdAt: Date
     updatedAt: Date
@@ -95528,6 +95548,7 @@ export namespace Prisma {
     callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -95545,6 +95566,7 @@ export namespace Prisma {
     callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -95560,6 +95582,7 @@ export namespace Prisma {
     callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -95575,12 +95598,13 @@ export namespace Prisma {
     callStatus?: boolean
     notes?: boolean
     nextFollowUpDate?: boolean
+    nextFollowUpTime?: boolean
     createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeadFollowUpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpDate" | "followUpType" | "callStatus" | "notes" | "nextFollowUpDate" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["leadFollowUp"]>
+  export type LeadFollowUpOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "followUpDate" | "followUpType" | "callStatus" | "notes" | "nextFollowUpDate" | "nextFollowUpTime" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["leadFollowUp"]>
   export type LeadFollowUpInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
@@ -95611,6 +95635,7 @@ export namespace Prisma {
       callStatus: string
       notes: string
       nextFollowUpDate: Date | null
+      nextFollowUpTime: string | null
       createdById: string
       createdAt: Date
       updatedAt: Date
@@ -96047,6 +96072,7 @@ export namespace Prisma {
     readonly callStatus: FieldRef<"LeadFollowUp", 'String'>
     readonly notes: FieldRef<"LeadFollowUp", 'String'>
     readonly nextFollowUpDate: FieldRef<"LeadFollowUp", 'DateTime'>
+    readonly nextFollowUpTime: FieldRef<"LeadFollowUp", 'String'>
     readonly createdById: FieldRef<"LeadFollowUp", 'String'>
     readonly createdAt: FieldRef<"LeadFollowUp", 'DateTime'>
     readonly updatedAt: FieldRef<"LeadFollowUp", 'DateTime'>
@@ -112491,6 +112517,7 @@ export namespace Prisma {
     courseId: 'courseId',
     otherCourse: 'otherCourse',
     nextFollowUpDate: 'nextFollowUpDate',
+    nextFollowUpTime: 'nextFollowUpTime',
     lastCallStatus: 'lastCallStatus',
     branchId: 'branchId',
     leadSource: 'leadSource',
@@ -112524,6 +112551,7 @@ export namespace Prisma {
     callStatus: 'callStatus',
     notes: 'notes',
     nextFollowUpDate: 'nextFollowUpDate',
+    nextFollowUpTime: 'nextFollowUpTime',
     createdById: 'createdById',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -120776,6 +120804,7 @@ export namespace Prisma {
     courseId?: StringFilter<"Lead"> | string
     otherCourse?: StringNullableFilter<"Lead"> | string | null
     nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"Lead"> | string | null
     lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
@@ -120826,6 +120855,7 @@ export namespace Prisma {
     courseId?: SortOrder
     otherCourse?: SortOrderInput | SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
+    nextFollowUpTime?: SortOrderInput | SortOrder
     lastCallStatus?: SortOrderInput | SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
@@ -120879,6 +120909,7 @@ export namespace Prisma {
     courseId?: StringFilter<"Lead"> | string
     otherCourse?: StringNullableFilter<"Lead"> | string | null
     nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"Lead"> | string | null
     lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
@@ -120929,6 +120960,7 @@ export namespace Prisma {
     courseId?: SortOrder
     otherCourse?: SortOrderInput | SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
+    nextFollowUpTime?: SortOrderInput | SortOrder
     lastCallStatus?: SortOrderInput | SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
@@ -120977,6 +121009,7 @@ export namespace Prisma {
     courseId?: StringWithAggregatesFilter<"Lead"> | string
     otherCourse?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     nextFollowUpDate?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    nextFollowUpTime?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     lastCallStatus?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     branchId?: StringWithAggregatesFilter<"Lead"> | string
     leadSource?: StringWithAggregatesFilter<"Lead"> | string
@@ -121010,6 +121043,7 @@ export namespace Prisma {
     callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"LeadFollowUp"> | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
     createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
     updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
@@ -121026,6 +121060,7 @@ export namespace Prisma {
     callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
+    nextFollowUpTime?: SortOrderInput | SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -121045,6 +121080,7 @@ export namespace Prisma {
     callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"LeadFollowUp"> | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
     createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
     updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
@@ -121061,6 +121097,7 @@ export namespace Prisma {
     callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrderInput | SortOrder
+    nextFollowUpTime?: SortOrderInput | SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -121080,6 +121117,7 @@ export namespace Prisma {
     callStatus?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     notes?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableWithAggregatesFilter<"LeadFollowUp"> | Date | string | null
+    nextFollowUpTime?: StringNullableWithAggregatesFilter<"LeadFollowUp"> | string | null
     createdById?: StringWithAggregatesFilter<"LeadFollowUp"> | string
     createdAt?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LeadFollowUp"> | Date | string
@@ -131222,6 +131260,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -131268,6 +131307,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -131312,6 +131352,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131358,6 +131399,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -131403,6 +131445,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -131442,6 +131485,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131478,6 +131522,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -131507,6 +131552,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead: LeadCreateNestedOneWithoutFollowUpsInput
@@ -131522,6 +131568,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -131535,6 +131582,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
@@ -131550,6 +131598,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -131564,6 +131613,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -131576,6 +131626,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -131588,6 +131639,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -138735,6 +138787,7 @@ export namespace Prisma {
     courseId?: SortOrder
     otherCourse?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
@@ -138779,6 +138832,7 @@ export namespace Prisma {
     courseId?: SortOrder
     otherCourse?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
@@ -138819,6 +138873,7 @@ export namespace Prisma {
     courseId?: SortOrder
     otherCourse?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     lastCallStatus?: SortOrder
     branchId?: SortOrder
     leadSource?: SortOrder
@@ -138878,6 +138933,7 @@ export namespace Prisma {
     callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -138891,6 +138947,7 @@ export namespace Prisma {
     callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -138904,6 +138961,7 @@ export namespace Prisma {
     callStatus?: SortOrder
     notes?: SortOrder
     nextFollowUpDate?: SortOrder
+    nextFollowUpTime?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -149011,6 +149069,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -149056,6 +149115,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -149109,6 +149169,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -149154,6 +149215,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -149207,6 +149269,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -149252,6 +149315,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -149295,6 +149359,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead: LeadCreateNestedOneWithoutFollowUpsInput
@@ -149309,6 +149374,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutFollowUpInput
@@ -150270,6 +150336,7 @@ export namespace Prisma {
     courseId?: StringFilter<"Lead"> | string
     otherCourse?: StringNullableFilter<"Lead"> | string | null
     nextFollowUpDate?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"Lead"> | string | null
     lastCallStatus?: StringNullableFilter<"Lead"> | string | null
     branchId?: StringFilter<"Lead"> | string
     leadSource?: StringFilter<"Lead"> | string
@@ -150351,6 +150418,7 @@ export namespace Prisma {
     callStatus?: StringFilter<"LeadFollowUp"> | string
     notes?: StringFilter<"LeadFollowUp"> | string
     nextFollowUpDate?: DateTimeNullableFilter<"LeadFollowUp"> | Date | string | null
+    nextFollowUpTime?: StringNullableFilter<"LeadFollowUp"> | string | null
     createdById?: StringFilter<"LeadFollowUp"> | string
     createdAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
     updatedAt?: DateTimeFilter<"LeadFollowUp"> | Date | string
@@ -151868,6 +151936,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -151913,6 +151982,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -155676,6 +155746,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -155720,6 +155791,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -175919,6 +175991,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutLeadFollowUpsInput
@@ -175932,6 +176005,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -176686,6 +176760,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -176731,6 +176806,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -176931,6 +177007,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -176976,6 +177053,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -177150,6 +177228,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -177195,6 +177274,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -177363,6 +177443,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177408,6 +177489,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -177566,6 +177648,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -177611,6 +177694,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -177779,6 +177863,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177824,6 +177909,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -177982,6 +178068,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -178027,6 +178114,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -178065,6 +178153,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead: LeadCreateNestedOneWithoutFollowUpsInput
@@ -178079,6 +178168,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -178226,6 +178316,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178271,6 +178362,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -178315,6 +178407,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
@@ -178329,6 +178422,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -178466,6 +178560,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -178511,6 +178606,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -178679,6 +178775,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178724,6 +178821,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -181665,6 +181763,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -181704,6 +181803,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -181743,6 +181843,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -181772,6 +181873,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -182821,6 +182923,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -182866,6 +182969,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -182910,6 +183014,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -182948,6 +183053,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -182993,6 +183099,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -183037,6 +183144,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -183075,6 +183183,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183120,6 +183229,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -183164,6 +183274,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -183192,6 +183303,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutFollowUpsNestedInput
@@ -183206,6 +183318,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     recordings?: LeadRecordingUncheckedUpdateManyWithoutFollowUpNestedInput
@@ -183219,6 +183332,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -183752,6 +183866,7 @@ export namespace Prisma {
     courseId: string
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     leadSource: string
     otherLeadSource?: string | null
@@ -184931,6 +185046,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -184976,6 +185092,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -185020,6 +185137,7 @@ export namespace Prisma {
     courseId?: StringFieldUpdateOperationsInput | string
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -186109,6 +186227,7 @@ export namespace Prisma {
     otherStage?: string | null
     otherCourse?: string | null
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     lastCallStatus?: string | null
     branchId: string
     leadSource: string
@@ -187105,6 +187224,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     leadSource?: StringFieldUpdateOperationsInput | string
     otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
@@ -187149,6 +187269,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -187193,6 +187314,7 @@ export namespace Prisma {
     otherStage?: NullableStringFieldUpdateOperationsInput | string | null
     otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
     branchId?: StringFieldUpdateOperationsInput | string
     leadSource?: StringFieldUpdateOperationsInput | string
@@ -191296,6 +191418,7 @@ export namespace Prisma {
     callStatus: string
     notes: string
     nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
     createdById: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -191350,6 +191473,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutLeadFollowUpsNestedInput
@@ -191363,6 +191487,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -191376,6 +191501,7 @@ export namespace Prisma {
     callStatus?: StringFieldUpdateOperationsInput | string
     notes?: StringFieldUpdateOperationsInput | string
     nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
