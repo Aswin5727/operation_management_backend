@@ -52,3 +52,24 @@ test("keeps a successful report when the other report type fails", async () => {
     syllabusReport: { items: [{ testName: "Submitted" }] },
   }]);
 });
+test("forwards the bulk-resolved student record to both report loaders", async () => {
+  const student = { id: "REC-1", studentId: "STU-1", batchId: "BATCH-1" };
+  let academicContext = null;
+  let syllabusContext = null;
+
+  await collectBranchStudentReportSummaries([student], {
+    getAcademicReport: async (studentId, context) => {
+      academicContext = { studentId, context };
+      return {};
+    },
+    getSyllabusReport: async (studentId, context) => {
+      syllabusContext = { studentId, context };
+      return {};
+    },
+  });
+
+  assert.equal(academicContext.studentId, "STU-1");
+  assert.equal(syllabusContext.studentId, "STU-1");
+  assert.strictEqual(academicContext.context, student);
+  assert.strictEqual(syllabusContext.context, student);
+});

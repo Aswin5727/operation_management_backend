@@ -35,8 +35,8 @@ export async function collectBranchStudentReportSummaries(
       }
 
       const [academicResult, syllabusResult] = await Promise.allSettled([
-        getAcademicReport(studentId),
-        getSyllabusReport(studentId),
+        getAcademicReport(studentId, student),
+        getSyllabusReport(studentId, student),
       ]);
 
       output[index] = {

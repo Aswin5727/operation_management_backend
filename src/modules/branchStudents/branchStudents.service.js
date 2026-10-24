@@ -2584,6 +2584,11 @@ async function ensureBranchStudentAccess(actor, studentId) {
 export async function listBranchStudents(query = {}, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
   const summaryOnly = ['1', 'true', 'yes'].includes(normalizeString(query.summary).toLowerCase());
+  // Dashboard callers can request the student rows without recalculating academic progress for every enrollment.
+  // The dedicated bulk report endpoint handles completion details for completed courses.
+  const includeAcademicProgress = !['0', 'false', 'no'].includes(
+    normalizeString(query.includeProgress).toLowerCase(),
+  );
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
   let branchProfile = await getBranchContext(actor);
@@ -2705,7 +2710,9 @@ export async function listBranchStudents(query = {}, actor = null) {
     }),
   ]);
 
-  const completionByStudentId = new Map(await Promise.all(rows.map(async (student) => {
+  let completionByStudentId = new Map();
+  if (includeAcademicProgress) {
+    completionByStudentId = new Map(await Promise.all(rows.map(async (student) => {
     try {
       const enrollments = Array.isArray(student.courseEnrollments) && student.courseEnrollments.length
         ? student.courseEnrollments
@@ -2750,7 +2757,8 @@ export async function listBranchStudents(query = {}, actor = null) {
         byCourse: {},
       }];
     }
-  })));
+  })))
+  }
 
   return {
     data: rows.map((student) => {

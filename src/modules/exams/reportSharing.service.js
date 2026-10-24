@@ -110,11 +110,13 @@ export async function getBranchReportShareStudents(user, shareId) {
   return result;
 }
 
-export async function getBranchStudentReports(user, studentId) {
+export async function getBranchStudentReports(user, studentId, options = {}) {
   // This endpoint is also used by the Faculty Dashboard Course Completion
   // modal. Faculty may read marks, but cannot change report history here.
-  const branch = await studentReportBranch(user);
-  const student = await prisma.branchStudent.findFirst({
+  // Completion-summary requests pass the already-resolved branch and student
+  // record so this report does not repeat those lookups for every student.
+  const branch = options.branch || await studentReportBranch(user);
+  const student = options.student || await prisma.branchStudent.findFirst({
     where: { branchId: branch.id, studentId: value(studentId), recordStatus: "ACTIVE" },
     // Completed students are moved to a new intake cycle after the final
     // report is sent. Keep their historical enrollment cycles in scope so

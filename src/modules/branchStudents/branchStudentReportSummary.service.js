@@ -36,7 +36,16 @@ export async function listBranchStudentReportCompletionSummaries(input, user = {
         { id: { in: studentIds } },
       ],
     },
-    select: { id: true, studentId: true },
+    select: {
+      id: true,
+      studentId: true,
+      studentName: true,
+      emailAddress: true,
+      courseName: true,
+      batchName: true,
+      batchId: true,
+      courseEnrollments: { select: { courseId: true, batchId: true, batchCycleId: true } },
+    },
   });
   const uniqueStudents = [...new Map(
     students
@@ -47,7 +56,7 @@ export async function listBranchStudentReportCompletionSummaries(input, user = {
   return collectBranchStudentReportSummaries(uniqueStudents, {
     // Preserve existing report/history rules while bounding DB work.
     concurrency: 4,
-    getAcademicReport: (studentId) => getBranchStudentAcademicReports(user, studentId),
-    getSyllabusReport: (studentId) => getBranchStudentReports(user, studentId),
+    getAcademicReport: (studentId, student) => getBranchStudentAcademicReports(user, studentId, { branchId: branch.id, student }),
+    getSyllabusReport: (studentId, student) => getBranchStudentReports(user, studentId, { branch, student }),
   });
 }

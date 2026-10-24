@@ -973,6 +973,9 @@ model BranchStudentCourse {
   @@unique([branchStudentId, courseId])
   @@index([branchId, courseId])
   @@index([branchStudentId, courseId])
+  @@index([batchCycleId, status])
+  @@index([batchId, status])
+  @@index([branchStudentId, status])
 }
 
 model BranchStudentAttendance {
