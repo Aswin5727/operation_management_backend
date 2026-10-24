@@ -19,9 +19,28 @@ const upper = (v) => text(v).toUpperCase().replace(/[\s-]+/g, "_");
 const required = (v, label, max = 255) => { const value = text(v); if (!value) throw new AppError(`${label} is required`, 400); if (value.length > max) throw new AppError(`${label} must not exceed ${max} characters`, 400); return value; };
 const optional = (v, max = 255) => { const value = text(v); if (value.length > max) throw new AppError(`Value must not exceed ${max} characters`, 400); return value || null; };
 const enumValue = (v, set, label, fallback) => { const value = upper(v || fallback); if (!set.has(value)) throw new AppError(`${label} is invalid`, 400); return value; };
+const callStatusValue = (value) => { const normalized = upper(value); const aliases = { NOT_ANSWERED: "NO_ANSWER", DISCONNECTED: "NOT_REACHABLE", DC: "NOT_REACHABLE", CALLBACK_REQUESTED: "CALL_BACK_REQUESTED" }; return enumValue(aliases[normalized] || normalized, CALL_STATUSES, "Call status"); };
 const dateValue = (v, label, isRequired = true) => { if (!v && !isRequired) return null; const value = new Date(v); if (Number.isNaN(value.getTime())) throw new AppError(`${label} must be a valid date`, 400); return value; };
 function branchDateTimeParts(timeZone) { return Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: timeZone || "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).filter((part) => part.type !== "literal").map((part) => [part.type, part.value])); }
-async function validateFollowUpSchedule(data, branchId) { const timezone = (await prisma.branch.findUnique({ where: { id: branchId }, select: { timezone: true } }))?.timezone || "Asia/Kolkata"; const dateKey = data.nextFollowUpDate?.toISOString().slice(0, 10) || ""; const time = data.nextFollowUpTime || ""; if (!dateKey && time) throw new AppError("Follow-up time cannot be saved without a date", 400); if (!dateKey) return; if (time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new AppError("Next follow-up time must be valid", 400); const now = branchDateTimeParts(timezone); const today = `${now.year}-${now.month}-${now.day}`; if (dateKey < today) throw new AppError("Next follow-up date cannot be in the past", 400); if (dateKey === today) { if (!time) throw new AppError("Next follow-up time is required for today", 400); const [hour, minute] = time.split(":").map(Number); if (hour * 60 + minute <= Number(now.hour) * 60 + Number(now.minute)) throw new AppError("Please select a future time for today's follow-up.", 400); } else if (time) data.nextFollowUpTime = null; }
+async function validateFollowUpSchedule(data, branchId) {
+  const stage = String(data.stage || '').toUpperCase();
+  const status = String(data.status || '').toUpperCase();
+  if (['HOT', 'CLOSED'].includes(stage) || status === 'CONVERTED') return;
+  const timezone = (await prisma.branch.findUnique({ where: { id: branchId }, select: { timezone: true } }))?.timezone || 'Asia/Kolkata';
+  const dateKey = data.nextFollowUpDate?.toISOString().slice(0, 10) || '';
+  const time = data.nextFollowUpTime || '';
+  if (!dateKey && time) throw new AppError('Follow-up time cannot be saved without a date', 400);
+  if (!dateKey) return;
+  if (time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new AppError('Next follow-up time must be valid', 400);
+  const now = branchDateTimeParts(timezone);
+  const today = `${now.year}-${now.month}-${now.day}`;
+  if (dateKey < today) throw new AppError('Next follow-up date cannot be in the past', 400);
+  if (dateKey === today) {
+    if (!time) throw new AppError('Next follow-up time is required for today', 400);
+    const [hour, minute] = time.split(':').map(Number);
+    if (hour * 60 + minute <= Number(now.hour) * 60 + Number(now.minute)) throw new AppError("Please select a future time for today's follow-up.", 400);
+  } else if (time) data.nextFollowUpTime = null;
+}
 const phone = (v, label = "Phone number", isRequired = true) => { const value = text(v); if (!value && !isRequired) return null; if (!/^\d{10}$/.test(value)) throw new AppError(`${label} must contain exactly 10 digits`, 400); return value; };
 const paymentAmountValue = (value, status, existing) => { if (status === "NOT_PAID") return null; const raw = value ?? existing; if (raw === null || raw === undefined || text(raw) === "") throw new AppError("Payment amount is required when payment status is not Not Paid", 400); const amount = Number(raw); if (!Number.isFinite(amount) || amount < 0) throw new AppError("Payment amount must be a valid non-negative number", 400); return amount; };
 async function generatedLeadId(client = prisma) {
@@ -68,6 +87,11 @@ async function permittedBranches(actor) {
   throw new AppError("You do not have permission to manage leads", 403);
 }
 
+function assertLeadAssignment(lead, actor) {
+  const role = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (role === "SALESADMIN" && lead.assignedToId !== actor.userId) throw new AppError("You do not have access to this lead", 403);
+}
+
 async function assertBranchAccess(branchId, actor, allowed = undefined) {
   const permitted = allowed === undefined ? await permittedBranches(actor) : allowed;
   if (permitted && !permitted.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
@@ -80,6 +104,8 @@ async function assertBranchAccess(branchId, actor, allowed = undefined) {
 async function validateRelations(data, actor, existingId = null) {
   const allowed = await permittedBranches(actor);
   await assertBranchAccess(data.branchId, actor, allowed);
+  const actorRole = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (actorRole === "SALESADMIN" && data.assignedToId !== actor.userId) throw new AppError("Sales Admins can only assign leads to their own account", 403);
   const course = await prisma.branchCourse.findFirst({ where: { id: data.courseId, branchId: data.branchId, status: "ACTIVE" }, select: { id: true, name: true } });
   if (!course) throw new AppError("Course does not belong to the selected branch", 400);
   if (data.assignedToId) {
@@ -97,12 +123,14 @@ async function findLead(id, actor, history = false) {
   const lead = await prisma.lead.findFirst({ where: { id, deletedAt: null }, include: { ...includeLead, ...(history ? { followUps: { orderBy: { followUpDate: "desc" }, include: { createdBy: { select: { id: true, fullName: true, email: true } }, recordings: { select: { id: true, originalName: true, mimeType: true, sizeBytes: true, createdAt: true } } } }, stageHistory: { orderBy: { createdAt: "desc" }, include: { createdBy: { select: { id: true, fullName: true } } } }, activities: { orderBy: { createdAt: "desc" }, include: { createdBy: { select: { id: true, fullName: true } } } }, recordings: { orderBy: { createdAt: "desc" }, select: { id: true, originalName: true, mimeType: true, sizeBytes: true, createdAt: true, followUpId: true } } } : {}) } });
   if (!lead) throw new AppError("Lead not found", 404);
   await assertBranchAccess(lead.branchId, actor);
+  assertLeadAssignment(lead, actor);
   return lead;
 }
 
 export async function listLeads(query = {}, actor) {
   const allowed = await permittedBranches(actor); const page = Math.max(1, Number.parseInt(query.page || "1", 10) || 1); const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit || "10", 10) || 10)); const search = text(query.search);
   const where = { deletedAt: null, ...(allowed ? { branchId: { in: allowed } } : {}), ...(query.branchId ? { branchId: text(query.branchId) } : {}), ...(query.courseId ? { courseId: text(query.courseId) } : {}), ...(query.assignedToId ? { assignedToId: text(query.assignedToId) } : {}), ...(query.stage ? { stage: enumValue(query.stage, STAGES, "Lead stage") } : {}), ...(query.status ? { status: enumValue(query.status, STATUSES, "Lead status") } : {}), ...(query.leadSource ? { leadSource: enumValue(query.leadSource, SOURCES, "Lead source") } : {}) };
+  if (String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "") === "SALESADMIN") where.assignedToId = actor.userId;
   if (query.branchId && allowed && !allowed.includes(text(query.branchId))) throw new AppError("You do not have access to this branch", 403);
   if (search) where.OR = [{ leadId: { contains: search, mode: "insensitive" } }, { studentName: { contains: search, mode: "insensitive" } }, { phoneNumber: { contains: search } }, { email: { contains: search, mode: "insensitive" } }];
   if (query.from || query.to) where.leadDate = { ...(query.from ? { gte: dateValue(query.from, "From date") } : {}), ...(query.to ? { lte: dateValue(query.to, "To date") } : {}) };
@@ -111,26 +139,47 @@ export async function listLeads(query = {}, actor) {
   return { data: rows.map(output), meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) } };
 }
 
-export async function createLead(payload, actor) { const requestedLeadId = text(payload.leadId); const autoLeadId = /^CISLEA\d+$/.test(requestedLeadId) || !requestedLeadId ? await generatedLeadId() : requestedLeadId; const data = normalizePayload({ ...payload, leadId: autoLeadId }); await validateRelations(data, actor); await validateFollowUpSchedule(data, data.branchId); const created = await prisma.$transaction(async (tx) => { const lead = await tx.lead.create({ data: { ...data, createdById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: lead.id, action: "LEAD_CREATED", newValue: { leadId: lead.leadId, stage: lead.stage, status: lead.status }, createdById: actor.userId } }); await tx.leadStageHistory.create({ data: { leadId: lead.id, toStage: lead.stage, createdById: actor.userId } }); if (data.nextFollowUpDate) await tx.leadActivity.create({ data: { leadId: lead.id, action: 'NEXT_FOLLOW_UP_CHANGED', newValue: { nextFollowUpDate: data.nextFollowUpDate.toISOString(), nextFollowUpTime: data.nextFollowUpTime }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(created.id); return created; }
-export async function getLead(id, actor) { return findLead(id, actor, true); }
-export async function updateLead(id, payload, actor) { const existing = await prisma.lead.findFirst({ where: { id, deletedAt: null } }); if (!existing) throw new AppError("Lead not found", 404); await assertBranchAccess(existing.branchId, actor); const data = normalizePayload(payload, existing); await validateRelations(data, actor, id); await validateFollowUpSchedule(data, data.branchId); const changedStage = existing.stage !== data.stage; const scheduleChanged = (existing.nextFollowUpDate?.getTime() || null) !== (data.nextFollowUpDate?.getTime() || null) || (existing.nextFollowUpTime || null) !== (data.nextFollowUpTime || null); const updated = await prisma.$transaction(async (tx) => { const lead = await tx.lead.update({ where: { id }, data: { ...data, updatedById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: id, action: changedStage ? "LEAD_UPDATED_STAGE_CHANGED" : "LEAD_UPDATED", previousValue: { stage: existing.stage, status: existing.status }, newValue: { stage: data.stage, status: data.status }, createdById: actor.userId } }); if (changedStage) await tx.leadStageHistory.create({ data: { leadId: id, fromStage: existing.stage, toStage: data.stage, createdById: actor.userId } }); if (scheduleChanged) await tx.leadActivity.create({ data: { leadId: id, action: 'NEXT_FOLLOW_UP_CHANGED', previousValue: { nextFollowUpDate: existing.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: existing.nextFollowUpTime || null }, newValue: { nextFollowUpDate: data.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: data.nextFollowUpTime || null }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(updated.id); return updated; }
-export async function deleteLead(id, actor) { const lead = await prisma.lead.findFirst({ where: { id, deletedAt: null }, select: { id: true, branchId: true, status: true } }); if (!lead) throw new AppError("Lead not found", 404); await assertBranchAccess(lead.branchId, actor); if (lead.status === "CONVERTED" && String(actor.role).toUpperCase().replace(/[^A-Z0-9]/g, "") !== "SUPERADMIN") throw new AppError("Converted leads require authorized archival workflow", 403); await prisma.lead.delete({ where: { id } }); return { deleted: true }; }
+export async function createLead(payload, actor) { const requestedLeadId = text(payload.leadId); const autoLeadId = /^CISLEA\d+$/.test(requestedLeadId) || !requestedLeadId ? await generatedLeadId() : requestedLeadId; const isSalesAdmin = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "") === "SALESADMIN"; const requestedAssignee = text(payload.assignedToId); if (isSalesAdmin && requestedAssignee && requestedAssignee !== actor.userId) throw new AppError("Sales Admins can only assign leads to their own account", 403); const data = normalizePayload({ ...payload, ...(isSalesAdmin ? { assignedToId: actor.userId } : {}), leadId: autoLeadId }); await validateRelations(data, actor); await validateFollowUpSchedule(data, data.branchId); const created = await prisma.$transaction(async (tx) => { const lead = await tx.lead.create({ data: { ...data, createdById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: lead.id, action: "LEAD_CREATED", newValue: { leadId: lead.leadId, stage: lead.stage, status: lead.status }, createdById: actor.userId } }); await tx.leadStageHistory.create({ data: { leadId: lead.id, toStage: lead.stage, createdById: actor.userId } }); if (data.nextFollowUpDate) await tx.leadActivity.create({ data: { leadId: lead.id, action: 'NEXT_FOLLOW_UP_CHANGED', newValue: { nextFollowUpDate: data.nextFollowUpDate.toISOString(), nextFollowUpTime: data.nextFollowUpTime }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(created.id); return created; }
+export async function getLead(id, actor) { const lead = await findLead(id, actor, true); const followUpReminders = await prisma.followUpReminder.findMany({ where: { leadId: lead.id }, orderBy: { scheduledFor: "desc" }, take: 10, select: { id: true, dueDate: true, scheduledFor: true, timezone: true, status: true, notificationId: true, deliveredAt: true } }); return { ...lead, followUpReminders }; }
+export async function updateLead(id, payload, actor) { const existing = await prisma.lead.findFirst({ where: { id, deletedAt: null } }); if (!existing) throw new AppError("Lead not found", 404); await assertBranchAccess(existing.branchId, actor); assertLeadAssignment(existing, actor); const data = normalizePayload(payload, existing); await validateRelations(data, actor, id); await validateFollowUpSchedule(data, data.branchId); const changedStage = existing.stage !== data.stage; const scheduleChanged = (existing.nextFollowUpDate?.getTime() || null) !== (data.nextFollowUpDate?.getTime() || null) || (existing.nextFollowUpTime || null) !== (data.nextFollowUpTime || null); const updated = await prisma.$transaction(async (tx) => { const lead = await tx.lead.update({ where: { id }, data: { ...data, updatedById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: id, action: changedStage ? "LEAD_UPDATED_STAGE_CHANGED" : "LEAD_UPDATED", previousValue: { stage: existing.stage, status: existing.status }, newValue: { stage: data.stage, status: data.status }, createdById: actor.userId } }); if (changedStage) await tx.leadStageHistory.create({ data: { leadId: id, fromStage: existing.stage, toStage: data.stage, createdById: actor.userId } }); if (scheduleChanged) await tx.leadActivity.create({ data: { leadId: id, action: 'NEXT_FOLLOW_UP_CHANGED', previousValue: { nextFollowUpDate: existing.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: existing.nextFollowUpTime || null }, newValue: { nextFollowUpDate: data.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: data.nextFollowUpTime || null }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(updated.id); return updated; }
+export async function deleteLead(id, actor) { const lead = await prisma.lead.findFirst({ where: { id, deletedAt: null }, select: { id: true, branchId: true, status: true, assignedToId: true } }); if (!lead) throw new AppError("Lead not found", 404); await assertBranchAccess(lead.branchId, actor); assertLeadAssignment(lead, actor); if (lead.status === "CONVERTED" && String(actor.role).toUpperCase().replace(/[^A-Z0-9]/g, "") !== "SUPERADMIN") throw new AppError("Converted leads require authorized archival workflow", 403); await prisma.lead.delete({ where: { id } }); return { deleted: true }; }
 export async function addFollowUp(id, payload, actor) {
   const lead = await findLead(id, actor);
   const followUpDate = dateValue(payload.followUpDate || new Date(), "Follow-up date");
-  const nextFollowUpDate = dateValue(payload.nextFollowUpDate, "Next follow-up date", false);
-  const schedule = { nextFollowUpDate, nextFollowUpTime: optional(payload.nextFollowUpTime, 5) };
-  await validateFollowUpSchedule(schedule, lead.branchId);
-  if (nextFollowUpDate && nextFollowUpDate.toISOString().slice(0, 10) < followUpDate.toISOString().slice(0, 10)) throw new AppError("Next follow-up must be after the follow-up date", 400);
   const stage = enumValue(payload.stage ?? lead.stage, STAGES, "Lead stage");
   const status = enumValue(payload.status ?? lead.status, STATUSES, "Lead status");
-  const callStatus = enumValue(payload.callStatus, CALL_STATUSES, "Call status");
+  const callStatus = callStatusValue(payload.callStatus);
+  const activeStage = ["COLD", "WARM"].includes(stage);
+  const scheduleChoice = upper(payload.scheduleChoice);
+  if (activeStage && scheduleChoice === "NO_FURTHER_FOLLOW_UP") throw new AppError("COLD and WARM leads must keep automatic follow-up reminders active. Move the lead to HOT or CLOSED to stop reminders.", 400);
+  let nextFollowUpDate = dateValue(payload.nextFollowUpDate, "Next follow-up date", false);
+  let nextFollowUpTime = optional(payload.nextFollowUpTime, 5);
+  if (scheduleChoice === "KEEP_EXISTING_DATE") {
+    nextFollowUpDate = lead.nextFollowUpDate || null;
+    nextFollowUpTime = lead.nextFollowUpTime || null;
+    if (nextFollowUpDate) {
+      const timezone = (await prisma.branch.findUnique({ where: { id: lead.branchId }, select: { timezone: true } }))?.timezone || "Asia/Kolkata";
+      const now = branchDateTimeParts(timezone);
+      const todayKey = `${now.year}-${now.month}-${now.day}`;
+      const existingKey = nextFollowUpDate.toISOString().slice(0, 10);
+      const existingTimePassed = existingKey === todayKey && nextFollowUpTime && Number(nextFollowUpTime.slice(0, 2)) * 60 + Number(nextFollowUpTime.slice(3, 5)) <= Number(now.hour) * 60 + Number(now.minute);
+      if (existingKey < todayKey || existingTimePassed) { nextFollowUpDate = null; nextFollowUpTime = null; }
+    }
+  } else if (scheduleChoice === "NO_FURTHER_FOLLOW_UP") {
+    nextFollowUpDate = null;
+    nextFollowUpTime = null;
+  }
+  const schedule = { nextFollowUpDate, nextFollowUpTime };
+  await validateFollowUpSchedule(schedule, lead.branchId);
+  if (schedule.nextFollowUpDate && schedule.nextFollowUpDate.toISOString().slice(0, 10) < followUpDate.toISOString().slice(0, 10)) throw new AppError("Next follow-up must be after the follow-up date", 400);
+  nextFollowUpDate = schedule.nextFollowUpDate;
+  nextFollowUpTime = schedule.nextFollowUpTime;
   const notes = optional(payload.notes, 2000) || "";
   const followUpType = optional(payload.followUpType, 80) || "FOLLOW_UP";
   const followUp = await prisma.$transaction(async (tx) => {
-    const saved = await tx.leadFollowUp.create({ data: { leadId: lead.id, followUpDate, nextFollowUpDate, nextFollowUpTime: schedule.nextFollowUpTime, followUpType, callStatus, notes, createdById: actor.userId }, include: { createdBy: { select: { id: true, fullName: true, email: true } } } });
-    await tx.lead.update({ where: { id: lead.id }, data: { stage, status, lastCallStatus: callStatus, nextFollowUpDate, nextFollowUpTime: schedule.nextFollowUpTime, updatedById: actor.userId } });
-    await tx.leadActivity.create({ data: { leadId: lead.id, action: "FOLLOW_UP_ADDED", previousValue: { stage: lead.stage, status: lead.status, callStatus: lead.lastCallStatus || null }, newValue: { followUpId: saved.id, stage, status, callStatus, nextFollowUpDate: nextFollowUpDate?.toISOString() || null, nextFollowUpTime: schedule.nextFollowUpTime }, createdById: actor.userId } });
+    const saved = await tx.leadFollowUp.create({ data: { leadId: lead.id, followUpDate, nextFollowUpDate, nextFollowUpTime, followUpType, callStatus, notes, createdById: actor.userId }, include: { createdBy: { select: { id: true, fullName: true, email: true } } } });
+    await tx.lead.update({ where: { id: lead.id }, data: { stage, status, lastCallStatus: callStatus, nextFollowUpDate, nextFollowUpTime, updatedById: actor.userId } });
+    await tx.leadActivity.create({ data: { leadId: lead.id, action: "FOLLOW_UP_ADDED", previousValue: { stage: lead.stage, status: lead.status, callStatus: lead.lastCallStatus || null }, newValue: { followUpId: saved.id, stage, status, callStatus, nextFollowUpDate: nextFollowUpDate?.toISOString() || null, nextFollowUpTime }, createdById: actor.userId } });
     if ((lead.nextFollowUpDate?.getTime() || null) !== (nextFollowUpDate?.getTime() || null) || (lead.nextFollowUpTime || null) !== (schedule.nextFollowUpTime || null)) await tx.leadActivity.create({ data: { leadId: lead.id, action: 'NEXT_FOLLOW_UP_CHANGED', previousValue: { nextFollowUpDate: lead.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: lead.nextFollowUpTime || null }, newValue: { nextFollowUpDate: nextFollowUpDate?.toISOString() || null, nextFollowUpTime: schedule.nextFollowUpTime, followUpId: saved.id }, createdById: actor.userId } });
     if (lead.stage !== stage) { await tx.leadStageHistory.create({ data: { leadId: lead.id, fromStage: lead.stage, toStage: stage, createdById: actor.userId } }); await tx.leadActivity.create({ data: { leadId: lead.id, action: "LEAD_STAGE_CHANGED", previousValue: { stage: lead.stage }, newValue: { stage }, createdById: actor.userId } }); }
     if (lead.status !== status) await tx.leadActivity.create({ data: { leadId: lead.id, action: "LEAD_STATUS_CHANGED", previousValue: { status: lead.status }, newValue: { status }, createdById: actor.userId } });

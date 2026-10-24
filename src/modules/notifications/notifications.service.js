@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma.js";
+import AppError from "../../common/errors/AppError.js";
 import { sendFacultyWeekOffApprovalEmail, sendFacultyWeekOffRejectionEmail } from "../../common/services/resendEmail.js";
 
 const NOTIFICATION_KIND_MAP = {
@@ -148,6 +149,7 @@ function normalizeNotificationRow(row) {
     targetBranchId: normalizeString(row.targetBranchId),
     targetBranchEmail: normalizeEmail(row.targetBranchEmail),
     targetBranchName: normalizeString(row.targetBranchName),
+    timezone: normalizeString(row.timezone) || "Asia/Kolkata",
     targetUserId: normalizeString(
       row.targetUserId,
     ),
@@ -358,6 +360,138 @@ function buildNotificationWhere({
         }),
     ...superAdminDiscontinuationScope,
   };
+}
+
+function normalizeDateKey(value, label) {
+  const dateKey = normalizeString(value);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+    throw new AppError(`${label} must use YYYY-MM-DD format`, 400);
+  }
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (date.toISOString().slice(0, 10) !== dateKey) {
+    throw new AppError(`${label} is not a valid calendar date`, 400);
+  }
+  return dateKey;
+}
+
+function shiftDateKey(dateKey, days) {
+  const date = new Date(`${dateKey}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function dateKeyInTimezone(value, timeZone) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(value).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function localMidnightToUtc(dateKey, timeZone) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const assumedUtc = Date.UTC(year, month - 1, day);
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).formatToParts(new Date(assumedUtc)).filter((part) => part.type !== "literal").map((part) => [part.type, Number(part.value)]));
+  const localAtAssumedUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour === 24 ? 0 : parts.hour, parts.minute, parts.second);
+  return new Date(assumedUtc - (localAtAssumedUtc - assumedUtc));
+}
+
+function combineNotificationWhere(...conditions) {
+  const parts = conditions.filter((condition) => condition && Object.keys(condition).length);
+  return parts.length > 1 ? { AND: parts } : parts[0] || {};
+}
+
+async function getSalesAdminDateFilter(query, user) {
+  const preset = normalizeString(query.datePreset).toLowerCase();
+  const fromValue = normalizeString(query.fromDate);
+  const toValue = normalizeString(query.toDate);
+  if (!preset && !fromValue && !toValue) return null;
+
+  let fromDate = "";
+  let toDate = "";
+  const links = await prisma.salesAdminBranch.findMany({
+    where: { salesAdminId: user.id },
+    select: { branchId: true, branch: { select: { timezone: true } } },
+  });
+  const timeZones = new Map();
+  for (const link of links) {
+    const zone = normalizeString(link.branch?.timezone) || "Asia/Kolkata";
+    const branchIds = timeZones.get(zone) || [];
+    branchIds.push(link.branchId);
+    timeZones.set(zone, branchIds);
+  }
+  if (!timeZones.size) timeZones.set("Asia/Kolkata", []);
+
+  let customRange = false;
+  let customFromDate = "";
+  let customToDate = "";
+  if (preset === "custom" || fromValue || toValue) {
+    if (!fromValue || !toValue) throw new AppError("Choose both From Date and To Date", 400);
+    customFromDate = normalizeDateKey(fromValue, "From Date");
+    customToDate = normalizeDateKey(toValue, "To Date");
+    if (customFromDate > customToDate) throw new AppError("From Date cannot be later than To Date", 400);
+    customRange = true;
+  } else if (!["today", "yesterday", "last7days", "thismonth"].includes(preset)) {
+    throw new AppError("Date preset is invalid", 400);
+  }
+
+  const clauses = [];
+  for (const [timeZone, branchIds] of timeZones) {
+    let fromDate = customFromDate;
+    let toDate = customToDate;
+    if (!customRange) {
+      const today = dateKeyInTimezone(new Date(), timeZone);
+      if (preset === "today") fromDate = toDate = today;
+      else if (preset === "yesterday") fromDate = toDate = shiftDateKey(today, -1);
+      else if (preset === "last7days") { fromDate = shiftDateKey(today, -6); toDate = today; }
+      else { fromDate = `${today.slice(0, 7)}-01`; toDate = today; }
+    }
+    const createdAt = {
+      gte: localMidnightToUtc(fromDate, timeZone),
+      lt: localMidnightToUtc(shiftDateKey(toDate, 1), timeZone),
+    };
+    clauses.push(branchIds.length
+      ? { targetBranchId: { in: branchIds }, createdAt }
+      : { targetBranchId: null, createdAt });
+  }
+  if (Array.from(timeZones.values()).some((branchIds) => branchIds.length > 0)) {
+    const fallbackZone = links[0]?.branch?.timezone || "Asia/Kolkata";
+    const today = dateKeyInTimezone(new Date(), fallbackZone);
+    let fallbackFrom = customFromDate;
+    let fallbackTo = customToDate;
+    if (!customRange) {
+      if (preset === "today") fallbackFrom = fallbackTo = today;
+      else if (preset === "yesterday") fallbackFrom = fallbackTo = shiftDateKey(today, -1);
+      else if (preset === "last7days") { fallbackFrom = shiftDateKey(today, -6); fallbackTo = today; }
+      else { fallbackFrom = `${today.slice(0, 7)}-01`; fallbackTo = today; }
+    }
+    clauses.push({ targetBranchId: null, createdAt: { gte: localMidnightToUtc(fallbackFrom, fallbackZone), lt: localMidnightToUtc(shiftDateKey(fallbackTo, 1), fallbackZone) } });
+  }
+  return { OR: clauses };
+}
+
+async function normalizeRowsWithTimezones(rows) {
+  const branchIds = [...new Set(rows.map((row) => normalizeString(row.targetBranchId)).filter(Boolean))];
+  const branches = branchIds.length
+    ? await prisma.branch.findMany({ where: { id: { in: branchIds } }, select: { id: true, timezone: true } })
+    : [];
+  const timezoneByBranch = new Map(branches.map((branch) => [branch.id, branch.timezone || "Asia/Kolkata"]));
+  return rows.map((row) => normalizeNotificationRow({
+    ...row,
+    timezone: timezoneByBranch.get(row.targetBranchId) || "Asia/Kolkata",
+  })).filter(Boolean);
 }
 
 function buildSyntheticBranchNotificationId(prefix, sourceId) {
@@ -1115,10 +1249,15 @@ export async function notifySequentialCourseSchedulingForStudent(studentId) {
 }
 
 export async function listNotifications(query = {}, user = {}) {
-  const page = Math.max(1, Number(query.page || 1));
-  const limit = Math.min(100, Math.max(1, Number(query.limit || 10)));
+  const requestedPage = Number.parseInt(query.page || "1", 10);
+  const requestedLimit = Number.parseInt(query.limit || "10", 10);
+  const page = Number.isFinite(requestedPage) ? Math.max(1, requestedPage) : 1;
+  const limit = Number.isFinite(requestedLimit) ? Math.min(100, Math.max(1, requestedLimit)) : 10;
   const unreadOnly = String(query.unreadOnly || "").trim().toLowerCase() === "true";
   const kind = normalizeString(query.kind).toUpperCase();
+  const status = normalizeString(query.status).toLowerCase();
+  if (status && !["all", "unread", "read"].includes(status)) throw new AppError("Notification status filter is invalid", 400);
+  const statusWhere = status === "unread" ? { read: false } : status === "read" ? { read: true } : null;
 
   const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
   if (String(user?.role || "").toUpperCase() === "FACULTY") {
@@ -1127,13 +1266,27 @@ export async function listNotifications(query = {}, user = {}) {
   await ensureSequentialCourseSchedulingNotifications(user);
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
-  const where = buildNotificationWhere({
+  const baseWhere = buildNotificationWhere({
     user,
     branchScope,
     visibleKinds,
     unreadOnly,
     kind,
   });
+  const dateWhere = String(user?.role || "").toUpperCase() === "SALES_ADMIN"
+    ? await getSalesAdminDateFilter(query, user)
+    : null;
+  if (String(user?.role || "").toUpperCase() !== "SALES_ADMIN" && (query.datePreset || query.fromDate || query.toDate)) {
+    throw new AppError("Date filters are available only for Sales Admin notifications", 400);
+  }
+  const where = combineNotificationWhere(baseWhere, statusWhere, dateWhere);
+  const filteredUnreadWhere = combineNotificationWhere(
+    buildNotificationWhere({ user, branchScope, visibleKinds, unreadOnly: true, kind }),
+    dateWhere,
+  );
+  const sort = normalizeString(query.sort).toLowerCase();
+  if (sort && !["newest", "oldest"].includes(sort)) throw new AppError("Notification sort is invalid", 400);
+  const orderBy = { createdAt: sort === "oldest" ? "asc" : "desc" };
 
   let total = 0;
   let rows = [];
@@ -1144,19 +1297,11 @@ export async function listNotifications(query = {}, user = {}) {
       prisma.notification.count({ where }),
       prisma.notification.findMany({
         where,
-        orderBy: { createdAt: "desc" },
+        orderBy,
         skip: (page - 1) * limit,
         take: limit,
       }),
-      prisma.notification.count({
-        where: buildNotificationWhere({
-          user,
-          branchScope,
-          visibleKinds,
-          unreadOnly: true,
-          kind,
-        }),
-      }),
+      prisma.notification.count({ where: filteredUnreadWhere }),
     ]);
   } catch (error) {
     if (!isFaculty && Object.keys(branchScope).length > 0 && !kind) {
@@ -1190,34 +1335,32 @@ export async function listNotifications(query = {}, user = {}) {
       unreadOnly,
       kind,
     });
+    const scopedWideWhere = combineNotificationWhere(wideWhere, statusWhere, dateWhere);
+    const wideUnreadWhere = combineNotificationWhere(
+      buildNotificationWhere({ user, branchScope: {}, visibleKinds, unreadOnly: true, kind }),
+      dateWhere,
+    );
 
     const [wideTotal, wideRows, wideUnreadCount] = await prisma.$transaction([
-      prisma.notification.count({ where: wideWhere }),
+      prisma.notification.count({ where: scopedWideWhere }),
       prisma.notification.findMany({
-        where: wideWhere,
-        orderBy: { createdAt: "desc" },
+        where: scopedWideWhere,
+        orderBy,
         skip: (page - 1) * limit,
         take: limit,
       }),
-      prisma.notification.count({
-        where: buildNotificationWhere({
-          user,
-          branchScope: {},
-          visibleKinds,
-          unreadOnly: true,
-          kind,
-        }),
-      }),
+      prisma.notification.count({ where: wideUnreadWhere }),
     ]);
 
     return {
-      data: wideRows.map(normalizeNotificationRow).filter(Boolean),
+      data: await normalizeRowsWithTimezones(wideRows),
       meta: {
         page,
         limit,
         total: wideTotal,
         totalPages: Math.max(1, Math.ceil(wideTotal / limit)),
         unreadCount: wideUnreadCount,
+      filteredUnreadCount: wideUnreadCount,
       },
     };
   }
@@ -1244,13 +1387,14 @@ export async function listNotifications(query = {}, user = {}) {
   }
 
   return {
-    data: rows.map(normalizeNotificationRow).filter(Boolean),
+    data: await normalizeRowsWithTimezones(rows),
     meta: {
       page,
       limit,
       total,
       totalPages: Math.max(1, Math.ceil(total / limit)),
       unreadCount,
+      filteredUnreadCount: unreadCount,
     },
   };
 }
@@ -1264,14 +1408,20 @@ export async function markNotificationsAsRead(
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
 
+  const role = String(user?.role || "").toUpperCase();
   const facultyScope =
-    ["FACULTY", "STUDENT"].includes(user?.role)
+    ["FACULTY", "STUDENT"].includes(role)
       ? {
           targetUserId: user.id,
           kind: {
             in: Array.from(visibleKinds),
           },
         }
+      : role === "SALES_ADMIN"
+        ? {
+            targetUserId: user.id,
+            kind: { in: Array.from(visibleKinds) },
+          }
       : Object.keys(branchScope).length > 0
         ? branchScope
         : {}
