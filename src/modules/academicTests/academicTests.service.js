@@ -1446,9 +1446,13 @@ export async function getBranchAcademicTestReport(actor, shareId) {
   return { ...report, share: { id: share.id, sentAt: share.sentAt, facultyId: share.facultyId } };
 }
 
-export async function getBranchStudentAcademicReports(actor, studentId) {
-  const branchId = await branchReportScope(actor);
-  const student = await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { batchId: true } } } });
+export async function getBranchStudentAcademicReports(actor, studentId, options = {}) {
+  // Completion-summary requests already resolve the authenticated branch and
+  // student records in one bulk query. Reuse that context so each report
+  // does not repeat the same branch/student lookups. Existing callers keep the
+  // original lookup behavior when no context is supplied.
+  const branchId = options.branchId || await branchReportScope(actor);
+  const student = options.student || await prisma.branchStudent.findFirst({ where: { branchId, studentId: text(studentId), recordStatus: "ACTIVE" }, select: { id: true, studentId: true, studentName: true, emailAddress: true, courseName: true, batchName: true, batchId: true, courseEnrollments: { select: { batchId: true } } } });
   if (!student) throw new AppError("Student not found in this branch.", 404);
   const studentBatchIds = [...new Set([student.batchId, ...(student.courseEnrollments || []).map((enrollment) => enrollment.batchId)].map(text).filter(Boolean))];
   let batches = studentBatchIds.length

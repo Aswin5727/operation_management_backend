@@ -278,14 +278,14 @@ function getVisibleNotificationKindsForRole(user = {}) {
   return DEFAULT_VISIBLE_NOTIFICATION_KINDS;
 }
 
-function buildNotificationWhere({
+export function buildNotificationWhere({
   user = {},
   branchScope = {},
   visibleKinds = DEFAULT_VISIBLE_NOTIFICATION_KINDS,
   unreadOnly = false,
   kind = "",
 } = {}) {
-  const role = String(user?.role || "").toUpperCase();
+  const role = normalizeString(user?.role).toUpperCase();
   const isFaculty = ["FACULTY", "STUDENT"].includes(role);
   const normalizedKind = normalizeString(kind).toUpperCase();
   const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
@@ -323,13 +323,42 @@ function buildNotificationWhere({
     };
   }
 
+  if (role === "BRANCH_ADMIN") {
+    const recipientScopes = [
+      ...(Object.keys(branchScope).length ? [branchScope] : []),
+      ...(user?.id ? [{ targetUserId: user.id }] : []),
+    ];
+    const recipientScope = recipientScopes.length > 1
+      ? { OR: recipientScopes }
+      : recipientScopes[0] || { targetUserId: "__unresolved_branch_admin__" };
+
+    return {
+      ...recipientScope,
+      ...(!normalizedKind
+        ? {
+            NOT: {
+              kind: "COURSE_EDIT_MODULE_UPDATED",
+              message: {
+                contains: "module progress",
+                mode: "insensitive",
+              },
+            },
+          }
+        : {}),
+      ...(unreadOnly ? { read: false } : {}),
+      ...(normalizedKind
+        ? { kind: normalizedKind }
+        : { kind: { in: Array.from(visibleKinds) } }),
+    };
+  }
+
   if (Object.keys(branchScope).length > 0) {
     return {
       OR: [
         branchScope,
         ...(user?.id ? [{ targetUserId: user.id }] : []),
       ],
-      ...(String(user?.role || "").toUpperCase() === "BRANCH_ADMIN" && !normalizedKind
+      ...(normalizeString(user?.role).toUpperCase() === "BRANCH_ADMIN" && !normalizedKind
         ? {
             NOT: {
               kind: "COURSE_EDIT_MODULE_UPDATED",
@@ -1261,8 +1290,8 @@ export async function listNotifications(query = {}, user = {}) {
   if (status && !["all", "unread", "read"].includes(status)) throw new AppError("Notification status filter is invalid", 400);
   const statusWhere = status === "unread" ? { read: false } : status === "read" ? { read: true } : null;
 
-  const isFaculty = ["FACULTY", "STUDENT"].includes(String(user?.role || "").toUpperCase());
-  if (String(user?.role || "").toUpperCase() === "FACULTY") {
+  const isFaculty = ["FACULTY", "STUDENT"].includes(normalizeString(user?.role).toUpperCase());
+  if (normalizeString(user?.role).toUpperCase() === "FACULTY") {
     await ensureFacultyAcademicTestCompletionNotifications(user);
   }
   await ensureSequentialCourseSchedulingNotifications(user);
@@ -1275,10 +1304,10 @@ export async function listNotifications(query = {}, user = {}) {
     unreadOnly,
     kind,
   });
-  const dateWhere = String(user?.role || "").toUpperCase() === "SALES_ADMIN"
+  const dateWhere = normalizeString(user?.role).toUpperCase() === "SALES_ADMIN"
     ? await getSalesAdminDateFilter(query, user)
     : null;
-  if (String(user?.role || "").toUpperCase() !== "SALES_ADMIN" && (query.datePreset || query.fromDate || query.toDate)) {
+  if (normalizeString(user?.role).toUpperCase() !== "SALES_ADMIN" && (query.datePreset || query.fromDate || query.toDate)) {
     throw new AppError("Date filters are available only for Sales Admin notifications", 400);
   }
   const where = combineNotificationWhere(baseWhere, statusWhere, dateWhere);
@@ -1410,38 +1439,24 @@ export async function markNotificationsAsRead(
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
 
-  const role = String(user?.role || "").toUpperCase();
-  const facultyScope =
-    ["FACULTY", "STUDENT"].includes(role)
-      ? {
-          targetUserId: user.id,
-          kind: {
-            in: Array.from(visibleKinds),
-          },
-        }
-      : role === "SALES_ADMIN"
-        ? {
-            targetUserId: user.id,
-            kind: { in: Array.from(visibleKinds) },
-          }
-      : Object.keys(branchScope).length > 0
-        ? branchScope
-        : {}
-
+  const accessScope = buildNotificationWhere({
+    user,
+    branchScope,
+    visibleKinds,
+    unreadOnly: !hasIds,
+  });
   const where = hasIds
     ? {
-      id: {
-        in: notificationIds
-          .map((id) => String(id))
-          .filter(Boolean),
-      },
-
-      ...facultyScope,
-    }
-    : {
-      read: false,
-      ...facultyScope,
-    };
+        AND: [
+          accessScope,
+          {
+            id: {
+              in: notificationIds.map((id) => String(id)).filter(Boolean),
+            },
+          },
+        ],
+      }
+    : accessScope;
 
   const result = await prisma.notification.updateMany({
     where,
@@ -1472,7 +1487,7 @@ export async function getUnreadNotificationCount(
       where,
     });
   } catch (error) {
-    if (String(user?.role || "").toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0) {
+    if (normalizeString(user?.role).toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0) {
       const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
       return syntheticRows.filter((notification) => !notification.read).length;
     }
@@ -1480,7 +1495,7 @@ export async function getUnreadNotificationCount(
     throw error;
   }
 
-  if (String(user?.role || "").toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0 && count === 0) {
+  if (normalizeString(user?.role).toUpperCase() !== "FACULTY" && Object.keys(branchScope).length > 0 && count === 0) {
     const syntheticRows = await buildFallbackBranchNotifications(user, branchScope);
     return syntheticRows.filter((notification) => !notification.read).length;
   }
