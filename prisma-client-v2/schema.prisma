@@ -51,6 +51,8 @@ model User {
   academicTestReportSubmissions  AcademicTestReportSubmission[]
   salesAdminBranches             SalesAdminBranch[]             @relation("SalesAdminUserBranches")
   assignedLeads                  Lead[]                         @relation("LeadAssignee")
+  createdSalesCrmBatchRequests   SalesCrmBatchRequest[]         @relation("SalesCrmBatchRequestCreator")
+  assignedSalesCrmBatchRequests  SalesCrmBatchRequest[]         @relation("SalesCrmBatchRequestAssignee")
   createdLeads                   Lead[]                         @relation("LeadCreatedBy")
   updatedLeads                   Lead[]                         @relation("LeadUpdatedBy")
   leadFollowUps                  LeadFollowUp[]                 @relation("LeadFollowUpCreatedBy")
@@ -129,6 +131,7 @@ model Branch {
   facultySkillAssignments    FacultySkillAssignment[]    @relation("FacultySkillBranchAssignments")
   facultyLeaveRequests       FacultyLeaveRequest[]
   salesAdminBranches         SalesAdminBranch[]
+  salesCrmBatchRequests      SalesCrmBatchRequest[]
   leads                      Lead[]
 
   @@index([status])
@@ -213,6 +216,46 @@ model Notification {
   @@index([targetUserId, examId, examScheduleId])
   @@index([targetUserId, assessmentId])
   @@index([facultySkillAssignmentId])
+}
+
+model SalesAdminAdmissionReminder {
+  id               String   @id @default(cuid())
+  salesAdminId     String
+  notificationType String   @default("PENDING_HOT_ADMISSIONS")
+  reminderDate     String   @db.VarChar(10)
+  notificationId   String?  @unique
+  createdAt        DateTime @default(now())
+
+  @@unique([salesAdminId, notificationType, reminderDate], map: "SalesAdminAdmissionReminder_daily_key")
+  @@index([salesAdminId, reminderDate])
+}
+
+model SalesCrmBatchRequest {
+  id                String                     @id @default(cuid())
+  leadId            String
+  branchId          String
+  courseId          String
+  requestedById     String
+  assignedToId      String?
+  requestedMode     String?
+  requestedSchedule String?
+  requestDetails    String
+  status            SalesCrmBatchRequestStatus @default(PENDING)
+  activeKey         String?                    @unique
+  resolvedBatchId   String?
+  statusUpdatedById String?
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
+  lead              Lead                       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  branch            Branch                     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  course            BranchCourse               @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  requestedBy       User                       @relation("SalesCrmBatchRequestCreator", fields: [requestedById], references: [id], onDelete: Restrict)
+  assignedTo        User?                      @relation("SalesCrmBatchRequestAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  resolvedBatch     BranchBatch?               @relation(fields: [resolvedBatchId], references: [id], onDelete: SetNull)
+
+  @@index([branchId, status, createdAt])
+  @@index([requestedById, status, createdAt])
+  @@index([leadId, courseId])
 }
 
 model CourseEditRequest {
@@ -344,6 +387,7 @@ model BranchCourse {
   academicQuestionPapers         AcademicQuestionPaper[]
   academicTestProjects           AcademicTestProject[]
   leads                          Lead[]
+  salesCrmBatchRequests          SalesCrmBatchRequest[]
 
   @@unique([branchId, nameKey])
   @@unique([branchId, courseCode])
@@ -510,6 +554,7 @@ model BranchBatch {
   academicTestProjects        AcademicTestProject[]
   academicTestCycles          AcademicTestCycle[]
   cycles                      BatchCycle[]
+  resolvedSalesCrmRequests    SalesCrmBatchRequest[]
   academicTestReportHistories AcademicTestReportHistory[]
 
   @@unique([branchId, courseId, facultyId, batchId])
@@ -1764,8 +1809,8 @@ enum LeadStage {
 }
 
 model Lead {
-  id                    String             @id @default(cuid())
-  leadId                String             @unique
+  id                    String                 @id @default(cuid())
+  leadId                String                 @unique
   studentName           String
   phoneNumber           String
   alternativeNumber     String?
@@ -1774,9 +1819,9 @@ model Lead {
   location              String?
   callType              String
   otherCallType         String?
-  status                LeadStatus         @default(DRAFT)
+  status                LeadStatus             @default(DRAFT)
   otherStatus           String?
-  stage                 LeadStage          @default(COLD)
+  stage                 LeadStage              @default(COLD)
   otherStage            String?
   courseId              String
   otherCourse           String?
@@ -1788,9 +1833,9 @@ model Lead {
   otherLeadSource       String?
   referredBy            String?
   referredName          String?
-  paymentStatus         String             @default("NOT_PAID")
+  paymentStatus         String                 @default("NOT_PAID")
   paymentAmount         Float?
-  admissionStatus       String             @default("PENDING")
+  admissionStatus       String                 @default("PENDING")
   trainingMode          String?
   classSchedule         String?
   courseMode            String?
@@ -1801,19 +1846,20 @@ model Lead {
   createdById           String
   updatedById           String?
   deletedAt             DateTime?
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
-  branch                Branch             @relation(fields: [branchId], references: [id], onDelete: Restrict)
-  course                BranchCourse       @relation(fields: [courseId], references: [id], onDelete: Restrict)
-  assignedTo            User?              @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
-  createdBy             User               @relation("LeadCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
-  updatedBy             User?              @relation("LeadUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  branch                Branch                 @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  course                BranchCourse           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  assignedTo            User?                  @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdBy             User                   @relation("LeadCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy             User?                  @relation("LeadUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
   followUps             LeadFollowUp[]
   stageHistory          LeadStageHistory[]
   activities            LeadActivity[]
   recordings            LeadRecording[]
-  convertedStudent      BranchStudent?     @relation("LeadBranchStudentAdmission")
+  convertedStudent      BranchStudent?         @relation("LeadBranchStudentAdmission")
   followUpReminders     FollowUpReminder[]
+  salesCrmBatchRequests SalesCrmBatchRequest[]
 
   @@index([branchId, createdAt])
   @@index([courseId])
@@ -1961,6 +2007,15 @@ enum NotificationKind {
   LEAD_FOLLOW_UP_OVERDUE
   SALES_CRM_MONTHLY_REPORT
   SALES_CRM_ADMISSION
+  PENDING_STUDENT_ADMISSION_REMINDER
+  SALES_CRM_BATCH_REQUEST
+  SALES_CRM_BATCH_REQUEST_UPDATE
+}
+
+enum SalesCrmBatchRequestStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
 }
 
 enum DiscountType {

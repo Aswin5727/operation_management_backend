@@ -1,4 +1,4 @@
-import courseImportRoutes from "../modules/branchCourses/courseImport.routes.js";
+﻿import courseImportRoutes from "../modules/branchCourses/courseImport.routes.js";
 import express from "express";
 
 import attendanceRoutes from "../modules/attendance/attendance.routes.js";
@@ -7,6 +7,7 @@ import authRoutes from "../modules/auth/auth.routes.js";
 import branchesRoutes from "../modules/branches/branches.routes.js";
 import branchCoursesRoutes from "../modules/branchCourses/branchCourses.routes.js";
 import branchBatchesRoutes from "../modules/branchBatches/branchBatches.routes.js";
+import branchBatchRequestsRoutes from "../modules/branchBatchRequests/branchBatchRequests.routes.js";
 import branchInstallmentTemplatesRoutes from "../modules/branchInstallmentTemplates/branchInstallmentTemplates.routes.js";
 import branchFacultyRoutes from "../modules/branchFaculty/branchFaculty.routes.js";
 import branchStudentsRoutes from "../modules/branchStudents/branchStudents.routes.js";
@@ -51,6 +52,7 @@ router.use("/branches", branchesRoutes);
 router.use("/branch-courses/import", courseImportRoutes);
 router.use("/branch-courses", branchCoursesRoutes);
 router.use("/branch-batches", branchBatchesRoutes);
+router.use("/branch-batch-requests", branchBatchRequestsRoutes);
 router.use("/branch-installment-templates", branchInstallmentTemplatesRoutes);
 router.use("/branch-faculty", branchFacultyRoutes);
 router.use("/branch-students", branchStudentsRoutes);
@@ -72,3 +74,5 @@ router.use("/leads", leadsRoutes);
 router.use("/sales-crm/reports", salesCrmReportRoutes);
 
 export default router;
+
+

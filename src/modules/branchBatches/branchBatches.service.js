@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+﻿import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 import { sendFacultyBatchAssignmentEmail, sendStudentScheduleChangedEmail } from "../../common/services/resendEmail.js";
@@ -7,6 +7,7 @@ import { calculateBatchCourseEndDate } from "./batchAllocation.js";
 import { generateSchedule } from "../instituteLeave/instituteSchedule.js";
 import { syncStudentCourseEnd } from "../instituteLeave/instituteLeave.service.js";
 import { reconcileBatchLifecycle } from "../batchCycles/batchCycleLifecycle.service.js";
+import { resolveSalesCrmBatchRequestsForBatch } from "../salesAdmin/batchRequests.service.js";
 
 const STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const WEEK_TYPES = new Set(["WEEKDAY", "WEEKEND"]);
@@ -217,7 +218,9 @@ export async function createBranchBatch(payload = {}, actor = null) {
     records.push(record); }
     await tx.branchFacultyCourse.upsert({ where: { branchFacultyId_branchCourseId: { branchFacultyId: faculty.id, branchCourseId: course.id } }, create: { branchId: branch.id, branchFacultyId: faculty.id, branchCourseId: course.id, createdBy: actorId, updatedBy: actorId }, update: { updatedBy: actorId } });
     return records; });
-  await prisma.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actorId } }); created.forEach(queueFacultyEmail); return toBatch(created[0]);
+  await prisma.branchFaculty.update({ where: { id: faculty.id }, data: { branchCourseId: course.id, updatedBy: actorId } });
+  for (const record of created) await resolveSalesCrmBatchRequestsForBatch(branch.id, record.id, actorId);
+  created.forEach(queueFacultyEmail); return toBatch(created[0]);
 }
 
 export async function updateBranchBatch(batchId, payload = {}, actor = null) {
@@ -253,6 +256,7 @@ export async function updateBranchBatch(batchId, payload = {}, actor = null) {
     return { updatedBatch, students: syncedStudents };
   });
   queueFacultyEmail(synced.updatedBatch);
+  await resolveSalesCrmBatchRequestsForBatch(branch.id, synced.updatedBatch.id, actor?.id ?? null);
   for (const student of synced.students) {
     if (!student.emailAddress) continue;
     void sendStudentScheduleChangedEmail({ to: student.emailAddress, fullName: student.studentName, courseName: course.name, batchName: synced.updatedBatch.batchName, previousStartDate: student.previousStartDate, courseStartDate: student.courseStartDate, courseEndDate: student.courseEndDate }).catch((error) => console.warn("Student schedule update email failed", error));
@@ -267,3 +271,5 @@ export async function deleteBranchBatch(batchId, actor = null) {
   if (!remaining) await prisma.branchFaculty.updateMany({ where: { id: existing.branchFacultyId, branchCourseId: existing.branchCourseId }, data: { branchCourseId: null, updatedBy: actor?.id ?? null } });
   return toBatch(deleted);
 }
+
+
