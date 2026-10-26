@@ -80,6 +80,19 @@ export async function syncLeadFollowUpReminder(leadId, prismaClient = prisma) {
 
   const previousRows = await prismaClient.$queryRawUnsafe(`SELECT "dueDate", "scheduledFor", "status" FROM "FollowUpReminder" WHERE "leadId" = $1 AND "status" <> 'CANCELLED' ORDER BY "updatedAt" DESC LIMIT 1`, lead.id);
   const previous = previousRows[0];
+  const currentStage = String(lead.stage || "").toUpperCase();
+  const currentStatus = String(lead.status || "").toUpperCase();
+  const currentTimezone = lead.timezone || "Asia/Kolkata";
+  const canReceiveReminder = Boolean(lead.assignedToId) && lead.assignedRole === "SALES_ADMIN" && lead.assignedActive && lead.branchStatus === "ACTIVE" && ACTIVE_STAGES.has(currentStage) && !CLOSED_STATUSES.has(currentStatus);
+  const pendingRows = await prismaClient.$queryRawUnsafe(`SELECT "dueDate", "scheduledFor", "status" FROM "FollowUpReminder" WHERE "leadId" = $1 AND "status" = 'PENDING' ORDER BY "scheduledFor" ASC LIMIT 1`, lead.id);
+  const pending = pendingRows[0];
+  const currentDateKey = lead.nextFollowUpDate ? dateKey(lead.nextFollowUpDate) : "";
+  if (canReceiveReminder && pending && currentDateKey && dateKey(pending.dueDate) === currentDateKey) {
+    const expectedForCurrentDate = lead.nextFollowUpTime
+      ? scheduledAtLocalTime(dateFromKey(currentDateKey), lead.nextFollowUpTime, currentTimezone)
+      : scheduledFor(dateFromKey(currentDateKey), currentTimezone);
+    if (expectedForCurrentDate && expectedForCurrentDate.getTime() === new Date(pending.scheduledFor).getTime()) return pending;
+  }
   await prismaClient.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'CANCELLED', "cancelledAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "leadId" = $1 AND "status" = 'PENDING'`, lead.id);
   const stage = String(lead.stage || "").toUpperCase();
   const status = String(lead.status || "").toUpperCase();
@@ -173,7 +186,7 @@ async function sendDueReminder(reminder) {
     }
     if (!notification && !isDaily) {
       const timeLabel = isTimed ? localTimeLabel(lead.nextFollowUpTime) : "";
-      notification = await createNotification({ kind: "LEAD_FOLLOW_UP_DUE", tone: "blue", title: `Follow-up Reminder — ${lead.studentName}`, message: timeLabel ? `You scheduled a follow-up call with ${lead.studentName} (${lead.leadId}) for today at ${timeLabel}. Please contact the student and update the follow-up details.` : `You have a scheduled follow-up with ${lead.studentName} (${lead.leadId}) today. Please contact the student and update the follow-up details.`, actionLabel: "View Lead", targetUserId: lead.assignedToId, targetBranchId: lead.branch?.id || null, targetBranchName: lead.branch?.branchName || null, requestDescription: description });
+      notification = await createNotification({ kind: "LEAD_FOLLOW_UP_DUE", tone: "blue", title: `Follow-up Reminder - ${lead.studentName}`, message: timeLabel ? `You scheduled a follow-up call with ${lead.studentName} (${lead.leadId}) for today at ${timeLabel}. Please contact the student and update the follow-up details.` : `You have a scheduled follow-up with ${lead.studentName} (${lead.leadId}) today. Please contact the student and update the follow-up details.`, actionLabel: "View Lead", targetUserId: lead.assignedToId, targetBranchId: lead.branch?.id || null, targetBranchName: lead.branch?.branchName || null, requestDescription: description });
     }
     await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'SENT', "notificationId" = $2, "deliveredAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1`, reminder.id, notification.id);
     await syncLeadFollowUpReminder(lead.id);
@@ -192,14 +205,12 @@ async function createOverdueNotifications() {
       AND l."stage" IN ('COLD', 'WARM') AND l."status" <> 'CONVERTED'
   `);
   for (const row of rows) {
-    const nextOccurrence = addDaysToKey(dateKey(row.nextFollowUpDate), 1);
-    const dailyExists = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_DUE", targetUserId: row.recipientUserId, requestDescription: `LEAD_FOLLOW_UP_DAILY:${row.leadId}:${nextOccurrence}` }, select: { id: true } });
-    if (dailyExists) continue;
     const description = `${reminderDescription("LEAD_FOLLOW_UP_OVERDUE", row.leadId, row.nextFollowUpDate)}:${encodeURIComponent(row.timezone || "Asia/Kolkata")}`;
     const legacyDescription = reminderDescription("LEAD_FOLLOW_UP_OVERDUE", row.leadId, row.nextFollowUpDate);
     const existing = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_OVERDUE", targetUserId: row.recipientUserId, requestDescription: { in: [description, legacyDescription] } }, select: { id: true } });
-    if (existing) continue;
-    await createNotification({ kind: "LEAD_FOLLOW_UP_OVERDUE", tone: "amber", title: `Overdue follow-up — ${row.studentName}`, message: `The scheduled follow-up for ${row.studentName} (${row.displayLeadId}) is overdue. Please update the lead.`, actionLabel: "View Lead", targetUserId: row.recipientUserId, targetBranchId: row.branchId, targetBranchName: row.branchName, requestDescription: description });
+    if (!existing) {
+      await createNotification({ kind: "LEAD_FOLLOW_UP_OVERDUE", tone: "amber", title: `Overdue follow-up — ${row.studentName}`, message: `The scheduled follow-up for ${row.studentName} (${row.displayLeadId}) is overdue. Please update the lead.`, actionLabel: "View Lead", targetUserId: row.recipientUserId, targetBranchId: row.branchId, targetBranchName: row.branchName, requestDescription: description });
+    }
     await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'OVERDUE', "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1 AND "status" = 'SENT'`, row.id);
   }
 }
@@ -229,7 +240,7 @@ export async function reconcileLeadFollowUpReminders() {
     ORDER BY l."updatedAt" ASC LIMIT 500
   `);
   for (const lead of unscheduled) await syncLeadFollowUpReminder(lead.id).catch((error) => console.warn(`Lead reminder schedule recovery failed for ${lead.id}: ${error?.message || error}`));
-  const due = await prisma.$queryRawUnsafe(`SELECT "id", "leadId", "scheduledFor" FROM "FollowUpReminder" WHERE "status" = 'PENDING' AND "scheduledFor" <= CURRENT_TIMESTAMP ORDER BY "scheduledFor" ASC LIMIT 100`);
+  const due = await prisma.$queryRawUnsafe(`SELECT "id", "leadId", "recipientUserId", "dueDate", "scheduledFor" FROM "FollowUpReminder" WHERE "status" = 'PENDING' AND "scheduledFor" <= CURRENT_TIMESTAMP ORDER BY "scheduledFor" ASC LIMIT 100`);
   for (const reminder of due) {
     await sendDueReminder(reminder).catch((error) => console.warn(`Lead follow-up reminder failed for ${reminder.id}: ${error?.message || error}`));
   }
@@ -238,7 +249,14 @@ export async function reconcileLeadFollowUpReminders() {
 }
 
 export function startLeadFollowUpReminderScheduler() {
-  const run = () => void reconcileLeadFollowUpReminders().catch((error) => console.warn(`Lead follow-up reminder sweep failed: ${error?.message || error}`));
+  let running = false;
+  const run = () => {
+    if (running) return;
+    running = true;
+    void reconcileLeadFollowUpReminders()
+      .catch((error) => console.warn(`Lead follow-up reminder sweep failed: ${error?.message || error}`))
+      .finally(() => { running = false; });
+  };
   run();
   const timer = setInterval(run, SWEEP_INTERVAL_MS);
   timer.unref?.();
