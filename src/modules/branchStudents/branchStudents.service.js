@@ -3249,6 +3249,7 @@ export async function createBranchStudent(payload, actor) {
       created = await prisma.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${branchId} FOR UPDATE`;
         if (assignedBatch) await ensureAvailableBatchCapacity(assignedBatch, null, tx);
+        let leadPaymentForAdmission = sourceLead;
         if (sourceLeadId) {
           await tx.$queryRaw`SELECT id FROM "Lead" WHERE id = ${sourceLeadId} FOR UPDATE`;
           const duplicate = await tx.branchStudent.findUnique({ where: { sourceLeadId }, include: { installments: { orderBy: { installmentNumber: "asc" } }, payments: { orderBy: { paymentDate: "asc" } }, courseEnrollments: { orderBy: { sequenceOrder: "asc" } } } });
@@ -3256,8 +3257,9 @@ export async function createBranchStudent(payload, actor) {
             alreadyConverted = true;
             return duplicate;
           }
-          const currentLead = await tx.lead.findFirst({ where: { id: sourceLeadId, branchId, stage: "HOT", status: { not: "CONVERTED" }, deletedAt: null }, select: { id: true, leadId: true, studentName: true, admissionStatus: true } });
+          const currentLead = await tx.lead.findFirst({ where: { id: sourceLeadId, branchId, stage: "HOT", status: { not: "CONVERTED" }, deletedAt: null }, select: { id: true, leadId: true, studentName: true, admissionStatus: true, paymentStatus: true, paymentAmount: true } });
           if (!currentLead) throw new AppError("This lead is no longer available for admission", 409);
+          leadPaymentForAdmission = currentLead;
         }
         const student = await tx.branchStudent.create({
           data: {
@@ -3281,6 +3283,71 @@ export async function createBranchStudent(payload, actor) {
               branchStudentId: student.id,
             }))
           });
+        }
+
+        const leadPaymentStatus = normalizeString(leadPaymentForAdmission?.paymentStatus).toUpperCase();
+        const leadPaymentAmount = ["INITIAL_PAYMENT", "PARTIALLY_PAID", "PAID"].includes(leadPaymentStatus)
+          ? Number(leadPaymentForAdmission?.paymentAmount ?? 0)
+          : 0;
+        if (Number.isFinite(leadPaymentAmount) && leadPaymentAmount > 0) {
+          if (!Number.isInteger(leadPaymentAmount)) {
+            throw new AppError("Lead payment credit must be a whole-rupee amount before admission", 400);
+          }
+          const installments = await tx.branchStudentInstallment.findMany({
+            where: { branchStudentId: student.id },
+            orderBy: [{ installmentNumber: "asc" }, { createdAt: "asc" }],
+          });
+          const totalFee = installments.reduce((sum, installment) => sum + Number(installment.amount || 0), 0)
+            || Number(student.courseAmount || 0);
+          if (leadPaymentAmount > totalFee) throw new AppError("Lead payment amount cannot exceed the course balance", 400);
+
+          let remainingCredit = leadPaymentAmount;
+          const allocations = [];
+          for (const installment of installments) {
+            if (remainingCredit <= 0) break;
+            const installmentBalance = Math.max(Number(installment.amount || 0) - Number(installment.amountPaid || 0), 0);
+            const allocatedAmount = Math.min(installmentBalance, remainingCredit);
+            if (allocatedAmount <= 0) continue;
+            const nextAmountPaid = Number(installment.amountPaid || 0) + allocatedAmount;
+            const isPaid = nextAmountPaid >= Number(installment.amount || 0);
+            await tx.branchStudentInstallment.update({
+              where: { id: installment.id },
+              data: {
+                amountPaid: nextAmountPaid,
+                status: isPaid ? "Paid" : "Partially Paid",
+                paidAt: isPaid ? new Date() : installment.paidAt,
+                paymentMethod: "Sales CRM",
+                remarks: [installment.remarks, "Sales CRM lead payment credit (" + (normalizeString(leadPaymentForAdmission?.leadId) || sourceLeadId) + ")"].filter(Boolean).join(" / "),
+              },
+            });
+            allocations.push({ installmentId: installment.id, amount: allocatedAmount, installmentNumber: installment.installmentNumber });
+            remainingCredit -= allocatedAmount;
+          }
+          if (remainingCredit > 0) {
+            if (installments.length) throw new AppError("Could not allocate the complete lead payment credit to installments", 400);
+            allocations.push({ installmentId: null, amount: remainingCredit, installmentNumber: null });
+          }
+
+          const paymentDate = new Date();
+          for (const [index, allocation] of allocations.entries()) {
+            const receiptNumber = "REC-" + paymentDate.getFullYear() + "-" + String(Date.now()).slice(-4) + "-" + Math.floor(Math.random() * 900 + 100);
+            await tx.branchStudentPayment.create({
+              data: {
+                receiptNumber,
+                branchStudentId: student.id,
+                courseId: student.courseId || null,
+                branchId,
+                amount: allocation.amount,
+                paymentMode: "Sales CRM Credit",
+                transactionReference: "LEAD:" + (normalizeString(leadPaymentForAdmission?.leadId) || sourceLeadId),
+                paymentDate,
+                collectedBy: admissionSalesAdmin?.fullName || null,
+                notes: "Lead-stage payment amount applied to admission balance. Original tender type and payment date were not captured. Allocation " + (index + 1) + " of " + allocations.length + ".",
+                payAgainst: allocation.installmentNumber ? "Sales CRM payment credit / Installment " + allocation.installmentNumber : "Sales CRM payment credit",
+                installmentId: allocation.installmentId,
+              },
+            });
+          }
         }
 
         const user = await tx.user.create({
@@ -3310,7 +3377,8 @@ export async function createBranchStudent(payload, actor) {
           where: { id: student.id },
           include: {
             installments: { orderBy: { installmentNumber: "asc" } },
-      discontinuationRequests: {
+            payments: { include: { installment: true }, orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }] },
+            discontinuationRequests: {
         where: { status: "APPROVED" },
         select: { status: true, accessDeactivationAt: true, superAdminReviewedAt: true },
         take: 1,
@@ -3319,7 +3387,7 @@ export async function createBranchStudent(payload, actor) {
         });
 
         if (createdStudent) {
-          await materializeBranchStudentLedgerEntries(tx, createdStudent, { includePayments: false });
+          await materializeBranchStudentLedgerEntries(tx, createdStudent);
           const discountedCourses = validatedEnrollmentInput.enrollments.filter((item) => item.discountAmount > 0);
           if (discountedCourses.length) {
             const formatMoney = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
@@ -3372,7 +3440,7 @@ export async function createBranchStudent(payload, actor) {
         }
 
         return createdStudent;
-      });
+      }, { maxWait: 10000, timeout: 20000 });
       break;
     } catch (error) {
       const isStudentCodeConflict =
