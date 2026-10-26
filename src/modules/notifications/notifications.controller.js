@@ -6,8 +6,10 @@ import {
 } from "./notifications.service.js";
 
 const listNotificationsHandler = asyncHandler(async (req, res) => {
-  const result = await listNotifications(req.query || {}, req.user || {});
-  const unreadCount = await getUnreadNotificationCount(req.user || {});
+  const [result, unreadCount] = await Promise.all([
+    listNotifications(req.query || {}, req.user || {}),
+    getUnreadNotificationCount(req.user || {}),
+  ]);
 
   res.status(200).json({
     data: result.data,
