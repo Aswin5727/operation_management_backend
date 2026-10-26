@@ -31,6 +31,7 @@ import {
   notifySequentialCourseSchedulingForStudent,
 } from "../notifications/notifications.service.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
+import { calculateAdmissionFeeDetails } from "../salesAdmin/admissionFeeDetails.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 const CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom", "Student", "Others"]);
@@ -3378,6 +3379,7 @@ export async function createBranchStudent(payload, actor) {
           include: {
             installments: { orderBy: { installmentNumber: "asc" } },
             payments: { include: { installment: true }, orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }] },
+            courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
             discontinuationRequests: {
         where: { status: "APPROVED" },
         select: { status: true, accessDeactivationAt: true, superAdminReviewedAt: true },
@@ -3434,7 +3436,23 @@ export async function createBranchStudent(payload, actor) {
             await tx.lead.update({ where: { id: sourceLeadId }, data: { status: "CONVERTED", admissionStatus: "ADMITTED", updatedById: actorId } });
             await tx.leadActivity.create({ data: { leadId: sourceLeadId, action: "LEAD_CONVERTED_TO_STUDENT", previousValue: { status: sourceLead.status, stage: sourceLead.stage }, newValue: { status: "CONVERTED", studentId: createdStudent.studentId, branchId }, createdById: actorId } });
             await tx.followUpReminder.updateMany({ where: { leadId: sourceLeadId, status: "PENDING" }, data: { status: "CANCELLED", cancelledAt: new Date() } });
-            const admissionMessage = `Sales Admin ${admissionSalesAdmin?.fullName || "Sales Admin"} completed admission for ${studentData.studentName}. Student ID: ${createdStudent.studentId}. Lead ID: ${sourceLead.leadId}. Branch: ${branchProfile.branchName}. Course: ${studentData.courseName || "-"}. Faculty: ${studentData.facultyName || "-"}. Batch: ${studentData.batchName || "-"}. Training Mode: ${studentData.courseMode || "-"}. Schedule: ${studentData.classSchedule || "-"}.`;
+            const fee = calculateAdmissionFeeDetails(createdStudent);
+            const formatFee = (amount) => `₹${Number(amount || 0).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+            const admissionMessage = [
+              `Sales Admin ${admissionSalesAdmin?.fullName || "Sales Admin"} completed admission for ${studentData.studentName}.`,
+              `Student ID: ${createdStudent.studentId}. Lead ID: ${sourceLead.leadId}. Branch: ${branchProfile.branchName}.`,
+              `Course: ${fee.courseName || studentData.courseName || "-"}. Faculty: ${studentData.facultyName || "-"}. Batch: ${studentData.batchName || "-"}. Training Mode: ${studentData.courseMode || "-"}. Schedule: ${studentData.classSchedule || "-"}.`,
+              "",
+              "Student Admission - Payment Details",
+              `Total Course Fee: ${formatFee(fee.totalCourseFee)}`,
+              `First Installment Amount: ${formatFee(fee.firstInstallmentAmount)}`,
+              `Initial Amount Paid: ${formatFee(fee.initialAmountPaid)}`,
+              `First Installment Amount Paid: ${formatFee(fee.firstInstallmentAmountPaid)}`,
+              `Remaining First Installment Balance: ${formatFee(fee.firstInstallmentBalance)}`,
+              `Total Amount Paid: ${formatFee(fee.totalAmountPaid)}`,
+              `Overall Outstanding Balance: ${formatFee(fee.overallOutstandingBalance)}`,
+              ...(fee.excessCredit > 0 ? [`Excess Payment / Credit: ${formatFee(fee.excessCredit)}`] : []),
+            ].join("\n");
             await createNotification({ kind: "SALES_CRM_ADMISSION", tone: "green", title: `New Student Admission — ${studentData.studentName}`, message: admissionMessage, actionLabel: "View Student", targetBranchId: branchId, targetBranchEmail: branchProfile.branchEmail || null, targetBranchName: branchProfile.branchName || null, targetUserId: branchProfile.adminUserId || null, requestDescription: `BRANCH_STUDENT:${createdStudent.studentId}`, createdBy: actorId }, tx);
           }
         }

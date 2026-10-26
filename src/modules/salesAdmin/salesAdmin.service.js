@@ -10,6 +10,7 @@ import { listBranchCourses } from "../branchCourses/branchCourses.service.js";
 import { listBranchBatches } from "../branchBatches/branchBatches.service.js";
 import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
 import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
+import { calculateAdmissionFeeDetails } from "./admissionFeeDetails.js";
 
 const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } } };
 const clean = (value) => String(value ?? "").trim();
@@ -184,6 +185,22 @@ function admissionRow(lead) {
   };
 }
 
+async function getSalesAdminStudentFeeDetails(userId, studentId) {
+  const student = await prisma.branchStudent.findFirst({
+    where: { id: clean(studentId), sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } } },
+    include: {
+      sourceLead: { select: { branchId: true } },
+      courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
+      installments: { orderBy: [{ installmentNumber: "asc" }, { createdAt: "asc" }] },
+      payments: { include: { installment: { select: { courseId: true, installmentNumber: true } } }, orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }] },
+    },
+  });
+  if (!student) throw new AppError("Admitted student not found", 404);
+  const branchAccess = await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: userId, branchId: student.branchId } }, select: { id: true } });
+  if (!branchAccess) throw new AppError("You do not have access to this student", 403);
+  return calculateAdmissionFeeDetails(student);
+}
+
 async function listAllBranchAdmissionBatches(userId, branchId) {
   const branchActor = { id: userId, userId, role: "SUPER_ADMIN", impersonatedBranchId: branchId };
   const firstPage = await listBranchBatches({ page: 1, limit: 100, sortBy: "createdAt", sortOrder: "desc" }, branchActor);
@@ -353,5 +370,5 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   return createBranchStudent({ ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" }, { ...auth, id: userId, userId, role: "SALES_ADMIN" });
 }
 
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
 
