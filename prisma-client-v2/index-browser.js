@@ -246,6 +246,33 @@ exports.Prisma.NotificationScalarFieldEnum = {
   subModuleName: 'subModuleName'
 };
 
+exports.Prisma.SalesAdminAdmissionReminderScalarFieldEnum = {
+  id: 'id',
+  salesAdminId: 'salesAdminId',
+  notificationType: 'notificationType',
+  reminderDate: 'reminderDate',
+  notificationId: 'notificationId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SalesCrmBatchRequestScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  branchId: 'branchId',
+  courseId: 'courseId',
+  requestedById: 'requestedById',
+  assignedToId: 'assignedToId',
+  requestedMode: 'requestedMode',
+  requestedSchedule: 'requestedSchedule',
+  requestDetails: 'requestDetails',
+  status: 'status',
+  activeKey: 'activeKey',
+  resolvedBatchId: 'resolvedBatchId',
+  statusUpdatedById: 'statusUpdatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CourseEditRequestScalarFieldEnum = {
   id: 'id',
   branchCourseId: 'branchCourseId',
@@ -1679,7 +1706,16 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
   SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
-  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION'
+  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
+  PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
+  SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
+  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE'
+};
+
+exports.SalesCrmBatchRequestStatus = exports.$Enums.SalesCrmBatchRequestStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {
@@ -1760,6 +1796,8 @@ exports.Prisma.ModelName = {
   SalesAdminBranch: 'SalesAdminBranch',
   LoginEvent: 'LoginEvent',
   Notification: 'Notification',
+  SalesAdminAdmissionReminder: 'SalesAdminAdmissionReminder',
+  SalesCrmBatchRequest: 'SalesCrmBatchRequest',
   CourseEditRequest: 'CourseEditRequest',
   PasswordResetToken: 'PasswordResetToken',
   Course: 'Course',

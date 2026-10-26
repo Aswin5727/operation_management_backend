@@ -49,6 +49,16 @@ export type LoginEvent = $Result.DefaultSelection<Prisma.$LoginEventPayload>
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
 /**
+ * Model SalesAdminAdmissionReminder
+ * 
+ */
+export type SalesAdminAdmissionReminder = $Result.DefaultSelection<Prisma.$SalesAdminAdmissionReminderPayload>
+/**
+ * Model SalesCrmBatchRequest
+ * 
+ */
+export type SalesCrmBatchRequest = $Result.DefaultSelection<Prisma.$SalesCrmBatchRequestPayload>
+/**
  * Model CourseEditRequest
  * 
  */
@@ -511,10 +521,22 @@ export const NotificationKind: {
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
   SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
-  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION'
+  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
+  PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
+  SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
+  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
+
+
+export const SalesCrmBatchRequestStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED'
+};
+
+export type SalesCrmBatchRequestStatus = (typeof SalesCrmBatchRequestStatus)[keyof typeof SalesCrmBatchRequestStatus]
 
 
 export const DiscountType: {
@@ -614,6 +636,10 @@ export const LoginEventType: typeof $Enums.LoginEventType
 export type NotificationKind = $Enums.NotificationKind
 
 export const NotificationKind: typeof $Enums.NotificationKind
+
+export type SalesCrmBatchRequestStatus = $Enums.SalesCrmBatchRequestStatus
+
+export const SalesCrmBatchRequestStatus: typeof $Enums.SalesCrmBatchRequestStatus
 
 export type DiscountType = $Enums.DiscountType
 
@@ -833,6 +859,26 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.salesAdminAdmissionReminder`: Exposes CRUD operations for the **SalesAdminAdmissionReminder** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalesAdminAdmissionReminders
+    * const salesAdminAdmissionReminders = await prisma.salesAdminAdmissionReminder.findMany()
+    * ```
+    */
+  get salesAdminAdmissionReminder(): Prisma.SalesAdminAdmissionReminderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.salesCrmBatchRequest`: Exposes CRUD operations for the **SalesCrmBatchRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalesCrmBatchRequests
+    * const salesCrmBatchRequests = await prisma.salesCrmBatchRequest.findMany()
+    * ```
+    */
+  get salesCrmBatchRequest(): Prisma.SalesCrmBatchRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.courseEditRequest`: Exposes CRUD operations for the **CourseEditRequest** model.
@@ -1994,6 +2040,8 @@ export namespace Prisma {
     SalesAdminBranch: 'SalesAdminBranch',
     LoginEvent: 'LoginEvent',
     Notification: 'Notification',
+    SalesAdminAdmissionReminder: 'SalesAdminAdmissionReminder',
+    SalesCrmBatchRequest: 'SalesCrmBatchRequest',
     CourseEditRequest: 'CourseEditRequest',
     PasswordResetToken: 'PasswordResetToken',
     Course: 'Course',
@@ -2081,7 +2129,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2600,6 +2648,154 @@ export namespace Prisma {
           count: {
             args: Prisma.NotificationCountArgs<ExtArgs>
             result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      SalesAdminAdmissionReminder: {
+        payload: Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>
+        fields: Prisma.SalesAdminAdmissionReminderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalesAdminAdmissionReminderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalesAdminAdmissionReminderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          findFirst: {
+            args: Prisma.SalesAdminAdmissionReminderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalesAdminAdmissionReminderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          findMany: {
+            args: Prisma.SalesAdminAdmissionReminderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>[]
+          }
+          create: {
+            args: Prisma.SalesAdminAdmissionReminderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          createMany: {
+            args: Prisma.SalesAdminAdmissionReminderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SalesAdminAdmissionReminderCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>[]
+          }
+          delete: {
+            args: Prisma.SalesAdminAdmissionReminderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          update: {
+            args: Prisma.SalesAdminAdmissionReminderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          deleteMany: {
+            args: Prisma.SalesAdminAdmissionReminderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalesAdminAdmissionReminderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SalesAdminAdmissionReminderUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>[]
+          }
+          upsert: {
+            args: Prisma.SalesAdminAdmissionReminderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesAdminAdmissionReminderPayload>
+          }
+          aggregate: {
+            args: Prisma.SalesAdminAdmissionReminderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalesAdminAdmissionReminder>
+          }
+          groupBy: {
+            args: Prisma.SalesAdminAdmissionReminderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalesAdminAdmissionReminderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalesAdminAdmissionReminderCountArgs<ExtArgs>
+            result: $Utils.Optional<SalesAdminAdmissionReminderCountAggregateOutputType> | number
+          }
+        }
+      }
+      SalesCrmBatchRequest: {
+        payload: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>
+        fields: Prisma.SalesCrmBatchRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalesCrmBatchRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalesCrmBatchRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.SalesCrmBatchRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalesCrmBatchRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          findMany: {
+            args: Prisma.SalesCrmBatchRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>[]
+          }
+          create: {
+            args: Prisma.SalesCrmBatchRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          createMany: {
+            args: Prisma.SalesCrmBatchRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SalesCrmBatchRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.SalesCrmBatchRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          update: {
+            args: Prisma.SalesCrmBatchRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.SalesCrmBatchRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalesCrmBatchRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SalesCrmBatchRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.SalesCrmBatchRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmBatchRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.SalesCrmBatchRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalesCrmBatchRequest>
+          }
+          groupBy: {
+            args: Prisma.SalesCrmBatchRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalesCrmBatchRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalesCrmBatchRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<SalesCrmBatchRequestCountAggregateOutputType> | number
           }
         }
       }
@@ -8046,6 +8242,8 @@ export namespace Prisma {
     salesAdminBranch?: SalesAdminBranchOmit
     loginEvent?: LoginEventOmit
     notification?: NotificationOmit
+    salesAdminAdmissionReminder?: SalesAdminAdmissionReminderOmit
+    salesCrmBatchRequest?: SalesCrmBatchRequestOmit
     courseEditRequest?: CourseEditRequestOmit
     passwordResetToken?: PasswordResetTokenOmit
     course?: CourseOmit
@@ -8218,6 +8416,8 @@ export namespace Prisma {
     academicTestReportSubmissions: number
     salesAdminBranches: number
     assignedLeads: number
+    createdSalesCrmBatchRequests: number
+    assignedSalesCrmBatchRequests: number
     createdLeads: number
     updatedLeads: number
     leadFollowUps: number
@@ -8248,6 +8448,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: boolean | UserCountOutputTypeCountAcademicTestReportSubmissionsArgs
     salesAdminBranches?: boolean | UserCountOutputTypeCountSalesAdminBranchesArgs
     assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
+    createdSalesCrmBatchRequests?: boolean | UserCountOutputTypeCountCreatedSalesCrmBatchRequestsArgs
+    assignedSalesCrmBatchRequests?: boolean | UserCountOutputTypeCountAssignedSalesCrmBatchRequestsArgs
     createdLeads?: boolean | UserCountOutputTypeCountCreatedLeadsArgs
     updatedLeads?: boolean | UserCountOutputTypeCountUpdatedLeadsArgs
     leadFollowUps?: boolean | UserCountOutputTypeCountLeadFollowUpsArgs
@@ -8411,6 +8613,20 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountCreatedSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountCreatedLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadWhereInput
   }
@@ -8508,6 +8724,7 @@ export namespace Prisma {
     facultySkillAssignments: number
     facultyLeaveRequests: number
     salesAdminBranches: number
+    salesCrmBatchRequests: number
     leads: number
   }
 
@@ -8526,6 +8743,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | BranchCountOutputTypeCountFacultySkillAssignmentsArgs
     facultyLeaveRequests?: boolean | BranchCountOutputTypeCountFacultyLeaveRequestsArgs
     salesAdminBranches?: boolean | BranchCountOutputTypeCountSalesAdminBranchesArgs
+    salesCrmBatchRequests?: boolean | BranchCountOutputTypeCountSalesCrmBatchRequestsArgs
     leads?: boolean | BranchCountOutputTypeCountLeadsArgs
   }
 
@@ -8636,6 +8854,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountSalesAdminBranchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SalesAdminBranchWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
   }
 
   /**
@@ -8790,6 +9015,7 @@ export namespace Prisma {
     academicQuestionPapers: number
     academicTestProjects: number
     leads: number
+    salesCrmBatchRequests: number
   }
 
   export type BranchCourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8807,6 +9033,7 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchCourseCountOutputTypeCountAcademicQuestionPapersArgs
     academicTestProjects?: boolean | BranchCourseCountOutputTypeCountAcademicTestProjectsArgs
     leads?: boolean | BranchCourseCountOutputTypeCountLeadsArgs
+    salesCrmBatchRequests?: boolean | BranchCourseCountOutputTypeCountSalesCrmBatchRequestsArgs
   }
 
   // Custom InputTypes
@@ -8918,6 +9145,13 @@ export namespace Prisma {
     where?: LeadWhereInput
   }
 
+  /**
+   * BranchCourseCountOutputType without action
+   */
+  export type BranchCourseCountOutputTypeCountSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
+  }
+
 
   /**
    * Count Type BranchCourseModuleCountOutputType
@@ -9020,6 +9254,7 @@ export namespace Prisma {
     academicTestProjects: number
     academicTestCycles: number
     cycles: number
+    resolvedSalesCrmRequests: number
     academicTestReportHistories: number
   }
 
@@ -9031,6 +9266,7 @@ export namespace Prisma {
     academicTestProjects?: boolean | BranchBatchCountOutputTypeCountAcademicTestProjectsArgs
     academicTestCycles?: boolean | BranchBatchCountOutputTypeCountAcademicTestCyclesArgs
     cycles?: boolean | BranchBatchCountOutputTypeCountCyclesArgs
+    resolvedSalesCrmRequests?: boolean | BranchBatchCountOutputTypeCountResolvedSalesCrmRequestsArgs
     academicTestReportHistories?: boolean | BranchBatchCountOutputTypeCountAcademicTestReportHistoriesArgs
   }
 
@@ -9092,6 +9328,13 @@ export namespace Prisma {
    */
   export type BranchBatchCountOutputTypeCountCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BatchCycleWhereInput
+  }
+
+  /**
+   * BranchBatchCountOutputType without action
+   */
+  export type BranchBatchCountOutputTypeCountResolvedSalesCrmRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
   }
 
   /**
@@ -9962,6 +10205,7 @@ export namespace Prisma {
     activities: number
     recordings: number
     followUpReminders: number
+    salesCrmBatchRequests: number
   }
 
   export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9970,6 +10214,7 @@ export namespace Prisma {
     activities?: boolean | LeadCountOutputTypeCountActivitiesArgs
     recordings?: boolean | LeadCountOutputTypeCountRecordingsArgs
     followUpReminders?: boolean | LeadCountOutputTypeCountFollowUpRemindersArgs
+    salesCrmBatchRequests?: boolean | LeadCountOutputTypeCountSalesCrmBatchRequestsArgs
   }
 
   // Custom InputTypes
@@ -10016,6 +10261,13 @@ export namespace Prisma {
    */
   export type LeadCountOutputTypeCountFollowUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FollowUpReminderWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
   }
 
 
@@ -10444,6 +10696,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     salesAdminBranches?: boolean | User$salesAdminBranchesArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdSalesCrmBatchRequests?: boolean | User$createdSalesCrmBatchRequestsArgs<ExtArgs>
+    assignedSalesCrmBatchRequests?: boolean | User$assignedSalesCrmBatchRequestsArgs<ExtArgs>
     createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
     updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
     leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
@@ -10552,6 +10806,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: boolean | User$academicTestReportSubmissionsArgs<ExtArgs>
     salesAdminBranches?: boolean | User$salesAdminBranchesArgs<ExtArgs>
     assignedLeads?: boolean | User$assignedLeadsArgs<ExtArgs>
+    createdSalesCrmBatchRequests?: boolean | User$createdSalesCrmBatchRequestsArgs<ExtArgs>
+    assignedSalesCrmBatchRequests?: boolean | User$assignedSalesCrmBatchRequestsArgs<ExtArgs>
     createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
     updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
     leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
@@ -10588,6 +10844,8 @@ export namespace Prisma {
       academicTestReportSubmissions: Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>[]
       salesAdminBranches: Prisma.$SalesAdminBranchPayload<ExtArgs>[]
       assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
+      createdSalesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
+      assignedSalesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       createdLeads: Prisma.$LeadPayload<ExtArgs>[]
       updatedLeads: Prisma.$LeadPayload<ExtArgs>[]
       leadFollowUps: Prisma.$LeadFollowUpPayload<ExtArgs>[]
@@ -11034,6 +11292,8 @@ export namespace Prisma {
     academicTestReportSubmissions<T extends User$academicTestReportSubmissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$academicTestReportSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesAdminBranches<T extends User$salesAdminBranchesArgs<ExtArgs> = {}>(args?: Subset<T, User$salesAdminBranchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedLeads<T extends User$assignedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdSalesCrmBatchRequests<T extends User$createdSalesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdSalesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedSalesCrmBatchRequests<T extends User$assignedSalesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedSalesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdLeads<T extends User$createdLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     updatedLeads<T extends User$updatedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadFollowUps<T extends User$leadFollowUpsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadFollowUpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -11981,6 +12241,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdSalesCrmBatchRequests
+   */
+  export type User$createdSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedSalesCrmBatchRequests
+   */
+  export type User$assignedSalesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
   }
 
   /**
@@ -14715,6 +15023,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | Branch$facultySkillAssignmentsArgs<ExtArgs>
     facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
@@ -14804,6 +15113,7 @@ export namespace Prisma {
     facultySkillAssignments?: boolean | Branch$facultySkillAssignmentsArgs<ExtArgs>
     facultyLeaveRequests?: boolean | Branch$facultyLeaveRequestsArgs<ExtArgs>
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -14832,6 +15142,7 @@ export namespace Prisma {
       facultySkillAssignments: Prisma.$FacultySkillAssignmentPayload<ExtArgs>[]
       facultyLeaveRequests: Prisma.$FacultyLeaveRequestPayload<ExtArgs>[]
       salesAdminBranches: Prisma.$SalesAdminBranchPayload<ExtArgs>[]
+      salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       leads: Prisma.$LeadPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -15263,6 +15574,7 @@ export namespace Prisma {
     facultySkillAssignments<T extends Branch$facultySkillAssignmentsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$facultySkillAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultySkillAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     facultyLeaveRequests<T extends Branch$facultyLeaveRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$facultyLeaveRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FacultyLeaveRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesAdminBranches<T extends Branch$salesAdminBranchesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesAdminBranchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    salesCrmBatchRequests<T extends Branch$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leads<T extends Branch$leadsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -16065,6 +16377,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SalesAdminBranchScalarFieldEnum | SalesAdminBranchScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.salesCrmBatchRequests
+   */
+  export type Branch$salesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
   }
 
   /**
@@ -19794,6 +20130,2290 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SalesAdminAdmissionReminder
+   */
+
+  export type AggregateSalesAdminAdmissionReminder = {
+    _count: SalesAdminAdmissionReminderCountAggregateOutputType | null
+    _min: SalesAdminAdmissionReminderMinAggregateOutputType | null
+    _max: SalesAdminAdmissionReminderMaxAggregateOutputType | null
+  }
+
+  export type SalesAdminAdmissionReminderMinAggregateOutputType = {
+    id: string | null
+    salesAdminId: string | null
+    notificationType: string | null
+    reminderDate: string | null
+    notificationId: string | null
+    createdAt: Date | null
+  }
+
+  export type SalesAdminAdmissionReminderMaxAggregateOutputType = {
+    id: string | null
+    salesAdminId: string | null
+    notificationType: string | null
+    reminderDate: string | null
+    notificationId: string | null
+    createdAt: Date | null
+  }
+
+  export type SalesAdminAdmissionReminderCountAggregateOutputType = {
+    id: number
+    salesAdminId: number
+    notificationType: number
+    reminderDate: number
+    notificationId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SalesAdminAdmissionReminderMinAggregateInputType = {
+    id?: true
+    salesAdminId?: true
+    notificationType?: true
+    reminderDate?: true
+    notificationId?: true
+    createdAt?: true
+  }
+
+  export type SalesAdminAdmissionReminderMaxAggregateInputType = {
+    id?: true
+    salesAdminId?: true
+    notificationType?: true
+    reminderDate?: true
+    notificationId?: true
+    createdAt?: true
+  }
+
+  export type SalesAdminAdmissionReminderCountAggregateInputType = {
+    id?: true
+    salesAdminId?: true
+    notificationType?: true
+    reminderDate?: true
+    notificationId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SalesAdminAdmissionReminderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesAdminAdmissionReminder to aggregate.
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesAdminAdmissionReminders to fetch.
+     */
+    orderBy?: SalesAdminAdmissionReminderOrderByWithRelationInput | SalesAdminAdmissionReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalesAdminAdmissionReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesAdminAdmissionReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesAdminAdmissionReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalesAdminAdmissionReminders
+    **/
+    _count?: true | SalesAdminAdmissionReminderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalesAdminAdmissionReminderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalesAdminAdmissionReminderMaxAggregateInputType
+  }
+
+  export type GetSalesAdminAdmissionReminderAggregateType<T extends SalesAdminAdmissionReminderAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalesAdminAdmissionReminder]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalesAdminAdmissionReminder[P]>
+      : GetScalarType<T[P], AggregateSalesAdminAdmissionReminder[P]>
+  }
+
+
+
+
+  export type SalesAdminAdmissionReminderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesAdminAdmissionReminderWhereInput
+    orderBy?: SalesAdminAdmissionReminderOrderByWithAggregationInput | SalesAdminAdmissionReminderOrderByWithAggregationInput[]
+    by: SalesAdminAdmissionReminderScalarFieldEnum[] | SalesAdminAdmissionReminderScalarFieldEnum
+    having?: SalesAdminAdmissionReminderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalesAdminAdmissionReminderCountAggregateInputType | true
+    _min?: SalesAdminAdmissionReminderMinAggregateInputType
+    _max?: SalesAdminAdmissionReminderMaxAggregateInputType
+  }
+
+  export type SalesAdminAdmissionReminderGroupByOutputType = {
+    id: string
+    salesAdminId: string
+    notificationType: string
+    reminderDate: string
+    notificationId: string | null
+    createdAt: Date
+    _count: SalesAdminAdmissionReminderCountAggregateOutputType | null
+    _min: SalesAdminAdmissionReminderMinAggregateOutputType | null
+    _max: SalesAdminAdmissionReminderMaxAggregateOutputType | null
+  }
+
+  type GetSalesAdminAdmissionReminderGroupByPayload<T extends SalesAdminAdmissionReminderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalesAdminAdmissionReminderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalesAdminAdmissionReminderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalesAdminAdmissionReminderGroupByOutputType[P]>
+            : GetScalarType<T[P], SalesAdminAdmissionReminderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalesAdminAdmissionReminderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    salesAdminId?: boolean
+    notificationType?: boolean
+    reminderDate?: boolean
+    notificationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salesAdminAdmissionReminder"]>
+
+  export type SalesAdminAdmissionReminderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    salesAdminId?: boolean
+    notificationType?: boolean
+    reminderDate?: boolean
+    notificationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salesAdminAdmissionReminder"]>
+
+  export type SalesAdminAdmissionReminderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    salesAdminId?: boolean
+    notificationType?: boolean
+    reminderDate?: boolean
+    notificationId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salesAdminAdmissionReminder"]>
+
+  export type SalesAdminAdmissionReminderSelectScalar = {
+    id?: boolean
+    salesAdminId?: boolean
+    notificationType?: boolean
+    reminderDate?: boolean
+    notificationId?: boolean
+    createdAt?: boolean
+  }
+
+  export type SalesAdminAdmissionReminderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "salesAdminId" | "notificationType" | "reminderDate" | "notificationId" | "createdAt", ExtArgs["result"]["salesAdminAdmissionReminder"]>
+
+  export type $SalesAdminAdmissionReminderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalesAdminAdmissionReminder"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      salesAdminId: string
+      notificationType: string
+      reminderDate: string
+      notificationId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["salesAdminAdmissionReminder"]>
+    composites: {}
+  }
+
+  type SalesAdminAdmissionReminderGetPayload<S extends boolean | null | undefined | SalesAdminAdmissionReminderDefaultArgs> = $Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload, S>
+
+  type SalesAdminAdmissionReminderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalesAdminAdmissionReminderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalesAdminAdmissionReminderCountAggregateInputType | true
+    }
+
+  export interface SalesAdminAdmissionReminderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalesAdminAdmissionReminder'], meta: { name: 'SalesAdminAdmissionReminder' } }
+    /**
+     * Find zero or one SalesAdminAdmissionReminder that matches the filter.
+     * @param {SalesAdminAdmissionReminderFindUniqueArgs} args - Arguments to find a SalesAdminAdmissionReminder
+     * @example
+     * // Get one SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalesAdminAdmissionReminderFindUniqueArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderFindUniqueArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalesAdminAdmissionReminder that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalesAdminAdmissionReminderFindUniqueOrThrowArgs} args - Arguments to find a SalesAdminAdmissionReminder
+     * @example
+     * // Get one SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalesAdminAdmissionReminderFindUniqueOrThrowArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesAdminAdmissionReminder that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderFindFirstArgs} args - Arguments to find a SalesAdminAdmissionReminder
+     * @example
+     * // Get one SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalesAdminAdmissionReminderFindFirstArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderFindFirstArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesAdminAdmissionReminder that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderFindFirstOrThrowArgs} args - Arguments to find a SalesAdminAdmissionReminder
+     * @example
+     * // Get one SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalesAdminAdmissionReminderFindFirstOrThrowArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalesAdminAdmissionReminders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminders = await prisma.salesAdminAdmissionReminder.findMany()
+     * 
+     * // Get first 10 SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminders = await prisma.salesAdminAdmissionReminder.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salesAdminAdmissionReminderWithIdOnly = await prisma.salesAdminAdmissionReminder.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SalesAdminAdmissionReminderFindManyArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalesAdminAdmissionReminder.
+     * @param {SalesAdminAdmissionReminderCreateArgs} args - Arguments to create a SalesAdminAdmissionReminder.
+     * @example
+     * // Create one SalesAdminAdmissionReminder
+     * const SalesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.create({
+     *   data: {
+     *     // ... data to create a SalesAdminAdmissionReminder
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalesAdminAdmissionReminderCreateArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderCreateArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalesAdminAdmissionReminders.
+     * @param {SalesAdminAdmissionReminderCreateManyArgs} args - Arguments to create many SalesAdminAdmissionReminders.
+     * @example
+     * // Create many SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalesAdminAdmissionReminderCreateManyArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SalesAdminAdmissionReminders and returns the data saved in the database.
+     * @param {SalesAdminAdmissionReminderCreateManyAndReturnArgs} args - Arguments to create many SalesAdminAdmissionReminders.
+     * @example
+     * // Create many SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SalesAdminAdmissionReminders and only return the `id`
+     * const salesAdminAdmissionReminderWithIdOnly = await prisma.salesAdminAdmissionReminder.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SalesAdminAdmissionReminderCreateManyAndReturnArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SalesAdminAdmissionReminder.
+     * @param {SalesAdminAdmissionReminderDeleteArgs} args - Arguments to delete one SalesAdminAdmissionReminder.
+     * @example
+     * // Delete one SalesAdminAdmissionReminder
+     * const SalesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.delete({
+     *   where: {
+     *     // ... filter to delete one SalesAdminAdmissionReminder
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalesAdminAdmissionReminderDeleteArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderDeleteArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalesAdminAdmissionReminder.
+     * @param {SalesAdminAdmissionReminderUpdateArgs} args - Arguments to update one SalesAdminAdmissionReminder.
+     * @example
+     * // Update one SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalesAdminAdmissionReminderUpdateArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderUpdateArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalesAdminAdmissionReminders.
+     * @param {SalesAdminAdmissionReminderDeleteManyArgs} args - Arguments to filter SalesAdminAdmissionReminders to delete.
+     * @example
+     * // Delete a few SalesAdminAdmissionReminders
+     * const { count } = await prisma.salesAdminAdmissionReminder.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalesAdminAdmissionReminderDeleteManyArgs>(args?: SelectSubset<T, SalesAdminAdmissionReminderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesAdminAdmissionReminders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalesAdminAdmissionReminderUpdateManyArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesAdminAdmissionReminders and returns the data updated in the database.
+     * @param {SalesAdminAdmissionReminderUpdateManyAndReturnArgs} args - Arguments to update many SalesAdminAdmissionReminders.
+     * @example
+     * // Update many SalesAdminAdmissionReminders
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SalesAdminAdmissionReminders and only return the `id`
+     * const salesAdminAdmissionReminderWithIdOnly = await prisma.salesAdminAdmissionReminder.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SalesAdminAdmissionReminderUpdateManyAndReturnArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SalesAdminAdmissionReminder.
+     * @param {SalesAdminAdmissionReminderUpsertArgs} args - Arguments to update or create a SalesAdminAdmissionReminder.
+     * @example
+     * // Update or create a SalesAdminAdmissionReminder
+     * const salesAdminAdmissionReminder = await prisma.salesAdminAdmissionReminder.upsert({
+     *   create: {
+     *     // ... data to create a SalesAdminAdmissionReminder
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalesAdminAdmissionReminder we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalesAdminAdmissionReminderUpsertArgs>(args: SelectSubset<T, SalesAdminAdmissionReminderUpsertArgs<ExtArgs>>): Prisma__SalesAdminAdmissionReminderClient<$Result.GetResult<Prisma.$SalesAdminAdmissionReminderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalesAdminAdmissionReminders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderCountArgs} args - Arguments to filter SalesAdminAdmissionReminders to count.
+     * @example
+     * // Count the number of SalesAdminAdmissionReminders
+     * const count = await prisma.salesAdminAdmissionReminder.count({
+     *   where: {
+     *     // ... the filter for the SalesAdminAdmissionReminders we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalesAdminAdmissionReminderCountArgs>(
+      args?: Subset<T, SalesAdminAdmissionReminderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalesAdminAdmissionReminderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalesAdminAdmissionReminder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalesAdminAdmissionReminderAggregateArgs>(args: Subset<T, SalesAdminAdmissionReminderAggregateArgs>): Prisma.PrismaPromise<GetSalesAdminAdmissionReminderAggregateType<T>>
+
+    /**
+     * Group by SalesAdminAdmissionReminder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesAdminAdmissionReminderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalesAdminAdmissionReminderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalesAdminAdmissionReminderGroupByArgs['orderBy'] }
+        : { orderBy?: SalesAdminAdmissionReminderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalesAdminAdmissionReminderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesAdminAdmissionReminderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalesAdminAdmissionReminder model
+   */
+  readonly fields: SalesAdminAdmissionReminderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalesAdminAdmissionReminder.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalesAdminAdmissionReminderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalesAdminAdmissionReminder model
+   */
+  interface SalesAdminAdmissionReminderFieldRefs {
+    readonly id: FieldRef<"SalesAdminAdmissionReminder", 'String'>
+    readonly salesAdminId: FieldRef<"SalesAdminAdmissionReminder", 'String'>
+    readonly notificationType: FieldRef<"SalesAdminAdmissionReminder", 'String'>
+    readonly reminderDate: FieldRef<"SalesAdminAdmissionReminder", 'String'>
+    readonly notificationId: FieldRef<"SalesAdminAdmissionReminder", 'String'>
+    readonly createdAt: FieldRef<"SalesAdminAdmissionReminder", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalesAdminAdmissionReminder findUnique
+   */
+  export type SalesAdminAdmissionReminderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesAdminAdmissionReminder to fetch.
+     */
+    where: SalesAdminAdmissionReminderWhereUniqueInput
+  }
+
+  /**
+   * SalesAdminAdmissionReminder findUniqueOrThrow
+   */
+  export type SalesAdminAdmissionReminderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesAdminAdmissionReminder to fetch.
+     */
+    where: SalesAdminAdmissionReminderWhereUniqueInput
+  }
+
+  /**
+   * SalesAdminAdmissionReminder findFirst
+   */
+  export type SalesAdminAdmissionReminderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesAdminAdmissionReminder to fetch.
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesAdminAdmissionReminders to fetch.
+     */
+    orderBy?: SalesAdminAdmissionReminderOrderByWithRelationInput | SalesAdminAdmissionReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesAdminAdmissionReminders.
+     */
+    cursor?: SalesAdminAdmissionReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesAdminAdmissionReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesAdminAdmissionReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesAdminAdmissionReminders.
+     */
+    distinct?: SalesAdminAdmissionReminderScalarFieldEnum | SalesAdminAdmissionReminderScalarFieldEnum[]
+  }
+
+  /**
+   * SalesAdminAdmissionReminder findFirstOrThrow
+   */
+  export type SalesAdminAdmissionReminderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesAdminAdmissionReminder to fetch.
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesAdminAdmissionReminders to fetch.
+     */
+    orderBy?: SalesAdminAdmissionReminderOrderByWithRelationInput | SalesAdminAdmissionReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesAdminAdmissionReminders.
+     */
+    cursor?: SalesAdminAdmissionReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesAdminAdmissionReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesAdminAdmissionReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesAdminAdmissionReminders.
+     */
+    distinct?: SalesAdminAdmissionReminderScalarFieldEnum | SalesAdminAdmissionReminderScalarFieldEnum[]
+  }
+
+  /**
+   * SalesAdminAdmissionReminder findMany
+   */
+  export type SalesAdminAdmissionReminderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesAdminAdmissionReminders to fetch.
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesAdminAdmissionReminders to fetch.
+     */
+    orderBy?: SalesAdminAdmissionReminderOrderByWithRelationInput | SalesAdminAdmissionReminderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalesAdminAdmissionReminders.
+     */
+    cursor?: SalesAdminAdmissionReminderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesAdminAdmissionReminders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesAdminAdmissionReminders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesAdminAdmissionReminders.
+     */
+    distinct?: SalesAdminAdmissionReminderScalarFieldEnum | SalesAdminAdmissionReminderScalarFieldEnum[]
+  }
+
+  /**
+   * SalesAdminAdmissionReminder create
+   */
+  export type SalesAdminAdmissionReminderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SalesAdminAdmissionReminder.
+     */
+    data: XOR<SalesAdminAdmissionReminderCreateInput, SalesAdminAdmissionReminderUncheckedCreateInput>
+  }
+
+  /**
+   * SalesAdminAdmissionReminder createMany
+   */
+  export type SalesAdminAdmissionReminderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalesAdminAdmissionReminders.
+     */
+    data: SalesAdminAdmissionReminderCreateManyInput | SalesAdminAdmissionReminderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesAdminAdmissionReminder createManyAndReturn
+   */
+  export type SalesAdminAdmissionReminderCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * The data used to create many SalesAdminAdmissionReminders.
+     */
+    data: SalesAdminAdmissionReminderCreateManyInput | SalesAdminAdmissionReminderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesAdminAdmissionReminder update
+   */
+  export type SalesAdminAdmissionReminderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SalesAdminAdmissionReminder.
+     */
+    data: XOR<SalesAdminAdmissionReminderUpdateInput, SalesAdminAdmissionReminderUncheckedUpdateInput>
+    /**
+     * Choose, which SalesAdminAdmissionReminder to update.
+     */
+    where: SalesAdminAdmissionReminderWhereUniqueInput
+  }
+
+  /**
+   * SalesAdminAdmissionReminder updateMany
+   */
+  export type SalesAdminAdmissionReminderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalesAdminAdmissionReminders.
+     */
+    data: XOR<SalesAdminAdmissionReminderUpdateManyMutationInput, SalesAdminAdmissionReminderUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesAdminAdmissionReminders to update
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * Limit how many SalesAdminAdmissionReminders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesAdminAdmissionReminder updateManyAndReturn
+   */
+  export type SalesAdminAdmissionReminderUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * The data used to update SalesAdminAdmissionReminders.
+     */
+    data: XOR<SalesAdminAdmissionReminderUpdateManyMutationInput, SalesAdminAdmissionReminderUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesAdminAdmissionReminders to update
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * Limit how many SalesAdminAdmissionReminders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesAdminAdmissionReminder upsert
+   */
+  export type SalesAdminAdmissionReminderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SalesAdminAdmissionReminder to update in case it exists.
+     */
+    where: SalesAdminAdmissionReminderWhereUniqueInput
+    /**
+     * In case the SalesAdminAdmissionReminder found by the `where` argument doesn't exist, create a new SalesAdminAdmissionReminder with this data.
+     */
+    create: XOR<SalesAdminAdmissionReminderCreateInput, SalesAdminAdmissionReminderUncheckedCreateInput>
+    /**
+     * In case the SalesAdminAdmissionReminder was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalesAdminAdmissionReminderUpdateInput, SalesAdminAdmissionReminderUncheckedUpdateInput>
+  }
+
+  /**
+   * SalesAdminAdmissionReminder delete
+   */
+  export type SalesAdminAdmissionReminderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+    /**
+     * Filter which SalesAdminAdmissionReminder to delete.
+     */
+    where: SalesAdminAdmissionReminderWhereUniqueInput
+  }
+
+  /**
+   * SalesAdminAdmissionReminder deleteMany
+   */
+  export type SalesAdminAdmissionReminderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesAdminAdmissionReminders to delete
+     */
+    where?: SalesAdminAdmissionReminderWhereInput
+    /**
+     * Limit how many SalesAdminAdmissionReminders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesAdminAdmissionReminder without action
+   */
+  export type SalesAdminAdmissionReminderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesAdminAdmissionReminder
+     */
+    select?: SalesAdminAdmissionReminderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesAdminAdmissionReminder
+     */
+    omit?: SalesAdminAdmissionReminderOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SalesCrmBatchRequest
+   */
+
+  export type AggregateSalesCrmBatchRequest = {
+    _count: SalesCrmBatchRequestCountAggregateOutputType | null
+    _min: SalesCrmBatchRequestMinAggregateOutputType | null
+    _max: SalesCrmBatchRequestMaxAggregateOutputType | null
+  }
+
+  export type SalesCrmBatchRequestMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    branchId: string | null
+    courseId: string | null
+    requestedById: string | null
+    assignedToId: string | null
+    requestedMode: string | null
+    requestedSchedule: string | null
+    requestDetails: string | null
+    status: $Enums.SalesCrmBatchRequestStatus | null
+    activeKey: string | null
+    resolvedBatchId: string | null
+    statusUpdatedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesCrmBatchRequestMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    branchId: string | null
+    courseId: string | null
+    requestedById: string | null
+    assignedToId: string | null
+    requestedMode: string | null
+    requestedSchedule: string | null
+    requestDetails: string | null
+    status: $Enums.SalesCrmBatchRequestStatus | null
+    activeKey: string | null
+    resolvedBatchId: string | null
+    statusUpdatedById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesCrmBatchRequestCountAggregateOutputType = {
+    id: number
+    leadId: number
+    branchId: number
+    courseId: number
+    requestedById: number
+    assignedToId: number
+    requestedMode: number
+    requestedSchedule: number
+    requestDetails: number
+    status: number
+    activeKey: number
+    resolvedBatchId: number
+    statusUpdatedById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SalesCrmBatchRequestMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    courseId?: true
+    requestedById?: true
+    assignedToId?: true
+    requestedMode?: true
+    requestedSchedule?: true
+    requestDetails?: true
+    status?: true
+    activeKey?: true
+    resolvedBatchId?: true
+    statusUpdatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesCrmBatchRequestMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    courseId?: true
+    requestedById?: true
+    assignedToId?: true
+    requestedMode?: true
+    requestedSchedule?: true
+    requestDetails?: true
+    status?: true
+    activeKey?: true
+    resolvedBatchId?: true
+    statusUpdatedById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesCrmBatchRequestCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    courseId?: true
+    requestedById?: true
+    assignedToId?: true
+    requestedMode?: true
+    requestedSchedule?: true
+    requestDetails?: true
+    status?: true
+    activeKey?: true
+    resolvedBatchId?: true
+    statusUpdatedById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SalesCrmBatchRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesCrmBatchRequest to aggregate.
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmBatchRequests to fetch.
+     */
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmBatchRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmBatchRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalesCrmBatchRequests
+    **/
+    _count?: true | SalesCrmBatchRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalesCrmBatchRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalesCrmBatchRequestMaxAggregateInputType
+  }
+
+  export type GetSalesCrmBatchRequestAggregateType<T extends SalesCrmBatchRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalesCrmBatchRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalesCrmBatchRequest[P]>
+      : GetScalarType<T[P], AggregateSalesCrmBatchRequest[P]>
+  }
+
+
+
+
+  export type SalesCrmBatchRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithAggregationInput | SalesCrmBatchRequestOrderByWithAggregationInput[]
+    by: SalesCrmBatchRequestScalarFieldEnum[] | SalesCrmBatchRequestScalarFieldEnum
+    having?: SalesCrmBatchRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalesCrmBatchRequestCountAggregateInputType | true
+    _min?: SalesCrmBatchRequestMinAggregateInputType
+    _max?: SalesCrmBatchRequestMaxAggregateInputType
+  }
+
+  export type SalesCrmBatchRequestGroupByOutputType = {
+    id: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId: string | null
+    requestedMode: string | null
+    requestedSchedule: string | null
+    requestDetails: string
+    status: $Enums.SalesCrmBatchRequestStatus
+    activeKey: string | null
+    resolvedBatchId: string | null
+    statusUpdatedById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SalesCrmBatchRequestCountAggregateOutputType | null
+    _min: SalesCrmBatchRequestMinAggregateOutputType | null
+    _max: SalesCrmBatchRequestMaxAggregateOutputType | null
+  }
+
+  type GetSalesCrmBatchRequestGroupByPayload<T extends SalesCrmBatchRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalesCrmBatchRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalesCrmBatchRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalesCrmBatchRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], SalesCrmBatchRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalesCrmBatchRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    requestedById?: boolean
+    assignedToId?: boolean
+    requestedMode?: boolean
+    requestedSchedule?: boolean
+    requestDetails?: boolean
+    status?: boolean
+    activeKey?: boolean
+    resolvedBatchId?: boolean
+    statusUpdatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }, ExtArgs["result"]["salesCrmBatchRequest"]>
+
+  export type SalesCrmBatchRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    requestedById?: boolean
+    assignedToId?: boolean
+    requestedMode?: boolean
+    requestedSchedule?: boolean
+    requestDetails?: boolean
+    status?: boolean
+    activeKey?: boolean
+    resolvedBatchId?: boolean
+    statusUpdatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }, ExtArgs["result"]["salesCrmBatchRequest"]>
+
+  export type SalesCrmBatchRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    requestedById?: boolean
+    assignedToId?: boolean
+    requestedMode?: boolean
+    requestedSchedule?: boolean
+    requestDetails?: boolean
+    status?: boolean
+    activeKey?: boolean
+    resolvedBatchId?: boolean
+    statusUpdatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }, ExtArgs["result"]["salesCrmBatchRequest"]>
+
+  export type SalesCrmBatchRequestSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    courseId?: boolean
+    requestedById?: boolean
+    assignedToId?: boolean
+    requestedMode?: boolean
+    requestedSchedule?: boolean
+    requestDetails?: boolean
+    status?: boolean
+    activeKey?: boolean
+    resolvedBatchId?: boolean
+    statusUpdatedById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SalesCrmBatchRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "branchId" | "courseId" | "requestedById" | "assignedToId" | "requestedMode" | "requestedSchedule" | "requestDetails" | "status" | "activeKey" | "resolvedBatchId" | "statusUpdatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["salesCrmBatchRequest"]>
+  export type SalesCrmBatchRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }
+  export type SalesCrmBatchRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }
+  export type SalesCrmBatchRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    course?: boolean | BranchCourseDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | SalesCrmBatchRequest$assignedToArgs<ExtArgs>
+    resolvedBatch?: boolean | SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>
+  }
+
+  export type $SalesCrmBatchRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalesCrmBatchRequest"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      branch: Prisma.$BranchPayload<ExtArgs>
+      course: Prisma.$BranchCoursePayload<ExtArgs>
+      requestedBy: Prisma.$UserPayload<ExtArgs>
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      resolvedBatch: Prisma.$BranchBatchPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      branchId: string
+      courseId: string
+      requestedById: string
+      assignedToId: string | null
+      requestedMode: string | null
+      requestedSchedule: string | null
+      requestDetails: string
+      status: $Enums.SalesCrmBatchRequestStatus
+      activeKey: string | null
+      resolvedBatchId: string | null
+      statusUpdatedById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["salesCrmBatchRequest"]>
+    composites: {}
+  }
+
+  type SalesCrmBatchRequestGetPayload<S extends boolean | null | undefined | SalesCrmBatchRequestDefaultArgs> = $Result.GetResult<Prisma.$SalesCrmBatchRequestPayload, S>
+
+  type SalesCrmBatchRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalesCrmBatchRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalesCrmBatchRequestCountAggregateInputType | true
+    }
+
+  export interface SalesCrmBatchRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalesCrmBatchRequest'], meta: { name: 'SalesCrmBatchRequest' } }
+    /**
+     * Find zero or one SalesCrmBatchRequest that matches the filter.
+     * @param {SalesCrmBatchRequestFindUniqueArgs} args - Arguments to find a SalesCrmBatchRequest
+     * @example
+     * // Get one SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalesCrmBatchRequestFindUniqueArgs>(args: SelectSubset<T, SalesCrmBatchRequestFindUniqueArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalesCrmBatchRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalesCrmBatchRequestFindUniqueOrThrowArgs} args - Arguments to find a SalesCrmBatchRequest
+     * @example
+     * // Get one SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalesCrmBatchRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, SalesCrmBatchRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesCrmBatchRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestFindFirstArgs} args - Arguments to find a SalesCrmBatchRequest
+     * @example
+     * // Get one SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalesCrmBatchRequestFindFirstArgs>(args?: SelectSubset<T, SalesCrmBatchRequestFindFirstArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesCrmBatchRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestFindFirstOrThrowArgs} args - Arguments to find a SalesCrmBatchRequest
+     * @example
+     * // Get one SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalesCrmBatchRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, SalesCrmBatchRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalesCrmBatchRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalesCrmBatchRequests
+     * const salesCrmBatchRequests = await prisma.salesCrmBatchRequest.findMany()
+     * 
+     * // Get first 10 SalesCrmBatchRequests
+     * const salesCrmBatchRequests = await prisma.salesCrmBatchRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salesCrmBatchRequestWithIdOnly = await prisma.salesCrmBatchRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SalesCrmBatchRequestFindManyArgs>(args?: SelectSubset<T, SalesCrmBatchRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalesCrmBatchRequest.
+     * @param {SalesCrmBatchRequestCreateArgs} args - Arguments to create a SalesCrmBatchRequest.
+     * @example
+     * // Create one SalesCrmBatchRequest
+     * const SalesCrmBatchRequest = await prisma.salesCrmBatchRequest.create({
+     *   data: {
+     *     // ... data to create a SalesCrmBatchRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalesCrmBatchRequestCreateArgs>(args: SelectSubset<T, SalesCrmBatchRequestCreateArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalesCrmBatchRequests.
+     * @param {SalesCrmBatchRequestCreateManyArgs} args - Arguments to create many SalesCrmBatchRequests.
+     * @example
+     * // Create many SalesCrmBatchRequests
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalesCrmBatchRequestCreateManyArgs>(args?: SelectSubset<T, SalesCrmBatchRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SalesCrmBatchRequests and returns the data saved in the database.
+     * @param {SalesCrmBatchRequestCreateManyAndReturnArgs} args - Arguments to create many SalesCrmBatchRequests.
+     * @example
+     * // Create many SalesCrmBatchRequests
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SalesCrmBatchRequests and only return the `id`
+     * const salesCrmBatchRequestWithIdOnly = await prisma.salesCrmBatchRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SalesCrmBatchRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, SalesCrmBatchRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SalesCrmBatchRequest.
+     * @param {SalesCrmBatchRequestDeleteArgs} args - Arguments to delete one SalesCrmBatchRequest.
+     * @example
+     * // Delete one SalesCrmBatchRequest
+     * const SalesCrmBatchRequest = await prisma.salesCrmBatchRequest.delete({
+     *   where: {
+     *     // ... filter to delete one SalesCrmBatchRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalesCrmBatchRequestDeleteArgs>(args: SelectSubset<T, SalesCrmBatchRequestDeleteArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalesCrmBatchRequest.
+     * @param {SalesCrmBatchRequestUpdateArgs} args - Arguments to update one SalesCrmBatchRequest.
+     * @example
+     * // Update one SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalesCrmBatchRequestUpdateArgs>(args: SelectSubset<T, SalesCrmBatchRequestUpdateArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalesCrmBatchRequests.
+     * @param {SalesCrmBatchRequestDeleteManyArgs} args - Arguments to filter SalesCrmBatchRequests to delete.
+     * @example
+     * // Delete a few SalesCrmBatchRequests
+     * const { count } = await prisma.salesCrmBatchRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalesCrmBatchRequestDeleteManyArgs>(args?: SelectSubset<T, SalesCrmBatchRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesCrmBatchRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalesCrmBatchRequests
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalesCrmBatchRequestUpdateManyArgs>(args: SelectSubset<T, SalesCrmBatchRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesCrmBatchRequests and returns the data updated in the database.
+     * @param {SalesCrmBatchRequestUpdateManyAndReturnArgs} args - Arguments to update many SalesCrmBatchRequests.
+     * @example
+     * // Update many SalesCrmBatchRequests
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SalesCrmBatchRequests and only return the `id`
+     * const salesCrmBatchRequestWithIdOnly = await prisma.salesCrmBatchRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SalesCrmBatchRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, SalesCrmBatchRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SalesCrmBatchRequest.
+     * @param {SalesCrmBatchRequestUpsertArgs} args - Arguments to update or create a SalesCrmBatchRequest.
+     * @example
+     * // Update or create a SalesCrmBatchRequest
+     * const salesCrmBatchRequest = await prisma.salesCrmBatchRequest.upsert({
+     *   create: {
+     *     // ... data to create a SalesCrmBatchRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalesCrmBatchRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalesCrmBatchRequestUpsertArgs>(args: SelectSubset<T, SalesCrmBatchRequestUpsertArgs<ExtArgs>>): Prisma__SalesCrmBatchRequestClient<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalesCrmBatchRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestCountArgs} args - Arguments to filter SalesCrmBatchRequests to count.
+     * @example
+     * // Count the number of SalesCrmBatchRequests
+     * const count = await prisma.salesCrmBatchRequest.count({
+     *   where: {
+     *     // ... the filter for the SalesCrmBatchRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalesCrmBatchRequestCountArgs>(
+      args?: Subset<T, SalesCrmBatchRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalesCrmBatchRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalesCrmBatchRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalesCrmBatchRequestAggregateArgs>(args: Subset<T, SalesCrmBatchRequestAggregateArgs>): Prisma.PrismaPromise<GetSalesCrmBatchRequestAggregateType<T>>
+
+    /**
+     * Group by SalesCrmBatchRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmBatchRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalesCrmBatchRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalesCrmBatchRequestGroupByArgs['orderBy'] }
+        : { orderBy?: SalesCrmBatchRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalesCrmBatchRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesCrmBatchRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalesCrmBatchRequest model
+   */
+  readonly fields: SalesCrmBatchRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalesCrmBatchRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalesCrmBatchRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    course<T extends BranchCourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourseDefaultArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    requestedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends SalesCrmBatchRequest$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, SalesCrmBatchRequest$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    resolvedBatch<T extends SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs> = {}>(args?: Subset<T, SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs>>): Prisma__BranchBatchClient<$Result.GetResult<Prisma.$BranchBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalesCrmBatchRequest model
+   */
+  interface SalesCrmBatchRequestFieldRefs {
+    readonly id: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly leadId: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly branchId: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly courseId: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly requestedById: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly assignedToId: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly requestedMode: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly requestedSchedule: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly requestDetails: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly status: FieldRef<"SalesCrmBatchRequest", 'SalesCrmBatchRequestStatus'>
+    readonly activeKey: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly resolvedBatchId: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly statusUpdatedById: FieldRef<"SalesCrmBatchRequest", 'String'>
+    readonly createdAt: FieldRef<"SalesCrmBatchRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"SalesCrmBatchRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalesCrmBatchRequest findUnique
+   */
+  export type SalesCrmBatchRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmBatchRequest to fetch.
+     */
+    where: SalesCrmBatchRequestWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmBatchRequest findUniqueOrThrow
+   */
+  export type SalesCrmBatchRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmBatchRequest to fetch.
+     */
+    where: SalesCrmBatchRequestWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmBatchRequest findFirst
+   */
+  export type SalesCrmBatchRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmBatchRequest to fetch.
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmBatchRequests to fetch.
+     */
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesCrmBatchRequests.
+     */
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmBatchRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmBatchRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmBatchRequests.
+     */
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmBatchRequest findFirstOrThrow
+   */
+  export type SalesCrmBatchRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmBatchRequest to fetch.
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmBatchRequests to fetch.
+     */
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesCrmBatchRequests.
+     */
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmBatchRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmBatchRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmBatchRequests.
+     */
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmBatchRequest findMany
+   */
+  export type SalesCrmBatchRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmBatchRequests to fetch.
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmBatchRequests to fetch.
+     */
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalesCrmBatchRequests.
+     */
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmBatchRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmBatchRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmBatchRequests.
+     */
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmBatchRequest create
+   */
+  export type SalesCrmBatchRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SalesCrmBatchRequest.
+     */
+    data: XOR<SalesCrmBatchRequestCreateInput, SalesCrmBatchRequestUncheckedCreateInput>
+  }
+
+  /**
+   * SalesCrmBatchRequest createMany
+   */
+  export type SalesCrmBatchRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalesCrmBatchRequests.
+     */
+    data: SalesCrmBatchRequestCreateManyInput | SalesCrmBatchRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesCrmBatchRequest createManyAndReturn
+   */
+  export type SalesCrmBatchRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many SalesCrmBatchRequests.
+     */
+    data: SalesCrmBatchRequestCreateManyInput | SalesCrmBatchRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SalesCrmBatchRequest update
+   */
+  export type SalesCrmBatchRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SalesCrmBatchRequest.
+     */
+    data: XOR<SalesCrmBatchRequestUpdateInput, SalesCrmBatchRequestUncheckedUpdateInput>
+    /**
+     * Choose, which SalesCrmBatchRequest to update.
+     */
+    where: SalesCrmBatchRequestWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmBatchRequest updateMany
+   */
+  export type SalesCrmBatchRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalesCrmBatchRequests.
+     */
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesCrmBatchRequests to update
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * Limit how many SalesCrmBatchRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesCrmBatchRequest updateManyAndReturn
+   */
+  export type SalesCrmBatchRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update SalesCrmBatchRequests.
+     */
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesCrmBatchRequests to update
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * Limit how many SalesCrmBatchRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SalesCrmBatchRequest upsert
+   */
+  export type SalesCrmBatchRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SalesCrmBatchRequest to update in case it exists.
+     */
+    where: SalesCrmBatchRequestWhereUniqueInput
+    /**
+     * In case the SalesCrmBatchRequest found by the `where` argument doesn't exist, create a new SalesCrmBatchRequest with this data.
+     */
+    create: XOR<SalesCrmBatchRequestCreateInput, SalesCrmBatchRequestUncheckedCreateInput>
+    /**
+     * In case the SalesCrmBatchRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalesCrmBatchRequestUpdateInput, SalesCrmBatchRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * SalesCrmBatchRequest delete
+   */
+  export type SalesCrmBatchRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    /**
+     * Filter which SalesCrmBatchRequest to delete.
+     */
+    where: SalesCrmBatchRequestWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmBatchRequest deleteMany
+   */
+  export type SalesCrmBatchRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesCrmBatchRequests to delete
+     */
+    where?: SalesCrmBatchRequestWhereInput
+    /**
+     * Limit how many SalesCrmBatchRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesCrmBatchRequest.assignedTo
+   */
+  export type SalesCrmBatchRequest$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * SalesCrmBatchRequest.resolvedBatch
+   */
+  export type SalesCrmBatchRequest$resolvedBatchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchBatch
+     */
+    select?: BranchBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchBatch
+     */
+    omit?: BranchBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchBatchInclude<ExtArgs> | null
+    where?: BranchBatchWhereInput
+  }
+
+  /**
+   * SalesCrmBatchRequest without action
+   */
+  export type SalesCrmBatchRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
   }
 
 
@@ -24213,6 +26833,7 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
     leads?: boolean | BranchCourse$leadsArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | BranchCourse$salesCrmBatchRequestsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchCourse"]>
 
@@ -24311,6 +26932,7 @@ export namespace Prisma {
     academicQuestionPapers?: boolean | BranchCourse$academicQuestionPapersArgs<ExtArgs>
     academicTestProjects?: boolean | BranchCourse$academicTestProjectsArgs<ExtArgs>
     leads?: boolean | BranchCourse$leadsArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | BranchCourse$salesCrmBatchRequestsArgs<ExtArgs>
     _count?: boolean | BranchCourseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchCourseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24339,6 +26961,7 @@ export namespace Prisma {
       academicQuestionPapers: Prisma.$AcademicQuestionPaperPayload<ExtArgs>[]
       academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
       leads: Prisma.$LeadPayload<ExtArgs>[]
+      salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -24773,6 +27396,7 @@ export namespace Prisma {
     academicQuestionPapers<T extends BranchCourse$academicQuestionPapersArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicQuestionPapersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicQuestionPaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestProjects<T extends BranchCourse$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leads<T extends BranchCourse$leadsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    salesCrmBatchRequests<T extends BranchCourse$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, BranchCourse$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25577,6 +28201,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * BranchCourse.salesCrmBatchRequests
+   */
+  export type BranchCourse$salesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
   }
 
   /**
@@ -32193,6 +34841,7 @@ export namespace Prisma {
     academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     academicTestCycles?: boolean | BranchBatch$academicTestCyclesArgs<ExtArgs>
     cycles?: boolean | BranchBatch$cyclesArgs<ExtArgs>
+    resolvedSalesCrmRequests?: boolean | BranchBatch$resolvedSalesCrmRequestsArgs<ExtArgs>
     academicTestReportHistories?: boolean | BranchBatch$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branchBatch"]>
@@ -32311,6 +34960,7 @@ export namespace Prisma {
     academicTestProjects?: boolean | BranchBatch$academicTestProjectsArgs<ExtArgs>
     academicTestCycles?: boolean | BranchBatch$academicTestCyclesArgs<ExtArgs>
     cycles?: boolean | BranchBatch$cyclesArgs<ExtArgs>
+    resolvedSalesCrmRequests?: boolean | BranchBatch$resolvedSalesCrmRequestsArgs<ExtArgs>
     academicTestReportHistories?: boolean | BranchBatch$academicTestReportHistoriesArgs<ExtArgs>
     _count?: boolean | BranchBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -32338,6 +34988,7 @@ export namespace Prisma {
       academicTestProjects: Prisma.$AcademicTestProjectPayload<ExtArgs>[]
       academicTestCycles: Prisma.$AcademicTestCyclePayload<ExtArgs>[]
       cycles: Prisma.$BatchCyclePayload<ExtArgs>[]
+      resolvedSalesCrmRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       academicTestReportHistories: Prisma.$AcademicTestReportHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -32774,6 +35425,7 @@ export namespace Prisma {
     academicTestProjects<T extends BranchBatch$academicTestProjectsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestCycles<T extends BranchBatch$academicTestCyclesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestCyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cycles<T extends BranchBatch$cyclesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$cyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    resolvedSalesCrmRequests<T extends BranchBatch$resolvedSalesCrmRequestsArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$resolvedSalesCrmRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     academicTestReportHistories<T extends BranchBatch$academicTestReportHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, BranchBatch$academicTestReportHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcademicTestReportHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -33399,6 +36051,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BatchCycleScalarFieldEnum | BatchCycleScalarFieldEnum[]
+  }
+
+  /**
+   * BranchBatch.resolvedSalesCrmRequests
+   */
+  export type BranchBatch$resolvedSalesCrmRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
   }
 
   /**
@@ -94137,6 +96813,7 @@ export namespace Prisma {
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
     convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | Lead$salesCrmBatchRequestsArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
@@ -94289,6 +96966,7 @@ export namespace Prisma {
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
     convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
+    salesCrmBatchRequests?: boolean | Lead$salesCrmBatchRequestsArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -94320,6 +96998,7 @@ export namespace Prisma {
       recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
       convertedStudent: Prisma.$BranchStudentPayload<ExtArgs> | null
       followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
+      salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -94766,6 +97445,7 @@ export namespace Prisma {
     recordings<T extends Lead$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     convertedStudent<T extends Lead$convertedStudentArgs<ExtArgs> = {}>(args?: Subset<T, Lead$convertedStudentArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     followUpReminders<T extends Lead$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, Lead$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    salesCrmBatchRequests<T extends Lead$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -95409,6 +98089,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.salesCrmBatchRequests
+   */
+  export type Lead$salesCrmBatchRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmBatchRequest
+     */
+    select?: SalesCrmBatchRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmBatchRequest
+     */
+    omit?: SalesCrmBatchRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesCrmBatchRequestInclude<ExtArgs> | null
+    where?: SalesCrmBatchRequestWhereInput
+    orderBy?: SalesCrmBatchRequestOrderByWithRelationInput | SalesCrmBatchRequestOrderByWithRelationInput[]
+    cursor?: SalesCrmBatchRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesCrmBatchRequestScalarFieldEnum | SalesCrmBatchRequestScalarFieldEnum[]
   }
 
   /**
@@ -111334,6 +114038,39 @@ export namespace Prisma {
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+  export const SalesAdminAdmissionReminderScalarFieldEnum: {
+    id: 'id',
+    salesAdminId: 'salesAdminId',
+    notificationType: 'notificationType',
+    reminderDate: 'reminderDate',
+    notificationId: 'notificationId',
+    createdAt: 'createdAt'
+  };
+
+  export type SalesAdminAdmissionReminderScalarFieldEnum = (typeof SalesAdminAdmissionReminderScalarFieldEnum)[keyof typeof SalesAdminAdmissionReminderScalarFieldEnum]
+
+
+  export const SalesCrmBatchRequestScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    branchId: 'branchId',
+    courseId: 'courseId',
+    requestedById: 'requestedById',
+    assignedToId: 'assignedToId',
+    requestedMode: 'requestedMode',
+    requestedSchedule: 'requestedSchedule',
+    requestDetails: 'requestDetails',
+    status: 'status',
+    activeKey: 'activeKey',
+    resolvedBatchId: 'resolvedBatchId',
+    statusUpdatedById: 'statusUpdatedById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SalesCrmBatchRequestScalarFieldEnum = (typeof SalesCrmBatchRequestScalarFieldEnum)[keyof typeof SalesCrmBatchRequestScalarFieldEnum]
+
+
   export const CourseEditRequestScalarFieldEnum: {
     id: 'id',
     branchCourseId: 'branchCourseId',
@@ -113069,6 +115806,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SalesCrmBatchRequestStatus'
+   */
+  export type EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SalesCrmBatchRequestStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SalesCrmBatchRequestStatus[]'
+   */
+  export type ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SalesCrmBatchRequestStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'CourseEditRequestStatus'
    */
   export type EnumCourseEditRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CourseEditRequestStatus'>
@@ -113286,6 +116037,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
     assignedLeads?: LeadListRelationFilter
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     createdLeads?: LeadListRelationFilter
     updatedLeads?: LeadListRelationFilter
     leadFollowUps?: LeadFollowUpListRelationFilter
@@ -113339,6 +116092,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionOrderByRelationAggregateInput
     salesAdminBranches?: SalesAdminBranchOrderByRelationAggregateInput
     assignedLeads?: LeadOrderByRelationAggregateInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     createdLeads?: LeadOrderByRelationAggregateInput
     updatedLeads?: LeadOrderByRelationAggregateInput
     leadFollowUps?: LeadFollowUpOrderByRelationAggregateInput
@@ -113395,6 +116150,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
     assignedLeads?: LeadListRelationFilter
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     createdLeads?: LeadListRelationFilter
     updatedLeads?: LeadListRelationFilter
     leadFollowUps?: LeadFollowUpListRelationFilter
@@ -113646,6 +116403,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
   }
 
@@ -113684,6 +116442,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentOrderByRelationAggregateInput
     facultyLeaveRequests?: FacultyLeaveRequestOrderByRelationAggregateInput
     salesAdminBranches?: SalesAdminBranchOrderByRelationAggregateInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     leads?: LeadOrderByRelationAggregateInput
   }
 
@@ -113725,6 +116484,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentListRelationFilter
     facultyLeaveRequests?: FacultyLeaveRequestListRelationFilter
     salesAdminBranches?: SalesAdminBranchListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
@@ -114113,6 +116873,184 @@ export namespace Prisma {
     facultySkillAssignmentId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+  }
+
+  export type SalesAdminAdmissionReminderWhereInput = {
+    AND?: SalesAdminAdmissionReminderWhereInput | SalesAdminAdmissionReminderWhereInput[]
+    OR?: SalesAdminAdmissionReminderWhereInput[]
+    NOT?: SalesAdminAdmissionReminderWhereInput | SalesAdminAdmissionReminderWhereInput[]
+    id?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    salesAdminId?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    notificationType?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    reminderDate?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    notificationId?: StringNullableFilter<"SalesAdminAdmissionReminder"> | string | null
+    createdAt?: DateTimeFilter<"SalesAdminAdmissionReminder"> | Date | string
+  }
+
+  export type SalesAdminAdmissionReminderOrderByWithRelationInput = {
+    id?: SortOrder
+    salesAdminId?: SortOrder
+    notificationType?: SortOrder
+    reminderDate?: SortOrder
+    notificationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalesAdminAdmissionReminderWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    notificationId?: string
+    salesAdminId_notificationType_reminderDate?: SalesAdminAdmissionReminderSalesAdminIdNotificationTypeReminderDateCompoundUniqueInput
+    AND?: SalesAdminAdmissionReminderWhereInput | SalesAdminAdmissionReminderWhereInput[]
+    OR?: SalesAdminAdmissionReminderWhereInput[]
+    NOT?: SalesAdminAdmissionReminderWhereInput | SalesAdminAdmissionReminderWhereInput[]
+    salesAdminId?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    notificationType?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    reminderDate?: StringFilter<"SalesAdminAdmissionReminder"> | string
+    createdAt?: DateTimeFilter<"SalesAdminAdmissionReminder"> | Date | string
+  }, "id" | "notificationId" | "salesAdminId_notificationType_reminderDate">
+
+  export type SalesAdminAdmissionReminderOrderByWithAggregationInput = {
+    id?: SortOrder
+    salesAdminId?: SortOrder
+    notificationType?: SortOrder
+    reminderDate?: SortOrder
+    notificationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SalesAdminAdmissionReminderCountOrderByAggregateInput
+    _max?: SalesAdminAdmissionReminderMaxOrderByAggregateInput
+    _min?: SalesAdminAdmissionReminderMinOrderByAggregateInput
+  }
+
+  export type SalesAdminAdmissionReminderScalarWhereWithAggregatesInput = {
+    AND?: SalesAdminAdmissionReminderScalarWhereWithAggregatesInput | SalesAdminAdmissionReminderScalarWhereWithAggregatesInput[]
+    OR?: SalesAdminAdmissionReminderScalarWhereWithAggregatesInput[]
+    NOT?: SalesAdminAdmissionReminderScalarWhereWithAggregatesInput | SalesAdminAdmissionReminderScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SalesAdminAdmissionReminder"> | string
+    salesAdminId?: StringWithAggregatesFilter<"SalesAdminAdmissionReminder"> | string
+    notificationType?: StringWithAggregatesFilter<"SalesAdminAdmissionReminder"> | string
+    reminderDate?: StringWithAggregatesFilter<"SalesAdminAdmissionReminder"> | string
+    notificationId?: StringNullableWithAggregatesFilter<"SalesAdminAdmissionReminder"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SalesAdminAdmissionReminder"> | Date | string
+  }
+
+  export type SalesCrmBatchRequestWhereInput = {
+    AND?: SalesCrmBatchRequestWhereInput | SalesCrmBatchRequestWhereInput[]
+    OR?: SalesCrmBatchRequestWhereInput[]
+    NOT?: SalesCrmBatchRequestWhereInput | SalesCrmBatchRequestWhereInput[]
+    id?: StringFilter<"SalesCrmBatchRequest"> | string
+    leadId?: StringFilter<"SalesCrmBatchRequest"> | string
+    branchId?: StringFilter<"SalesCrmBatchRequest"> | string
+    courseId?: StringFilter<"SalesCrmBatchRequest"> | string
+    requestedById?: StringFilter<"SalesCrmBatchRequest"> | string
+    assignedToId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedMode?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedSchedule?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestDetails?: StringFilter<"SalesCrmBatchRequest"> | string
+    status?: EnumSalesCrmBatchRequestStatusFilter<"SalesCrmBatchRequest"> | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    resolvedBatchId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    statusUpdatedById?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    createdAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    resolvedBatch?: XOR<BranchBatchNullableScalarRelationFilter, BranchBatchWhereInput> | null
+  }
+
+  export type SalesCrmBatchRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    requestedById?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    requestedMode?: SortOrderInput | SortOrder
+    requestedSchedule?: SortOrderInput | SortOrder
+    requestDetails?: SortOrder
+    status?: SortOrder
+    activeKey?: SortOrderInput | SortOrder
+    resolvedBatchId?: SortOrderInput | SortOrder
+    statusUpdatedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    branch?: BranchOrderByWithRelationInput
+    course?: BranchCourseOrderByWithRelationInput
+    requestedBy?: UserOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    resolvedBatch?: BranchBatchOrderByWithRelationInput
+  }
+
+  export type SalesCrmBatchRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    activeKey?: string
+    AND?: SalesCrmBatchRequestWhereInput | SalesCrmBatchRequestWhereInput[]
+    OR?: SalesCrmBatchRequestWhereInput[]
+    NOT?: SalesCrmBatchRequestWhereInput | SalesCrmBatchRequestWhereInput[]
+    leadId?: StringFilter<"SalesCrmBatchRequest"> | string
+    branchId?: StringFilter<"SalesCrmBatchRequest"> | string
+    courseId?: StringFilter<"SalesCrmBatchRequest"> | string
+    requestedById?: StringFilter<"SalesCrmBatchRequest"> | string
+    assignedToId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedMode?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedSchedule?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestDetails?: StringFilter<"SalesCrmBatchRequest"> | string
+    status?: EnumSalesCrmBatchRequestStatusFilter<"SalesCrmBatchRequest"> | $Enums.SalesCrmBatchRequestStatus
+    resolvedBatchId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    statusUpdatedById?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    createdAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    course?: XOR<BranchCourseScalarRelationFilter, BranchCourseWhereInput>
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    resolvedBatch?: XOR<BranchBatchNullableScalarRelationFilter, BranchBatchWhereInput> | null
+  }, "id" | "activeKey">
+
+  export type SalesCrmBatchRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    requestedById?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    requestedMode?: SortOrderInput | SortOrder
+    requestedSchedule?: SortOrderInput | SortOrder
+    requestDetails?: SortOrder
+    status?: SortOrder
+    activeKey?: SortOrderInput | SortOrder
+    resolvedBatchId?: SortOrderInput | SortOrder
+    statusUpdatedById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SalesCrmBatchRequestCountOrderByAggregateInput
+    _max?: SalesCrmBatchRequestMaxOrderByAggregateInput
+    _min?: SalesCrmBatchRequestMinOrderByAggregateInput
+  }
+
+  export type SalesCrmBatchRequestScalarWhereWithAggregatesInput = {
+    AND?: SalesCrmBatchRequestScalarWhereWithAggregatesInput | SalesCrmBatchRequestScalarWhereWithAggregatesInput[]
+    OR?: SalesCrmBatchRequestScalarWhereWithAggregatesInput[]
+    NOT?: SalesCrmBatchRequestScalarWhereWithAggregatesInput | SalesCrmBatchRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    leadId?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    branchId?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    courseId?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    requestedById?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    assignedToId?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    requestedMode?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    requestedSchedule?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    requestDetails?: StringWithAggregatesFilter<"SalesCrmBatchRequest"> | string
+    status?: EnumSalesCrmBatchRequestStatusWithAggregatesFilter<"SalesCrmBatchRequest"> | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    resolvedBatchId?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    statusUpdatedById?: StringNullableWithAggregatesFilter<"SalesCrmBatchRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SalesCrmBatchRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SalesCrmBatchRequest"> | Date | string
   }
 
   export type CourseEditRequestWhereInput = {
@@ -114558,6 +117496,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
     leads?: LeadListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
   }
 
   export type BranchCourseOrderByWithRelationInput = {
@@ -114599,6 +117538,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperOrderByRelationAggregateInput
     academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
     leads?: LeadOrderByRelationAggregateInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
   }
 
   export type BranchCourseWhereUniqueInput = Prisma.AtLeast<{
@@ -114645,6 +117585,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperListRelationFilter
     academicTestProjects?: AcademicTestProjectListRelationFilter
     leads?: LeadListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
   }, "id" | "branchId_nameKey" | "branchId_courseCode">
 
   export type BranchCourseOrderByWithAggregationInput = {
@@ -115275,6 +118216,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectListRelationFilter
     academicTestCycles?: AcademicTestCycleListRelationFilter
     cycles?: BatchCycleListRelationFilter
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestListRelationFilter
     academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }
 
@@ -115318,6 +118260,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectOrderByRelationAggregateInput
     academicTestCycles?: AcademicTestCycleOrderByRelationAggregateInput
     cycles?: BatchCycleOrderByRelationAggregateInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     academicTestReportHistories?: AcademicTestReportHistoryOrderByRelationAggregateInput
   }
 
@@ -115365,6 +118308,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectListRelationFilter
     academicTestCycles?: AcademicTestCycleListRelationFilter
     cycles?: BatchCycleListRelationFilter
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestListRelationFilter
     academicTestReportHistories?: AcademicTestReportHistoryListRelationFilter
   }, "id" | "branchId_courseId_facultyId_batchId">
 
@@ -120943,6 +123887,7 @@ export namespace Prisma {
     recordings?: LeadRecordingListRelationFilter
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -120996,6 +123941,7 @@ export namespace Prisma {
     recordings?: LeadRecordingOrderByRelationAggregateInput
     convertedStudent?: BranchStudentOrderByWithRelationInput
     followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -121052,6 +123998,7 @@ export namespace Prisma {
     recordings?: LeadRecordingListRelationFilter
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
+    salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
   }, "id" | "leadId">
 
   export type LeadOrderByWithAggregationInput = {
@@ -122543,6 +125490,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -122596,6 +125545,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -122649,6 +125600,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -122702,6 +125655,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -122976,6 +125931,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -123013,6 +125969,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -123050,6 +126007,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -123087,6 +126045,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -123547,6 +126506,189 @@ export namespace Prisma {
     facultySkillAssignmentId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SalesAdminAdmissionReminderCreateInput = {
+    id?: string
+    salesAdminId: string
+    notificationType?: string
+    reminderDate: string
+    notificationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SalesAdminAdmissionReminderUncheckedCreateInput = {
+    id?: string
+    salesAdminId: string
+    notificationType?: string
+    reminderDate: string
+    notificationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SalesAdminAdmissionReminderUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    notificationType?: StringFieldUpdateOperationsInput | string
+    reminderDate?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesAdminAdmissionReminderUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    notificationType?: StringFieldUpdateOperationsInput | string
+    reminderDate?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesAdminAdmissionReminderCreateManyInput = {
+    id?: string
+    salesAdminId: string
+    notificationType?: string
+    reminderDate: string
+    notificationId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SalesAdminAdmissionReminderUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    notificationType?: StringFieldUpdateOperationsInput | string
+    reminderDate?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesAdminAdmissionReminderUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    notificationType?: StringFieldUpdateOperationsInput | string
+    reminderDate?: StringFieldUpdateOperationsInput | string
+    notificationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateManyInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourseEditRequestCreateInput = {
@@ -124083,6 +127225,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateInput = {
@@ -124123,6 +127266,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUpdateInput = {
@@ -124163,6 +127307,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateInput = {
@@ -124203,6 +127348,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseCreateManyInput = {
@@ -124918,6 +128064,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -124958,6 +128105,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -124998,6 +128146,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -125038,6 +128187,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -131416,6 +134566,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -131464,6 +134615,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -131512,6 +134664,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -131560,6 +134713,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -133414,6 +136568,12 @@ export namespace Prisma {
     none?: LeadWhereInput
   }
 
+  export type SalesCrmBatchRequestListRelationFilter = {
+    every?: SalesCrmBatchRequestWhereInput
+    some?: SalesCrmBatchRequestWhereInput
+    none?: SalesCrmBatchRequestWhereInput
+  }
+
   export type LeadFollowUpListRelationFilter = {
     every?: LeadFollowUpWhereInput
     some?: LeadFollowUpWhereInput
@@ -133526,6 +136686,10 @@ export namespace Prisma {
   }
 
   export type LeadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SalesCrmBatchRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -134292,6 +137456,125 @@ export namespace Prisma {
     _max?: NestedEnumNotificationKindFilter<$PrismaModel>
   }
 
+  export type SalesAdminAdmissionReminderSalesAdminIdNotificationTypeReminderDateCompoundUniqueInput = {
+    salesAdminId: string
+    notificationType: string
+    reminderDate: string
+  }
+
+  export type SalesAdminAdmissionReminderCountOrderByAggregateInput = {
+    id?: SortOrder
+    salesAdminId?: SortOrder
+    notificationType?: SortOrder
+    reminderDate?: SortOrder
+    notificationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalesAdminAdmissionReminderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    salesAdminId?: SortOrder
+    notificationType?: SortOrder
+    reminderDate?: SortOrder
+    notificationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalesAdminAdmissionReminderMinOrderByAggregateInput = {
+    id?: SortOrder
+    salesAdminId?: SortOrder
+    notificationType?: SortOrder
+    reminderDate?: SortOrder
+    notificationId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumSalesCrmBatchRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SalesCrmBatchRequestStatus | EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel> | $Enums.SalesCrmBatchRequestStatus
+  }
+
+  export type LeadScalarRelationFilter = {
+    is?: LeadWhereInput
+    isNot?: LeadWhereInput
+  }
+
+  export type BranchCourseScalarRelationFilter = {
+    is?: BranchCourseWhereInput
+    isNot?: BranchCourseWhereInput
+  }
+
+  export type BranchBatchNullableScalarRelationFilter = {
+    is?: BranchBatchWhereInput | null
+    isNot?: BranchBatchWhereInput | null
+  }
+
+  export type SalesCrmBatchRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    requestedById?: SortOrder
+    assignedToId?: SortOrder
+    requestedMode?: SortOrder
+    requestedSchedule?: SortOrder
+    requestDetails?: SortOrder
+    status?: SortOrder
+    activeKey?: SortOrder
+    resolvedBatchId?: SortOrder
+    statusUpdatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesCrmBatchRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    requestedById?: SortOrder
+    assignedToId?: SortOrder
+    requestedMode?: SortOrder
+    requestedSchedule?: SortOrder
+    requestDetails?: SortOrder
+    status?: SortOrder
+    activeKey?: SortOrder
+    resolvedBatchId?: SortOrder
+    statusUpdatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesCrmBatchRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    courseId?: SortOrder
+    requestedById?: SortOrder
+    assignedToId?: SortOrder
+    requestedMode?: SortOrder
+    requestedSchedule?: SortOrder
+    requestDetails?: SortOrder
+    status?: SortOrder
+    activeKey?: SortOrder
+    resolvedBatchId?: SortOrder
+    statusUpdatedById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumSalesCrmBatchRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SalesCrmBatchRequestStatus | EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSalesCrmBatchRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.SalesCrmBatchRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel>
+  }
+
   export type EnumCourseEditRequestStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CourseEditRequestStatus | EnumCourseEditRequestStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CourseEditRequestStatus[] | ListEnumCourseEditRequestStatusFieldRefInput<$PrismaModel>
@@ -134788,11 +138071,6 @@ export namespace Prisma {
     registrationFees?: SortOrder
     discount?: SortOrder
     afterDiscount?: SortOrder
-  }
-
-  export type BranchCourseScalarRelationFilter = {
-    is?: BranchCourseWhereInput
-    isNot?: BranchCourseWhereInput
   }
 
   export type BranchCourseSubmoduleListRelationFilter = {
@@ -139072,11 +142350,6 @@ export namespace Prisma {
     _max?: NestedEnumLeadStageFilter<$PrismaModel>
   }
 
-  export type LeadScalarRelationFilter = {
-    is?: LeadWhereInput
-    isNot?: LeadWhereInput
-  }
-
   export type LeadFollowUpCountOrderByAggregateInput = {
     id?: SortOrder
     leadId?: SortOrder
@@ -140029,6 +143302,20 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
+  export type SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput> | SalesCrmBatchRequestCreateWithoutRequestedByInput[] | SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput | SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput[]
+    createMany?: SalesCrmBatchRequestCreateManyRequestedByInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput> | SalesCrmBatchRequestCreateWithoutAssignedToInput[] | SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput | SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput[]
+    createMany?: SalesCrmBatchRequestCreateManyAssignedToInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
   export type LeadCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
@@ -140222,6 +143509,20 @@ export namespace Prisma {
     connectOrCreate?: LeadCreateOrConnectWithoutAssignedToInput | LeadCreateOrConnectWithoutAssignedToInput[]
     createMany?: LeadCreateManyAssignedToInputEnvelope
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput> | SalesCrmBatchRequestCreateWithoutRequestedByInput[] | SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput | SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput[]
+    createMany?: SalesCrmBatchRequestCreateManyRequestedByInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput> | SalesCrmBatchRequestCreateWithoutAssignedToInput[] | SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput | SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput[]
+    createMany?: SalesCrmBatchRequestCreateManyAssignedToInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
   }
 
   export type LeadUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -140593,6 +143894,34 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutAssignedToInput | LeadUpdateWithWhereUniqueWithoutAssignedToInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutAssignedToInput | LeadUpdateManyWithWhereWithoutAssignedToInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput> | SalesCrmBatchRequestCreateWithoutRequestedByInput[] | SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput | SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutRequestedByInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: SalesCrmBatchRequestCreateManyRequestedByInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutRequestedByInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutRequestedByInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput> | SalesCrmBatchRequestCreateWithoutAssignedToInput[] | SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput | SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutAssignedToInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: SalesCrmBatchRequestCreateManyAssignedToInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutAssignedToInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutAssignedToInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
   }
 
   export type LeadUpdateManyWithoutCreatedByNestedInput = {
@@ -140983,6 +144312,34 @@ export namespace Prisma {
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput> | SalesCrmBatchRequestCreateWithoutRequestedByInput[] | SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput | SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutRequestedByInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: SalesCrmBatchRequestCreateManyRequestedByInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutRequestedByInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutRequestedByInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput> | SalesCrmBatchRequestCreateWithoutAssignedToInput[] | SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput | SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutAssignedToInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: SalesCrmBatchRequestCreateManyAssignedToInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutAssignedToInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutAssignedToInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type LeadUncheckedUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<LeadCreateWithoutCreatedByInput, LeadUncheckedCreateWithoutCreatedByInput> | LeadCreateWithoutCreatedByInput[] | LeadUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutCreatedByInput | LeadCreateOrConnectWithoutCreatedByInput[]
@@ -141264,6 +144621,13 @@ export namespace Prisma {
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
   }
 
+  export type SalesCrmBatchRequestCreateNestedManyWithoutBranchInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput> | SalesCrmBatchRequestCreateWithoutBranchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutBranchInput | SalesCrmBatchRequestCreateOrConnectWithoutBranchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyBranchInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
   export type LeadCreateNestedManyWithoutBranchInput = {
     create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
@@ -141367,6 +144731,13 @@ export namespace Prisma {
     connectOrCreate?: SalesAdminBranchCreateOrConnectWithoutBranchInput | SalesAdminBranchCreateOrConnectWithoutBranchInput[]
     createMany?: SalesAdminBranchCreateManyBranchInputEnvelope
     connect?: SalesAdminBranchWhereUniqueInput | SalesAdminBranchWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput> | SalesCrmBatchRequestCreateWithoutBranchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutBranchInput | SalesCrmBatchRequestCreateOrConnectWithoutBranchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyBranchInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
   }
 
   export type LeadUncheckedCreateNestedManyWithoutBranchInput = {
@@ -141586,6 +144957,20 @@ export namespace Prisma {
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput> | SalesCrmBatchRequestCreateWithoutBranchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutBranchInput | SalesCrmBatchRequestCreateOrConnectWithoutBranchInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutBranchInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyBranchInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutBranchInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutBranchInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type LeadUpdateManyWithoutBranchNestedInput = {
     create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
@@ -141796,6 +145181,20 @@ export namespace Prisma {
     deleteMany?: SalesAdminBranchScalarWhereInput | SalesAdminBranchScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput> | SalesCrmBatchRequestCreateWithoutBranchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutBranchInput | SalesCrmBatchRequestCreateOrConnectWithoutBranchInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutBranchInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyBranchInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutBranchInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutBranchInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type LeadUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<LeadCreateWithoutBranchInput, LeadUncheckedCreateWithoutBranchInput> | LeadCreateWithoutBranchInput[] | LeadUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
@@ -141892,6 +145291,98 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTargetedNotificationsInput, UserUpdateWithoutTargetedNotificationsInput>, UserUncheckedUpdateWithoutTargetedNotificationsInput>
+  }
+
+  export type LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput = {
+    create?: XOR<LeadCreateWithoutSalesCrmBatchRequestsInput, LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput = {
+    create?: XOR<BranchCreateWithoutSalesCrmBatchRequestsInput, BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput = {
+    create?: XOR<BranchCourseCreateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    connect?: BranchCourseWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput = {
+    create?: XOR<UserCreateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedSalesCrmBatchRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput = {
+    create?: XOR<UserCreateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedSalesCrmBatchRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput = {
+    create?: XOR<BranchBatchCreateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedCreateWithoutResolvedSalesCrmRequestsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutResolvedSalesCrmRequestsInput
+    connect?: BranchBatchWhereUniqueInput
+  }
+
+  export type EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SalesCrmBatchRequestStatus
+  }
+
+  export type LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput = {
+    create?: XOR<LeadCreateWithoutSalesCrmBatchRequestsInput, LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    upsert?: LeadUpsertWithoutSalesCrmBatchRequestsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput, LeadUpdateWithoutSalesCrmBatchRequestsInput>, LeadUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput = {
+    create?: XOR<BranchCreateWithoutSalesCrmBatchRequestsInput, BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    upsert?: BranchUpsertWithoutSalesCrmBatchRequestsInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput, BranchUpdateWithoutSalesCrmBatchRequestsInput>, BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput = {
+    create?: XOR<BranchCourseCreateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    connectOrCreate?: BranchCourseCreateOrConnectWithoutSalesCrmBatchRequestsInput
+    upsert?: BranchCourseUpsertWithoutSalesCrmBatchRequestsInput
+    connect?: BranchCourseWhereUniqueInput
+    update?: XOR<XOR<BranchCourseUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput, BranchCourseUpdateWithoutSalesCrmBatchRequestsInput>, BranchCourseUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedSalesCrmBatchRequestsInput
+    upsert?: UserUpsertWithoutCreatedSalesCrmBatchRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedSalesCrmBatchRequestsInput, UserUpdateWithoutCreatedSalesCrmBatchRequestsInput>, UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedSalesCrmBatchRequestsInput
+    upsert?: UserUpsertWithoutAssignedSalesCrmBatchRequestsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedSalesCrmBatchRequestsInput, UserUpdateWithoutAssignedSalesCrmBatchRequestsInput>, UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput = {
+    create?: XOR<BranchBatchCreateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedCreateWithoutResolvedSalesCrmRequestsInput>
+    connectOrCreate?: BranchBatchCreateOrConnectWithoutResolvedSalesCrmRequestsInput
+    upsert?: BranchBatchUpsertWithoutResolvedSalesCrmRequestsInput
+    disconnect?: BranchBatchWhereInput | boolean
+    delete?: BranchBatchWhereInput | boolean
+    connect?: BranchBatchWhereUniqueInput
+    update?: XOR<XOR<BranchBatchUpdateToOneWithWhereWithoutResolvedSalesCrmRequestsInput, BranchBatchUpdateWithoutResolvedSalesCrmRequestsInput>, BranchBatchUncheckedUpdateWithoutResolvedSalesCrmRequestsInput>
   }
 
   export type NotificationCreateNestedManyWithoutRequestInput = {
@@ -142424,6 +145915,13 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
+  export type SalesCrmBatchRequestCreateNestedManyWithoutCourseInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput> | SalesCrmBatchRequestCreateWithoutCourseInput[] | SalesCrmBatchRequestUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutCourseInput | SalesCrmBatchRequestCreateOrConnectWithoutCourseInput[]
+    createMany?: SalesCrmBatchRequestCreateManyCourseInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -142526,6 +146024,13 @@ export namespace Prisma {
     connectOrCreate?: LeadCreateOrConnectWithoutCourseInput | LeadCreateOrConnectWithoutCourseInput[]
     createMany?: LeadCreateManyCourseInputEnvelope
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput> | SalesCrmBatchRequestCreateWithoutCourseInput[] | SalesCrmBatchRequestUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutCourseInput | SalesCrmBatchRequestCreateOrConnectWithoutCourseInput[]
+    createMany?: SalesCrmBatchRequestCreateManyCourseInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
   }
 
   export type BranchUpdateOneRequiredWithoutBranchCoursesNestedInput = {
@@ -142742,6 +146247,20 @@ export namespace Prisma {
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput> | SalesCrmBatchRequestCreateWithoutCourseInput[] | SalesCrmBatchRequestUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutCourseInput | SalesCrmBatchRequestCreateOrConnectWithoutCourseInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutCourseInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: SalesCrmBatchRequestCreateManyCourseInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutCourseInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutCourseInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput = {
     create?: XOR<BranchInstallmentTemplateCreateWithoutBranchCourseInput, BranchInstallmentTemplateUncheckedCreateWithoutBranchCourseInput>
     connectOrCreate?: BranchInstallmentTemplateCreateOrConnectWithoutBranchCourseInput
@@ -142946,6 +146465,20 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutCourseInput | LeadUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutCourseInput | LeadUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput> | SalesCrmBatchRequestCreateWithoutCourseInput[] | SalesCrmBatchRequestUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutCourseInput | SalesCrmBatchRequestCreateOrConnectWithoutCourseInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutCourseInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: SalesCrmBatchRequestCreateManyCourseInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutCourseInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutCourseInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
   }
 
   export type BranchCourseCreateNestedOneWithoutModulesInput = {
@@ -143317,6 +146850,13 @@ export namespace Prisma {
     connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
   }
 
+  export type SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput> | SalesCrmBatchRequestCreateWithoutResolvedBatchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput | SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyResolvedBatchInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
   export type AcademicTestReportHistoryCreateNestedManyWithoutBatchInput = {
     create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
     connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
@@ -143371,6 +146911,13 @@ export namespace Prisma {
     connectOrCreate?: BatchCycleCreateOrConnectWithoutBatchInput | BatchCycleCreateOrConnectWithoutBatchInput[]
     createMany?: BatchCycleCreateManyBatchInputEnvelope
     connect?: BatchCycleWhereUniqueInput | BatchCycleWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput> | SalesCrmBatchRequestCreateWithoutResolvedBatchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput | SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyResolvedBatchInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
   }
 
   export type AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput = {
@@ -143502,6 +147049,20 @@ export namespace Prisma {
     deleteMany?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput> | SalesCrmBatchRequestCreateWithoutResolvedBatchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput | SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutResolvedBatchInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutResolvedBatchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyResolvedBatchInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutResolvedBatchInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutResolvedBatchInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutResolvedBatchInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutResolvedBatchInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput = {
     create?: XOR<AcademicTestReportHistoryCreateWithoutBatchInput, AcademicTestReportHistoryUncheckedCreateWithoutBatchInput> | AcademicTestReportHistoryCreateWithoutBatchInput[] | AcademicTestReportHistoryUncheckedCreateWithoutBatchInput[]
     connectOrCreate?: AcademicTestReportHistoryCreateOrConnectWithoutBatchInput | AcademicTestReportHistoryCreateOrConnectWithoutBatchInput[]
@@ -143612,6 +147173,20 @@ export namespace Prisma {
     update?: BatchCycleUpdateWithWhereUniqueWithoutBatchInput | BatchCycleUpdateWithWhereUniqueWithoutBatchInput[]
     updateMany?: BatchCycleUpdateManyWithWhereWithoutBatchInput | BatchCycleUpdateManyWithWhereWithoutBatchInput[]
     deleteMany?: BatchCycleScalarWhereInput | BatchCycleScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput> | SalesCrmBatchRequestCreateWithoutResolvedBatchInput[] | SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput | SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutResolvedBatchInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutResolvedBatchInput[]
+    createMany?: SalesCrmBatchRequestCreateManyResolvedBatchInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutResolvedBatchInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutResolvedBatchInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutResolvedBatchInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutResolvedBatchInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
   }
 
   export type AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput = {
@@ -147037,6 +150612,13 @@ export namespace Prisma {
     connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
   }
 
+  export type SalesCrmBatchRequestCreateNestedManyWithoutLeadInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput> | SalesCrmBatchRequestCreateWithoutLeadInput[] | SalesCrmBatchRequestUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutLeadInput | SalesCrmBatchRequestCreateOrConnectWithoutLeadInput[]
+    createMany?: SalesCrmBatchRequestCreateManyLeadInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+  }
+
   export type LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput = {
     create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
@@ -147076,6 +150658,13 @@ export namespace Prisma {
     connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
     createMany?: FollowUpReminderCreateManyLeadInputEnvelope
     connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput> | SalesCrmBatchRequestCreateWithoutLeadInput[] | SalesCrmBatchRequestUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutLeadInput | SalesCrmBatchRequestCreateOrConnectWithoutLeadInput[]
+    createMany?: SalesCrmBatchRequestCreateManyLeadInputEnvelope
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
   }
 
   export type EnumLeadStatusFieldUpdateOperationsInput = {
@@ -147210,6 +150799,20 @@ export namespace Prisma {
     deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
   }
 
+  export type SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput> | SalesCrmBatchRequestCreateWithoutLeadInput[] | SalesCrmBatchRequestUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutLeadInput | SalesCrmBatchRequestCreateOrConnectWithoutLeadInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutLeadInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: SalesCrmBatchRequestCreateManyLeadInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutLeadInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutLeadInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+  }
+
   export type LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput = {
     create?: XOR<LeadFollowUpCreateWithoutLeadInput, LeadFollowUpUncheckedCreateWithoutLeadInput> | LeadFollowUpCreateWithoutLeadInput[] | LeadFollowUpUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: LeadFollowUpCreateOrConnectWithoutLeadInput | LeadFollowUpCreateOrConnectWithoutLeadInput[]
@@ -147288,6 +150891,20 @@ export namespace Prisma {
     update?: FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput | FollowUpReminderUpdateWithWhereUniqueWithoutLeadInput[]
     updateMany?: FollowUpReminderUpdateManyWithWhereWithoutLeadInput | FollowUpReminderUpdateManyWithWhereWithoutLeadInput[]
     deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput> | SalesCrmBatchRequestCreateWithoutLeadInput[] | SalesCrmBatchRequestUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesCrmBatchRequestCreateOrConnectWithoutLeadInput | SalesCrmBatchRequestCreateOrConnectWithoutLeadInput[]
+    upsert?: SalesCrmBatchRequestUpsertWithWhereUniqueWithoutLeadInput | SalesCrmBatchRequestUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: SalesCrmBatchRequestCreateManyLeadInputEnvelope
+    set?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    disconnect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    delete?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    connect?: SalesCrmBatchRequestWhereUniqueInput | SalesCrmBatchRequestWhereUniqueInput[]
+    update?: SalesCrmBatchRequestUpdateWithWhereUniqueWithoutLeadInput | SalesCrmBatchRequestUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: SalesCrmBatchRequestUpdateManyWithWhereWithoutLeadInput | SalesCrmBatchRequestUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
   }
 
   export type LeadCreateNestedOneWithoutFollowUpsInput = {
@@ -147991,6 +151608,23 @@ export namespace Prisma {
     _max?: NestedEnumNotificationKindFilter<$PrismaModel>
   }
 
+  export type NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SalesCrmBatchRequestStatus | EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel> | $Enums.SalesCrmBatchRequestStatus
+  }
+
+  export type NestedEnumSalesCrmBatchRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SalesCrmBatchRequestStatus | EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SalesCrmBatchRequestStatus[] | ListEnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSalesCrmBatchRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.SalesCrmBatchRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumCourseEditRequestStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CourseEditRequestStatus | EnumCourseEditRequestStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CourseEditRequestStatus[] | ListEnumCourseEditRequestStatusFieldRefInput<$PrismaModel>
@@ -148396,6 +152030,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -148432,6 +152067,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -149297,6 +152933,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutAssignedToInput = {
@@ -149344,6 +152981,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutAssignedToInput = {
@@ -149353,6 +152991,94 @@ export namespace Prisma {
 
   export type LeadCreateManyAssignedToInputEnvelope = {
     data: LeadCreateManyAssignedToInput | LeadCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesCrmBatchRequestCreateWithoutRequestedByInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutRequestedByInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyRequestedByInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyRequestedByInput | SalesCrmBatchRequestCreateManyRequestedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesCrmBatchRequestCreateWithoutAssignedToInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutAssignedToInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyAssignedToInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyAssignedToInput | SalesCrmBatchRequestCreateManyAssignedToInput[]
     skipDuplicates?: boolean
   }
 
@@ -149401,6 +153127,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutCreatedByInput = {
@@ -149448,6 +153175,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutCreatedByInput = {
@@ -149505,6 +153233,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutUpdatedByInput = {
@@ -149552,6 +153281,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutUpdatedByInput = {
@@ -149806,6 +153536,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -149842,6 +153573,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -150572,6 +154304,59 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }
 
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutRequestedByInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedUpdateWithoutRequestedByInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutRequestedByInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutRequestedByInput, SalesCrmBatchRequestUncheckedUpdateWithoutRequestedByInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutRequestedByInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByInput>
+  }
+
+  export type SalesCrmBatchRequestScalarWhereInput = {
+    AND?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+    OR?: SalesCrmBatchRequestScalarWhereInput[]
+    NOT?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
+    id?: StringFilter<"SalesCrmBatchRequest"> | string
+    leadId?: StringFilter<"SalesCrmBatchRequest"> | string
+    branchId?: StringFilter<"SalesCrmBatchRequest"> | string
+    courseId?: StringFilter<"SalesCrmBatchRequest"> | string
+    requestedById?: StringFilter<"SalesCrmBatchRequest"> | string
+    assignedToId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedMode?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestedSchedule?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    requestDetails?: StringFilter<"SalesCrmBatchRequest"> | string
+    status?: EnumSalesCrmBatchRequestStatusFilter<"SalesCrmBatchRequest"> | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    resolvedBatchId?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    statusUpdatedById?: StringNullableFilter<"SalesCrmBatchRequest"> | string | null
+    createdAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesCrmBatchRequest"> | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutAssignedToInput, SalesCrmBatchRequestUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutAssignedToInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
   export type LeadUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: LeadWhereUniqueInput
     update: XOR<LeadUpdateWithoutCreatedByInput, LeadUncheckedUpdateWithoutCreatedByInput>
@@ -150846,6 +154631,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -150898,6 +154685,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -150995,6 +154784,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -151047,6 +154838,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -151134,6 +154927,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -151186,6 +154981,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -151237,6 +155034,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchInput = {
@@ -151276,6 +155074,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchInput = {
@@ -151324,6 +155123,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -151363,6 +155163,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -152136,6 +155937,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SalesCrmBatchRequestCreateWithoutBranchInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutBranchInput = {
+    id?: string
+    leadId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutBranchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyBranchInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyBranchInput | SalesCrmBatchRequestCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LeadCreateWithoutBranchInput = {
     id?: string
     leadId: string
@@ -152181,6 +156026,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutBranchInput = {
@@ -152228,6 +156074,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutBranchInput = {
@@ -152294,6 +156141,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -152346,6 +156195,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -152916,6 +156767,22 @@ export namespace Prisma {
     data: XOR<SalesAdminBranchUpdateManyMutationInput, SalesAdminBranchUncheckedUpdateManyWithoutBranchInput>
   }
 
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutBranchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutBranchInput, SalesCrmBatchRequestUncheckedUpdateWithoutBranchInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutBranchInput, SalesCrmBatchRequestUncheckedCreateWithoutBranchInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutBranchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutBranchInput, SalesCrmBatchRequestUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutBranchInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchInput>
+  }
+
   export type LeadUpsertWithWhereUniqueWithoutBranchInput = {
     where: LeadWhereUniqueInput
     update: XOR<LeadUpdateWithoutBranchInput, LeadUncheckedUpdateWithoutBranchInput>
@@ -152975,6 +156842,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -153027,6 +156896,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -153074,6 +156945,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -153110,6 +156982,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -153172,6 +157045,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -153224,6 +157099,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -153277,6 +157154,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -153313,6 +157191,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -153359,6 +157238,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -153411,6 +157292,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -153479,6 +157362,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -153531,6 +157416,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -153642,6 +157529,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -153694,6 +157583,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -153827,6 +157718,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -153879,6 +157772,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -153886,6 +157781,1194 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type LeadCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    branchId: string
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutSalesCrmBatchRequestsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutSalesCrmBatchRequestsInput, LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutSalesCrmBatchRequestsInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutSalesCrmBatchRequestsInput, BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchCourseCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchCoursesInput
+    installmentTemplate?: BranchInstallmentTemplateCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutCourseInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadCreateNestedManyWithoutCourseInput
+  }
+
+  export type BranchCourseUncheckedCreateWithoutSalesCrmBatchRequestsInput = {
+    id?: string
+    branchId: string
+    courseCode: string
+    name: string
+    nameKey: string
+    courseType?: string
+    academicTestCount?: number
+    description?: string | null
+    mode: string
+    duration?: number | null
+    hours?: number | null
+    actualFees?: number | null
+    registrationFees?: number | null
+    discount?: number | null
+    afterDiscount?: number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedCreateNestedOneWithoutBranchCourseInput
+    modules?: BranchCourseModuleUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyAssignments?: BranchFacultyCourseUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchCourseInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutCourseInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutCourseInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchCourseInput
+    exams?: ExamUncheckedCreateNestedManyWithoutBranchCourseInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type BranchCourseCreateOrConnectWithoutSalesCrmBatchRequestsInput = {
+    where: BranchCourseWhereUniqueInput
+    create: XOR<BranchCourseCreateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type UserCreateWithoutCreatedSalesCrmBatchRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedSalesCrmBatchRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput>
+  }
+
+  export type UserCreateWithoutAssignedSalesCrmBatchRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedSalesCrmBatchRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchBatchCreateWithoutResolvedSalesCrmRequestsInput = {
+    id?: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutBranchBatchesInput
+    branchCourse: BranchCourseCreateNestedOneWithoutBranchBatchesInput
+    branchFaculty: BranchFacultyCreateNestedOneWithoutBranchBatchesInput
+    examSchedules?: ExamScheduleCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchUncheckedCreateWithoutResolvedSalesCrmRequestsInput = {
+    id?: string
+    branchId: string
+    branchCourseId: string
+    branchFacultyId: string
+    batchId: string
+    courseId: string
+    courseName: string
+    facultyId: string
+    facultyName: string
+    facultyEmail: string
+    batchName: string
+    startTime: string
+    startPeriod: string
+    endTime: string
+    endPeriod: string
+    batchTiming: string
+    totalSeats: number
+    offlineSeats?: number
+    weekType?: string | null
+    mode?: string | null
+    courseStartDate?: string | null
+    courseEndDate?: string | null
+    weeklyOffDay?: string | null
+    sequenceNo?: number
+    status?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    examSchedules?: ExamScheduleUncheckedCreateNestedManyWithoutBranchBatchInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestBatches?: AcademicTestBatchUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
+    academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
+  }
+
+  export type BranchBatchCreateOrConnectWithoutResolvedSalesCrmRequestsInput = {
+    where: BranchBatchWhereUniqueInput
+    create: XOR<BranchBatchCreateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedCreateWithoutResolvedSalesCrmRequestsInput>
+  }
+
+  export type LeadUpsertWithoutSalesCrmBatchRequestsInput = {
+    update: XOR<LeadUpdateWithoutSalesCrmBatchRequestsInput, LeadUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+    create: XOR<LeadCreateWithoutSalesCrmBatchRequestsInput, LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutSalesCrmBatchRequestsInput, LeadUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type LeadUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type BranchUpsertWithoutSalesCrmBatchRequestsInput = {
+    update: XOR<BranchUpdateWithoutSalesCrmBatchRequestsInput, BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+    create: XOR<BranchCreateWithoutSalesCrmBatchRequestsInput, BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutSalesCrmBatchRequestsInput, BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchCourseUpsertWithoutSalesCrmBatchRequestsInput = {
+    update: XOR<BranchCourseUpdateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+    create: XOR<BranchCourseCreateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedCreateWithoutSalesCrmBatchRequestsInput>
+    where?: BranchCourseWhereInput
+  }
+
+  export type BranchCourseUpdateToOneWithWhereWithoutSalesCrmBatchRequestsInput = {
+    where?: BranchCourseWhereInput
+    data: XOR<BranchCourseUpdateWithoutSalesCrmBatchRequestsInput, BranchCourseUncheckedUpdateWithoutSalesCrmBatchRequestsInput>
+  }
+
+  export type BranchCourseUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchCoursesNestedInput
+    installmentTemplate?: BranchInstallmentTemplateUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutCourseNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUpdateManyWithoutCourseNestedInput
+  }
+
+  export type BranchCourseUncheckedUpdateWithoutSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nameKey?: StringFieldUpdateOperationsInput | string
+    courseType?: StringFieldUpdateOperationsInput | string
+    academicTestCount?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: StringFieldUpdateOperationsInput | string
+    duration?: NullableIntFieldUpdateOperationsInput | number | null
+    hours?: NullableIntFieldUpdateOperationsInput | number | null
+    actualFees?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationFees?: NullableIntFieldUpdateOperationsInput | number | null
+    discount?: NullableIntFieldUpdateOperationsInput | number | null
+    afterDiscount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentPlans?: NullableJsonNullValueInput | InputJsonValue
+    paymentPlanSelections?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    installmentTemplate?: BranchInstallmentTemplateUncheckedUpdateOneWithoutBranchCourseNestedInput
+    modules?: BranchCourseModuleUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyAssignments?: BranchFacultyCourseUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchCourseNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutCourseNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutCourseNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchCourseNestedInput
+    exams?: ExamUncheckedUpdateManyWithoutBranchCourseNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedSalesCrmBatchRequestsInput = {
+    update: XOR<UserUpdateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput>
+    create: XOR<UserCreateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedSalesCrmBatchRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedSalesCrmBatchRequestsInput, UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput>
+  }
+
+  export type UserUpdateWithoutCreatedSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedSalesCrmBatchRequestsInput = {
+    update: XOR<UserUpdateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput>
+    create: XOR<UserCreateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedSalesCrmBatchRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedSalesCrmBatchRequestsInput, UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput>
+  }
+
+  export type UserUpdateWithoutAssignedSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type BranchBatchUpsertWithoutResolvedSalesCrmRequestsInput = {
+    update: XOR<BranchBatchUpdateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedUpdateWithoutResolvedSalesCrmRequestsInput>
+    create: XOR<BranchBatchCreateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedCreateWithoutResolvedSalesCrmRequestsInput>
+    where?: BranchBatchWhereInput
+  }
+
+  export type BranchBatchUpdateToOneWithWhereWithoutResolvedSalesCrmRequestsInput = {
+    where?: BranchBatchWhereInput
+    data: XOR<BranchBatchUpdateWithoutResolvedSalesCrmRequestsInput, BranchBatchUncheckedUpdateWithoutResolvedSalesCrmRequestsInput>
+  }
+
+  export type BranchBatchUpdateWithoutResolvedSalesCrmRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchCourse?: BranchCourseUpdateOneRequiredWithoutBranchBatchesNestedInput
+    branchFaculty?: BranchFacultyUpdateOneRequiredWithoutBranchBatchesNestedInput
+    examSchedules?: ExamScheduleUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
+  }
+
+  export type BranchBatchUncheckedUpdateWithoutResolvedSalesCrmRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchCourseId?: StringFieldUpdateOperationsInput | string
+    branchFacultyId?: StringFieldUpdateOperationsInput | string
+    batchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    courseName?: StringFieldUpdateOperationsInput | string
+    facultyId?: StringFieldUpdateOperationsInput | string
+    facultyName?: StringFieldUpdateOperationsInput | string
+    facultyEmail?: StringFieldUpdateOperationsInput | string
+    batchName?: StringFieldUpdateOperationsInput | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    startPeriod?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
+    endPeriod?: StringFieldUpdateOperationsInput | string
+    batchTiming?: StringFieldUpdateOperationsInput | string
+    totalSeats?: IntFieldUpdateOperationsInput | number
+    offlineSeats?: IntFieldUpdateOperationsInput | number
+    weekType?: NullableStringFieldUpdateOperationsInput | string | null
+    mode?: NullableStringFieldUpdateOperationsInput | string | null
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    sequenceNo?: IntFieldUpdateOperationsInput | number
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    examSchedules?: ExamScheduleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestBatches?: AcademicTestBatchUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
+    academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
   export type NotificationCreateWithoutRequestInput = {
@@ -154031,6 +159114,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -154083,6 +159168,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -154151,6 +159238,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -154203,6 +159292,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -154359,6 +159450,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -154395,6 +159487,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -154781,6 +159874,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -154817,6 +159911,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -155079,6 +160174,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -155115,6 +160211,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -155330,6 +160427,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -155369,6 +160467,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -156001,6 +161100,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutCourseInput = {
@@ -156048,6 +161148,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutCourseInput = {
@@ -156057,6 +161158,50 @@ export namespace Prisma {
 
   export type LeadCreateManyCourseInputEnvelope = {
     data: LeadCreateManyCourseInput | LeadCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesCrmBatchRequestCreateWithoutCourseInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutCourseInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutCourseInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyCourseInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyCourseInput | SalesCrmBatchRequestCreateManyCourseInput[]
     skipDuplicates?: boolean
   }
 
@@ -156104,6 +161249,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -156140,6 +161286,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -156512,6 +161659,22 @@ export namespace Prisma {
     data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutCourseInput>
   }
 
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutCourseInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutCourseInput, SalesCrmBatchRequestUncheckedUpdateWithoutCourseInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutCourseInput, SalesCrmBatchRequestUncheckedCreateWithoutCourseInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutCourseInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutCourseInput, SalesCrmBatchRequestUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutCourseInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseInput>
+  }
+
   export type BranchCourseCreateWithoutModulesInput = {
     id?: string
     courseCode: string
@@ -156549,6 +161712,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutModulesInput = {
@@ -156588,6 +161752,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutModulesInput = {
@@ -156791,6 +161956,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutModulesInput = {
@@ -156830,6 +161996,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseSubmoduleUpsertWithWhereUniqueWithoutBranchCourseModuleInput = {
@@ -157509,6 +162676,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -157561,6 +162730,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -157684,6 +162855,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -157736,6 +162909,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -157778,6 +162953,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -157814,6 +162990,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -157859,6 +163036,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchBatchesInput = {
@@ -157898,6 +163076,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchBatchesInput = {
@@ -158234,6 +163413,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SalesCrmBatchRequestCreateWithoutResolvedBatchInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutResolvedBatchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyResolvedBatchInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyResolvedBatchInput | SalesCrmBatchRequestCreateManyResolvedBatchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AcademicTestReportHistoryCreateWithoutBatchInput = {
     id?: string
     createdAt?: Date | string
@@ -158306,6 +163529,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -158342,6 +163566,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -158393,6 +163618,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchBatchesInput = {
@@ -158432,6 +163658,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchFacultyUpsertWithoutBranchBatchesInput = {
@@ -158661,6 +163888,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BatchCycle"> | Date | string
   }
 
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutResolvedBatchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedUpdateWithoutResolvedBatchInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedCreateWithoutResolvedBatchInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutResolvedBatchInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutResolvedBatchInput, SalesCrmBatchRequestUncheckedUpdateWithoutResolvedBatchInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutResolvedBatchInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchInput>
+  }
+
   export type AcademicTestReportHistoryUpsertWithWhereUniqueWithoutBatchInput = {
     where: AcademicTestReportHistoryWhereUniqueInput
     update: XOR<AcademicTestReportHistoryUpdateWithoutBatchInput, AcademicTestReportHistoryUncheckedUpdateWithoutBatchInput>
@@ -158726,6 +163969,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicTestsInput = {
@@ -158765,6 +164009,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicTestsInput = {
@@ -158882,6 +164127,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicTestsInput = {
@@ -158921,6 +164167,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type AcademicTestItemUpsertWithWhereUniqueWithoutAcademicTestInput = {
@@ -159292,6 +164539,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -159331,6 +164579,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -159415,6 +164664,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -159454,6 +164704,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -159531,6 +164782,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicQuestionPapersInput = {
@@ -159570,6 +164822,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicQuestionPapersInput = {
@@ -159613,6 +164866,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -159652,6 +164906,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -159822,6 +165077,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicQuestionPapersInput = {
@@ -159861,6 +165117,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchBatchUpsertWithoutAcademicQuestionPapersInput = {
@@ -159910,6 +165167,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -159949,6 +165207,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -160178,6 +165437,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAcademicTestProjectsInput = {
@@ -160217,6 +165477,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAcademicTestProjectsInput = {
@@ -160260,6 +165521,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -160299,6 +165561,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -160429,6 +165692,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAcademicTestProjectsInput = {
@@ -160468,6 +165732,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchBatchUpsertWithoutAcademicTestProjectsInput = {
@@ -160517,6 +165782,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -160556,6 +165822,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -160737,6 +166004,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -160776,6 +166044,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -161057,6 +166326,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -161096,6 +166366,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -161260,6 +166531,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -161299,6 +166571,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -161624,6 +166897,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -161663,6 +166937,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -162295,6 +167570,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -162331,6 +167607,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -162384,6 +167661,7 @@ export namespace Prisma {
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutConvertedStudentInput = {
@@ -162431,6 +167709,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutConvertedStudentInput = {
@@ -162475,6 +167754,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchStudentsInput = {
@@ -162514,6 +167794,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchStudentsInput = {
@@ -163241,6 +168522,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -163277,6 +168559,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -163336,6 +168619,7 @@ export namespace Prisma {
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutConvertedStudentInput = {
@@ -163383,6 +168667,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchStudentsInput = {
@@ -163433,6 +168718,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchStudentsInput = {
@@ -163472,6 +168758,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithWhereUniqueWithoutBranchStudentInput = {
@@ -163996,6 +169283,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -164032,6 +169320,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -164077,6 +169366,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutStudentEnrollmentsInput = {
@@ -164116,6 +169406,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutStudentEnrollmentsInput = {
@@ -164385,6 +169676,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -164421,6 +169713,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -164472,6 +169765,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutStudentEnrollmentsInput = {
@@ -164511,6 +169805,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchStudentCreateWithoutCalendarAttendanceRecordsInput = {
@@ -164719,6 +170014,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -164771,6 +170068,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -165008,6 +170307,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -165060,6 +170361,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -165102,6 +170405,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -165138,6 +170442,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -165190,6 +170495,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -165226,6 +170532,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -165262,6 +170569,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -165298,6 +170606,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -165350,6 +170659,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -165386,6 +170696,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -165882,6 +171193,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -165918,6 +171230,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -166024,6 +171337,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -166076,6 +171391,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -166201,6 +171518,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -166237,6 +171555,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -166355,6 +171674,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -166407,6 +171728,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -167334,6 +172657,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -167386,6 +172711,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -167486,6 +172813,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -167538,6 +172867,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -167606,6 +172937,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -167658,6 +172991,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -167726,6 +173061,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -167778,6 +173115,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -167865,6 +173204,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -167917,6 +173258,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -168026,6 +173369,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -168078,6 +173423,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -168130,6 +173477,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -168182,6 +173531,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -168233,6 +173584,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -168272,6 +173624,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -168377,6 +173730,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -168429,6 +173784,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -168486,6 +173843,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -168525,6 +173883,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type FacultyTodayWorkStudentEntryUpsertWithWhereUniqueWithoutFacultyTodayWorkEntryInput = {
@@ -168804,6 +174163,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -168843,6 +174203,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -169134,6 +174495,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyTodayWorkStudentEntriesInput = {
@@ -169173,6 +174535,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserCreateWithoutMarkedStudentAttendancesInput = {
@@ -169218,6 +174581,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -169270,6 +174635,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -169447,6 +174814,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -169499,6 +174868,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -169660,6 +175031,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutBranchFacultiesInput = {
@@ -169699,6 +175071,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutBranchFacultiesInput = {
@@ -169739,6 +175112,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -169775,6 +175149,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -169896,6 +175271,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -169935,6 +175311,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -170076,6 +175453,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -170115,6 +175493,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchUpsertWithoutBranchFacultiesInput = {
@@ -170161,6 +175540,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -170197,6 +175577,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -170374,6 +175755,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -170426,6 +175809,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -170473,6 +175858,7 @@ export namespace Prisma {
     courses?: CourseCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -170509,6 +175895,7 @@ export namespace Prisma {
     courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -170571,6 +175958,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -170623,6 +176012,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -170676,6 +176067,7 @@ export namespace Prisma {
     courses?: CourseUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -170712,6 +176104,7 @@ export namespace Prisma {
     courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -170807,6 +176200,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutFacultyAssignmentsInput = {
@@ -170846,6 +176240,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutFacultyAssignmentsInput = {
@@ -170962,6 +176357,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutFacultyAssignmentsInput = {
@@ -171001,6 +176397,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCreateWithoutBranchInstallmentTemplatesInput = {
@@ -171036,6 +176433,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -171072,6 +176470,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -171117,6 +176516,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutInstallmentTemplateInput = {
@@ -171156,6 +176556,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutInstallmentTemplateInput = {
@@ -171207,6 +176608,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -171243,6 +176645,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -171294,6 +176697,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutInstallmentTemplateInput = {
@@ -171333,6 +176737,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseCreateWithoutAssessmentsInput = {
@@ -171372,6 +176777,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutAssessmentsInput = {
@@ -171411,6 +176817,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutAssessmentsInput = {
@@ -171493,6 +176900,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -171532,6 +176940,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -171626,6 +177035,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -171678,6 +177089,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -172056,6 +177469,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutAssessmentsInput = {
@@ -172095,6 +177509,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutAssessmentsInput = {
@@ -172189,6 +177604,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -172228,6 +177644,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -172334,6 +177751,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -172386,6 +177805,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -172910,6 +178331,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -172962,6 +178385,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -173256,6 +178681,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -173308,6 +178735,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -173354,6 +178783,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
     leads?: LeadCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutExamsInput = {
@@ -173393,6 +178823,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
     leads?: LeadUncheckedCreateNestedManyWithoutCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutExamsInput = {
@@ -173482,6 +178913,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -173534,6 +178967,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -173978,6 +179413,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutExamsInput = {
@@ -174017,6 +179453,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseModuleUpsertWithoutExamsInput = {
@@ -174118,6 +179555,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -174170,6 +179609,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -174567,6 +180008,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryCreateNestedManyWithoutBatchInput
   }
 
@@ -174606,6 +180048,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedCreateNestedManyWithoutBatchInput
   }
 
@@ -174809,6 +180252,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -174848,6 +180292,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -175356,6 +180801,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -175408,6 +180855,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -175759,6 +181208,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -175811,6 +181262,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -176030,6 +181483,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLeadsInput = {
@@ -176066,6 +181520,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLeadsInput = {
@@ -176110,6 +181565,7 @@ export namespace Prisma {
     academicTests?: AcademicTestCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseUncheckedCreateWithoutLeadsInput = {
@@ -176149,6 +181605,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedCreateNestedManyWithoutBranchCourseInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedCreateNestedManyWithoutBranchCourseInput
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchCourseInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type BranchCourseCreateOrConnectWithoutLeadsInput = {
@@ -176199,6 +181656,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -176251,6 +181710,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -176309,6 +181770,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
@@ -176361,6 +181824,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
@@ -176418,6 +181883,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
@@ -176470,6 +181937,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
@@ -176808,6 +182277,50 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SalesCrmBatchRequestCreateWithoutLeadInput = {
+    id?: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    course: BranchCourseCreateNestedOneWithoutSalesCrmBatchRequestsInput
+    requestedBy: UserCreateNestedOneWithoutCreatedSalesCrmBatchRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedSalesCrmBatchRequestsInput
+    resolvedBatch?: BranchBatchCreateNestedOneWithoutResolvedSalesCrmRequestsInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedCreateWithoutLeadInput = {
+    id?: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateOrConnectWithoutLeadInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    create: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput>
+  }
+
+  export type SalesCrmBatchRequestCreateManyLeadInputEnvelope = {
+    data: SalesCrmBatchRequestCreateManyLeadInput | SalesCrmBatchRequestCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BranchUpsertWithoutLeadsInput = {
     update: XOR<BranchUpdateWithoutLeadsInput, BranchUncheckedUpdateWithoutLeadsInput>
     create: XOR<BranchCreateWithoutLeadsInput, BranchUncheckedCreateWithoutLeadsInput>
@@ -176853,6 +182366,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLeadsInput = {
@@ -176889,6 +182403,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutLeadsInput = {
@@ -176939,6 +182454,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutLeadsInput = {
@@ -176978,6 +182494,7 @@ export namespace Prisma {
     academicTests?: AcademicTestUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserUpsertWithoutAssignedLeadsInput = {
@@ -177034,6 +182551,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -177086,6 +182605,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -177150,6 +182671,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
@@ -177202,6 +182725,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -177265,6 +182790,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
@@ -177317,6 +182844,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -177574,6 +183103,22 @@ export namespace Prisma {
     data: XOR<FollowUpReminderUpdateManyMutationInput, FollowUpReminderUncheckedUpdateManyWithoutLeadInput>
   }
 
+  export type SalesCrmBatchRequestUpsertWithWhereUniqueWithoutLeadInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    update: XOR<SalesCrmBatchRequestUpdateWithoutLeadInput, SalesCrmBatchRequestUncheckedUpdateWithoutLeadInput>
+    create: XOR<SalesCrmBatchRequestCreateWithoutLeadInput, SalesCrmBatchRequestUncheckedCreateWithoutLeadInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateWithWhereUniqueWithoutLeadInput = {
+    where: SalesCrmBatchRequestWhereUniqueInput
+    data: XOR<SalesCrmBatchRequestUpdateWithoutLeadInput, SalesCrmBatchRequestUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type SalesCrmBatchRequestUpdateManyWithWhereWithoutLeadInput = {
+    where: SalesCrmBatchRequestScalarWhereInput
+    data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadInput>
+  }
+
   export type LeadCreateWithoutFollowUpsInput = {
     id?: string
     leadId: string
@@ -177619,6 +183164,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutFollowUpsInput = {
@@ -177666,6 +183212,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutFollowUpsInput = {
@@ -177717,6 +183264,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
@@ -177769,6 +183318,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
@@ -177870,6 +183421,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutFollowUpsInput = {
@@ -177917,6 +183469,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadFollowUpsInput = {
@@ -177974,6 +183527,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
@@ -178026,6 +183581,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -178095,6 +183652,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutStageHistoryInput = {
@@ -178142,6 +183700,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutStageHistoryInput = {
@@ -178193,6 +183752,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -178245,6 +183806,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -178314,6 +183877,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutStageHistoryInput = {
@@ -178361,6 +183925,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadStageChangesInput = {
@@ -178418,6 +183983,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -178470,6 +184037,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -178523,6 +184092,7 @@ export namespace Prisma {
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutActivitiesInput = {
@@ -178570,6 +184140,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutActivitiesInput = {
@@ -178621,6 +184192,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -178673,6 +184246,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -178742,6 +184317,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutActivitiesInput = {
@@ -178789,6 +184365,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutLeadActivitiesInput = {
@@ -178846,6 +184423,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -178898,6 +184477,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -178951,6 +184532,7 @@ export namespace Prisma {
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutRecordingsInput = {
@@ -178998,6 +184580,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutRecordingsInput = {
@@ -179082,6 +184665,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -179134,6 +184719,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -179203,6 +184790,7 @@ export namespace Prisma {
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutRecordingsInput = {
@@ -179250,6 +184838,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadFollowUpUpsertWithoutRecordingsInput = {
@@ -179346,6 +184935,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -179398,6 +184989,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -179451,6 +185044,7 @@ export namespace Prisma {
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutFollowUpRemindersInput = {
@@ -179498,6 +185092,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutFollowUpRemindersInput = {
@@ -179549,6 +185144,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -179601,6 +185198,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -179670,6 +185269,7 @@ export namespace Prisma {
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutFollowUpRemindersInput = {
@@ -179717,6 +185317,7 @@ export namespace Prisma {
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type UserUpsertWithoutFollowUpRemindersInput = {
@@ -179774,6 +185375,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -179826,6 +185429,8 @@ export namespace Prisma {
     academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -180627,6 +186232,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestCreateNestedManyWithoutResolvedBatchInput
   }
 
   export type BranchBatchUncheckedCreateWithoutAcademicTestReportHistoriesInput = {
@@ -180666,6 +186272,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedCreateNestedManyWithoutBranchBatchInput
     academicTestCycles?: AcademicTestCycleUncheckedCreateNestedManyWithoutBranchBatchInput
     cycles?: BatchCycleUncheckedCreateNestedManyWithoutBatchInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutResolvedBatchInput
   }
 
   export type BranchBatchCreateOrConnectWithoutAcademicTestReportHistoriesInput = {
@@ -180833,6 +186440,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
   }
 
   export type BranchBatchUncheckedUpdateWithoutAcademicTestReportHistoriesInput = {
@@ -180872,6 +186480,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
   }
 
   export type BatchCycleUpsertWithoutReportHistoriesInput = {
@@ -181048,6 +186657,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
@@ -181100,6 +186711,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
     assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
@@ -181197,6 +186810,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
@@ -181249,6 +186864,8 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
     assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -181454,6 +187071,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -181490,6 +187108,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -181750,6 +187369,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -181786,6 +187406,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -181867,6 +187488,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
   }
 
@@ -181903,6 +187525,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -182118,6 +187741,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
   }
 
@@ -182154,6 +187778,7 @@ export namespace Prisma {
     facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -182685,6 +188310,40 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateManyRequestedByInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmBatchRequestCreateManyAssignedToInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -183857,6 +189516,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutAssignedToInput = {
@@ -183904,6 +189564,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutAssignedToInput = {
@@ -183943,6 +189604,108 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -183992,6 +189755,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutCreatedByInput = {
@@ -184039,6 +189803,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutCreatedByInput = {
@@ -184127,6 +189892,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutUpdatedByInput = {
@@ -184174,6 +189940,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutUpdatedByInput = {
@@ -184771,6 +190538,23 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type SalesCrmBatchRequestCreateManyBranchInput = {
+    id?: string
+    leadId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type LeadCreateManyBranchInput = {
     id?: string
     leadId: string
@@ -184849,6 +190633,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateWithoutBranchInput = {
@@ -184888,6 +190673,7 @@ export namespace Prisma {
     academicQuestionPapers?: AcademicQuestionPaperUncheckedUpdateManyWithoutBranchCourseNestedInput
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchCourseNestedInput
     leads?: LeadUncheckedUpdateManyWithoutCourseNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type BranchCourseUncheckedUpdateManyWithoutBranchInput = {
@@ -184950,6 +190736,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -184989,6 +190776,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -185959,6 +191747,57 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SalesCrmBatchRequestUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LeadUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     leadId?: StringFieldUpdateOperationsInput | string
@@ -186004,6 +191843,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutBranchInput = {
@@ -186051,6 +191891,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutBranchInput = {
@@ -187188,6 +193029,23 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type SalesCrmBatchRequestCreateManyCourseInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BranchCourseModuleUpdateWithoutBranchCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -187374,6 +193232,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -187413,6 +193272,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -188196,6 +194056,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutCourseInput = {
@@ -188243,6 +194104,7 @@ export namespace Prisma {
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateManyWithoutCourseInput = {
@@ -188282,6 +194144,57 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -188699,6 +194612,23 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type SalesCrmBatchRequestCreateManyResolvedBatchInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AcademicTestReportHistoryCreateManyBatchInput = {
     id?: string
     batchCycleId: string
@@ -188996,6 +194926,57 @@ export namespace Prisma {
     endDate?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     freezeUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateWithoutResolvedBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutResolvedBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -191650,6 +197631,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUpdateManyWithoutBatchNestedInput
   }
 
@@ -191689,6 +197671,7 @@ export namespace Prisma {
     academicTestProjects?: AcademicTestProjectUncheckedUpdateManyWithoutBranchBatchNestedInput
     academicTestCycles?: AcademicTestCycleUncheckedUpdateManyWithoutBranchBatchNestedInput
     cycles?: BatchCycleUncheckedUpdateManyWithoutBatchNestedInput
+    resolvedSalesCrmRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutResolvedBatchNestedInput
     academicTestReportHistories?: AcademicTestReportHistoryUncheckedUpdateManyWithoutBatchNestedInput
   }
 
@@ -192415,6 +198398,23 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type SalesCrmBatchRequestCreateManyLeadInput = {
+    id?: string
+    branchId: string
+    courseId: string
+    requestedById: string
+    assignedToId?: string | null
+    requestedMode?: string | null
+    requestedSchedule?: string | null
+    requestDetails: string
+    status?: $Enums.SalesCrmBatchRequestStatus
+    activeKey?: string | null
+    resolvedBatchId?: string | null
+    statusUpdatedById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type LeadFollowUpUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
     followUpDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -192578,6 +198578,57 @@ export namespace Prisma {
     notificationId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutSalesCrmBatchRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutCreatedSalesCrmBatchRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedSalesCrmBatchRequestsNestedInput
+    resolvedBatch?: BranchBatchUpdateOneWithoutResolvedSalesCrmRequestsNestedInput
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    courseId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedMode?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDetails?: StringFieldUpdateOperationsInput | string
+    status?: EnumSalesCrmBatchRequestStatusFieldUpdateOperationsInput | $Enums.SalesCrmBatchRequestStatus
+    activeKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    statusUpdatedById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

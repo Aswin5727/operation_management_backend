@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+﻿import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { sendFacultyWeekOffApprovalEmail, sendFacultyWeekOffRejectionEmail } from "../../common/services/resendEmail.js";
 
@@ -21,6 +21,8 @@ const NOTIFICATION_KIND_MAP = {
   STUDENT_MOTIVATION: "student-motivation",
   STUDENT_DISCONTINUATION: "student-discontinuation",
   SALES_CRM_ADMISSION: "sales-crm-admission",
+  SALES_CRM_BATCH_REQUEST: "sales-crm-batch-request",
+  SALES_CRM_BATCH_REQUEST_UPDATE: "sales-crm-batch-request-update",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -38,6 +40,7 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "STUDENT_MOTIVATION",
   "STUDENT_DISCONTINUATION",
   "SALES_CRM_ADMISSION",
+  "SALES_CRM_BATCH_REQUEST",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
@@ -47,6 +50,8 @@ const SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "LEAD_FOLLOW_UP_DUE",
   "LEAD_FOLLOW_UP_OVERDUE",
   "SALES_CRM_MONTHLY_REPORT",
+  "PENDING_STUDENT_ADMISSION_REMINDER",
+  "SALES_CRM_BATCH_REQUEST_UPDATE",
 ]);
 const SUPER_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_CREATED",
@@ -1049,7 +1054,7 @@ export async function createFacultyLeaveRequestChangeNotification({ request = {}
     const separatorIndex = change.indexOf(" changed: ");
     if (separatorIndex < 0) return `The requested ${change.replace(/ changed$/, "")} has been changed.`;
     const field = change.slice(0, separatorIndex);
-    const values = change.slice(separatorIndex + " changed: ".length).split(" → ");
+    const values = change.slice(separatorIndex + " changed: ".length).split(" â†’ ");
     return `The requested ${field} has been changed from ${values[0] || "-"} to ${values[1] || "-"}.`;
   });
   const dateLabel = `${request?.fromDate || "-"}${request?.fromDate !== request?.toDate ? ` - ${request?.toDate || "-"}` : ""}`;
@@ -1576,3 +1581,5 @@ export async function createFeeProgressAlertNotification({
     prismaClient,
   );
 }
+
+

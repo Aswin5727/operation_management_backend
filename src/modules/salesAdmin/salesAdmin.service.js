@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+﻿import crypto from "node:crypto";
 import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
@@ -10,6 +10,7 @@ import { listBranchCourses } from "../branchCourses/branchCourses.service.js";
 import { listBranchBatches } from "../branchBatches/branchBatches.service.js";
 import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
 import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
+import { calculateAdmissionFeeDetails } from "./admissionFeeDetails.js";
 
 const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } } };
 const clean = (value) => String(value ?? "").trim();
@@ -94,7 +95,48 @@ async function resetSalesAdminPassword(userId, auth) {
 }
 
 async function getSalesAdminProfile(userId) { const user = await prisma.user.findUnique({ where: { id: userId }, select: USER_SELECT }); if (!user || user.role !== "SALES_ADMIN") throw new AppError("Sales Admin account not found", 404); return { ...toSafeUser(user), branches: user.salesAdminBranches.map(({ branch }) => branch) }; }
-async function getDashboard(userId, query = {}) { const profile = await getSalesAdminProfile(userId); const allowed = profile.branches.map((branch) => branch.id); const branchId = clean(query.branchId); if (branchId && !allowed.includes(branchId)) throw new AppError("You do not have access to this branch", 403); const branchIds = branchId ? [branchId] : allowed; const from = query.from ? new Date(query.from) : new Date(new Date().getFullYear(), new Date().getMonth(), 1); const to = query.to ? new Date(query.to) : new Date(); const admissions = branchIds.length ? await prisma.branchStudent.count({ where: { branchId: { in: branchIds }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }) : 0; return { data: { profile, scope: { branchIds }, range: { from, to }, cards: { newLeads: null, totalLeads: null, hotLeads: null, warmLeads: null, coldLeads: null, admissionsCompleted: admissions, expectedAdmissions: null }, chart: [], recentActivities: [] } }; }
+async function getDashboard(userId, query = {}) { try { await checkPendingHotAdmissionReminder(userId); } catch (error) { console.error("Unable to create daily pending admission reminder:", error?.message || error); } const profile = await getSalesAdminProfile(userId); const allowed = profile.branches.map((branch) => branch.id); const branchId = clean(query.branchId); if (branchId && !allowed.includes(branchId)) throw new AppError("You do not have access to this branch", 403); const branchIds = branchId ? [branchId] : allowed; const from = query.from ? new Date(query.from) : new Date(new Date().getFullYear(), new Date().getMonth(), 1); const to = query.to ? new Date(query.to) : new Date(); const admissions = branchIds.length ? await prisma.branchStudent.count({ where: { branchId: { in: branchIds }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }) : 0; return { data: { profile, scope: { branchIds }, range: { from, to }, cards: { newLeads: null, totalLeads: null, hotLeads: null, warmLeads: null, coldLeads: null, admissionsCompleted: admissions, expectedAdmissions: null }, chart: [], recentActivities: [] } }; }
+
+function salesAdminReminderDate(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+async function checkPendingHotAdmissionReminder(userId) {
+  const branchLinks = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
+  const branchIds = branchLinks.map(({ branchId }) => branchId);
+  const where = { branchId: { in: branchIds }, assignedToId: userId, stage: "HOT", status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] }, deletedAt: null };
+  const leads = branchIds.length ? await prisma.lead.findMany({ where, include: {
+    branch: { select: { id: true, branchId: true, branchName: true, status: true } },
+    course: { select: { id: true, name: true, courseCode: true } },
+    assignedTo: { select: { id: true, fullName: true } },
+    convertedStudent: { select: { studentId: true } },
+  }, orderBy: [{ studentName: "asc" }, { leadId: "asc" }] }) : [];
+  const students = leads.map((lead) => ({ ...admissionRow(lead), admissionStatus: lead.admissionStatus === "IN_PROGRESS" ? "IN_PROGRESS" : "PENDING" }));
+  const reminderDate = salesAdminReminderDate();
+  const notificationDescription = `PENDING_HOT_ADMISSIONS:${reminderDate}`;
+  const result = await prisma.$transaction(async (tx) => {
+    const claim = await tx.salesAdminAdmissionReminder.createMany({ data: [{ salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate }], skipDuplicates: true });
+    if (!claim.count) {
+      const existing = await tx.salesAdminAdmissionReminder.findUnique({ where: { salesAdminId_notificationType_reminderDate: { salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate } }, select: { notificationId: true } });
+      return { notification: existing?.notificationId ? await tx.notification.findUnique({ where: { id: existing.notificationId } }) : null, created: false };
+    }
+    if (!students.length) return { notification: null, created: false };
+    const created = await tx.notification.create({ data: {
+      kind: "PENDING_STUDENT_ADMISSION_REMINDER",
+      tone: "blue",
+      title: "Good Morning! Pending HOT Student Admissions",
+      message: `You have ${students.length} HOT lead${students.length === 1 ? "" : "s"} whose student admissions are still pending. Please review the list and complete the admission process.`,
+      actionLabel: "View Pending Admissions",
+      targetUserId: userId,
+      createdBy: userId,
+      requestDescription: notificationDescription,
+    } });
+    await tx.salesAdminAdmissionReminder.update({ where: { salesAdminId_notificationType_reminderDate: { salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate } }, data: { notificationId: created.id } });
+    return { notification: created, created: true };
+  });
+  return { count: students.length, students, notificationCreated: result.created, notification: result.notification };
+}
 
 function admissionLeadInclude() {
   return {
@@ -137,9 +179,26 @@ function admissionRow(lead) {
     paymentStatus: lead.paymentStatus,
     paymentAmount: lead.paymentAmount,
     assignedAdminName: lead.assignedTo?.fullName || "",
+    assignedToId: lead.assignedToId || "",
     admissionStatus: lead.status === "CONVERTED" ? "ADMITTED" : (lead.admissionStatus || "PENDING"),
     admissionStudent: student,
   };
+}
+
+async function getSalesAdminStudentFeeDetails(userId, studentId) {
+  const student = await prisma.branchStudent.findFirst({
+    where: { id: clean(studentId), sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } } },
+    include: {
+      sourceLead: { select: { branchId: true } },
+      courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
+      installments: { orderBy: [{ installmentNumber: "asc" }, { createdAt: "asc" }] },
+      payments: { include: { installment: { select: { courseId: true, installmentNumber: true } } }, orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }] },
+    },
+  });
+  if (!student) throw new AppError("Admitted student not found", 404);
+  const branchAccess = await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: userId, branchId: student.branchId } }, select: { id: true } });
+  if (!branchAccess) throw new AppError("You do not have access to this student", 403);
+  return calculateAdmissionFeeDetails(student);
 }
 
 async function listAllBranchAdmissionBatches(userId, branchId) {
@@ -218,11 +277,12 @@ async function listSalesAdminAdmissions(userId, query = {}) {
   if (branchId && !branchIds.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
   const scopedBranchIds = branchId ? [branchId] : branchIds;
   const status = clean(query.status || "ALL").toUpperCase();
-  if (!["ALL", "PENDING", "IN_PROGRESS", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
+  if (!["ALL", "PENDING", "IN_PROGRESS", "PENDING_HOT", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
   const where = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
   if (status === "ADMITTED") where.status = "CONVERTED";
   if (status === "IN_PROGRESS") { where.status = { not: "CONVERTED" }; where.admissionStatus = "IN_PROGRESS"; }
   if (status === "PENDING") { where.status = { not: "CONVERTED" }; where.OR = [{ admissionStatus: "PENDING" }, { admissionStatus: null }]; }
+  if (status === "PENDING_HOT") { where.status = { not: "CONVERTED" }; where.assignedToId = userId; where.admissionStatus = { in: ["PENDING", "IN_PROGRESS"] }; }
   const courseId = clean(query.courseId);
   if (courseId) where.courseId = courseId;
   const search = clean(query.search);
@@ -250,7 +310,7 @@ async function listSalesAdminAdmissions(userId, query = {}) {
   const branchBatchEntries = await Promise.all([...new Set(rows.map((lead) => lead.branchId).filter(Boolean))].map(async (id) => [id, await listAllBranchAdmissionBatches(userId, id)]));
   const batchesByBranch = new Map(branchBatchEntries);
   return {
-    data: rows.map((lead) => ({ ...admissionRow(lead), availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length })),
+    data: rows.map((lead) => ({ ...admissionRow(lead), canRequestBatch: lead.assignedToId === userId, availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length })),
     meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
     summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.amount || 0) },
     filters: { branches: profile.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
@@ -287,6 +347,10 @@ async function getSalesAdminAvailableBatches(userId, leadKey) {
   return getAdmissionBatchContext(userId, lead);
 }
 
+async function getPendingHotAdmissionReminder(userId) {
+  return checkPendingHotAdmissionReminder(userId);
+}
+
 async function startSalesAdminAdmission(userId, leadKey) {
   const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
   if (lead.status !== "CONVERTED" && lead.admissionStatus !== "IN_PROGRESS") {
@@ -306,4 +370,5 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   return createBranchStudent({ ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" }, { ...auth, id: userId, userId, role: "SALES_ADMIN" });
 }
 
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, startSalesAdminAdmission, convertSalesAdminLead };
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
+
