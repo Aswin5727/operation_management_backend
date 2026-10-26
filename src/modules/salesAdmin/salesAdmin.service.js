@@ -5,6 +5,11 @@ import AppError from "../../common/errors/AppError.js";
 import { hashPassword } from "../../common/utils/password.js";
 import { toSafeUser } from "../../common/utils/user.js";
 import { sendPasswordResetEmail, sendSalesAdminCredentialsEmail } from "../../common/services/resendEmail.js";
+import { createBranchStudent } from "../branchStudents/branchStudents.service.js";
+import { listBranchCourses } from "../branchCourses/branchCourses.service.js";
+import { listBranchBatches } from "../branchBatches/branchBatches.service.js";
+import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
+import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
 
 const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } } };
 const clean = (value) => String(value ?? "").trim();
@@ -90,4 +95,215 @@ async function resetSalesAdminPassword(userId, auth) {
 
 async function getSalesAdminProfile(userId) { const user = await prisma.user.findUnique({ where: { id: userId }, select: USER_SELECT }); if (!user || user.role !== "SALES_ADMIN") throw new AppError("Sales Admin account not found", 404); return { ...toSafeUser(user), branches: user.salesAdminBranches.map(({ branch }) => branch) }; }
 async function getDashboard(userId, query = {}) { const profile = await getSalesAdminProfile(userId); const allowed = profile.branches.map((branch) => branch.id); const branchId = clean(query.branchId); if (branchId && !allowed.includes(branchId)) throw new AppError("You do not have access to this branch", 403); const branchIds = branchId ? [branchId] : allowed; const from = query.from ? new Date(query.from) : new Date(new Date().getFullYear(), new Date().getMonth(), 1); const to = query.to ? new Date(query.to) : new Date(); const admissions = branchIds.length ? await prisma.branchStudent.count({ where: { branchId: { in: branchIds }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }) : 0; return { data: { profile, scope: { branchIds }, range: { from, to }, cards: { newLeads: null, totalLeads: null, hotLeads: null, warmLeads: null, coldLeads: null, admissionsCompleted: admissions, expectedAdmissions: null }, chart: [], recentActivities: [] } }; }
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard };
+
+function admissionLeadInclude() {
+  return {
+    branch: { select: { id: true, branchId: true, branchName: true, status: true, branchEmail: true, adminUserId: true } },
+    course: { select: { id: true, name: true, courseCode: true, status: true, mode: true } },
+    assignedTo: { select: { id: true, fullName: true } },
+    convertedStudent: { include: { installments: { orderBy: { installmentNumber: "asc" } }, payments: { orderBy: { paymentDate: "asc" } }, courseEnrollments: { orderBy: { sequenceOrder: "asc" } } } },
+  };
+}
+
+async function getAdmissionLeadForSalesAdmin(userId, leadKey) {
+  const branches = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
+  const branchIds = branches.map((item) => item.branchId);
+  const lead = await prisma.lead.findFirst({
+    where: { OR: [{ id: clean(leadKey) }, { leadId: clean(leadKey) }], branchId: { in: branchIds }, deletedAt: null },
+    include: admissionLeadInclude(),
+  });
+  if (!lead) throw new AppError("Lead not found in your authorized branches", 404);
+  if (lead.stage !== "HOT" && lead.status !== "CONVERTED") throw new AppError("Only HOT leads can be admitted", 400);
+  if (lead.branch?.status !== "ACTIVE") throw new AppError("The lead branch is inactive", 400);
+  return lead;
+}
+
+function admissionRow(lead) {
+  const student = lead.convertedStudent;
+  return {
+    id: lead.id,
+    leadId: lead.leadId,
+    studentId: student?.studentId || "",
+    studentName: lead.studentName,
+    phoneNumber: lead.phoneNumber,
+    branchId: lead.branchId,
+    branchName: lead.branch?.branchName || "",
+    courseId: lead.courseId,
+    courseName: lead.course?.name || "",
+    otherCourse: lead.otherCourse || "",
+    trainingMode: lead.courseMode || lead.trainingMode || "",
+    classSchedule: lead.classSchedule || "",
+    stage: lead.stage,
+    paymentStatus: lead.paymentStatus,
+    paymentAmount: lead.paymentAmount,
+    assignedAdminName: lead.assignedTo?.fullName || "",
+    admissionStatus: lead.status === "CONVERTED" ? "ADMITTED" : (lead.admissionStatus || "PENDING"),
+    admissionStudent: student,
+  };
+}
+
+async function listAllBranchAdmissionBatches(userId, branchId) {
+  const branchActor = { id: userId, userId, role: "SUPER_ADMIN", impersonatedBranchId: branchId };
+  const firstPage = await listBranchBatches({ page: 1, limit: 100, sortBy: "createdAt", sortOrder: "desc" }, branchActor);
+  const batches = [...(firstPage.data || [])];
+  const totalPages = Math.max(1, Number(firstPage.meta?.totalPages || 1));
+  for (let page = 2; page <= totalPages; page += 1) {
+    const result = await listBranchBatches({ page, limit: 100, sortBy: "createdAt", sortOrder: "desc" }, branchActor);
+    batches.push(...(result.data || []));
+  }
+  return batches;
+}
+
+function getEligibleAdmissionBatches(lead, branchBatches = []) {
+  const courseId = clean(lead.courseId);
+  if (!courseId) return [];
+  const requestedMode = clean(lead.courseMode || lead.trainingMode).toUpperCase();
+  const requestedSchedule = clean(lead.classSchedule).toUpperCase();
+  const now = Date.now();
+  return branchBatches.flatMap((batch) => {
+    if (clean(batch.branchId) !== clean(lead.branchId)) return [];
+    if (clean(batch.courseId || batch.branchCourseId) !== courseId) return [];
+    if (clean(batch.status).toUpperCase() !== "ACTIVE") return [];
+    if (!batch.currentCycleId || clean(batch.currentCycleStatus).toUpperCase() !== "ACTIVE") return [];
+    if (clean(batch.completionStatus).toUpperCase() === "COMPLETED") return [];
+    if (batch.freezeUntil && new Date(batch.freezeUntil).getTime() > now) return [];
+    const batchMode = clean(batch.mode).toUpperCase();
+    if (requestedMode && batchMode && batchMode !== requestedMode) return [];
+    const batchSchedule = clean(batch.weekType).toUpperCase();
+    if (requestedSchedule && batchSchedule && batchSchedule !== requestedSchedule) return [];
+    const totalSeats = Math.max(0, Number(batch.totalSeats || 0));
+    const occupiedSeats = Math.max(0, Number(batch.activeStudentCount || 0));
+    const availableSeats = Math.max(0, totalSeats - occupiedSeats);
+    if (availableSeats <= 0) return [];
+    const facultyId = batch.branchFacultyId || batch.facultyId || "";
+    const facultyName = batch.facultyName || "";
+    return [{
+      id: batch.id || batch.batchId,
+      batchId: batch.batchId || batch.id,
+      batchName: batch.batchName || "",
+      courseName: batch.courseName || lead.course?.name || "",
+      faculty: facultyName || facultyId ? [{ id: facultyId, name: facultyName, email: batch.facultyEmail || "" }] : [],
+      batchTiming: batch.batchTiming || "",
+      schedule: batchSchedule,
+      trainingMode: batchMode,
+      totalSeats,
+      occupiedSeats,
+      availableSeats,
+      status: clean(batch.status).toUpperCase(),
+      displayStatus: "RUNNING",
+    }];
+  });
+}
+
+async function getAdmissionBatchContext(userId, lead) {
+  const branchBatches = await listAllBranchAdmissionBatches(userId, lead.branchId);
+  const batches = getEligibleAdmissionBatches(lead, branchBatches);
+  return {
+    leadId: lead.leadId,
+    branchId: lead.branchId,
+    branchName: lead.branch?.branchName || "",
+    courseId: lead.courseId || "",
+    courseName: lead.course?.name || lead.otherCourse || "",
+    trainingMode: lead.courseMode || lead.trainingMode || "",
+    schedule: lead.classSchedule || "",
+    availableBatchCount: batches.length,
+    batches,
+  };
+}
+
+async function listSalesAdminAdmissions(userId, query = {}) {
+  const profile = await getSalesAdminProfile(userId);
+  const branchIds = profile.branches.filter((branch) => branch.status === "ACTIVE").map((branch) => branch.id);
+  const branchId = clean(query.branchId);
+  if (branchId && !branchIds.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
+  const scopedBranchIds = branchId ? [branchId] : branchIds;
+  const status = clean(query.status || "ALL").toUpperCase();
+  if (!["ALL", "PENDING", "IN_PROGRESS", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
+  const where = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
+  if (status === "ADMITTED") where.status = "CONVERTED";
+  if (status === "IN_PROGRESS") { where.status = { not: "CONVERTED" }; where.admissionStatus = "IN_PROGRESS"; }
+  if (status === "PENDING") { where.status = { not: "CONVERTED" }; where.OR = [{ admissionStatus: "PENDING" }, { admissionStatus: null }]; }
+  const courseId = clean(query.courseId);
+  if (courseId) where.courseId = courseId;
+  const search = clean(query.search);
+  if (search) {
+    const searchClause = { OR: [
+      { leadId: { contains: search, mode: "insensitive" } },
+      { studentName: { contains: search, mode: "insensitive" } },
+      { phoneNumber: { contains: search, mode: "insensitive" } },
+      { convertedStudent: { is: { studentId: { contains: search, mode: "insensitive" } } } },
+    ] };
+    where.AND = [...(where.AND || []), searchClause];
+  }
+  const page = Math.max(1, Number.parseInt(query.page, 10) || 1);
+  const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20));
+  const allHotWhere = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
+  const [total, rows, hotLeads, pendingAdmissions, completedAdmissions, collections, availableCourses] = await Promise.all([
+    prisma.lead.count({ where }),
+    prisma.lead.findMany({ where, include: admissionLeadInclude(), orderBy: { updatedAt: "desc" }, skip: (page - 1) * limit, take: limit }),
+    prisma.lead.count({ where: allHotWhere }),
+    prisma.lead.count({ where: { ...allHotWhere, status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] } } }),
+    prisma.lead.count({ where: { ...allHotWhere, status: "CONVERTED" } }),
+    prisma.branchStudentPayment.aggregate({ where: { branchId: { in: scopedBranchIds }, branchStudent: { is: { sourceLeadId: { not: null } } } }, _sum: { amount: true } }),
+    prisma.branchCourse.findMany({ where: { branchId: { in: scopedBranchIds }, status: "ACTIVE" }, select: { id: true, name: true }, orderBy: { name: "asc" } }),
+  ]);
+  const branchBatchEntries = await Promise.all([...new Set(rows.map((lead) => lead.branchId).filter(Boolean))].map(async (id) => [id, await listAllBranchAdmissionBatches(userId, id)]));
+  const batchesByBranch = new Map(branchBatchEntries);
+  return {
+    data: rows.map((lead) => ({ ...admissionRow(lead), availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length })),
+    meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
+    summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.amount || 0) },
+    filters: { branches: profile.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
+  };
+}
+
+async function getSalesAdminAdmissionLead(userId, leadKey) {
+  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+  if (lead.status === "CONVERTED") return { lead: admissionRow(lead) };
+  const branchActor = { id: userId, userId, role: "SUPER_ADMIN", impersonatedBranchId: lead.branchId };
+  const [courses, batches, faculty, installmentTemplates] = await Promise.all([
+    listBranchCourses({ page: 1, limit: 100, sortBy: "createdAt", sortOrder: "desc" }, branchActor),
+    listBranchBatches({ page: 1, limit: 100, branchId: lead.branchId, sortBy: "createdAt", sortOrder: "desc" }, branchActor),
+    listBranchFaculty(branchActor, { page: 1, limit: 100, status: "ACTIVE" }),
+    listBranchInstallmentTemplates({ page: 1, limit: 100, sortBy: "createdAt", sortOrder: "desc" }, branchActor),
+  ]);
+  return {
+    lead: {
+      ...admissionRow(lead),
+      email: lead.email || "",
+      alternativeNumber: lead.alternativeNumber || "",
+      qualification: lead.qualification || "",
+      location: lead.location || "",
+      leadSource: lead.leadSource || "",
+      course: lead.course,
+      branch: lead.branch,
+      admissionContext: { courses: courses.data || [], batches: batches.data || [], faculty: faculty.data || [], installmentTemplates: installmentTemplates.data || [] },
+    },
+  };
+}
+
+async function getSalesAdminAvailableBatches(userId, leadKey) {
+  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+  return getAdmissionBatchContext(userId, lead);
+}
+
+async function startSalesAdminAdmission(userId, leadKey) {
+  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+  if (lead.status !== "CONVERTED" && lead.admissionStatus !== "IN_PROGRESS") {
+    await prisma.$transaction(async (tx) => {
+      await tx.lead.update({ where: { id: lead.id }, data: { admissionStatus: "IN_PROGRESS", updatedById: userId } });
+      await tx.leadActivity.create({ data: { leadId: lead.id, action: "ADMISSION_STARTED", previousValue: { admissionStatus: lead.admissionStatus || "PENDING" }, newValue: { admissionStatus: "IN_PROGRESS" }, createdById: userId } });
+    });
+  }
+  return getSalesAdminAdmissionLead(userId, lead.id);
+}
+
+async function convertSalesAdminLead(auth, leadKey, payload = {}) {
+  const userId = clean(auth?.userId || auth?.id);
+  if (!userId) throw new AppError("Sales Admin session is required", 401);
+  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+  if (lead.status === "CONVERTED" && lead.convertedStudent) return lead.convertedStudent;
+  return createBranchStudent({ ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" }, { ...auth, id: userId, userId, role: "SALES_ADMIN" });
+}
+
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, startSalesAdminAdmission, convertSalesAdminLead };

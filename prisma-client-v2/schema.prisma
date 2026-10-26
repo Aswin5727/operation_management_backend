@@ -872,6 +872,8 @@ model BranchStudent {
   id                             String                          @id @default(cuid())
   branchId                       String
   studentId                      String
+  sourceLeadId                   String?                         @unique
+  admissionSource                String?
   studentName                    String
   parentName                     String?
   mobileNumber                   String?                         @unique
@@ -933,6 +935,7 @@ model BranchStudent {
   arrangementType                String                          @default("SINGLE")
   firstCourseId                  String?
   branch                         Branch                          @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  sourceLead                     Lead?                           @relation("LeadBranchStudentAdmission", fields: [sourceLeadId], references: [id], onDelete: SetNull)
   course                         BranchCourse?                   @relation(fields: [courseId], references: [id])
   installments                   BranchStudentInstallment[]
   payments                       BranchStudentPayment[]
@@ -1787,6 +1790,7 @@ model Lead {
   referredName          String?
   paymentStatus         String             @default("NOT_PAID")
   paymentAmount         Float?
+  admissionStatus       String             @default("PENDING")
   trainingMode          String?
   classSchedule         String?
   courseMode            String?
@@ -1808,6 +1812,7 @@ model Lead {
   stageHistory          LeadStageHistory[]
   activities            LeadActivity[]
   recordings            LeadRecording[]
+  convertedStudent      BranchStudent?     @relation("LeadBranchStudentAdmission")
   followUpReminders     FollowUpReminder[]
 
   @@index([branchId, createdAt])
@@ -1955,6 +1960,7 @@ enum NotificationKind {
   LEAD_FOLLOW_UP_DUE
   LEAD_FOLLOW_UP_OVERDUE
   SALES_CRM_MONTHLY_REPORT
+  SALES_CRM_ADMISSION
 }
 
 enum DiscountType {

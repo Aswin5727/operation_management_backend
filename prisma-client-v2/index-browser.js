@@ -702,6 +702,8 @@ exports.Prisma.BranchStudentScalarFieldEnum = {
   id: 'id',
   branchId: 'branchId',
   studentId: 'studentId',
+  sourceLeadId: 'sourceLeadId',
+  admissionSource: 'admissionSource',
   studentName: 'studentName',
   parentName: 'parentName',
   mobileNumber: 'mobileNumber',
@@ -1354,6 +1356,7 @@ exports.Prisma.LeadScalarFieldEnum = {
   referredName: 'referredName',
   paymentStatus: 'paymentStatus',
   paymentAmount: 'paymentAmount',
+  admissionStatus: 'admissionStatus',
   trainingMode: 'trainingMode',
   classSchedule: 'classSchedule',
   courseMode: 'courseMode',
@@ -1675,7 +1678,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
-  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT'
+  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
+  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION'
 };
 
 exports.CourseEditRequestStatus = exports.$Enums.CourseEditRequestStatus = {

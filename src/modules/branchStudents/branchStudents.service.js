@@ -3085,7 +3085,22 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
 }
 
 export async function createBranchStudent(payload, actor) {
-  const branchProfile = await getBranchContext(actor);
+  const actorRole = normalizeString(actor?.role).toUpperCase();
+  const sourceLeadId = normalizeString(payload.sourceLeadId);
+  let sourceLead = null;
+  let branchProfile = await getBranchContext(actor);
+  if (actorRole === "SALES_ADMIN") {
+    if (!sourceLeadId) throw new AppError("Sales Admin student creation must come from a HOT lead", 403);
+    sourceLead = await prisma.lead.findFirst({ where: { id: sourceLeadId, deletedAt: null }, include: { branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true, status: true } } } });
+    if (!sourceLead) throw new AppError("Source lead not found", 404);
+    const branchAccess = await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId: sourceLead.branchId } }, select: { id: true } });
+    if (!branchAccess || normalizeString(payload.branchId) !== sourceLead.branchId) throw new AppError("You do not have permission to admit a student for this branch", 403);
+    if (sourceLead.branch.status !== "ACTIVE") throw new AppError("The lead branch is inactive", 400);
+    const existingAdmission = await prisma.branchStudent.findUnique({ where: { sourceLeadId }, include: { installments: { orderBy: { installmentNumber: "asc" } }, payments: { orderBy: { paymentDate: "asc" } }, courseEnrollments: { orderBy: { sequenceOrder: "asc" } } } });
+    if (existingAdmission) return toBranchStudentSummary(existingAdmission);
+    if (sourceLead.stage !== "HOT" || sourceLead.status === "CONVERTED") throw new AppError("Only an unconverted HOT lead can be admitted", 400);
+    branchProfile = sourceLead.branch;
+  }
   const branchId = branchProfile?.id || normalizeString(payload.branchId);
 
   if (!branchId) {
@@ -3133,6 +3148,7 @@ export async function createBranchStudent(payload, actor) {
           ...(studentData.courseId ? { courseId: studentData.courseId } : {}),
         },
         select: {
+          id: true,
           branchId: true,
           batchId: true,
           batchName: true,
@@ -3207,6 +3223,9 @@ export async function createBranchStudent(payload, actor) {
   console.log("[createBranchStudent] studentData:", JSON.stringify(studentData, null, 2));
   console.log("[createBranchStudent] installmentSchedule count:", installmentSchedule.length);
   const actorId = actor?.id ?? null;
+  const admissionSalesAdmin = sourceLeadId && actorRole === "SALES_ADMIN"
+    ? await prisma.user.findUnique({ where: { id: actorId }, select: { fullName: true } })
+    : null;
   const temporaryPassword = createTemporaryPassword();
   const passwordHash = await hashPassword(temporaryPassword);
   const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
@@ -3222,16 +3241,29 @@ export async function createBranchStudent(payload, actor) {
   }
 
   let created = null;
+  let alreadyConverted = false;
 
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
       // eslint-disable-next-line no-await-in-loop
       created = await prisma.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT id FROM "Branch" WHERE id = ${branchId} FOR UPDATE`;
+        if (assignedBatch) await ensureAvailableBatchCapacity(assignedBatch, null, tx);
+        if (sourceLeadId) {
+          await tx.$queryRaw`SELECT id FROM "Lead" WHERE id = ${sourceLeadId} FOR UPDATE`;
+          const duplicate = await tx.branchStudent.findUnique({ where: { sourceLeadId }, include: { installments: { orderBy: { installmentNumber: "asc" } }, payments: { orderBy: { paymentDate: "asc" } }, courseEnrollments: { orderBy: { sequenceOrder: "asc" } } } });
+          if (duplicate) {
+            alreadyConverted = true;
+            return duplicate;
+          }
+          const currentLead = await tx.lead.findFirst({ where: { id: sourceLeadId, branchId, stage: "HOT", status: { not: "CONVERTED" }, deletedAt: null }, select: { id: true, leadId: true, studentName: true, admissionStatus: true } });
+          if (!currentLead) throw new AppError("This lead is no longer available for admission", 409);
+        }
         const student = await tx.branchStudent.create({
           data: {
             branchId,
             studentId,
+            ...(sourceLeadId ? { sourceLeadId, admissionSource: "SALES_CRM" } : {}),
             ...studentData,
             createdBy: actorId,
             updatedBy: actorId,
@@ -3330,6 +3362,13 @@ export async function createBranchStudent(payload, actor) {
               createdBy: actorId,
             }, tx);
           }
+          if (sourceLeadId) {
+            await tx.lead.update({ where: { id: sourceLeadId }, data: { status: "CONVERTED", admissionStatus: "ADMITTED", updatedById: actorId } });
+            await tx.leadActivity.create({ data: { leadId: sourceLeadId, action: "LEAD_CONVERTED_TO_STUDENT", previousValue: { status: sourceLead.status, stage: sourceLead.stage }, newValue: { status: "CONVERTED", studentId: createdStudent.studentId, branchId }, createdById: actorId } });
+            await tx.followUpReminder.updateMany({ where: { leadId: sourceLeadId, status: "PENDING" }, data: { status: "CANCELLED", cancelledAt: new Date() } });
+            const admissionMessage = `Sales Admin ${admissionSalesAdmin?.fullName || "Sales Admin"} completed admission for ${studentData.studentName}. Student ID: ${createdStudent.studentId}. Lead ID: ${sourceLead.leadId}. Branch: ${branchProfile.branchName}. Course: ${studentData.courseName || "-"}. Faculty: ${studentData.facultyName || "-"}. Batch: ${studentData.batchName || "-"}. Training Mode: ${studentData.courseMode || "-"}. Schedule: ${studentData.classSchedule || "-"}.`;
+            await createNotification({ kind: "SALES_CRM_ADMISSION", tone: "green", title: `New Student Admission — ${studentData.studentName}`, message: admissionMessage, actionLabel: "View Student", targetBranchId: branchId, targetBranchEmail: branchProfile.branchEmail || null, targetBranchName: branchProfile.branchName || null, targetUserId: branchProfile.adminUserId || null, requestDescription: `BRANCH_STUDENT:${createdStudent.studentId}`, createdBy: actorId }, tx);
+          }
         }
 
         return createdStudent;
@@ -3349,6 +3388,8 @@ export async function createBranchStudent(payload, actor) {
       studentId = await generateUniqueStudentId(branchId);
     }
   }
+
+  if (alreadyConverted) return toBranchStudentSummary(created);
 
   void sendStudentCredentialsEmail({
     to: studentData.emailAddress,
@@ -3389,6 +3430,13 @@ export async function createBranchStudent(payload, actor) {
 export async function previewBranchStudentFeePlan(payload = {}, actor = null) {
   const branchProfile = await getBranchContext(actor);
   const branchId = branchProfile?.id || normalizeString(payload.branchId);
+  if (normalizeString(actor?.role).toUpperCase() === "SALES_ADMIN") {
+    const sourceLeadId = normalizeString(payload.sourceLeadId);
+    if (!sourceLeadId) throw new AppError("Source lead is required to preview an admission fee plan", 400);
+    const lead = await prisma.lead.findFirst({ where: { id: sourceLeadId, branchId, stage: "HOT", status: { not: "CONVERTED" }, deletedAt: null }, select: { id: true } });
+    const access = lead ? await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId } }, select: { id: true } }) : null;
+    if (!lead || !access) throw new AppError("You do not have permission to preview fees for this lead", 403);
+  }
   const batchId = normalizeString(payload.batchId || payload.batchEntryId);
   const courseId = normalizeString(payload.courseId);
 

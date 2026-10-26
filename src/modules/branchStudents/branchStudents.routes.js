@@ -20,6 +20,8 @@ import {
 
 const router = express.Router();
 
+router.post("/fee-plan-preview", authenticate, authorize("BRANCH_ADMIN", "SUPER_ADMIN", "SALES_ADMIN"), previewBranchStudentFeePlanHandler);
+
 router.get(
   "/",
   authenticate,
@@ -59,7 +61,6 @@ router.use(
 );
 
 router.get("/ledger", listBranchLedgerHandler);
-router.post("/fee-plan-preview", previewBranchStudentFeePlanHandler);
 router.post("/", createBranchStudentHandler);
 router.get("/:studentId/ledger", getBranchStudentLedgerHandler);
 router.get("/:studentId", getBranchStudentHandler);

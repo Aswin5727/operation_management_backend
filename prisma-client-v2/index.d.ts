@@ -510,7 +510,8 @@ export const NotificationKind: {
   STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
-  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT'
+  SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
+  SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -51903,6 +51904,8 @@ export namespace Prisma {
     id: string | null
     branchId: string | null
     studentId: string | null
+    sourceLeadId: string | null
+    admissionSource: string | null
     studentName: string | null
     parentName: string | null
     mobileNumber: string | null
@@ -51968,6 +51971,8 @@ export namespace Prisma {
     id: string | null
     branchId: string | null
     studentId: string | null
+    sourceLeadId: string | null
+    admissionSource: string | null
     studentName: string | null
     parentName: string | null
     mobileNumber: string | null
@@ -52033,6 +52038,8 @@ export namespace Prisma {
     id: number
     branchId: number
     studentId: number
+    sourceLeadId: number
+    admissionSource: number
     studentName: number
     parentName: number
     mobileNumber: number
@@ -52115,6 +52122,8 @@ export namespace Prisma {
     id?: true
     branchId?: true
     studentId?: true
+    sourceLeadId?: true
+    admissionSource?: true
     studentName?: true
     parentName?: true
     mobileNumber?: true
@@ -52180,6 +52189,8 @@ export namespace Prisma {
     id?: true
     branchId?: true
     studentId?: true
+    sourceLeadId?: true
+    admissionSource?: true
     studentName?: true
     parentName?: true
     mobileNumber?: true
@@ -52245,6 +52256,8 @@ export namespace Prisma {
     id?: true
     branchId?: true
     studentId?: true
+    sourceLeadId?: true
+    admissionSource?: true
     studentName?: true
     parentName?: true
     mobileNumber?: true
@@ -52398,6 +52411,8 @@ export namespace Prisma {
     id: string
     branchId: string
     studentId: string
+    sourceLeadId: string | null
+    admissionSource: string | null
     studentName: string
     parentName: string | null
     mobileNumber: string | null
@@ -52483,6 +52498,8 @@ export namespace Prisma {
     id?: boolean
     branchId?: boolean
     studentId?: boolean
+    sourceLeadId?: boolean
+    admissionSource?: boolean
     studentName?: boolean
     parentName?: boolean
     mobileNumber?: boolean
@@ -52544,6 +52561,7 @@ export namespace Prisma {
     arrangementType?: boolean
     firstCourseId?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
     payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
@@ -52564,6 +52582,8 @@ export namespace Prisma {
     id?: boolean
     branchId?: boolean
     studentId?: boolean
+    sourceLeadId?: boolean
+    admissionSource?: boolean
     studentName?: boolean
     parentName?: boolean
     mobileNumber?: boolean
@@ -52625,6 +52645,7 @@ export namespace Prisma {
     arrangementType?: boolean
     firstCourseId?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -52632,6 +52653,8 @@ export namespace Prisma {
     id?: boolean
     branchId?: boolean
     studentId?: boolean
+    sourceLeadId?: boolean
+    admissionSource?: boolean
     studentName?: boolean
     parentName?: boolean
     mobileNumber?: boolean
@@ -52693,6 +52716,7 @@ export namespace Prisma {
     arrangementType?: boolean
     firstCourseId?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
   }, ExtArgs["result"]["branchStudent"]>
 
@@ -52700,6 +52724,8 @@ export namespace Prisma {
     id?: boolean
     branchId?: boolean
     studentId?: boolean
+    sourceLeadId?: boolean
+    admissionSource?: boolean
     studentName?: boolean
     parentName?: boolean
     mobileNumber?: boolean
@@ -52762,9 +52788,10 @@ export namespace Prisma {
     firstCourseId?: boolean
   }
 
-  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "studentName" | "parentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "customCurrentStatus" | "purpose" | "customPurpose" | "educationLevel" | "educationStatus" | "companyName" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt" | "importedAcademicResults" | "enrollmentType" | "arrangementType" | "firstCourseId", ExtArgs["result"]["branchStudent"]>
+  export type BranchStudentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "studentId" | "sourceLeadId" | "admissionSource" | "studentName" | "parentName" | "mobileNumber" | "emailAddress" | "parentSpouseNumber" | "countryCode" | "country" | "stateCode" | "state" | "city" | "address" | "qualification" | "passedOutYear" | "currentStatus" | "designation" | "customCurrentStatus" | "purpose" | "customPurpose" | "educationLevel" | "educationStatus" | "companyName" | "source" | "sourceOther" | "admissionDate" | "courseStartDate" | "classSchedule" | "recordStatus" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "linkedInUrl" | "remarks" | "courseId" | "courseName" | "courseMode" | "totalWorkingDays" | "courseEndDate" | "batchId" | "batchName" | "batchTiming" | "facultyId" | "facultyName" | "weeklyOffDay" | "courseAmount" | "paymentMode" | "paymentPlanId" | "paymentPlan" | "feeScheduleMode" | "feeFirstPaymentDate" | "fee70ProgressDate" | "fee70TargetHours" | "feePaymentDeadline" | "feeComplianceStatus" | "courseProgress" | "courseCompletedAt" | "importedAcademicResults" | "enrollmentType" | "arrangementType" | "firstCourseId", ExtArgs["result"]["branchStudent"]>
   export type BranchStudentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
     installments?: boolean | BranchStudent$installmentsArgs<ExtArgs>
     payments?: boolean | BranchStudent$paymentsArgs<ExtArgs>
@@ -52782,10 +52809,12 @@ export namespace Prisma {
   }
   export type BranchStudentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
   }
   export type BranchStudentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sourceLead?: boolean | BranchStudent$sourceLeadArgs<ExtArgs>
     course?: boolean | BranchStudent$courseArgs<ExtArgs>
   }
 
@@ -52793,6 +52822,7 @@ export namespace Prisma {
     name: "BranchStudent"
     objects: {
       branch: Prisma.$BranchPayload<ExtArgs>
+      sourceLead: Prisma.$LeadPayload<ExtArgs> | null
       course: Prisma.$BranchCoursePayload<ExtArgs> | null
       installments: Prisma.$BranchStudentInstallmentPayload<ExtArgs>[]
       payments: Prisma.$BranchStudentPaymentPayload<ExtArgs>[]
@@ -52811,6 +52841,8 @@ export namespace Prisma {
       id: string
       branchId: string
       studentId: string
+      sourceLeadId: string | null
+      admissionSource: string | null
       studentName: string
       parentName: string | null
       mobileNumber: string | null
@@ -53266,6 +53298,7 @@ export namespace Prisma {
   export interface Prisma__BranchStudentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sourceLead<T extends BranchStudent$sourceLeadArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$sourceLeadArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     course<T extends BranchStudent$courseArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$courseArgs<ExtArgs>>): Prisma__BranchCourseClient<$Result.GetResult<Prisma.$BranchCoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     installments<T extends BranchStudent$installmentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends BranchStudent$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, BranchStudent$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchStudentPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -53311,6 +53344,8 @@ export namespace Prisma {
     readonly id: FieldRef<"BranchStudent", 'String'>
     readonly branchId: FieldRef<"BranchStudent", 'String'>
     readonly studentId: FieldRef<"BranchStudent", 'String'>
+    readonly sourceLeadId: FieldRef<"BranchStudent", 'String'>
+    readonly admissionSource: FieldRef<"BranchStudent", 'String'>
     readonly studentName: FieldRef<"BranchStudent", 'String'>
     readonly parentName: FieldRef<"BranchStudent", 'String'>
     readonly mobileNumber: FieldRef<"BranchStudent", 'String'>
@@ -53769,6 +53804,25 @@ export namespace Prisma {
      * Limit how many BranchStudents to delete.
      */
     limit?: number
+  }
+
+  /**
+   * BranchStudent.sourceLead
+   */
+  export type BranchStudent$sourceLeadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
   }
 
   /**
@@ -93649,6 +93703,7 @@ export namespace Prisma {
     referredName: string | null
     paymentStatus: string | null
     paymentAmount: number | null
+    admissionStatus: string | null
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
@@ -93690,6 +93745,7 @@ export namespace Prisma {
     referredName: string | null
     paymentStatus: string | null
     paymentAmount: number | null
+    admissionStatus: string | null
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
@@ -93731,6 +93787,7 @@ export namespace Prisma {
     referredName: number
     paymentStatus: number
     paymentAmount: number
+    admissionStatus: number
     trainingMode: number
     classSchedule: number
     courseMode: number
@@ -93782,6 +93839,7 @@ export namespace Prisma {
     referredName?: true
     paymentStatus?: true
     paymentAmount?: true
+    admissionStatus?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
@@ -93823,6 +93881,7 @@ export namespace Prisma {
     referredName?: true
     paymentStatus?: true
     paymentAmount?: true
+    admissionStatus?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
@@ -93864,6 +93923,7 @@ export namespace Prisma {
     referredName?: true
     paymentStatus?: true
     paymentAmount?: true
+    admissionStatus?: true
     trainingMode?: true
     classSchedule?: true
     courseMode?: true
@@ -93992,6 +94052,7 @@ export namespace Prisma {
     referredName: string | null
     paymentStatus: string
     paymentAmount: number | null
+    admissionStatus: string
     trainingMode: string | null
     classSchedule: string | null
     courseMode: string | null
@@ -94052,6 +94113,7 @@ export namespace Prisma {
     referredName?: boolean
     paymentStatus?: boolean
     paymentAmount?: boolean
+    admissionStatus?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
@@ -94073,6 +94135,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
@@ -94104,6 +94167,7 @@ export namespace Prisma {
     referredName?: boolean
     paymentStatus?: boolean
     paymentAmount?: boolean
+    admissionStatus?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
@@ -94150,6 +94214,7 @@ export namespace Prisma {
     referredName?: boolean
     paymentStatus?: boolean
     paymentAmount?: boolean
+    admissionStatus?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
@@ -94196,6 +94261,7 @@ export namespace Prisma {
     referredName?: boolean
     paymentStatus?: boolean
     paymentAmount?: boolean
+    admissionStatus?: boolean
     trainingMode?: boolean
     classSchedule?: boolean
     courseMode?: boolean
@@ -94210,7 +94276,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "nextFollowUpTime" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "nextFollowUpTime" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "admissionStatus" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -94221,6 +94287,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -94251,6 +94318,7 @@ export namespace Prisma {
       stageHistory: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
       activities: Prisma.$LeadActivityPayload<ExtArgs>[]
       recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
+      convertedStudent: Prisma.$BranchStudentPayload<ExtArgs> | null
       followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -94280,6 +94348,7 @@ export namespace Prisma {
       referredName: string | null
       paymentStatus: string
       paymentAmount: number | null
+      admissionStatus: string
       trainingMode: string | null
       classSchedule: string | null
       courseMode: string | null
@@ -94695,6 +94764,7 @@ export namespace Prisma {
     stageHistory<T extends Lead$stageHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Lead$stageHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activities<T extends Lead$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recordings<T extends Lead$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    convertedStudent<T extends Lead$convertedStudentArgs<ExtArgs> = {}>(args?: Subset<T, Lead$convertedStudentArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     followUpReminders<T extends Lead$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, Lead$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -94751,6 +94821,7 @@ export namespace Prisma {
     readonly referredName: FieldRef<"Lead", 'String'>
     readonly paymentStatus: FieldRef<"Lead", 'String'>
     readonly paymentAmount: FieldRef<"Lead", 'Float'>
+    readonly admissionStatus: FieldRef<"Lead", 'String'>
     readonly trainingMode: FieldRef<"Lead", 'String'>
     readonly classSchedule: FieldRef<"Lead", 'String'>
     readonly courseMode: FieldRef<"Lead", 'String'>
@@ -95295,6 +95366,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.convertedStudent
+   */
+  export type Lead$convertedStudentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BranchStudent
+     */
+    select?: BranchStudentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BranchStudent
+     */
+    omit?: BranchStudentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BranchStudentInclude<ExtArgs> | null
+    where?: BranchStudentWhereInput
   }
 
   /**
@@ -111775,6 +111865,8 @@ export namespace Prisma {
     id: 'id',
     branchId: 'branchId',
     studentId: 'studentId',
+    sourceLeadId: 'sourceLeadId',
+    admissionSource: 'admissionSource',
     studentName: 'studentName',
     parentName: 'parentName',
     mobileNumber: 'mobileNumber',
@@ -112526,6 +112618,7 @@ export namespace Prisma {
     referredName: 'referredName',
     paymentStatus: 'paymentStatus',
     paymentAmount: 'paymentAmount',
+    admissionStatus: 'admissionStatus',
     trainingMode: 'trainingMode',
     classSchedule: 'classSchedule',
     courseMode: 'courseMode',
@@ -116906,6 +116999,8 @@ export namespace Prisma {
     id?: StringFilter<"BranchStudent"> | string
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
+    sourceLeadId?: StringNullableFilter<"BranchStudent"> | string | null
+    admissionSource?: StringNullableFilter<"BranchStudent"> | string | null
     studentName?: StringFilter<"BranchStudent"> | string
     parentName?: StringNullableFilter<"BranchStudent"> | string | null
     mobileNumber?: StringNullableFilter<"BranchStudent"> | string | null
@@ -116967,6 +117062,7 @@ export namespace Prisma {
     arrangementType?: StringFilter<"BranchStudent"> | string
     firstCourseId?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    sourceLead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
@@ -116986,6 +117082,8 @@ export namespace Prisma {
     id?: SortOrder
     branchId?: SortOrder
     studentId?: SortOrder
+    sourceLeadId?: SortOrderInput | SortOrder
+    admissionSource?: SortOrderInput | SortOrder
     studentName?: SortOrder
     parentName?: SortOrderInput | SortOrder
     mobileNumber?: SortOrderInput | SortOrder
@@ -117047,6 +117145,7 @@ export namespace Prisma {
     arrangementType?: SortOrder
     firstCourseId?: SortOrderInput | SortOrder
     branch?: BranchOrderByWithRelationInput
+    sourceLead?: LeadOrderByWithRelationInput
     course?: BranchCourseOrderByWithRelationInput
     installments?: BranchStudentInstallmentOrderByRelationAggregateInput
     payments?: BranchStudentPaymentOrderByRelationAggregateInput
@@ -117064,6 +117163,7 @@ export namespace Prisma {
 
   export type BranchStudentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    sourceLeadId?: string
     mobileNumber?: string
     emailAddress?: string
     branchId_studentId?: BranchStudentBranchIdStudentIdCompoundUniqueInput
@@ -117072,6 +117172,7 @@ export namespace Prisma {
     NOT?: BranchStudentWhereInput | BranchStudentWhereInput[]
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
+    admissionSource?: StringNullableFilter<"BranchStudent"> | string | null
     studentName?: StringFilter<"BranchStudent"> | string
     parentName?: StringNullableFilter<"BranchStudent"> | string | null
     parentSpouseNumber?: StringNullableFilter<"BranchStudent"> | string | null
@@ -117131,6 +117232,7 @@ export namespace Prisma {
     arrangementType?: StringFilter<"BranchStudent"> | string
     firstCourseId?: StringNullableFilter<"BranchStudent"> | string | null
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    sourceLead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
     course?: XOR<BranchCourseNullableScalarRelationFilter, BranchCourseWhereInput> | null
     installments?: BranchStudentInstallmentListRelationFilter
     payments?: BranchStudentPaymentListRelationFilter
@@ -117144,12 +117246,14 @@ export namespace Prisma {
     courseEnrollments?: BranchStudentCourseListRelationFilter
     motivationMailHistory?: MotivationMailHistoryListRelationFilter
     discontinuationRequests?: StudentDiscontinuationRequestListRelationFilter
-  }, "id" | "mobileNumber" | "emailAddress" | "branchId_studentId">
+  }, "id" | "sourceLeadId" | "mobileNumber" | "emailAddress" | "branchId_studentId">
 
   export type BranchStudentOrderByWithAggregationInput = {
     id?: SortOrder
     branchId?: SortOrder
     studentId?: SortOrder
+    sourceLeadId?: SortOrderInput | SortOrder
+    admissionSource?: SortOrderInput | SortOrder
     studentName?: SortOrder
     parentName?: SortOrderInput | SortOrder
     mobileNumber?: SortOrderInput | SortOrder
@@ -117224,6 +117328,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"BranchStudent"> | string
     branchId?: StringWithAggregatesFilter<"BranchStudent"> | string
     studentId?: StringWithAggregatesFilter<"BranchStudent"> | string
+    sourceLeadId?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
+    admissionSource?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     studentName?: StringWithAggregatesFilter<"BranchStudent"> | string
     parentName?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
     mobileNumber?: StringNullableWithAggregatesFilter<"BranchStudent"> | string | null
@@ -120813,6 +120919,7 @@ export namespace Prisma {
     referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
     paymentAmount?: FloatNullableFilter<"Lead"> | number | null
+    admissionStatus?: StringFilter<"Lead"> | string
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
@@ -120834,6 +120941,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
   }
 
@@ -120864,6 +120972,7 @@ export namespace Prisma {
     referredName?: SortOrderInput | SortOrder
     paymentStatus?: SortOrder
     paymentAmount?: SortOrderInput | SortOrder
+    admissionStatus?: SortOrder
     trainingMode?: SortOrderInput | SortOrder
     classSchedule?: SortOrderInput | SortOrder
     courseMode?: SortOrderInput | SortOrder
@@ -120885,6 +120994,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryOrderByRelationAggregateInput
     activities?: LeadActivityOrderByRelationAggregateInput
     recordings?: LeadRecordingOrderByRelationAggregateInput
+    convertedStudent?: BranchStudentOrderByWithRelationInput
     followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
   }
 
@@ -120918,6 +121028,7 @@ export namespace Prisma {
     referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
     paymentAmount?: FloatNullableFilter<"Lead"> | number | null
+    admissionStatus?: StringFilter<"Lead"> | string
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
@@ -120939,6 +121050,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
   }, "id" | "leadId">
 
@@ -120969,6 +121081,7 @@ export namespace Prisma {
     referredName?: SortOrderInput | SortOrder
     paymentStatus?: SortOrder
     paymentAmount?: SortOrderInput | SortOrder
+    admissionStatus?: SortOrder
     trainingMode?: SortOrderInput | SortOrder
     classSchedule?: SortOrderInput | SortOrder
     courseMode?: SortOrderInput | SortOrder
@@ -121018,6 +121131,7 @@ export namespace Prisma {
     referredName?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     paymentStatus?: StringWithAggregatesFilter<"Lead"> | string
     paymentAmount?: FloatNullableWithAggregatesFilter<"Lead"> | number | null
+    admissionStatus?: StringWithAggregatesFilter<"Lead"> | string
     trainingMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     classSchedule?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     courseMode?: StringNullableWithAggregatesFilter<"Lead"> | string | null
@@ -126785,6 +126899,7 @@ export namespace Prisma {
   export type BranchStudentCreateInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -126845,6 +126960,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -126864,6 +126980,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -126941,6 +127059,7 @@ export namespace Prisma {
   export type BranchStudentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -127001,6 +127120,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -127020,6 +127140,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -127098,6 +127220,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -127163,6 +127287,7 @@ export namespace Prisma {
   export type BranchStudentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -127228,6 +127353,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131268,6 +131395,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -131286,6 +131414,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -131316,6 +131445,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -131332,6 +131462,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -131360,6 +131491,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131378,6 +131510,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -131408,6 +131541,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131424,6 +131558,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -131454,6 +131589,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -131493,6 +131629,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131531,6 +131668,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -136327,6 +136465,11 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type LeadNullableScalarRelationFilter = {
+    is?: LeadWhereInput | null
+    isNot?: LeadWhereInput | null
+  }
+
   export type BranchCourseNullableScalarRelationFilter = {
     is?: BranchCourseWhereInput | null
     isNot?: BranchCourseWhereInput | null
@@ -136371,6 +136514,8 @@ export namespace Prisma {
     id?: SortOrder
     branchId?: SortOrder
     studentId?: SortOrder
+    sourceLeadId?: SortOrder
+    admissionSource?: SortOrder
     studentName?: SortOrder
     parentName?: SortOrder
     mobileNumber?: SortOrder
@@ -136444,6 +136589,8 @@ export namespace Prisma {
     id?: SortOrder
     branchId?: SortOrder
     studentId?: SortOrder
+    sourceLeadId?: SortOrder
+    admissionSource?: SortOrder
     studentName?: SortOrder
     parentName?: SortOrder
     mobileNumber?: SortOrder
@@ -136509,6 +136656,8 @@ export namespace Prisma {
     id?: SortOrder
     branchId?: SortOrder
     studentId?: SortOrder
+    sourceLeadId?: SortOrder
+    admissionSource?: SortOrder
     studentName?: SortOrder
     parentName?: SortOrder
     mobileNumber?: SortOrder
@@ -138796,6 +138945,7 @@ export namespace Prisma {
     referredName?: SortOrder
     paymentStatus?: SortOrder
     paymentAmount?: SortOrder
+    admissionStatus?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
@@ -138841,6 +138991,7 @@ export namespace Prisma {
     referredName?: SortOrder
     paymentStatus?: SortOrder
     paymentAmount?: SortOrder
+    admissionStatus?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
@@ -138882,6 +139033,7 @@ export namespace Prisma {
     referredName?: SortOrder
     paymentStatus?: SortOrder
     paymentAmount?: SortOrder
+    admissionStatus?: SortOrder
     trainingMode?: SortOrder
     classSchedule?: SortOrder
     courseMode?: SortOrder
@@ -144516,6 +144668,12 @@ export namespace Prisma {
     connect?: BranchWhereUniqueInput
   }
 
+  export type LeadCreateNestedOneWithoutConvertedStudentInput = {
+    create?: XOR<LeadCreateWithoutConvertedStudentInput, LeadUncheckedCreateWithoutConvertedStudentInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutConvertedStudentInput
+    connect?: LeadWhereUniqueInput
+  }
+
   export type BranchCourseCreateNestedOneWithoutBranchStudentsInput = {
     create?: XOR<BranchCourseCreateWithoutBranchStudentsInput, BranchCourseUncheckedCreateWithoutBranchStudentsInput>
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchStudentsInput
@@ -144704,6 +144862,16 @@ export namespace Prisma {
     upsert?: BranchUpsertWithoutBranchStudentsInput
     connect?: BranchWhereUniqueInput
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutBranchStudentsInput, BranchUpdateWithoutBranchStudentsInput>, BranchUncheckedUpdateWithoutBranchStudentsInput>
+  }
+
+  export type LeadUpdateOneWithoutConvertedStudentNestedInput = {
+    create?: XOR<LeadCreateWithoutConvertedStudentInput, LeadUncheckedCreateWithoutConvertedStudentInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutConvertedStudentInput
+    upsert?: LeadUpsertWithoutConvertedStudentInput
+    disconnect?: LeadWhereInput | boolean
+    delete?: LeadWhereInput | boolean
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutConvertedStudentInput, LeadUpdateWithoutConvertedStudentInput>, LeadUncheckedUpdateWithoutConvertedStudentInput>
   }
 
   export type BranchCourseUpdateOneWithoutBranchStudentsNestedInput = {
@@ -146856,6 +147024,12 @@ export namespace Prisma {
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
+  export type BranchStudentCreateNestedOneWithoutSourceLeadInput = {
+    create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
+    connect?: BranchStudentWhereUniqueInput
+  }
+
   export type FollowUpReminderCreateNestedManyWithoutLeadInput = {
     create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
@@ -146889,6 +147063,12 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
     createMany?: LeadRecordingCreateManyLeadInputEnvelope
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput = {
+    create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
+    connect?: BranchStudentWhereUniqueInput
   }
 
   export type FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput = {
@@ -147006,6 +147186,16 @@ export namespace Prisma {
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
+  export type BranchStudentUpdateOneWithoutSourceLeadNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
+    upsert?: BranchStudentUpsertWithoutSourceLeadInput
+    disconnect?: BranchStudentWhereInput | boolean
+    delete?: BranchStudentWhereInput | boolean
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutSourceLeadInput, BranchStudentUpdateWithoutSourceLeadInput>, BranchStudentUncheckedUpdateWithoutSourceLeadInput>
+  }
+
   export type FollowUpReminderUpdateManyWithoutLeadNestedInput = {
     create?: XOR<FollowUpReminderCreateWithoutLeadInput, FollowUpReminderUncheckedCreateWithoutLeadInput> | FollowUpReminderCreateWithoutLeadInput[] | FollowUpReminderUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: FollowUpReminderCreateOrConnectWithoutLeadInput | FollowUpReminderCreateOrConnectWithoutLeadInput[]
@@ -147074,6 +147264,16 @@ export namespace Prisma {
     update?: LeadRecordingUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingUpdateWithWhereUniqueWithoutLeadInput[]
     updateMany?: LeadRecordingUpdateManyWithWhereWithoutLeadInput | LeadRecordingUpdateManyWithWhereWithoutLeadInput[]
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput = {
+    create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+    connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
+    upsert?: BranchStudentUpsertWithoutSourceLeadInput
+    disconnect?: BranchStudentWhereInput | boolean
+    delete?: BranchStudentWhereInput | boolean
+    connect?: BranchStudentWhereUniqueInput
+    update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutSourceLeadInput, BranchStudentUpdateWithoutSourceLeadInput>, BranchStudentUncheckedUpdateWithoutSourceLeadInput>
   }
 
   export type FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput = {
@@ -149077,6 +149277,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149094,6 +149295,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -149124,6 +149326,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149139,6 +149342,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -149177,6 +149381,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149194,6 +149399,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -149224,6 +149430,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149239,6 +149446,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -149277,6 +149485,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149294,6 +149503,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -149324,6 +149534,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -149339,6 +149550,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -150345,6 +150557,7 @@ export namespace Prisma {
     referredName?: StringNullableFilter<"Lead"> | string | null
     paymentStatus?: StringFilter<"Lead"> | string
     paymentAmount?: FloatNullableFilter<"Lead"> | number | null
+    admissionStatus?: StringFilter<"Lead"> | string
     trainingMode?: StringNullableFilter<"Lead"> | string | null
     classSchedule?: StringNullableFilter<"Lead"> | string | null
     courseMode?: StringNullableFilter<"Lead"> | string | null
@@ -151268,6 +151481,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutBranchInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -151327,6 +151541,7 @@ export namespace Prisma {
     enrollmentType?: string
     arrangementType?: string
     firstCourseId?: string | null
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -151345,6 +151560,8 @@ export namespace Prisma {
   export type BranchStudentUncheckedCreateWithoutBranchInput = {
     id?: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -151944,6 +152161,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -151961,6 +152179,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -151990,6 +152209,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -152006,6 +152226,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -152330,6 +152551,8 @@ export namespace Prisma {
     id?: StringFilter<"BranchStudent"> | string
     branchId?: StringFilter<"BranchStudent"> | string
     studentId?: StringFilter<"BranchStudent"> | string
+    sourceLeadId?: StringNullableFilter<"BranchStudent"> | string | null
+    admissionSource?: StringNullableFilter<"BranchStudent"> | string | null
     studentName?: StringFilter<"BranchStudent"> | string
     parentName?: StringNullableFilter<"BranchStudent"> | string | null
     mobileNumber?: StringNullableFilter<"BranchStudent"> | string | null
@@ -155162,6 +155385,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutCourseInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -155222,6 +155446,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
@@ -155240,6 +155465,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -155754,6 +155981,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -155771,6 +155999,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -155800,6 +156029,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -155816,6 +156046,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -162108,6 +162339,105 @@ export namespace Prisma {
     create: XOR<BranchCreateWithoutBranchStudentsInput, BranchUncheckedCreateWithoutBranchStudentsInput>
   }
 
+  export type LeadCreateWithoutConvertedStudentInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutConvertedStudentInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    branchId: string
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutConvertedStudentInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutConvertedStudentInput, LeadUncheckedCreateWithoutConvertedStudentInput>
+  }
+
   export type BranchCourseCreateWithoutBranchStudentsInput = {
     id?: string
     courseCode: string
@@ -162950,6 +163280,111 @@ export namespace Prisma {
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
   }
 
+  export type LeadUpsertWithoutConvertedStudentInput = {
+    update: XOR<LeadUpdateWithoutConvertedStudentInput, LeadUncheckedUpdateWithoutConvertedStudentInput>
+    create: XOR<LeadCreateWithoutConvertedStudentInput, LeadUncheckedCreateWithoutConvertedStudentInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutConvertedStudentInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutConvertedStudentInput, LeadUncheckedUpdateWithoutConvertedStudentInput>
+  }
+
+  export type LeadUpdateWithoutConvertedStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutConvertedStudentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
   export type BranchCourseUpsertWithoutBranchStudentsInput = {
     update: XOR<BranchCourseUpdateWithoutBranchStudentsInput, BranchCourseUncheckedUpdateWithoutBranchStudentsInput>
     create: XOR<BranchCourseCreateWithoutBranchStudentsInput, BranchCourseUncheckedCreateWithoutBranchStudentsInput>
@@ -163325,6 +163760,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutCourseEnrollmentsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -163385,6 +163821,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -163403,6 +163840,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -163698,6 +164137,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutCourseEnrollmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -163758,6 +164198,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -163776,6 +164217,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -164073,6 +164516,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutCalendarAttendanceRecordsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -164133,6 +164577,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -164151,6 +164596,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -164352,6 +164799,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutCalendarAttendanceRecordsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -164412,6 +164860,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -164430,6 +164879,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -164941,6 +165392,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutInstallmentsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -165001,6 +165453,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
@@ -165019,6 +165472,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -165157,6 +165612,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutInstallmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -165217,6 +165673,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
@@ -165235,6 +165692,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -168148,6 +168607,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutFacultyTodayWorkStudentEntriesInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -168208,6 +168668,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -168226,6 +168687,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -168468,6 +168931,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutFacultyTodayWorkStudentEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -168528,6 +168992,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -168546,6 +169011,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -171381,6 +171848,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutReassessmentAssessmentsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -171441,6 +171909,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -171459,6 +171928,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -172027,6 +172498,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutReassessmentAssessmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -172087,6 +172559,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -172105,6 +172578,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -172232,6 +172707,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutAssessmentSubmissionsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -172292,6 +172768,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -172310,6 +172787,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -172568,6 +173047,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutAssessmentSubmissionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -172628,6 +173108,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -172646,6 +173127,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -173287,6 +173770,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutRetestExamsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -173347,6 +173831,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -173365,6 +173850,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -173840,6 +174327,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutRetestExamsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -173900,6 +174388,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -173918,6 +174407,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -174662,6 +175153,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutExamAttemptsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -174722,6 +175214,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -174740,6 +175233,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -175055,6 +175550,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutExamAttemptsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -175115,6 +175611,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -175133,6 +175630,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -176108,6 +176607,169 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type BranchStudentCreateWithoutSourceLeadInput = {
+    id?: string
+    studentId: string
+    admissionSource?: string | null
+    studentName: string
+    parentName?: string | null
+    mobileNumber?: string | null
+    emailAddress?: string | null
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    importedAcademicResults?: NullableJsonNullValueInput | InputJsonValue
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
+    installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentUncheckedCreateWithoutSourceLeadInput = {
+    id?: string
+    branchId: string
+    studentId: string
+    admissionSource?: string | null
+    studentName: string
+    parentName?: string | null
+    mobileNumber?: string | null
+    emailAddress?: string | null
+    parentSpouseNumber?: string | null
+    countryCode?: string | null
+    country?: string | null
+    stateCode?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    qualification?: string | null
+    passedOutYear?: string | null
+    currentStatus?: string | null
+    designation?: string | null
+    customCurrentStatus?: string | null
+    purpose?: string | null
+    customPurpose?: string | null
+    educationLevel?: string | null
+    educationStatus?: string | null
+    companyName?: string | null
+    source?: string | null
+    sourceOther?: string | null
+    admissionDate: string
+    courseStartDate?: string | null
+    classSchedule?: string | null
+    recordStatus?: $Enums.RecordStatus
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkedInUrl?: string | null
+    remarks?: string | null
+    courseId?: string | null
+    courseName?: string | null
+    courseMode?: string | null
+    totalWorkingDays?: number | null
+    courseEndDate?: string | null
+    batchId?: string | null
+    batchName?: string | null
+    batchTiming?: string | null
+    facultyId?: string | null
+    facultyName?: string | null
+    weeklyOffDay?: string | null
+    courseAmount?: number | null
+    paymentMode?: string
+    paymentPlanId?: string | null
+    paymentPlan?: string | null
+    feeScheduleMode?: string
+    feeFirstPaymentDate?: string | null
+    fee70ProgressDate?: string | null
+    fee70TargetHours?: number | null
+    feePaymentDeadline?: string | null
+    feeComplianceStatus?: string
+    courseProgress?: number | null
+    courseCompletedAt?: Date | string | null
+    importedAcademicResults?: NullableJsonNullValueInput | InputJsonValue
+    enrollmentType?: string
+    arrangementType?: string
+    firstCourseId?: string | null
+    installments?: BranchStudentInstallmentUncheckedCreateNestedManyWithoutBranchStudentInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchStudentInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutBranchStudentInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedCreateNestedManyWithoutBranchStudentInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutBranchStudentInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutBranchStudentInput
+    retestExams?: ExamUncheckedCreateNestedManyWithoutRetestStudentInput
+    reassessmentAssessments?: AssessmentUncheckedCreateNestedManyWithoutReassessmentStudentInput
+    courseEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchStudentInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedCreateNestedManyWithoutBranchStudentInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedCreateNestedManyWithoutBranchStudentInput
+  }
+
+  export type BranchStudentCreateOrConnectWithoutSourceLeadInput = {
+    where: BranchStudentWhereUniqueInput
+    create: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+  }
+
   export type FollowUpReminderCreateWithoutLeadInput = {
     id?: string
     dueDate: Date | string
@@ -176727,6 +177389,175 @@ export namespace Prisma {
     data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutLeadInput>
   }
 
+  export type BranchStudentUpsertWithoutSourceLeadInput = {
+    update: XOR<BranchStudentUpdateWithoutSourceLeadInput, BranchStudentUncheckedUpdateWithoutSourceLeadInput>
+    create: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
+    where?: BranchStudentWhereInput
+  }
+
+  export type BranchStudentUpdateToOneWithWhereWithoutSourceLeadInput = {
+    where?: BranchStudentWhereInput
+    data: XOR<BranchStudentUpdateWithoutSourceLeadInput, BranchStudentUncheckedUpdateWithoutSourceLeadInput>
+  }
+
+  export type BranchStudentUpdateWithoutSourceLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    emailAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    importedAcademicResults?: NullableJsonNullValueInput | InputJsonValue
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
+    installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUpdateManyWithoutBranchStudentNestedInput
+  }
+
+  export type BranchStudentUncheckedUpdateWithoutSourceLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
+    studentName?: StringFieldUpdateOperationsInput | string
+    parentName?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    emailAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    parentSpouseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    stateCode?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    passedOutYear?: NullableStringFieldUpdateOperationsInput | string | null
+    currentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    designation?: NullableStringFieldUpdateOperationsInput | string | null
+    customCurrentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purpose?: NullableStringFieldUpdateOperationsInput | string | null
+    customPurpose?: NullableStringFieldUpdateOperationsInput | string | null
+    educationLevel?: NullableStringFieldUpdateOperationsInput | string | null
+    educationStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceOther?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionDate?: StringFieldUpdateOperationsInput | string
+    courseStartDate?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    recordStatus?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkedInUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: NullableStringFieldUpdateOperationsInput | string | null
+    courseName?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    totalWorkingDays?: NullableIntFieldUpdateOperationsInput | number | null
+    courseEndDate?: NullableStringFieldUpdateOperationsInput | string | null
+    batchId?: NullableStringFieldUpdateOperationsInput | string | null
+    batchName?: NullableStringFieldUpdateOperationsInput | string | null
+    batchTiming?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyId?: NullableStringFieldUpdateOperationsInput | string | null
+    facultyName?: NullableStringFieldUpdateOperationsInput | string | null
+    weeklyOffDay?: NullableStringFieldUpdateOperationsInput | string | null
+    courseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    paymentMode?: StringFieldUpdateOperationsInput | string
+    paymentPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    feeScheduleMode?: StringFieldUpdateOperationsInput | string
+    feeFirstPaymentDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70ProgressDate?: NullableStringFieldUpdateOperationsInput | string | null
+    fee70TargetHours?: NullableFloatFieldUpdateOperationsInput | number | null
+    feePaymentDeadline?: NullableStringFieldUpdateOperationsInput | string | null
+    feeComplianceStatus?: StringFieldUpdateOperationsInput | string
+    courseProgress?: NullableIntFieldUpdateOperationsInput | number | null
+    courseCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    importedAcademicResults?: NullableJsonNullValueInput | InputJsonValue
+    enrollmentType?: StringFieldUpdateOperationsInput | string
+    arrangementType?: StringFieldUpdateOperationsInput | string
+    firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: BranchStudentInstallmentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchStudentNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    calendarAttendanceRecords?: BranchStudentAttendanceUncheckedUpdateManyWithoutBranchStudentNestedInput
+    facultyTodayWorkStudentEntries?: FacultyTodayWorkStudentEntryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutBranchStudentNestedInput
+    assessmentSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutBranchStudentNestedInput
+    retestExams?: ExamUncheckedUpdateManyWithoutRetestStudentNestedInput
+    reassessmentAssessments?: AssessmentUncheckedUpdateManyWithoutReassessmentStudentNestedInput
+    courseEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchStudentNestedInput
+    motivationMailHistory?: MotivationMailHistoryUncheckedUpdateManyWithoutBranchStudentNestedInput
+    discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
+  }
+
   export type FollowUpReminderUpsertWithWhereUniqueWithoutLeadInput = {
     where: FollowUpReminderWhereUniqueInput
     update: XOR<FollowUpReminderUpdateWithoutLeadInput, FollowUpReminderUncheckedUpdateWithoutLeadInput>
@@ -176768,6 +177599,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -176785,6 +177617,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -176815,6 +177648,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -176830,6 +177664,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -177015,6 +177850,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177032,6 +177868,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -177062,6 +177899,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177077,6 +177915,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -177236,6 +178075,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -177253,6 +178093,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -177283,6 +178124,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -177298,6 +178140,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -177451,6 +178294,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177468,6 +178312,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -177498,6 +178343,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177513,6 +178359,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -177656,6 +178503,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -177673,6 +178521,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -177703,6 +178552,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -177718,6 +178568,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -177871,6 +178722,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177888,6 +178740,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -177918,6 +178771,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -177933,6 +178787,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -178076,6 +178931,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -178093,6 +178949,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
 
@@ -178123,6 +178980,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -178138,6 +178996,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
 
@@ -178324,6 +179183,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178341,6 +179201,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -178371,6 +179232,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178386,6 +179248,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -178568,6 +179431,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -178586,6 +179450,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
   }
 
   export type LeadUncheckedCreateWithoutFollowUpRemindersInput = {
@@ -178615,6 +179480,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -178631,6 +179497,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
   }
 
   export type LeadCreateOrConnectWithoutFollowUpRemindersInput = {
@@ -178783,6 +179650,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178801,6 +179669,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutFollowUpRemindersInput = {
@@ -178830,6 +179699,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -178846,6 +179716,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
   }
 
   export type UserUpsertWithoutFollowUpRemindersInput = {
@@ -178966,6 +179837,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -179026,6 +179898,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -179044,6 +179917,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -179136,6 +180011,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutMotivationMailHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179196,6 +180072,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -179214,6 +180091,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179290,6 +180169,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutDiscontinuationRequestsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -179350,6 +180230,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -179368,6 +180249,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -179460,6 +180343,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutDiscontinuationRequestsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -179520,6 +180404,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -179538,6 +180423,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -180374,6 +181261,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutPaymentsInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -180434,6 +181322,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchStudentInput
@@ -180452,6 +181341,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -180660,6 +181551,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -180720,6 +181612,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
@@ -180738,6 +181631,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -181019,6 +181914,7 @@ export namespace Prisma {
   export type BranchStudentCreateWithoutLedgerEntriesInput = {
     id?: string
     studentId: string
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -181079,6 +181975,7 @@ export namespace Prisma {
     arrangementType?: string
     firstCourseId?: string | null
     branch: BranchCreateNestedOneWithoutBranchStudentsInput
+    sourceLead?: LeadCreateNestedOneWithoutConvertedStudentInput
     course?: BranchCourseCreateNestedOneWithoutBranchStudentsInput
     installments?: BranchStudentInstallmentCreateNestedManyWithoutBranchStudentInput
     payments?: BranchStudentPaymentCreateNestedManyWithoutBranchStudentInput
@@ -181097,6 +181994,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -181272,6 +182171,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutLedgerEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -181332,6 +182232,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -181350,6 +182251,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -181772,6 +182675,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -181812,6 +182716,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -181852,6 +182757,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -182931,6 +183837,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -182948,6 +183855,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -182978,6 +183886,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -182993,6 +183902,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -183023,6 +183933,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183061,6 +183972,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183078,6 +183990,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -183108,6 +184021,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183123,6 +184037,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -183153,6 +184068,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183191,6 +184107,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183208,6 +184125,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -183238,6 +184156,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183253,6 +184172,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -183283,6 +184203,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -183595,6 +184516,8 @@ export namespace Prisma {
   export type BranchStudentCreateManyBranchInput = {
     id?: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -183874,6 +184797,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -184222,6 +185146,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -184281,6 +185206,7 @@ export namespace Prisma {
     enrollmentType?: StringFieldUpdateOperationsInput | string
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     course?: BranchCourseUpdateOneWithoutBranchStudentsNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
@@ -184299,6 +185225,8 @@ export namespace Prisma {
   export type BranchStudentUncheckedUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -184376,6 +185304,8 @@ export namespace Prisma {
   export type BranchStudentUncheckedUpdateManyWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -185054,6 +185984,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -185071,6 +186002,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -185100,6 +186032,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -185116,6 +186049,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -185145,6 +186079,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -185996,6 +186931,8 @@ export namespace Prisma {
     id?: string
     branchId: string
     studentId: string
+    sourceLeadId?: string | null
+    admissionSource?: string | null
     studentName: string
     parentName?: string | null
     mobileNumber?: string | null
@@ -186236,6 +187173,7 @@ export namespace Prisma {
     referredName?: string | null
     paymentStatus?: string
     paymentAmount?: number | null
+    admissionStatus?: string
     trainingMode?: string | null
     classSchedule?: string | null
     courseMode?: string | null
@@ -186512,6 +187450,7 @@ export namespace Prisma {
   export type BranchStudentUpdateWithoutCourseInput = {
     id?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -186572,6 +187511,7 @@ export namespace Prisma {
     arrangementType?: StringFieldUpdateOperationsInput | string
     firstCourseId?: NullableStringFieldUpdateOperationsInput | string | null
     branch?: BranchUpdateOneRequiredWithoutBranchStudentsNestedInput
+    sourceLead?: LeadUpdateOneWithoutConvertedStudentNestedInput
     installments?: BranchStudentInstallmentUpdateManyWithoutBranchStudentNestedInput
     payments?: BranchStudentPaymentUpdateManyWithoutBranchStudentNestedInput
     ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchStudentNestedInput
@@ -186590,6 +187530,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -186667,6 +187609,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
     studentId?: StringFieldUpdateOperationsInput | string
+    sourceLeadId?: NullableStringFieldUpdateOperationsInput | string | null
+    admissionSource?: NullableStringFieldUpdateOperationsInput | string | null
     studentName?: StringFieldUpdateOperationsInput | string
     parentName?: NullableStringFieldUpdateOperationsInput | string | null
     mobileNumber?: NullableStringFieldUpdateOperationsInput | string | null
@@ -187232,6 +188176,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -187249,6 +188194,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
 
@@ -187278,6 +188224,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -187294,6 +188241,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
 
@@ -187323,6 +188271,7 @@ export namespace Prisma {
     referredName?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: StringFieldUpdateOperationsInput | string
     paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
     trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
     classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
     courseMode?: NullableStringFieldUpdateOperationsInput | string | null
