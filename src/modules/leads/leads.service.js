@@ -5,7 +5,7 @@ import AppError from "../../common/errors/AppError.js";
 import { syncLeadFollowUpReminder } from "./followUpReminder.service.js";
 
 const CALL_TYPES = new Set(["NEW_LEAD", "REGULAR_CALL", "EXISTING_LEAD_FOLLOW_UP", "STUDENT_JOB_OPENING", "BUSINESS_OPPORTUNITY", "PROMOTIONAL_LEAD", "STUDENT_JOB_OPPORTUNITY", "JOB_OPPORTUNITY", "JOB_OPENING", "EXISTING_LEAD_STUDENT_JOB_OPPORTUNITY", "OTHER"]);
-const STATUSES = new Set(["DRAFT", "ACTIVE", "FOLLOW_UP", "CONVERTED", "CLOSED", "OTHER"]);
+const STATUSES = new Set(["DRAFT", "ACTIVE", "FOLLOW_UP", "NOT_ANSWERING", "CONTACTED", "INTERESTED", "DEMO_SCHEDULED", "DEMO_ATTENDED", "ADMISSION_CONFIRMED", "ENROLLED", "LOST_LEAD", "SWITCHED_OFF", "OUT_OF_SERVICE", "INCOMING_CALL_BLOCK", "DND", "NOT_REACHABLE", "CALL_WAITING", "CALL_LATER", "UNAVAILABLE_COURSE", "NOT_INTERESTED", "WRONG_NO", "CURRENTLY_NO_IDEA", "FORWARD_TO_HR_TEAM", "MAY_BE_IN_FUTURE", "JOINED_IN_ANOTHER_INSTITUTION", "CONVERTED", "CLOSED", "OTHER"]);
 const STAGES = new Set(["COLD", "WARM", "HOT", "CLOSED", "OTHER"]);
 const SOURCES = new Set(["OUTBOUND_DB", "JUSTDIAL", "GOOGLE", "WEBSITE", "TALLY_WEBSITE", "DIRECT_WALK_IN", "REFERENCE", "SOCIAL_MEDIA", "HR_DB", "OTHER"]);
 const PAYMENT_STATUSES = new Set(["NOT_PAID", "INITIAL_PAYMENT", "PARTIALLY_PAID", "PAID"]);
@@ -186,10 +186,15 @@ export async function addFollowUp(id, payload, actor) {
   const status = enumValue(payload.status ?? lead.status, STATUSES, "Lead status");
   const callStatus = callStatusValue(payload.callStatus);
   const activeStage = ["COLD", "WARM"].includes(stage);
-  const scheduleChoice = upper(payload.scheduleChoice);
+  let scheduleChoice = upper(payload.scheduleChoice);
   if (activeStage && scheduleChoice === "NO_FURTHER_FOLLOW_UP") throw new AppError("COLD and WARM leads must keep automatic follow-up reminders active. Move the lead to HOT or CLOSED to stop reminders.", 400);
   let nextFollowUpDate = dateValue(payload.nextFollowUpDate, "Next follow-up date", false);
   let nextFollowUpTime = optional(payload.nextFollowUpTime, 5);
+  if (scheduleChoice === "KEEP_EXISTING_DATE") {
+    const submittedDateChanged = Boolean(nextFollowUpDate) && nextFollowUpDate.getTime() !== (lead.nextFollowUpDate?.getTime() || null);
+    const submittedTimeChanged = Boolean(nextFollowUpTime) && nextFollowUpTime !== (lead.nextFollowUpTime || null);
+    if (submittedDateChanged || submittedTimeChanged) scheduleChoice = "SET_NEW_DATE";
+  }
   if (scheduleChoice === "KEEP_EXISTING_DATE") {
     nextFollowUpDate = lead.nextFollowUpDate || null;
     nextFollowUpTime = lead.nextFollowUpTime || null;
