@@ -436,7 +436,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     });
   }
 
-  if (role === "SALES_ADMIN") {
+  if (isFirstLogin && role === "SALES_ADMIN") {
     setImmediate(() => {
       void createNotification({
         kind: "BRANCH_LOGIN",

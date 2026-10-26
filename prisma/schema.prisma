@@ -13,6 +13,9 @@ model User {
   fullName                       String
   email                          String                       @unique
   phone                          String?                      @unique
+  country                        String?
+  state                          String?
+  city                           String?
   address                        String?
   role                           UserRole
   active                         Boolean                      @default(true)

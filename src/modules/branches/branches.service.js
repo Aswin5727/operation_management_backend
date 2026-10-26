@@ -849,3 +849,45 @@ export async function getCurrentBranchProfile(user) {
 
   return toBranchSummary(branch);
 }
+
+export async function listBranchSalesAdmins(user) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (!['BRANCH_ADMIN', 'SUPER_ADMIN'].includes(role)) {
+    throw new AppError('You do not have permission to view branch Sales Admins.', 403);
+  }
+
+  const branch = await getCurrentBranchProfile(user);
+  if (!branch?.id) throw new AppError('Branch profile not found.', 404);
+
+  const assignments = await prisma.salesAdminBranch.findMany({
+    where: { branchId: branch.id },
+    select: {
+      salesAdmin: {
+        select: {
+          id: true,
+          userCode: true,
+          fullName: true,
+          email: true,
+          phone: true,
+          active: true,
+        },
+      },
+    },
+  });
+
+  const salesAdmins = assignments
+    .map(({ salesAdmin }) => ({
+      id: salesAdmin.userCode || salesAdmin.id,
+      userId: salesAdmin.id,
+      name: salesAdmin.fullName || '',
+      email: salesAdmin.email || '',
+      phone: salesAdmin.phone || '',
+      status: salesAdmin.active ? 'ACTIVE' : 'INACTIVE',
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return {
+    branch: { id: branch.id, branchId: branch.branchId, branchName: branch.branchName },
+    salesAdmins,
+  };
+}
