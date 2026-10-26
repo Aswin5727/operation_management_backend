@@ -3,6 +3,7 @@ import {
   createBranch,
   deleteBranch,
   getCurrentBranchProfile,
+  listBranchSalesAdminAdmissions,
   listBranchSalesAdmins,
   listBranches,
   resendBranchInvitation,
@@ -55,10 +56,16 @@ const listBranchSalesAdminsHandler = asyncHandler(async (req, res) => {
   res.status(200).json({ data: result });
 });
 
+const listBranchSalesAdminAdmissionsHandler = asyncHandler(async (req, res) => {
+  const result = await listBranchSalesAdminAdmissions(req.user || req.auth || {});
+  res.status(200).json({ data: result });
+});
+
 export {
   createBranchHandler,
   deleteBranchHandler,
   getCurrentBranchProfileHandler,
+  listBranchSalesAdminAdmissionsHandler,
   listBranchSalesAdminsHandler,
   listBranchesHandler,
   resendBranchInvitationHandler,

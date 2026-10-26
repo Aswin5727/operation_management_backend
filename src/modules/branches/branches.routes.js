@@ -6,6 +6,7 @@ import {
   createBranchHandler,
   deleteBranchHandler,
   getCurrentBranchProfileHandler,
+  listBranchSalesAdminAdmissionsHandler,
   listBranchSalesAdminsHandler,
   listBranchesHandler,
   resendBranchInvitationHandler,
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.get("/me", authenticate, authorize("BRANCH_ADMIN"), getCurrentBranchProfileHandler);
 router.get("/me/sales-admins", authenticate, authorize("BRANCH_ADMIN", "SUPER_ADMIN"), listBranchSalesAdminsHandler);
+router.get("/me/sales-admin-admissions", authenticate, authorize("BRANCH_ADMIN", "SUPER_ADMIN"), listBranchSalesAdminAdmissionsHandler);
 
 router.use(authenticate, authorize("SUPER_ADMIN"));
 

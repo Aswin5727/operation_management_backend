@@ -891,3 +891,70 @@ export async function listBranchSalesAdmins(user) {
     salesAdmins,
   };
 }
+
+export async function listBranchSalesAdminAdmissions(user) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (!['BRANCH_ADMIN', 'SUPER_ADMIN'].includes(role)) {
+    throw new AppError('You do not have permission to view branch admissions.', 403);
+  }
+
+  const branch = await getCurrentBranchProfile(user);
+  if (!branch?.id) throw new AppError('Branch profile not found.', 404);
+
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      branchId: branch.id,
+      sourceLeadId: { not: null },
+      sourceLead: {
+        is: {
+          branchId: branch.id,
+          status: 'CONVERTED',
+          deletedAt: null,
+          OR: [
+            { assignedTo: { is: { role: 'SALES_ADMIN' } } },
+            { createdBy: { is: { role: 'SALES_ADMIN' } } },
+          ],
+        },
+      },
+    },
+    include: {
+      sourceLead: {
+        select: {
+          leadId: true,
+          assignedTo: { select: { id: true, userCode: true, fullName: true, role: true } },
+          createdBy: { select: { id: true, userCode: true, fullName: true, role: true } },
+        },
+      },
+      courseEnrollments: { orderBy: { sequenceOrder: 'asc' } },
+    },
+    orderBy: [{ admissionDate: 'desc' }, { createdAt: 'desc' }],
+  });
+
+  return {
+    branch: { id: branch.id, branchId: branch.branchId, branchName: branch.branchName },
+    admissions: students.map((student) => {
+      const enrollment = student.courseEnrollments?.[0] || {};
+      const creator = student.sourceLead?.createdBy;
+      const salesAdmin = creator?.role === 'SALES_ADMIN' ? creator : student.sourceLead?.assignedTo;
+      return {
+        id: student.id,
+        createdAt: student.createdAt,
+        studentId: student.studentId || '',
+        studentName: student.studentName || '',
+        email: student.emailAddress || '',
+        phone: student.mobileNumber || '',
+        leadId: student.sourceLead?.leadId || '',
+        courseName: enrollment.courseName || student.courseName || '',
+        facultyName: enrollment.facultyName || student.facultyName || '',
+        batchName: enrollment.batchName || student.batchName || '',
+        batchTiming: enrollment.batchTiming || student.batchTiming || '',
+        trainingMode: enrollment.mode || student.courseMode || '',
+        schedule: enrollment.scheduleType || student.classSchedule || '',
+        admissionDate: student.admissionDate || '',
+        salesAdminId: salesAdmin?.userCode || salesAdmin?.id || '',
+        salesAdminName: salesAdmin?.fullName || '',
+        status: 'ADMITTED',
+      };
+    }),
+  };
+}
