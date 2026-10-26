@@ -13,6 +13,7 @@ import {
   listBranchLedgerHandler,
   listBranchStudentsHandler,
   listBranchStudentLifecycleHandler,
+  listBranchStudentReportCompletionSummariesHandler,
   updateBranchStudentHandler,
   createBranchStudentPaymentHandler,
   previewBranchStudentFeePlanHandler,
@@ -36,6 +37,12 @@ router.get(
   listBranchStudentLifecycleHandler,
 );
 
+router.post(
+  "/report-completion-summary",
+  authenticate,
+  authorize("BRANCH_ADMIN", "SUPER_ADMIN"),
+  listBranchStudentReportCompletionSummariesHandler,
+);
 router.get(
   "/me",
   authenticate,

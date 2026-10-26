@@ -407,14 +407,10 @@ export async function validateCourseWorkbook(buffer, profile, db = prisma, edits
 export function publicCoursePreview(result) { const { payloads, ...preview } = result; return preview; }
 export async function previewCourseWorkbook(buffer, profile, db = prisma, edits = {}) {
   const normalizedEdits = normalizeCourseEdits(edits);
-  const hash = courseUploadHash(buffer, normalizedEdits);
-  const receipt = await db.branchCourseImportReceipt.findUnique({
-    where: { branchId_uploadHash: { branchId: profile.id, uploadHash: hash } },
-  });
-  const allowExistingCourseCodes = Array.isArray(receipt?.summary?.courses)
-    ? receipt.summary.courses.map((course) => course.courseCode).filter(Boolean)
-    : [];
-  return validateCourseWorkbook(buffer, profile, db, normalizedEdits, { allowExistingCourseCodes });
+  // Existing branch course codes and names must remain duplicates during
+  // preview. Import receipts are used only by the guarded import transaction;
+  // they must never make an already-existing course look valid to the user.
+  return validateCourseWorkbook(buffer, profile, db, normalizedEdits);
 }
 export async function importCourseWorkbook({ buffer, profile, actorId, previewHash, edits = {}, db = prisma }) {
   const normalizedEdits = normalizeCourseEdits(edits);

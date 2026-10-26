@@ -2585,6 +2585,11 @@ async function ensureBranchStudentAccess(actor, studentId) {
 export async function listBranchStudents(query = {}, actor = null) {
   const { page, limit, skip, take } = buildPagination(query);
   const summaryOnly = ['1', 'true', 'yes'].includes(normalizeString(query.summary).toLowerCase());
+  // Dashboard callers can request the student rows without recalculating academic progress for every enrollment.
+  // The dedicated bulk report endpoint handles completion details for completed courses.
+  const includeAcademicProgress = !['0', 'false', 'no'].includes(
+    normalizeString(query.includeProgress).toLowerCase(),
+  );
   const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
   const sortOrder = parseSortOrder(query.sortOrder);
   let branchProfile = await getBranchContext(actor);
@@ -2706,7 +2711,9 @@ export async function listBranchStudents(query = {}, actor = null) {
     }),
   ]);
 
-  const completionByStudentId = new Map(await Promise.all(rows.map(async (student) => {
+  let completionByStudentId = new Map();
+  if (includeAcademicProgress) {
+    completionByStudentId = new Map(await Promise.all(rows.map(async (student) => {
     try {
       const enrollments = Array.isArray(student.courseEnrollments) && student.courseEnrollments.length
         ? student.courseEnrollments
@@ -2751,7 +2758,8 @@ export async function listBranchStudents(query = {}, actor = null) {
         byCourse: {},
       }];
     }
-  })));
+  })))
+  }
 
   return {
     data: rows.map((student) => {
@@ -2914,16 +2922,34 @@ export async function getCompletedCourseAcademicTests(student, enrollment) {
     }
   }).filter(Boolean)
 }
+async function mapWithConcurrency(items, concurrency, mapper) {
+  const results = new Array(items.length)
+  let nextIndex = 0
+  const workerCount = Math.min(Math.max(1, concurrency), items.length)
+  await Promise.all(Array.from({ length: workerCount }, async () => {
+    while (true) {
+      const index = nextIndex
+      nextIndex += 1
+      if (index >= items.length) return
+      results[index] = await mapper(items[index], index)
+    }
+  }))
+  return results
+}
 export async function listBranchStudentLifecycle(query = {}, actor = null) {
   const lifecycle = normalizeString(query.lifecycle || "COMPLETED").toUpperCase()
   if (!['COMPLETED', 'DISCONTINUED'].includes(lifecycle)) throw new AppError("Invalid student lifecycle", 400)
   const branchProfile = await getBranchContext(actor)
   const branchId = branchProfile?.id || normalizeString(query.branchId)
+  const requestedStudentId = normalizeString(query.studentId)
+  const requestedCourseId = normalizeString(query.courseId)
+  const includeDetails = String(query.includeDetails || '').toLowerCase() === 'true'
   const lifecycleWhere = {
     ...(branchId ? { branchId } : {}),
     ...(lifecycle === "DISCONTINUED"
       ? { OR: [{ discontinuationRequests: { some: { status: "APPROVED" } } }, { courseEnrollments: { some: { importedLifecycleStatus: "DISCONTINUED" } } }] }
       : {}),
+    ...(requestedStudentId ? { AND: [{ OR: [{ studentId: requestedStudentId }, { id: requestedStudentId }] }] } : {}),
   }
   const students = await prisma.branchStudent.findMany({
     where: lifecycleWhere,
@@ -2934,10 +2960,16 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { amount: true, paymentMode: true, receiptNumber: true, payAgainst: true } },
       calendarAttendanceRecords: { select: { courseId: true, status: true } },
       facultyTodayWorkStudentEntries: {
-        include: {
+        select: {
           facultyTodayWorkEntry: {
-            include: {
-              branchCourse: { include: { modules: { include: { submodules: true } } } },
+            select: {
+              courseId: true,
+              applyToAllStudents: true,
+              studentIds: true,
+              courseProgress: true,
+              moduleId: true,
+              submoduleIds: true,
+              branchCourse: { select: { modules: { select: { id: true, submodules: { select: { id: true } } } } } },
             },
           },
         },
@@ -2947,8 +2979,8 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
     },
   })
 
-  const records = []
-  for (const student of students) {
+  const records = (await mapWithConcurrency(students, 3, async (student) => {
+    const studentRecords = []
     const enrollments = student.courseEnrollments.length ? student.courseEnrollments : [{
       id: null, courseId: student.courseId, courseName: student.courseName, facultyName: student.facultyName, batchId: student.batchId, batchName: student.batchName,
       batchTiming: student.batchTiming, scheduleType: student.classSchedule, mode: student.courseMode, startDate: student.courseStartDate, endDate: student.courseEndDate,
@@ -2992,6 +3024,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       })
     }
     for (const enrollment of enrollments) {
+      if (requestedCourseId && String(enrollment.courseId || '').trim() !== requestedCourseId) continue
       // Historical report imports may contain a course name without a
       // catalog course id. They still belong in the lifecycle history view.
       if (!enrollment.courseId && !enrollment.courseName && !student.courseName) continue
@@ -3040,7 +3073,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         ...facultyProgressValues,
       ))
       if (lifecycle === "COMPLETED" && (isDiscontinued || effectiveCourseProgress < 100)) continue
-      const academicProgress = lifecycle === "COMPLETED"
+      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt
         ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
         : null
       const completionStatus = lifecycle === "COMPLETED"
@@ -3055,10 +3088,10 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       const totalFees = Number(enrollment.finalCourseAmount ?? enrollment.totalCourseAmount ?? enrollment.course?.afterDiscount ?? student.courseAmount ?? 0)
       const enrollmentIndex = enrollments.findIndex((item) => String(item.courseId || '') === String(enrollment.courseId || ''))
       const paidAmount = Math.min(totalFees, Math.round(paidByCourse[Math.max(enrollmentIndex, 0)] || 0))
-      const academicTests = lifecycle === "COMPLETED"
+      const academicTests = lifecycle === "COMPLETED" && includeDetails
         ? await getCompletedCourseAcademicTests(student, enrollment)
         : []
-      records.push({
+      studentRecords.push({
         recordId: enrollment.id || `${student.id}:${enrollment.courseId}`, branchId: student.branchId, branchName: student.branch?.branchName, branchAdminName: student.branch?.branchAdminName,
         studentId: student.studentId, studentName: student.studentName, parentName: student.parentName, parentSpouseNumber: student.parentSpouseNumber, mobileNumber: student.mobileNumber, emailAddress: student.emailAddress, linkedInUrl: student.linkedInUrl, currentStatus: student.currentStatus, customCurrentStatus: student.customCurrentStatus, purpose: student.purpose, customPurpose: student.customPurpose, qualification: student.qualification, educationLevel: student.educationLevel, educationStatus: student.educationStatus, passedOutYear: student.passedOutYear, designation: student.designation, companyName: student.companyName, source: student.source || null,
         courseId: enrollment.courseId, courseName: enrollment.courseName || enrollment.course?.name || student.courseName, courseStartDate: enrollment.startDate || student.courseStartDate, courseEndDate: enrollment.endDate || student.courseEndDate,
@@ -3074,8 +3107,12 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         academicTests: [...academicTests, ...Object.entries(enrollment.importedAcademicResults || student.importedAcademicResults || {}).filter(([, value]) => value !== null && value !== undefined && value !== "").map(([field, value]) => ({ label: field === "academicProject" ? "Academic Project" : `Assessment-${String(field.replace("assessment", "")).padStart(2, "0")}`, value: `${value}%` }))], academicTestProgress: academicProgress, discontinuationRequestId: request?.id || null,
       })
     }
-  }
-  const filtered = records.filter((row) => lifecycleSearchMatch(row, query.search))
+    return studentRecords
+  })).flat()
+  const courseFilteredRecords = requestedCourseId
+    ? records.filter((row) => String(row.courseId || '').trim() === requestedCourseId)
+    : records
+  const filtered = courseFilteredRecords.filter((row) => lifecycleSearchMatch(row, query.search))
   const sortBy = ['studentName', 'courseName', 'courseStartDate', 'courseEndDate'].includes(normalizeString(query.sortBy)) ? normalizeString(query.sortBy) : 'studentName'
   const sortOrder = normalizeString(query.sortOrder).toLowerCase() === 'desc' ? -1 : 1
   filtered.sort((left, right) => String(left[sortBy] || '').localeCompare(String(right[sortBy] || ''), undefined, { numeric: true }) * sortOrder)
