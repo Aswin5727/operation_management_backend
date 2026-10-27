@@ -190,23 +190,8 @@ async function sendDueReminder(reminder) {
       const timeLabel = isTimed ? localTimeLabel(lead.nextFollowUpTime) : "";
       notification = await createNotification({ kind: "LEAD_FOLLOW_UP_DUE", tone: "blue", title: `Follow-up Reminder - ${lead.studentName}`, message: timeLabel ? `You scheduled a follow-up call with ${lead.studentName} (${lead.leadId}) for today at ${timeLabel}. Please contact the student and update the follow-up details.` : `You have a scheduled follow-up with ${lead.studentName} (${lead.leadId}) today. Please contact the student and update the follow-up details.`, actionLabel: "View Lead", targetUserId: lead.assignedToId, targetBranchId: lead.branch?.id || null, targetBranchName: lead.branch?.branchName || null, requestDescription: description });
     }
-    const branchAdminId = lead.branch?.adminUserId || null;
-    if (branchAdminId && branchAdminId !== lead.assignedToId) {
-      const branchAdminNotification = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_DUE", targetUserId: branchAdminId, requestDescription: description }, select: { id: true } });
-      if (!branchAdminNotification) {
-        await createNotification({
-          kind: "LEAD_FOLLOW_UP_DUE",
-          tone: "blue",
-          title: notification.title,
-          message: notification.message,
-          actionLabel: "View Lead",
-          targetUserId: branchAdminId,
-          targetBranchId: lead.branch?.id || null,
-          targetBranchName: lead.branch?.branchName || null,
-          requestDescription: description,
-        });
-      }
-    }
+
+
     await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'SENT', "notificationId" = $2, "deliveredAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1`, reminder.id, notification.id);
     await syncLeadFollowUpReminder(lead.id);
   } catch (error) {
@@ -240,7 +225,7 @@ async function createOverdueNotifications() {
   for (const row of rows) {
     const description = `${reminderDescription("LEAD_FOLLOW_UP_OVERDUE", row.leadId, row.nextFollowUpDate)}:${encodeURIComponent(row.timezone || "Asia/Kolkata")}`;
     const legacyDescription = reminderDescription("LEAD_FOLLOW_UP_OVERDUE", row.leadId, row.nextFollowUpDate);
-    const recipientUserIds = [...new Set([row.recipientUserId, row.adminUserId].filter(Boolean))];
+    const recipientUserIds = [...new Set([row.recipientUserId].filter(Boolean))];
     for (const targetUserId of recipientUserIds) {
       const existing = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_OVERDUE", targetUserId, requestDescription: { in: [description, legacyDescription] } }, select: { id: true } });
       if (existing) continue;
