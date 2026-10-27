@@ -1,4 +1,4 @@
-﻿import prisma from "../../config/prisma.js";
+import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { sendFacultyWeekOffApprovalEmail, sendFacultyWeekOffRejectionEmail } from "../../common/services/resendEmail.js";
 
@@ -46,6 +46,9 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "STUDENT_DISCONTINUATION",
   "SALES_CRM_ADMISSION",
   "SALES_CRM_BATCH_REQUEST",
+  "LEAD_FOLLOW_UP_SCHEDULED",
+  "LEAD_FOLLOW_UP_DUE",
+  "LEAD_FOLLOW_UP_OVERDUE",
 ]);
 const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
   "BRANCH_INVITATION_RESENT",
