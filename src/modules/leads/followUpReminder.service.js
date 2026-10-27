@@ -211,14 +211,8 @@ async function createOverdueNotifications() {
     ) r ON TRUE
     WHERE l."deletedAt" IS NULL
       AND l."assignedToId" IS NOT NULL
-      AND (
-        l."nextFollowUpDate"::date < (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::date
-        OR (
-          l."nextFollowUpDate"::date = (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::date
-          AND l."nextFollowUpTime" IS NOT NULL
-          AND (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::time >= l."nextFollowUpTime"::time
-        )
-      )
+      AND l."nextFollowUpDate"::date < (CURRENT_TIMESTAMP AT TIME ZONE COALESCE(NULLIF(b."timezone", ''), 'Asia/Kolkata'))::date
+      AND (CURRENT_TIMESTAMP AT TIME ZONE COALESCE(NULLIF(b."timezone", ''), 'Asia/Kolkata'))::time >= TIME '09:00'
       AND l."stage" IN ('COLD', 'WARM') AND l."status" <> 'CONVERTED'
   `);
   for (const row of rows) {
