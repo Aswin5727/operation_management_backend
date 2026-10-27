@@ -126,6 +126,9 @@ exports.Prisma.UserScalarFieldEnum = {
   fullName: 'fullName',
   email: 'email',
   phone: 'phone',
+  country: 'country',
+  state: 'state',
+  city: 'city',
   address: 'address',
   role: 'role',
   active: 'active',
@@ -176,6 +179,7 @@ exports.Prisma.BranchScalarFieldEnum = {
   branchPhone: 'branchPhone',
   branchAddress: 'branchAddress',
   status: 'status',
+  roleAccess: 'roleAccess',
   adminUserId: 'adminUserId',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -1665,6 +1669,11 @@ exports.RecordStatus = exports.$Enums.RecordStatus = {
   PENDING: 'PENDING'
 };
 
+exports.BranchRoleAccess = exports.$Enums.BranchRoleAccess = {
+  BRANCH_ADMIN_ONLY: 'BRANCH_ADMIN_ONLY',
+  BRANCH_ADMIN_SALES_ADMIN: 'BRANCH_ADMIN_SALES_ADMIN'
+};
+
 exports.LoginEventType = exports.$Enums.LoginEventType = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGIN_FAILURE: 'LOGIN_FAILURE',
@@ -1705,6 +1714,7 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
+  LEAD_FOLLOW_UP_SCHEDULED: 'LEAD_FOLLOW_UP_SCHEDULED',
   SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
   SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
@@ -1763,6 +1773,28 @@ exports.LeadStatus = exports.$Enums.LeadStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
   FOLLOW_UP: 'FOLLOW_UP',
+  NOT_ANSWERING: 'NOT_ANSWERING',
+  CONTACTED: 'CONTACTED',
+  INTERESTED: 'INTERESTED',
+  DEMO_SCHEDULED: 'DEMO_SCHEDULED',
+  DEMO_ATTENDED: 'DEMO_ATTENDED',
+  ADMISSION_CONFIRMED: 'ADMISSION_CONFIRMED',
+  ENROLLED: 'ENROLLED',
+  LOST_LEAD: 'LOST_LEAD',
+  SWITCHED_OFF: 'SWITCHED_OFF',
+  OUT_OF_SERVICE: 'OUT_OF_SERVICE',
+  INCOMING_CALL_BLOCK: 'INCOMING_CALL_BLOCK',
+  DND: 'DND',
+  NOT_REACHABLE: 'NOT_REACHABLE',
+  CALL_WAITING: 'CALL_WAITING',
+  CALL_LATER: 'CALL_LATER',
+  UNAVAILABLE_COURSE: 'UNAVAILABLE_COURSE',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  WRONG_NO: 'WRONG_NO',
+  CURRENTLY_NO_IDEA: 'CURRENTLY_NO_IDEA',
+  FORWARD_TO_HR_TEAM: 'FORWARD_TO_HR_TEAM',
+  MAY_BE_IN_FUTURE: 'MAY_BE_IN_FUTURE',
+  JOINED_IN_ANOTHER_INSTITUTION: 'JOINED_IN_ANOTHER_INSTITUTION',
   CONVERTED: 'CONVERTED',
   CLOSED: 'CLOSED',
   OTHER: 'OTHER'

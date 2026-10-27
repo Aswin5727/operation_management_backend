@@ -23,6 +23,11 @@ const NOTIFICATION_KIND_MAP = {
   SALES_CRM_ADMISSION: "sales-crm-admission",
   SALES_CRM_BATCH_REQUEST: "sales-crm-batch-request",
   SALES_CRM_BATCH_REQUEST_UPDATE: "sales-crm-batch-request-update",
+  LEAD_FOLLOW_UP_SCHEDULED: "lead-follow-up-scheduled",
+  LEAD_FOLLOW_UP_DUE: "lead-follow-up-due",
+  LEAD_FOLLOW_UP_OVERDUE: "lead-follow-up-overdue",
+  SALES_CRM_MONTHLY_REPORT: "sales-crm-monthly-report",
+  PENDING_STUDENT_ADMISSION_REMINDER: "pending-student-admission-reminder",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -49,6 +54,7 @@ const DEFAULT_VISIBLE_NOTIFICATION_KINDS = new Set([
 const SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "LEAD_FOLLOW_UP_DUE",
   "LEAD_FOLLOW_UP_OVERDUE",
+  "LEAD_FOLLOW_UP_SCHEDULED",
   "SALES_CRM_MONTHLY_REPORT",
   "PENDING_STUDENT_ADMISSION_REMINDER",
   "SALES_CRM_BATCH_REQUEST_UPDATE",
@@ -226,6 +232,7 @@ async function buildBranchAdminScope(user = {}) {
       branchId: true,
       branchEmail: true,
       branchName: true,
+      roleAccess: true,
     },
   });
 
@@ -241,6 +248,8 @@ async function buildBranchAdminScope(user = {}) {
 
     return fallbackScope;
   }
+
+  user.roleAccess = branch.roleAccess || "BRANCH_ADMIN_ONLY";
 
   // Branch ID is the canonical tenant boundary. Older notifications may not
   // have email/name populated, so requiring all three fields hides valid rows.
@@ -267,6 +276,12 @@ function getVisibleNotificationKindsForRole(user = {}) {
   }
 
   if (role === "BRANCH_ADMIN") {
+    if (user?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN") {
+      return new Set([
+        ...BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS,
+        ...SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS,
+      ]);
+    }
     return BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS;
   }
 
@@ -336,6 +351,37 @@ export function buildNotificationWhere({
     const recipientScope = recipientScopes.length > 1
       ? { OR: recipientScopes }
       : recipientScopes[0] || { targetUserId: "__unresolved_branch_admin__" };
+
+    if (user?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN") {
+      const salesKinds = Array.from(SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS);
+      const branchKinds = Array.from(BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS);
+      const ownUserScope = user?.id ? { targetUserId: user.id } : { targetUserId: "__unresolved_branch_admin__" };
+      const scope = normalizedKind
+        ? (salesKinds.includes(normalizedKind) ? ownUserScope : recipientScope)
+        : {
+            OR: [
+              ...(Object.keys(branchScope).length ? [{ ...branchScope, kind: { in: branchKinds } }] : []),
+              ...(user?.id ? [{ targetUserId: user.id, kind: { in: [...branchKinds, ...salesKinds] } }] : []),
+            ],
+          };
+
+      return {
+        ...scope,
+        ...(!normalizedKind
+          ? {
+              NOT: {
+                kind: "COURSE_EDIT_MODULE_UPDATED",
+                message: {
+                  contains: "module progress",
+                  mode: "insensitive",
+                },
+              },
+            }
+          : {}),
+        ...(unreadOnly ? { read: false } : {}),
+        ...(normalizedKind ? { kind: normalizedKind } : {}),
+      };
+    }
 
     return {
       ...recipientScope,

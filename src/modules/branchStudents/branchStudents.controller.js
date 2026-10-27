@@ -70,7 +70,11 @@ export const createBranchStudentHandler = asyncHandler(async (req, res) => {
 });
 
 export const previewBranchStudentFeePlanHandler = asyncHandler(async (req, res) => {
-  const plan = await previewBranchStudentFeePlan(req.body || {}, req.user);
+  // req.user contains the database user, while req.auth contains the
+  // authenticated branch scope and roleAccess resolved by the auth middleware.
+  // Combined Branch Admin fee previews need both pieces of context.
+  const actor = { ...(req.user || {}), ...(req.auth || {}) };
+  const plan = await previewBranchStudentFeePlan(req.body || {}, actor);
   return sendSuccess(res, "Student fee schedule preview generated successfully", plan);
 });
 

@@ -13,6 +13,9 @@ model User {
   fullName                       String
   email                          String                       @unique
   phone                          String?                      @unique
+  country                        String?
+  state                          String?
+  city                           String?
   address                        String?
   role                           UserRole
   active                         Boolean                      @default(true)
@@ -105,6 +108,7 @@ model Branch {
   branchPhone                String                      @unique
   branchAddress              String
   status                     RecordStatus                @default(ACTIVE)
+  roleAccess                 BranchRoleAccess             @default(BRANCH_ADMIN_ONLY)
   adminUserId                String?                     @unique
   createdBy                  String?
   updatedBy                  String?
@@ -137,6 +141,11 @@ model Branch {
   @@index([status])
   @@index([branchName])
   @@index([branchAdminName])
+}
+
+enum BranchRoleAccess {
+  BRANCH_ADMIN_ONLY
+  BRANCH_ADMIN_SALES_ADMIN
 }
 
 model SalesAdminBranch {
@@ -2030,6 +2039,7 @@ enum NotificationKind {
   STUDENT_DISCONTINUATION
   LEAD_FOLLOW_UP_DUE
   LEAD_FOLLOW_UP_OVERDUE
+  LEAD_FOLLOW_UP_SCHEDULED
   SALES_CRM_MONTHLY_REPORT
   SALES_CRM_ADMISSION
   PENDING_STUDENT_ADMISSION_REMINDER

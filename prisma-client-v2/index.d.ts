@@ -423,7 +423,15 @@ export type BranchCourseImportReceipt = $Result.DefaultSelection<Prisma.$BranchC
  * Enums
  */
 export namespace $Enums {
-  export const AcademicTestType: {
+  export const BranchRoleAccess: {
+  BRANCH_ADMIN_ONLY: 'BRANCH_ADMIN_ONLY',
+  BRANCH_ADMIN_SALES_ADMIN: 'BRANCH_ADMIN_SALES_ADMIN'
+};
+
+export type BranchRoleAccess = (typeof BranchRoleAccess)[keyof typeof BranchRoleAccess]
+
+
+export const AcademicTestType: {
   TEST: 'TEST',
   PROJECT: 'PROJECT',
   TEST_AND_PROJECT: 'TEST_AND_PROJECT'
@@ -444,6 +452,28 @@ export const LeadStatus: {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
   FOLLOW_UP: 'FOLLOW_UP',
+  NOT_ANSWERING: 'NOT_ANSWERING',
+  CONTACTED: 'CONTACTED',
+  INTERESTED: 'INTERESTED',
+  DEMO_SCHEDULED: 'DEMO_SCHEDULED',
+  DEMO_ATTENDED: 'DEMO_ATTENDED',
+  ADMISSION_CONFIRMED: 'ADMISSION_CONFIRMED',
+  ENROLLED: 'ENROLLED',
+  LOST_LEAD: 'LOST_LEAD',
+  SWITCHED_OFF: 'SWITCHED_OFF',
+  OUT_OF_SERVICE: 'OUT_OF_SERVICE',
+  INCOMING_CALL_BLOCK: 'INCOMING_CALL_BLOCK',
+  DND: 'DND',
+  NOT_REACHABLE: 'NOT_REACHABLE',
+  CALL_WAITING: 'CALL_WAITING',
+  CALL_LATER: 'CALL_LATER',
+  UNAVAILABLE_COURSE: 'UNAVAILABLE_COURSE',
+  NOT_INTERESTED: 'NOT_INTERESTED',
+  WRONG_NO: 'WRONG_NO',
+  CURRENTLY_NO_IDEA: 'CURRENTLY_NO_IDEA',
+  FORWARD_TO_HR_TEAM: 'FORWARD_TO_HR_TEAM',
+  MAY_BE_IN_FUTURE: 'MAY_BE_IN_FUTURE',
+  JOINED_IN_ANOTHER_INSTITUTION: 'JOINED_IN_ANOTHER_INSTITUTION',
   CONVERTED: 'CONVERTED',
   CLOSED: 'CLOSED',
   OTHER: 'OTHER'
@@ -520,6 +550,7 @@ export const NotificationKind: {
   STUDENT_DISCONTINUATION: 'STUDENT_DISCONTINUATION',
   LEAD_FOLLOW_UP_DUE: 'LEAD_FOLLOW_UP_DUE',
   LEAD_FOLLOW_UP_OVERDUE: 'LEAD_FOLLOW_UP_OVERDUE',
+  LEAD_FOLLOW_UP_SCHEDULED: 'LEAD_FOLLOW_UP_SCHEDULED',
   SALES_CRM_MONTHLY_REPORT: 'SALES_CRM_MONTHLY_REPORT',
   SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
@@ -608,6 +639,10 @@ export const CourseEditRequestStatus: {
 export type CourseEditRequestStatus = (typeof CourseEditRequestStatus)[keyof typeof CourseEditRequestStatus]
 
 }
+
+export type BranchRoleAccess = $Enums.BranchRoleAccess
+
+export const BranchRoleAccess: typeof $Enums.BranchRoleAccess
 
 export type AcademicTestType = $Enums.AcademicTestType
 
@@ -10365,6 +10400,9 @@ export namespace Prisma {
     fullName: string | null
     email: string | null
     phone: string | null
+    country: string | null
+    state: string | null
+    city: string | null
     address: string | null
     role: $Enums.UserRole | null
     active: boolean | null
@@ -10390,6 +10428,9 @@ export namespace Prisma {
     fullName: string | null
     email: string | null
     phone: string | null
+    country: string | null
+    state: string | null
+    city: string | null
     address: string | null
     role: $Enums.UserRole | null
     active: boolean | null
@@ -10415,6 +10456,9 @@ export namespace Prisma {
     fullName: number
     email: number
     phone: number
+    country: number
+    state: number
+    city: number
     address: number
     role: number
     active: number
@@ -10452,6 +10496,9 @@ export namespace Prisma {
     fullName?: true
     email?: true
     phone?: true
+    country?: true
+    state?: true
+    city?: true
     address?: true
     role?: true
     active?: true
@@ -10477,6 +10524,9 @@ export namespace Prisma {
     fullName?: true
     email?: true
     phone?: true
+    country?: true
+    state?: true
+    city?: true
     address?: true
     role?: true
     active?: true
@@ -10502,6 +10552,9 @@ export namespace Prisma {
     fullName?: true
     email?: true
     phone?: true
+    country?: true
+    state?: true
+    city?: true
     address?: true
     role?: true
     active?: true
@@ -10614,6 +10667,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone: string | null
+    country: string | null
+    state: string | null
+    city: string | null
     address: string | null
     role: $Enums.UserRole
     active: boolean
@@ -10658,6 +10714,9 @@ export namespace Prisma {
     fullName?: boolean
     email?: boolean
     phone?: boolean
+    country?: boolean
+    state?: boolean
+    city?: boolean
     address?: boolean
     role?: boolean
     active?: boolean
@@ -10714,6 +10773,9 @@ export namespace Prisma {
     fullName?: boolean
     email?: boolean
     phone?: boolean
+    country?: boolean
+    state?: boolean
+    city?: boolean
     address?: boolean
     role?: boolean
     active?: boolean
@@ -10739,6 +10801,9 @@ export namespace Prisma {
     fullName?: boolean
     email?: boolean
     phone?: boolean
+    country?: boolean
+    state?: boolean
+    city?: boolean
     address?: boolean
     role?: boolean
     active?: boolean
@@ -10764,6 +10829,9 @@ export namespace Prisma {
     fullName?: boolean
     email?: boolean
     phone?: boolean
+    country?: boolean
+    state?: boolean
+    city?: boolean
     address?: boolean
     role?: boolean
     active?: boolean
@@ -10783,7 +10851,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "address" | "role" | "active" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "country" | "state" | "city" | "address" | "role" | "active" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
@@ -10860,6 +10928,9 @@ export namespace Prisma {
       fullName: string
       email: string
       phone: string | null
+      country: string | null
+      state: string | null
+      city: string | null
       address: string | null
       role: $Enums.UserRole
       active: boolean
@@ -11335,6 +11406,9 @@ export namespace Prisma {
     readonly fullName: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly country: FieldRef<"User", 'String'>
+    readonly state: FieldRef<"User", 'String'>
+    readonly city: FieldRef<"User", 'String'>
     readonly address: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly active: FieldRef<"User", 'Boolean'>
@@ -14751,6 +14825,7 @@ export namespace Prisma {
     branchPhone: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
+    roleAccess: $Enums.BranchRoleAccess | null
     adminUserId: string | null
     createdBy: string | null
     updatedBy: string | null
@@ -14773,6 +14848,7 @@ export namespace Prisma {
     branchPhone: string | null
     branchAddress: string | null
     status: $Enums.RecordStatus | null
+    roleAccess: $Enums.BranchRoleAccess | null
     adminUserId: string | null
     createdBy: string | null
     updatedBy: string | null
@@ -14795,6 +14871,7 @@ export namespace Prisma {
     branchPhone: number
     branchAddress: number
     status: number
+    roleAccess: number
     adminUserId: number
     createdBy: number
     updatedBy: number
@@ -14819,6 +14896,7 @@ export namespace Prisma {
     branchPhone?: true
     branchAddress?: true
     status?: true
+    roleAccess?: true
     adminUserId?: true
     createdBy?: true
     updatedBy?: true
@@ -14841,6 +14919,7 @@ export namespace Prisma {
     branchPhone?: true
     branchAddress?: true
     status?: true
+    roleAccess?: true
     adminUserId?: true
     createdBy?: true
     updatedBy?: true
@@ -14863,6 +14942,7 @@ export namespace Prisma {
     branchPhone?: true
     branchAddress?: true
     status?: true
+    roleAccess?: true
     adminUserId?: true
     createdBy?: true
     updatedBy?: true
@@ -14958,6 +15038,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status: $Enums.RecordStatus
+    roleAccess: $Enums.BranchRoleAccess
     adminUserId: string | null
     createdBy: string | null
     updatedBy: string | null
@@ -14997,6 +15078,7 @@ export namespace Prisma {
     branchPhone?: boolean
     branchAddress?: boolean
     status?: boolean
+    roleAccess?: boolean
     adminUserId?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -15037,6 +15119,7 @@ export namespace Prisma {
     branchPhone?: boolean
     branchAddress?: boolean
     status?: boolean
+    roleAccess?: boolean
     adminUserId?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -15060,6 +15143,7 @@ export namespace Prisma {
     branchPhone?: boolean
     branchAddress?: boolean
     status?: boolean
+    roleAccess?: boolean
     adminUserId?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -15083,6 +15167,7 @@ export namespace Prisma {
     branchPhone?: boolean
     branchAddress?: boolean
     status?: boolean
+    roleAccess?: boolean
     adminUserId?: boolean
     createdBy?: boolean
     updatedBy?: boolean
@@ -15096,7 +15181,7 @@ export namespace Prisma {
     branchStateCode?: boolean
   }
 
-  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "timezone" | "branchCity" | "branchCountry" | "branchCountryCode" | "branchState" | "branchStateCode", ExtArgs["result"]["branch"]>
+  export type BranchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "branchName" | "branchAdminName" | "branchEmail" | "branchPhone" | "branchAddress" | "status" | "roleAccess" | "adminUserId" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt" | "timezone" | "branchCity" | "branchCountry" | "branchCountryCode" | "branchState" | "branchStateCode", ExtArgs["result"]["branch"]>
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminUser?: boolean | Branch$adminUserArgs<ExtArgs>
     branchCourses?: boolean | Branch$branchCoursesArgs<ExtArgs>
@@ -15154,6 +15239,7 @@ export namespace Prisma {
       branchPhone: string
       branchAddress: string
       status: $Enums.RecordStatus
+      roleAccess: $Enums.BranchRoleAccess
       adminUserId: string | null
       createdBy: string | null
       updatedBy: string | null
@@ -15613,6 +15699,7 @@ export namespace Prisma {
     readonly branchPhone: FieldRef<"Branch", 'String'>
     readonly branchAddress: FieldRef<"Branch", 'String'>
     readonly status: FieldRef<"Branch", 'RecordStatus'>
+    readonly roleAccess: FieldRef<"Branch", 'BranchRoleAccess'>
     readonly adminUserId: FieldRef<"Branch", 'String'>
     readonly createdBy: FieldRef<"Branch", 'String'>
     readonly updatedBy: FieldRef<"Branch", 'String'>
@@ -113897,6 +113984,9 @@ export namespace Prisma {
     fullName: 'fullName',
     email: 'email',
     phone: 'phone',
+    country: 'country',
+    state: 'state',
+    city: 'city',
     address: 'address',
     role: 'role',
     active: 'active',
@@ -113956,6 +114046,7 @@ export namespace Prisma {
     branchPhone: 'branchPhone',
     branchAddress: 'branchAddress',
     status: 'status',
+    roleAccess: 'roleAccess',
     adminUserId: 'adminUserId',
     createdBy: 'createdBy',
     updatedBy: 'updatedBy',
@@ -115764,6 +115855,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'BranchRoleAccess'
+   */
+  export type EnumBranchRoleAccessFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BranchRoleAccess'>
+    
+
+
+  /**
+   * Reference to a field of type 'BranchRoleAccess[]'
+   */
+  export type ListEnumBranchRoleAccessFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BranchRoleAccess[]'>
+    
+
+
+  /**
    * Reference to a field of type 'LoginEventType'
    */
   export type EnumLoginEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoginEventType'>
@@ -115999,6 +116104,9 @@ export namespace Prisma {
     fullName?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
+    country?: StringNullableFilter<"User"> | string | null
+    state?: StringNullableFilter<"User"> | string | null
+    city?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     active?: BoolFilter<"User"> | boolean
@@ -116054,6 +116162,9 @@ export namespace Prisma {
     fullName?: SortOrder
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     role?: SortOrder
     active?: SortOrder
@@ -116112,6 +116223,9 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     fullName?: StringFilter<"User"> | string
+    country?: StringNullableFilter<"User"> | string | null
+    state?: StringNullableFilter<"User"> | string | null
+    city?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     active?: BoolFilter<"User"> | boolean
@@ -116167,6 +116281,9 @@ export namespace Prisma {
     fullName?: SortOrder
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     role?: SortOrder
     active?: SortOrder
@@ -116200,6 +116317,9 @@ export namespace Prisma {
     fullName?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    country?: StringNullableWithAggregatesFilter<"User"> | string | null
+    state?: StringNullableWithAggregatesFilter<"User"> | string | null
+    city?: StringNullableWithAggregatesFilter<"User"> | string | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     active?: BoolWithAggregatesFilter<"User"> | boolean
@@ -116377,6 +116497,7 @@ export namespace Prisma {
     branchPhone?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFilter<"Branch"> | $Enums.BranchRoleAccess
     adminUserId?: StringNullableFilter<"Branch"> | string | null
     createdBy?: StringNullableFilter<"Branch"> | string | null
     updatedBy?: StringNullableFilter<"Branch"> | string | null
@@ -116416,6 +116537,7 @@ export namespace Prisma {
     branchPhone?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
+    roleAccess?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -116459,6 +116581,7 @@ export namespace Prisma {
     branchAdminName?: StringFilter<"Branch"> | string
     branchAddress?: StringFilter<"Branch"> | string
     status?: EnumRecordStatusFilter<"Branch"> | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFilter<"Branch"> | $Enums.BranchRoleAccess
     createdBy?: StringNullableFilter<"Branch"> | string | null
     updatedBy?: StringNullableFilter<"Branch"> | string | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
@@ -116497,6 +116620,7 @@ export namespace Prisma {
     branchPhone?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
+    roleAccess?: SortOrder
     adminUserId?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     updatedBy?: SortOrderInput | SortOrder
@@ -116525,6 +116649,7 @@ export namespace Prisma {
     branchPhone?: StringWithAggregatesFilter<"Branch"> | string
     branchAddress?: StringWithAggregatesFilter<"Branch"> | string
     status?: EnumRecordStatusWithAggregatesFilter<"Branch"> | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessWithAggregatesFilter<"Branch"> | $Enums.BranchRoleAccess
     adminUserId?: StringNullableWithAggregatesFilter<"Branch"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"Branch"> | string | null
     updatedBy?: StringNullableWithAggregatesFilter<"Branch"> | string | null
@@ -125452,6 +125577,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -125507,6 +125635,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -125562,6 +125693,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -125617,6 +125751,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -125672,6 +125809,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -125697,6 +125837,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -125722,6 +125865,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -125906,6 +126052,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -125944,6 +126091,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -125982,6 +126130,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -126020,6 +126169,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -126058,6 +126208,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -126080,6 +126231,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -126101,6 +126253,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -136719,6 +136872,9 @@ export namespace Prisma {
     fullName?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    country?: SortOrder
+    state?: SortOrder
+    city?: SortOrder
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
@@ -136749,6 +136905,9 @@ export namespace Prisma {
     fullName?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    country?: SortOrder
+    state?: SortOrder
+    city?: SortOrder
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
@@ -136774,6 +136933,9 @@ export namespace Prisma {
     fullName?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    country?: SortOrder
+    state?: SortOrder
+    city?: SortOrder
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
@@ -136998,6 +137160,13 @@ export namespace Prisma {
     not?: NestedEnumRecordStatusFilter<$PrismaModel> | $Enums.RecordStatus
   }
 
+  export type EnumBranchRoleAccessFilter<$PrismaModel = never> = {
+    equals?: $Enums.BranchRoleAccess | EnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    in?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    not?: NestedEnumBranchRoleAccessFilter<$PrismaModel> | $Enums.BranchRoleAccess
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -137122,6 +137291,7 @@ export namespace Prisma {
     branchPhone?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
+    roleAccess?: SortOrder
     adminUserId?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -137144,6 +137314,7 @@ export namespace Prisma {
     branchPhone?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
+    roleAccess?: SortOrder
     adminUserId?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -137166,6 +137337,7 @@ export namespace Prisma {
     branchPhone?: SortOrder
     branchAddress?: SortOrder
     status?: SortOrder
+    roleAccess?: SortOrder
     adminUserId?: SortOrder
     createdBy?: SortOrder
     updatedBy?: SortOrder
@@ -137187,6 +137359,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRecordStatusFilter<$PrismaModel>
     _max?: NestedEnumRecordStatusFilter<$PrismaModel>
+  }
+
+  export type EnumBranchRoleAccessWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BranchRoleAccess | EnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    in?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    not?: NestedEnumBranchRoleAccessWithAggregatesFilter<$PrismaModel> | $Enums.BranchRoleAccess
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
+    _max?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
   }
 
   export type BranchScalarRelationFilter = {
@@ -144751,6 +144933,10 @@ export namespace Prisma {
     set?: $Enums.RecordStatus
   }
 
+  export type EnumBranchRoleAccessFieldUpdateOperationsInput = {
+    set?: $Enums.BranchRoleAccess
+  }
+
   export type UserUpdateOneWithoutManagedBranchNestedInput = {
     create?: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
     connectOrCreate?: UserCreateOrConnectWithoutManagedBranchInput
@@ -151541,6 +151727,13 @@ export namespace Prisma {
     not?: NestedEnumRecordStatusFilter<$PrismaModel> | $Enums.RecordStatus
   }
 
+  export type NestedEnumBranchRoleAccessFilter<$PrismaModel = never> = {
+    equals?: $Enums.BranchRoleAccess | EnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    in?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    not?: NestedEnumBranchRoleAccessFilter<$PrismaModel> | $Enums.BranchRoleAccess
+  }
+
   export type NestedEnumRecordStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.RecordStatus | EnumRecordStatusFieldRefInput<$PrismaModel>
     in?: $Enums.RecordStatus[] | ListEnumRecordStatusFieldRefInput<$PrismaModel>
@@ -151549,6 +151742,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRecordStatusFilter<$PrismaModel>
     _max?: NestedEnumRecordStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumBranchRoleAccessWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BranchRoleAccess | EnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    in?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BranchRoleAccess[] | ListEnumBranchRoleAccessFieldRefInput<$PrismaModel>
+    not?: NestedEnumBranchRoleAccessWithAggregatesFilter<$PrismaModel> | $Enums.BranchRoleAccess
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
+    _max?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
   }
 
   export type NestedEnumLoginEventTypeFilter<$PrismaModel = never> = {
@@ -152006,6 +152209,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -152043,6 +152247,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -153512,6 +153717,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -153549,6 +153755,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -154594,6 +154801,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -154648,6 +154858,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -154747,6 +154960,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -154801,6 +155017,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -154890,6 +155109,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -154944,6 +155166,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -156104,6 +156329,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -156158,6 +156386,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -156805,6 +157036,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -156859,6 +157093,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -156921,6 +157158,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -156958,6 +157196,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -157008,6 +157247,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157062,6 +157304,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157130,6 +157375,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -157167,6 +157413,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157201,6 +157448,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -157255,6 +157505,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -157325,6 +157578,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157379,6 +157635,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157492,6 +157751,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -157546,6 +157808,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -157681,6 +157946,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157735,6 +158003,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -157893,6 +158164,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -157930,6 +158202,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -158054,6 +158327,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -158108,6 +158384,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -158167,6 +158446,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -158221,6 +158503,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -158486,6 +158771,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -158523,6 +158809,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158659,6 +158946,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -158713,6 +159003,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -158778,6 +159071,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -158832,6 +159128,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -159077,6 +159376,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -159131,6 +159433,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -159201,6 +159506,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -159255,6 +159563,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -159426,6 +159737,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -159463,6 +159775,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -159850,6 +160163,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -159887,6 +160201,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -160150,6 +160465,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -160187,6 +160503,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -161225,6 +161542,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -161262,6 +161580,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -162639,6 +162958,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -162693,6 +163015,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -162818,6 +163143,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -162872,6 +163200,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -162929,6 +163260,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -162966,6 +163298,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -163505,6 +163838,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -163542,6 +163876,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -167546,6 +167881,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -167583,6 +167919,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -168498,6 +168835,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -168535,6 +168873,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -169259,6 +169598,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -169296,6 +169636,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -169652,6 +169993,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -169689,6 +170031,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -169977,6 +170320,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -170031,6 +170377,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -170270,6 +170619,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -170324,6 +170676,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -170381,6 +170736,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -170418,6 +170774,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -170471,6 +170828,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -170508,6 +170866,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -170545,6 +170904,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -170582,6 +170942,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -170635,6 +170996,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -170672,6 +171034,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -171169,6 +171532,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -171206,6 +171570,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -171300,6 +171665,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -171354,6 +171722,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -171494,6 +171865,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -171531,6 +171903,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -171637,6 +172010,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -171691,6 +172067,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -172620,6 +172999,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -172674,6 +173056,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -172776,6 +173161,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -172830,6 +173218,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -172900,6 +173291,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -172954,6 +173348,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -173024,6 +173421,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -173078,6 +173478,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -173167,6 +173570,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -173221,6 +173627,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -173332,6 +173741,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -173386,6 +173798,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -173440,6 +173855,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -173494,6 +173912,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -173693,6 +174114,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -173747,6 +174171,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -174544,6 +174971,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -174598,6 +175028,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -174777,6 +175210,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -174831,6 +175267,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -175088,6 +175527,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -175125,6 +175565,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -175516,6 +175957,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -175553,6 +175995,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -175718,6 +176161,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -175772,6 +176218,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -175834,6 +176283,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -175871,6 +176321,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -175921,6 +176372,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -175975,6 +176429,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -176043,6 +176500,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -176080,6 +176538,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -176409,6 +176868,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -176446,6 +176906,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -176584,6 +177045,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -176621,6 +177083,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -176998,6 +177461,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -177052,6 +177518,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -177714,6 +178183,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -177768,6 +178240,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -178294,6 +178769,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -178348,6 +178826,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -178644,6 +179125,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -178698,6 +179182,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -178876,6 +179363,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -178930,6 +179420,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -179518,6 +180011,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -179572,6 +180068,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -180764,6 +181263,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -180818,6 +181320,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181171,6 +181676,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -181225,6 +181733,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -181458,6 +181969,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -181495,6 +182007,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -181619,6 +182132,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181673,6 +182189,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181732,6 +182251,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181786,6 +182308,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181845,6 +182370,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -181899,6 +182427,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -182341,6 +182872,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -182378,6 +182910,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -182514,6 +183047,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -182568,6 +183104,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -182633,6 +183172,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -182687,6 +183229,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -182752,6 +183297,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -182806,6 +183354,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -183226,6 +183777,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -183280,6 +183834,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -183489,6 +184046,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -183543,6 +184103,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -183714,6 +184277,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -183768,6 +184334,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -183945,6 +184514,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -183999,6 +184571,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -184154,6 +184729,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -184208,6 +184786,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -184385,6 +184966,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -184439,6 +185023,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -184627,6 +185214,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -184681,6 +185271,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -184897,6 +185490,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -184951,6 +185547,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -185106,6 +185705,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -185160,6 +185762,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -185337,6 +185942,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -185391,6 +185999,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -186620,6 +187231,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -186674,6 +187288,9 @@ export namespace Prisma {
     fullName: string
     email: string
     phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
@@ -186773,6 +187390,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -186827,6 +187447,9 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
@@ -187047,6 +187670,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -187084,6 +187708,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -187345,6 +187970,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -187382,6 +188008,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -187464,6 +188091,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     createdBy?: string | null
     updatedBy?: string | null
     createdAt?: Date | string
@@ -187501,6 +188129,7 @@ export namespace Prisma {
     branchPhone: string
     branchAddress: string
     status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
     adminUserId?: string | null
     createdBy?: string | null
     updatedBy?: string | null
@@ -187717,6 +188346,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -187754,6 +188384,7 @@ export namespace Prisma {
     branchPhone?: StringFieldUpdateOperationsInput | string
     branchAddress?: StringFieldUpdateOperationsInput | string
     status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
     adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     updatedBy?: NullableStringFieldUpdateOperationsInput | string | null

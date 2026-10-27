@@ -20,6 +20,7 @@ function toSafeUser(user) {
     email: user.email,
     phone: user.phone,
     role: user.role,
+    ...(user.role === "BRANCH_ADMIN" ? { roleAccess: user.roleAccess || "BRANCH_ADMIN_ONLY" } : {}),
     active: user.active,
     mustResetPassword: requiresPasswordReset(user),
     lastLoginAt: user.lastLoginAt,

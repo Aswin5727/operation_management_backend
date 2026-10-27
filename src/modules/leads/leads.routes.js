@@ -3,10 +3,11 @@ import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import { USER_ROLES } from "../../common/constants/roles.js";
 import { leadRecordingUpload, leadRecordingsUpload } from "../../common/middlewares/leadRecordingUpload.js";
+import { authorizeSalesAccess } from "../../common/middlewares/authorizeSalesAccess.js";
 import { addFollowUpHandler, addLeadRecordingHandler, addLeadRecordingsHandler, checkLeadDuplicatesHandler, createLeadHandler, deleteLeadHandler, deleteLeadRecordingHandler, exportLeadReportHandler, getLeadHandler, getLeadRecordingHandler, leadOptionsHandler, listLeadActivitiesHandler, listLeadsHandler, updateLeadHandler } from "./leads.controller.js";
 
 const router = express.Router();
-router.use(authenticate, authorize(USER_ROLES.SALES_ADMIN, USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN));
+router.use(authenticate, authorize(USER_ROLES.SALES_ADMIN, USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN), authorizeSalesAccess);
 router.get("/", listLeadsHandler);
 router.get("/options", leadOptionsHandler);
 router.get('/validate-duplicate', checkLeadDuplicatesHandler);

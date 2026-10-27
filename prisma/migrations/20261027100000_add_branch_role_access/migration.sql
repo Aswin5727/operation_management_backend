@@ -1,0 +1,4 @@
+CREATE TYPE "public"."BranchRoleAccess" AS ENUM ('BRANCH_ADMIN_ONLY', 'BRANCH_ADMIN_SALES_ADMIN');
+
+ALTER TABLE "Branch"
+ADD COLUMN "roleAccess" "public"."BranchRoleAccess" NOT NULL DEFAULT 'BRANCH_ADMIN_ONLY';

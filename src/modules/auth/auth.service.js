@@ -296,6 +296,8 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     branchRecordPromise,
   ]);
 
+  if (role === "BRANCH_ADMIN") refreshedUser.roleAccess = branch?.roleAccess || "BRANCH_ADMIN_ONLY";
+
   studentCourseName = studentProfile?.course?.name || studentProfile?.courseInterested || "";
   facultyWelcomeCourseName = facultyProfile?.course?.name || "";
   facultyWelcomeBatchNames = Array.isArray(facultyProfile?.batchEntries)
@@ -436,7 +438,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     });
   }
 
-  if (role === "SALES_ADMIN") {
+  if (isFirstLogin && role === "SALES_ADMIN") {
     setImmediate(() => {
       void createNotification({
         kind: "BRANCH_LOGIN",
@@ -490,6 +492,8 @@ async function refreshSession({ refreshToken, ipAddress, userAgent }) {
       console.error("Failed to record refresh event:", error);
     });
   });
+
+  if (user?.role === "BRANCH_ADMIN") user.roleAccess = branch?.roleAccess || "BRANCH_ADMIN_ONLY";
 
   return {
     user: toSafeUser(user),
@@ -740,6 +744,11 @@ async function getCurrentUser(userId) {
 
   if (!user || !user.active) {
     throw new AppError("Session expired", 401);
+  }
+
+  if (user.role === "BRANCH_ADMIN") {
+    const branch = await findBranchForAdmin(user);
+    user.roleAccess = branch?.roleAccess || "BRANCH_ADMIN_ONLY";
   }
 
   return toSafeUser(user);

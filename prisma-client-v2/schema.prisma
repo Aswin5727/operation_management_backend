@@ -13,6 +13,9 @@ model User {
   fullName                       String
   email                          String                         @unique
   phone                          String?                        @unique
+  country                        String?
+  state                          String?
+  city                           String?
   address                        String?
   role                           UserRole
   active                         Boolean                        @default(true)
@@ -105,6 +108,7 @@ model Branch {
   branchPhone                String                      @unique
   branchAddress              String
   status                     RecordStatus                @default(ACTIVE)
+  roleAccess                 BranchRoleAccess            @default(BRANCH_ADMIN_ONLY)
   adminUserId                String?                     @unique
   createdBy                  String?
   updatedBy                  String?
@@ -137,6 +141,11 @@ model Branch {
   @@index([status])
   @@index([branchName])
   @@index([branchAdminName])
+}
+
+enum BranchRoleAccess {
+  BRANCH_ADMIN_ONLY
+  BRANCH_ADMIN_SALES_ADMIN
 }
 
 model SalesAdminBranch {
@@ -1047,6 +1056,9 @@ model BranchStudentCourse {
   @@unique([branchStudentId, courseId])
   @@index([branchId, courseId])
   @@index([branchStudentId, courseId])
+  @@index([batchCycleId, status])
+  @@index([batchId, status])
+  @@index([branchStudentId, status])
 }
 
 model BranchStudentAttendance {
@@ -1795,6 +1807,28 @@ enum LeadStatus {
   DRAFT
   ACTIVE
   FOLLOW_UP
+  NOT_ANSWERING
+  CONTACTED
+  INTERESTED
+  DEMO_SCHEDULED
+  DEMO_ATTENDED
+  ADMISSION_CONFIRMED
+  ENROLLED
+  LOST_LEAD
+  SWITCHED_OFF
+  OUT_OF_SERVICE
+  INCOMING_CALL_BLOCK
+  DND
+  NOT_REACHABLE
+  CALL_WAITING
+  CALL_LATER
+  UNAVAILABLE_COURSE
+  NOT_INTERESTED
+  WRONG_NO
+  CURRENTLY_NO_IDEA
+  FORWARD_TO_HR_TEAM
+  MAY_BE_IN_FUTURE
+  JOINED_IN_ANOTHER_INSTITUTION
   CONVERTED
   CLOSED
   OTHER
@@ -2005,6 +2039,7 @@ enum NotificationKind {
   STUDENT_DISCONTINUATION
   LEAD_FOLLOW_UP_DUE
   LEAD_FOLLOW_UP_OVERDUE
+  LEAD_FOLLOW_UP_SCHEDULED
   SALES_CRM_MONTHLY_REPORT
   SALES_CRM_ADMISSION
   PENDING_STUDENT_ADMISSION_REMINDER

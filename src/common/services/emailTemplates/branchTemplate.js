@@ -6,6 +6,7 @@ export function branchTemplate({
   temporaryPassword,
   branchId,
   branchName,
+  roleAccess,
   resetLink,
   loginLink,
 }) {
@@ -45,6 +46,14 @@ export function branchTemplate({
             </td>
             <td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;border-bottom:1px solid #e2e8f0;">
               ${branchName || "-"}
+            </td>
+          </tr>
+          <tr>
+            <td style="width:34%;padding:15px 18px;background:#f8fafc;color:#334155;font-size:13px;font-weight:700;">
+              Role Access
+            </td>
+            <td style="padding:15px 18px;background:#ffffff;color:#0f172a;font-size:14px;font-weight:600;">
+              ${roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "Branch Admin + Sales Admin" : "Branch Admin Only"}
             </td>
           </tr>
           <tr>

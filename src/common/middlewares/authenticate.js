@@ -53,6 +53,8 @@ async function authenticate(req, _res, next) {
       throw new AppError("Session expired", 401);
     }
 
+    if (user.role === "BRANCH_ADMIN") user.roleAccess = branch?.roleAccess || "BRANCH_ADMIN_ONLY";
+
     req.auth = {
       userId: user.id,
       role: user.role,
@@ -60,6 +62,7 @@ async function authenticate(req, _res, next) {
       branchId: branch?.id || null,
       branchStatus: branch?.status || null,
       readOnly: inactiveBranchAdmin,
+      roleAccess: user.role === "BRANCH_ADMIN" ? user.roleAccess : null,
     };
     req.user = user;
 

@@ -163,7 +163,10 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
   const range = resolvePeriod(query);
   const branches = await allowedBranches(actor);
   const where = buildWhere(scope, range, branches, query);
-  if (normalizeRole(actor?.role) === 'SALESADMIN') where.assignedToId = actor.userId;
+  const actorRole = normalizeRole(actor?.role);
+  const isCombinedBranchAdmin = actorRole === "BRANCHADMIN";
+  if (actorRole === "SALESADMIN") where.assignedToId = actor.userId;
+  if (isCombinedBranchAdmin) where.AND = [{ OR: [{ assignedToId: actor.userId }, { assignedToId: null }] }];
   const generatedAt = new Date();
 
   const leads = await prisma.lead.findMany({
@@ -178,7 +181,7 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
       leadDate: true,
       nextFollowUpDate: true,
       nextFollowUpTime: true,
-      branch: { select: { branchName: true } },
+      branch: { select: { branchName: true, branchAdminName: true } },
       assignedTo: { select: { fullName: true } },
       convertedStudent: { select: { studentId: true, admissionDate: true } },
     },
@@ -216,12 +219,11 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
   const activeLeads = leads.filter((lead) => !["CLOSED", "CONVERTED", "LOST_LEAD"].includes(String(lead.status || "").toUpperCase()) && String(lead.stage || "").toUpperCase() !== "CLOSED").length;
   const followUpsLogged = leads.reduce((count, lead) => count + (periodFollowUpCountByLead.get(lead.id) || 0), 0);
   const performance = new Map();
-
   for (const lead of leads) {
-    const key = lead.assignedToId || "UNASSIGNED";
+    const key = lead.assignedToId || (isCombinedBranchAdmin ? actor.userId : "UNASSIGNED");
     const row = performance.get(key) || {
       assignedToId: lead.assignedToId,
-      assignedTo: lead.assignedTo?.fullName || "Unassigned",
+      assignedTo: lead.assignedTo?.fullName || (isCombinedBranchAdmin ? lead.branch?.branchAdminName : "Unassigned") || "Unassigned",
       assignedLeads: 0,
       newLeads: 0,
       completedFollowUps: 0,

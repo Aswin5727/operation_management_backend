@@ -12,6 +12,7 @@ import {
   createBranchCreatedNotification,
   createBranchInvitationResentNotification,
 } from "../notifications/notifications.service.js";
+import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -170,6 +171,8 @@ function toBranchSummary(record, options = {}) {
     welcomeMailSent: hasBranchActivated(record),
     lastLoginAt: record?.adminUser?.lastLoginAt || null,
     mustResetPassword: getBranchMustResetPassword(record, options.mustResetPassword),
+    roleAccess: record.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY,
+    roleAccessLabel: BRANCH_ROLE_ACCESS_LABELS[record.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY],
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     ...(options.tempPassword ? { tempPassword: options.tempPassword } : {}),
@@ -389,6 +392,9 @@ function buildBranchPayload(payload, existing = null) {
         ? parseRequiredText(payload.branchAddress, "Branch address")
         : existing?.branchAddress,
     status: payload.status !== undefined ? parseStatus(payload.status) : existing?.status || "ACTIVE",
+    roleAccess: payload.roleAccess !== undefined
+      ? parseBranchRoleAccess(payload.roleAccess)
+      : existing?.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY,
   };
 }
 
@@ -489,6 +495,7 @@ export async function createBranch(payload, actor) {
     branchId: parsed.branchId,
     branchName: parsed.branchName,
     branchAddress: formatBranchLocation(parsed),
+    roleAccess: parsed.roleAccess,
   }).catch((error) => {
     console.warn("Branch credentials email failed to send", error);
   });
@@ -717,6 +724,7 @@ export async function resendBranchInvitation(branchRecordId, actor) {
     branchId: existing.branchId,
     branchName: existing.branchName,
     branchAddress: formatBranchLocation(existing),
+    roleAccess: existing.roleAccess,
   }).catch((error) => {
     console.warn("Branch invitation email failed to send", error);
   });
@@ -848,4 +856,122 @@ export async function getCurrentBranchProfile(user) {
   }
 
   return toBranchSummary(branch);
+}
+
+export async function listBranchSalesAdmins(user) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (!['BRANCH_ADMIN', 'SUPER_ADMIN'].includes(role)) {
+    throw new AppError('You do not have permission to view branch Sales Admins.', 403);
+  }
+
+  const branch = await getCurrentBranchProfile(user);
+  if (!branch?.id) throw new AppError('Branch profile not found.', 404);
+
+  const assignments = await prisma.salesAdminBranch.findMany({
+    where: { branchId: branch.id },
+    select: {
+      salesAdmin: {
+        select: {
+          id: true,
+          userCode: true,
+          fullName: true,
+          email: true,
+          phone: true,
+          active: true,
+        },
+      },
+    },
+  });
+
+  const salesAdmins = assignments
+    .map(({ salesAdmin }) => ({
+      id: salesAdmin.userCode || salesAdmin.id,
+      userId: salesAdmin.id,
+      name: salesAdmin.fullName || '',
+      email: salesAdmin.email || '',
+      phone: salesAdmin.phone || '',
+      status: salesAdmin.active ? 'ACTIVE' : 'INACTIVE',
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return {
+    branch: { id: branch.id, branchId: branch.branchId, branchName: branch.branchName },
+    salesAdmins,
+  };
+}
+
+export async function listBranchSalesAdminAdmissions(user) {
+  const role = normalizeString(user?.role).toUpperCase();
+  if (!['BRANCH_ADMIN', 'SUPER_ADMIN'].includes(role)) {
+    throw new AppError('You do not have permission to view branch admissions.', 403);
+  }
+
+  if (role === 'BRANCH_ADMIN' && user?.roleAccess !== BRANCH_ROLE_ACCESS.BRANCH_ADMIN_SALES_ADMIN) {
+    throw new AppError('Sales CRM admission access is required.', 403);
+  }
+
+  const branch = await getCurrentBranchProfile(user);
+  if (!branch?.id) throw new AppError('Branch profile not found.', 404);
+
+  const students = await prisma.branchStudent.findMany({
+    where: {
+      branchId: branch.id,
+      sourceLeadId: { not: null },
+      sourceLead: {
+        is: {
+          branchId: branch.id,
+          status: 'CONVERTED',
+          deletedAt: null,
+          OR: [
+            { assignedTo: { is: { role: 'SALES_ADMIN' } } },
+            { createdBy: { is: { role: 'SALES_ADMIN' } } },
+            ...(role === 'BRANCH_ADMIN'
+              ? [{ assignedToId: user.userId || user.id }, { createdById: user.userId || user.id }]
+              : []),
+          ],
+        },
+      },
+    },
+    include: {
+      sourceLead: {
+        select: {
+          leadId: true,
+          assignedTo: { select: { id: true, userCode: true, fullName: true, role: true } },
+          createdBy: { select: { id: true, userCode: true, fullName: true, role: true } },
+        },
+      },
+      courseEnrollments: { orderBy: { sequenceOrder: 'asc' } },
+    },
+    orderBy: [{ admissionDate: 'desc' }, { createdAt: 'desc' }],
+  });
+
+  return {
+    branch: { id: branch.id, branchId: branch.branchId, branchName: branch.branchName },
+    admissions: students.map((student) => {
+      const enrollment = student.courseEnrollments?.[0] || {};
+      const creator = student.sourceLead?.createdBy;
+      const salesAdmin = creator?.role === 'SALES_ADMIN'
+        ? creator
+        : student.sourceLead?.assignedTo || creator;
+      return {
+        id: student.id,
+        createdAt: student.createdAt,
+        studentId: student.studentId || '',
+        studentName: student.studentName || '',
+        email: student.emailAddress || '',
+        phone: student.mobileNumber || '',
+        leadId: student.sourceLead?.leadId || '',
+        courseName: enrollment.courseName || student.courseName || '',
+        facultyName: enrollment.facultyName || student.facultyName || '',
+        batchName: enrollment.batchName || student.batchName || '',
+        batchTiming: enrollment.batchTiming || student.batchTiming || '',
+        trainingMode: enrollment.mode || student.courseMode || '',
+        schedule: enrollment.scheduleType || student.classSchedule || '',
+        admissionDate: student.admissionDate || '',
+        salesAdminId: salesAdmin?.userCode || salesAdmin?.id || '',
+        salesAdminName: salesAdmin?.fullName || '',
+        status: 'ADMITTED',
+      };
+    }),
+  };
 }

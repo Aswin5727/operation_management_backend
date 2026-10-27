@@ -708,6 +708,7 @@ export async function sendBranchCredentialsEmail({
   resetToken,
   branchId,
   branchName,
+  roleAccess,
 }) {
   const resetLink = buildResetLink(resetToken, temporaryPassword, {
     redirect: "/login",
@@ -724,6 +725,7 @@ export async function sendBranchCredentialsEmail({
     temporaryPassword: safePassword,
     branchId: safeBranchId,
     branchName: safeBranchName,
+    roleAccess: roleAccess || "BRANCH_ADMIN_ONLY",
     resetLink,
     loginLink,
   });
@@ -734,6 +736,7 @@ export async function sendBranchCredentialsEmail({
     `Login email: ${to}`,
     `Temporary password: ${temporaryPassword}`,
     branchId ? `Branch ID: ${branchId}` : null,
+    `Role access: ${roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "Branch Admin + Sales Admin" : "Branch Admin Only"}`,
     loginLink ? `Login link: ${loginLink}` : null,
     resetLink ? `Reset link: ${resetLink}` : null,
     "This reset password link is valid for 1 hour only.",
