@@ -12,7 +12,7 @@ import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
 import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
 import { calculateAdmissionFeeDetails } from "./admissionFeeDetails.js";
 
-const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } } };
+const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true, timezone: true } } } } };
 const clean = (value) => String(value ?? "").trim();
 const required = (value, label) => { const result = clean(value); if (!result) throw new AppError(`${label} is required`, 400); return result; };
 const emailValue = (value) => { const email = required(value, "Email address").toLowerCase(); if (!/^\S+@\S+\.\S+$/.test(email)) throw new AppError("Enter a valid email address", 400); return email; };
@@ -116,7 +116,101 @@ async function resetSalesAdminPassword(userId, auth) {
   return { resetSent: true };
 }
 
-async function getSalesAdminProfile(userId) { const user = await prisma.user.findUnique({ where: { id: userId }, select: USER_SELECT }); if (!user || user.role !== "SALES_ADMIN") throw new AppError("Sales Admin account not found", 404); return { ...toSafeUser(user), branches: user.salesAdminBranches.map(({ branch }) => branch) }; }
+async function getSalesAdminProfile(userId) {
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: USER_SELECT });
+  if (!user || user.role !== "SALES_ADMIN") throw new AppError("Sales Admin account not found", 404);
+  return {
+    ...toSafeUser(user),
+    country: user.country,
+    state: user.state,
+    city: user.city,
+    address: user.address,
+    branches: user.salesAdminBranches.map(({ branch }) => branch),
+  };
+}
+
+async function updateOwnSalesAdminProfile(userId, payload = {}) {
+  const user = await prisma.user.findFirst({
+    where: { id: userId, role: "SALES_ADMIN" },
+    select: { id: true },
+  });
+  if (!user) throw new AppError("Sales Admin account not found", 404);
+
+  const fullName = required(payload.fullName, "Full name");
+  if (!/^[\p{L}][\p{L} .'-]*$/u.test(fullName)) throw new AppError("Full name contains invalid characters", 400);
+  const phone = phoneValue(payload.phone);
+  const address = clean(payload.address) || null;
+  if (address && address.length > 500) throw new AppError("Address must be 500 characters or fewer", 400);
+
+  const duplicatePhone = await prisma.user.findFirst({
+    where: { id: { not: userId }, phone },
+    select: { id: true },
+  });
+  if (duplicatePhone) throw new AppError("Phone number is already in use", 409);
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { fullName, phone, address, updatedBy: userId },
+      select: { id: true },
+    });
+  } catch (error) {
+    if (error?.code === "P2002") throw new AppError("Phone number is already in use", 409);
+    throw error;
+  }
+
+  return getSalesAdminProfile(userId);
+}
+function dateKeyInTimezone(value, timezone = "Asia/Kolkata") {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: timezone || "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(value).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function shiftDateKey(dateKey, days) {
+  const date = new Date(`${dateKey}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function dateKeyStart(dateKey) { return new Date(`${dateKey}T00:00:00.000Z`); }
+
+function followUpTimeLabel(value) {
+  const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return "";
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (hour > 23 || minute > 59) return "";
+  return new Intl.DateTimeFormat("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "UTC" }).format(new Date(Date.UTC(2000, 0, 1, hour, minute)));
+}
+
+function parseDashboardDate(value, endOfDay = false) {
+  const text = clean(value);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return new Date(`${text}T${endOfDay ? "23:59:59.999" : "00:00:00.000"}Z`);
+  return new Date(text);
+}
+
+function dashboardActivityTitle(action) {
+  const titles = {
+    LEAD_CREATED: "Lead created",
+    LEAD_UPDATED: "Lead details updated",
+    LEAD_UPDATED_STAGE_CHANGED: "Lead stage changed",
+    LEAD_STAGE_CHANGED: "Lead stage changed",
+    LEAD_STATUS_CHANGED: "Lead status changed",
+    FOLLOW_UP_ADDED: "Follow-up added",
+    NEXT_FOLLOW_UP_CHANGED: "Follow-up scheduled",
+    CALL_RECORDING_UPLOADED: "Call recording uploaded",
+    CALL_RECORDING_DELETED: "Call recording deleted",
+    ADMISSION_STARTED: "Admission started",
+    LEAD_CONVERTED_TO_STUDENT: "Admission completed",
+  };
+  return titles[action] || clean(action).toLowerCase().replaceAll("_", " ").replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function dateOnlyKey(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
+}
+
 async function getDashboard(userId, query = {}) {
   const profile = await getSalesAdminProfile(userId);
   const allowed = profile.branches.map((branch) => branch.id);
@@ -126,42 +220,147 @@ async function getDashboard(userId, query = {}) {
   const branchIds = branchId ? [branchId] : allowed;
   const now = new Date();
   const defaultFrom = new Date(now.getFullYear(), now.getMonth(), 1);
-  const from = query.from ? new Date(query.from) : defaultFrom;
-  const to = query.to ? new Date(query.to) : now;
+  const from = query.from ? parseDashboardDate(query.from) : defaultFrom;
+  const to = query.to ? parseDashboardDate(query.to, true) : now;
   if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) throw new AppError("Dashboard date range is invalid", 400);
   if (from > to) throw new AppError("Dashboard start date cannot be after end date", 400);
 
-  // Reminder creation is a background side effect. It must not delay the
-  // dashboard cards or make a slow reminder transaction take down the page.
   void checkPendingHotAdmissionReminder(userId).catch((error) => {
     console.error("Unable to create daily pending admission reminder:", error?.message || error);
   });
 
-  const leadScope = { deletedAt: null, branchId: { in: branchIds } };
+  const leadScope = { deletedAt: null, branchId: { in: branchIds }, assignedToId: userId };
   const periodScope = { createdAt: { gte: from, lte: to } };
-  const [totalLeads, newLeads, hotLeads, warmLeads, coldLeads, admissions] = branchIds.length
-    ? await Promise.all([
-      prisma.lead.count({ where: leadScope }),
-      prisma.lead.count({ where: { ...leadScope, ...periodScope } }),
-      prisma.lead.count({ where: { ...leadScope, stage: "HOT" } }),
-      prisma.lead.count({ where: { ...leadScope, stage: "WARM" } }),
-      prisma.lead.count({ where: { ...leadScope, stage: "COLD" } }),
-      prisma.branchStudent.count({ where: { branchId: { in: branchIds }, sourceLeadId: { not: null }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }),
-    ])
-    : [0, 0, 0, 0, 0, 0];
+  const selectedLeadScope = { ...leadScope, ...periodScope };
+  const activeFollowUpScope = { ...leadScope, stage: { in: ["COLD", "WARM", "HOT"] }, status: { not: "CONVERTED" } };
+  const branches = profile.branches.filter((branch) => branchIds.includes(branch.id));
+  const chartTimezone = branches[0]?.timezone || "Asia/Kolkata";
+  const chartTodayKey = dateKeyInTimezone(now, chartTimezone);
+  const chartWeekday = new Date(`${chartTodayKey}T00:00:00.000Z`).getUTCDay();
+  const chartWeekStartKey = shiftDateKey(chartTodayKey, -((chartWeekday + 6) % 7));
+  const chartWeekEndKey = shiftDateKey(chartWeekStartKey, 6);
+  const chartQueryFrom = dateKeyStart(shiftDateKey(chartWeekStartKey, -1));
+  const chartQueryTo = dateKeyStart(shiftDateKey(chartWeekEndKey, 2));
+  const chartBranchTimezones = new Map(branches.map((branch) => [branch.id, branch.timezone || chartTimezone]));
+  const followUpDayScopes = branches.map((branch) => {
+    const todayKey = dateKeyInTimezone(now, branch.timezone);
+    const todayStart = dateKeyStart(todayKey);
+    const tomorrowStart = dateKeyStart(shiftDateKey(todayKey, 1));
+    const weekEnd = dateKeyStart(shiftDateKey(todayKey, 8));
+    return { branch, todayKey, todayStart, tomorrowStart, weekEnd, rangeStart: from, rangeEnd: to, rangeUpcomingStart: new Date(Math.max(from.getTime(), now.getTime())) };
+  });
+
+  const queryJobs = branchIds.length ? [
+    prisma.lead.count({ where: leadScope }),
+    prisma.lead.count({ where: { ...leadScope, ...periodScope } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "HOT" } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "WARM" } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "COLD" } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "CLOSED" } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, status: "CONVERTED" } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "HOT", status: { notIn: ["CONVERTED", "CLOSED", "LOST_LEAD"] } } }),
+    prisma.lead.count({ where: { ...selectedLeadScope, stage: "HOT", status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] } } }),
+    prisma.branchStudent.count({ where: { branchId: { in: branchIds }, sourceLeadId: { not: null }, sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }),
+    prisma.lead.findMany({ where: { ...leadScope, createdAt: { gte: chartQueryFrom, lt: chartQueryTo } }, select: { createdAt: true, branchId: true } }),
+    prisma.branchStudent.findMany({ where: { branchId: { in: branchIds }, sourceLeadId: { not: null }, sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } }, admissionDate: { not: "" }, createdAt: { gte: chartQueryFrom, lt: chartQueryTo } }, select: { createdAt: true, branchId: true } }),
+    prisma.lead.groupBy({ by: ["leadSource"], where: leadScope, _count: { _all: true } }),
+    prisma.leadActivity.findMany({
+      where: { lead: { is: leadScope }, createdAt: { gte: from, lte: to }, action: { notIn: ["REMINDER_LOOP_ACTIVATED", "REMINDER_LOOP_STOPPED", "DAILY_REMINDER_GENERATED"] } },
+      include: { lead: { select: { id: true, leadId: true, studentName: true, branch: { select: { branchName: true } } }, }, createdBy: { select: { fullName: true } } },
+      orderBy: { createdAt: "desc" }, take: 12,
+    }),
+    ...followUpDayScopes.flatMap(({ branch, todayStart, tomorrowStart, weekEnd, rangeStart, rangeEnd, rangeUpcomingStart }) => [
+      prisma.lead.count({ where: { ...activeFollowUpScope, branchId: branch.id, nextFollowUpDate: { gte: rangeStart, lte: rangeEnd } } }),
+      prisma.lead.count({ where: { ...activeFollowUpScope, branchId: branch.id, nextFollowUpDate: { gte: rangeStart, lte: rangeEnd, lt: now } } }),
+      prisma.lead.count({ where: { ...activeFollowUpScope, branchId: branch.id, nextFollowUpDate: { gte: rangeUpcomingStart, lte: rangeEnd } } }),
+      prisma.lead.count({ where: { ...selectedLeadScope, branchId: branch.id, nextFollowUpDate: null } }),
+    ]),
+  ] : [];
+  const results = await Promise.all(queryJobs);
+  let [totalLeads, newLeads, hotLeads, warmLeads, coldLeads, closedLeads, convertedLeads, expectedAdmissions, pendingAdmissions, admissions, leadsByDate, admissionsByDate, leadSourceGroups, activityRows] = results;
+  let followUpsDueToday = 0;
+  let overdueFollowUps = 0;
+  let upcomingFollowUpsCount = 0;
+  let leadsWithoutFollowUp = 0;
+  let resultIndex = 14;
+  for (let index = 0; index < followUpDayScopes.length; index += 1) {
+    followUpsDueToday += results[resultIndex++];
+    overdueFollowUps += results[resultIndex++];
+    upcomingFollowUpsCount += results[resultIndex++];
+    leadsWithoutFollowUp += results[resultIndex++];
+  }
+
+  const chartBuckets = new Map();
+  const rangeDays = 7;
+  const bucketDays = 1;
+  const addChartValue = (dateValue, branchId, field) => {
+    const dateKey = dateKeyInTimezone(dateValue, chartBranchTimezones.get(branchId) || chartTimezone);
+    if (dateKey < chartWeekStartKey || dateKey > chartWeekEndKey) return;
+    const bucket = chartBuckets.get(dateKey) || { date: dateKey, leads: 0, admissions: 0 };
+    bucket[field] += 1;
+    chartBuckets.set(dateKey, bucket);
+  };
+  (leadsByDate || []).forEach(({ createdAt, branchId: leadBranchId }) => addChartValue(createdAt, leadBranchId, "leads"));
+  (admissionsByDate || []).forEach(({ createdAt, branchId: admissionBranchId }) => addChartValue(createdAt, admissionBranchId, "admissions"));
+  const chart = [];
+  for (let offset = 0; offset < rangeDays; offset += bucketDays) {
+    const bucketDate = shiftDateKey(chartWeekStartKey, offset);
+    chart.push(chartBuckets.get(bucketDate) || { date: bucketDate, endDate: bucketDate, leads: 0, admissions: 0 });
+  }
+  const upcomingFollowUps = branchIds.length
+    ? (await Promise.all(followUpDayScopes.map(async ({ branch, todayStart, weekEnd }) => prisma.lead.findMany({
+      where: { ...activeFollowUpScope, branchId: branch.id, nextFollowUpDate: { gte: todayStart, lt: weekEnd } },
+      select: { id: true, leadId: true, studentName: true, phoneNumber: true, stage: true, nextFollowUpDate: true, nextFollowUpTime: true, branch: { select: { id: true, branchName: true } }, course: { select: { name: true } } },
+      orderBy: [{ nextFollowUpDate: "asc" }, { nextFollowUpTime: "asc" }],
+      take: 12,
+    })))).flat().sort((left, right) => {
+      const dateCompare = new Date(left.nextFollowUpDate).getTime() - new Date(right.nextFollowUpDate).getTime();
+      if (dateCompare) return dateCompare;
+      return String(left.nextFollowUpTime || "").localeCompare(String(right.nextFollowUpTime || ""));
+    }).slice(0, 8).map((lead) => ({ ...lead, nextFollowUpTimeLabel: followUpTimeLabel(lead.nextFollowUpTime) }))
+    : [];
+
+  const branchOverview = await Promise.all(branches.map(async (branch) => {
+    const scope = { ...selectedLeadScope, branchId: branch.id };
+    const [branchTotal, branchHot, branchWarm, branchCold, branchConverted, branchAdmissions] = await Promise.all([
+      prisma.lead.count({ where: scope }),
+      prisma.lead.count({ where: { ...scope, stage: "HOT" } }),
+      prisma.lead.count({ where: { ...scope, stage: "WARM" } }),
+      prisma.lead.count({ where: { ...scope, stage: "COLD" } }),
+      prisma.lead.count({ where: { ...scope, status: "CONVERTED" } }),
+      prisma.branchStudent.count({ where: { branchId: branch.id, sourceLeadId: { not: null }, sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } }, admissionDate: { not: "" }, createdAt: { gte: from, lte: to } } }),
+    ]);
+    return { branchId: branch.branchId, branchName: branch.branchName, totalLeads: branchTotal, hotLeads: branchHot, warmLeads: branchWarm, coldLeads: branchCold, admissionsCompleted: branchAdmissions, convertedLeads: branchConverted, conversionRate: branchTotal ? Number(((branchConverted / branchTotal) * 100).toFixed(1)) : 0 };
+  }));
+
+  const sourceBreakdown = (leadSourceGroups || []).map(({ leadSource, _count }) => ({ source: clean(leadSource) || "Unspecified", count: _count._all })).sort((left, right) => right.count - left.count);
+  const conversionRate = newLeads ? Number(((convertedLeads / newLeads) * 100).toFixed(1)) : 0;
+  const recentActivities = (activityRows || []).map((activity) => {
+    const previous = activity.previousValue && typeof activity.previousValue === "object" ? activity.previousValue : {};
+    const next = activity.newValue && typeof activity.newValue === "object" ? activity.newValue : {};
+    let detail = "";
+    if (previous.stage && next.stage && previous.stage !== next.stage) detail = `${previous.stage} → ${next.stage}`;
+    else if (next.nextFollowUpDate) detail = `Follow-up: ${dateOnlyKey(next.nextFollowUpDate)}${next.nextFollowUpTime ? ` · ${followUpTimeLabel(next.nextFollowUpTime) || next.nextFollowUpTime}` : ""}`;
+    else if (next.callStatus) detail = `Call status: ${clean(next.callStatus).replaceAll("_", " ")}`;
+    return { id: activity.id, action: activity.action, title: dashboardActivityTitle(activity.action), detail, leadId: activity.lead.leadId, studentName: activity.lead.studentName, branchName: activity.lead.branch?.branchName || "", updatedBy: activity.createdBy?.fullName || "Sales Admin", createdAt: activity.createdAt };
+  });
 
   return {
     data: {
       profile,
       scope: { branchIds },
       range: { from, to },
-      cards: { newLeads, totalLeads, hotLeads, warmLeads, coldLeads, admissionsCompleted: admissions, expectedAdmissions: null },
-      chart: [],
-      recentActivities: [],
+      cards: { newLeads, totalLeads, hotLeads, warmLeads, coldLeads, closedLeads, admissionsCompleted: admissions, convertedLeads, conversionRate, expectedAdmissions, pendingAdmissions, followUpsDueToday, overdueFollowUps },
+      chart,
+      leadStatusChart: [{ stage: "HOT", count: hotLeads }, { stage: "WARM", count: warmLeads }, { stage: "COLD", count: coldLeads }, { stage: "CLOSED", count: closedLeads }],
+      conversionDetails: { totalLeads: newLeads, convertedLeads, notConvertedLeads: Math.max(0, newLeads - convertedLeads), conversionRate, admissionsCompleted: admissions, expectedAdmissions },
+      followUps: { upcoming: upcomingFollowUps, dueToday: followUpsDueToday, overdue: overdueFollowUps, nextSevenDays: upcomingFollowUpsCount, withoutSchedule: leadsWithoutFollowUp },
+      leadSources: sourceBreakdown,
+      branchOverview,
+      recentActivities,
     },
   };
 }
-
 function salesAdminReminderDate(now = new Date()) {
   const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
   return `${parts.year}-${parts.month}-${parts.day}`;
@@ -577,5 +776,5 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   );
 }
 
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, updateOwnSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
 
