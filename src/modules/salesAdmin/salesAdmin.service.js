@@ -212,6 +212,28 @@ async function checkPendingHotAdmissionReminder(actorOrUserId) {
   return withDatabaseRetry(() => checkPendingHotAdmissionReminderOnce(actorOrUserId));
 }
 
+function admissionListInclude() {
+  return {
+    branch: { select: { id: true, branchId: true, branchName: true, status: true, adminUserId: true } },
+    course: { select: { id: true, name: true, courseCode: true, status: true, mode: true } },
+    assignedTo: { select: { id: true, fullName: true } },
+    convertedStudent: { select: {
+      id: true,
+      studentId: true,
+      studentName: true,
+      mobileNumber: true,
+      emailAddress: true,
+      admissionDate: true,
+      courseName: true,
+      facultyName: true,
+      batchName: true,
+      batchTiming: true,
+      courseMode: true,
+      classSchedule: true,
+    } },
+  };
+}
+
 function admissionLeadInclude() {
   return {
     branch: { select: { id: true, branchId: true, branchName: true, status: true, branchEmail: true, adminUserId: true } },
@@ -238,27 +260,6 @@ async function getSalesScope(actorOrUserId) {
 async function getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey) {
   const { branchIds } = await getSalesScope(actorOrUserId);
 
-function admissionListInclude() {
-  return {
-    branch: { select: { id: true, branchId: true, branchName: true, status: true, adminUserId: true } },
-    course: { select: { id: true, name: true, courseCode: true, status: true, mode: true } },
-    assignedTo: { select: { id: true, fullName: true } },
-    convertedStudent: { select: {
-      id: true,
-      studentId: true,
-      studentName: true,
-      mobileNumber: true,
-      emailAddress: true,
-      admissionDate: true,
-      courseName: true,
-      facultyName: true,
-      batchName: true,
-      batchTiming: true,
-      courseMode: true,
-      classSchedule: true,
-    } },
-  };
-}
   const lead = await prisma.lead.findFirst({
     where: { OR: [{ id: clean(leadKey) }, { leadId: clean(leadKey) }], branchId: { in: branchIds }, deletedAt: null },
     include: admissionLeadInclude(),
@@ -383,11 +384,6 @@ async function getAdmissionBatchContext(actorOrUserId, lead) {
   };
 }
 
-async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
-  const scope = await getSalesScope(actorOrUserId);
-  const userId = scope.userId;
-  const branchIds = scope.branchIds;
-
 async function listAdmissionBatchesByBranches(branchIds = []) {
   const ids = [...new Set(branchIds.filter(Boolean))];
   if (!ids.length) return new Map();
@@ -458,6 +454,12 @@ async function listAdmissionBatchesByBranches(branchIds = []) {
   });
   return byBranch;
 }
+
+async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
+  const scope = await getSalesScope(actorOrUserId);
+  const userId = scope.userId;
+  const branchIds = scope.branchIds;
+
   const branchId = clean(query.branchId);
   if (branchId && !branchIds.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
   const scopedBranchIds = branchId ? [branchId] : branchIds;
