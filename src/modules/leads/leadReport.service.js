@@ -24,51 +24,56 @@ async function permittedBranches(actor) {
 function parseDateOnly(value, label) {
   const raw = text(value);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) throw new AppError(`${label} must be a valid date`, 400);
-  const date = new Date(`${raw}T00:00:00.000Z`);
+  const [year, month, day] = raw.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
   if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== raw) throw new AppError(`${label} must be a valid date`, 400);
-  return { text: raw, date };
+  return raw;
 }
 
-function nextDate(date) {
-  const next = new Date(date.getTime());
-  next.setUTCDate(next.getUTCDate() + 1);
-  return next;
+function dateAtIstMidnight(value) {
+  const [year, month, day] = String(value).split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1, day) - 330 * 60 * 1000);
+}
+
+function addDaysText(value, amount) {
+  const [year, month, day] = String(value).split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1, day + amount)).toISOString().slice(0, 10);
 }
 
 function resolvePeriod(query = {}) {
   const period = text(query.period || "month").toLowerCase();
   if (!["month", "year", "custom"].includes(period)) throw new AppError("Choose a valid report period", 400);
-  let from;
-  let to;
+  const now = new Date();
+  const nowParts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(now).filter((part) => part.type !== "literal").map((part) => [part.type, Number(part.value)]));
+  let fromText;
+  let toText;
   let label;
   if (period === "month") {
-    const year = Number.parseInt(text(query.year), 10);
-    const month = Number.parseInt(text(query.month), 10);
+    const year = Number.parseInt(text(query.year || nowParts.year), 10);
+    const month = Number.parseInt(text(query.month || nowParts.month), 10);
     if (!Number.isInteger(year) || year < 2000 || year > 2200) throw new AppError("Choose a valid report year", 400);
     if (!Number.isInteger(month) || month < 1 || month > 12) throw new AppError("Choose a valid report month", 400);
-    from = new Date(Date.UTC(year, month - 1, 1));
-    to = new Date(Date.UTC(year, month, 0));
+    fromText = `${year}-${String(month).padStart(2, "0")}-01`;
+    toText = `${year}-${String(month).padStart(2, "0")}-${String(new Date(Date.UTC(year, month, 0)).getUTCDate()).padStart(2, "0")}`;
     label = `${MONTH_NAMES[month - 1]} ${year}`;
   } else if (period === "year") {
-    const year = Number.parseInt(text(query.year), 10);
+    const year = Number.parseInt(text(query.year || nowParts.year), 10);
     if (!Number.isInteger(year) || year < 2000 || year > 2200) throw new AppError("Choose a valid report year", 400);
-    from = new Date(Date.UTC(year, 0, 1));
-    to = new Date(Date.UTC(year, 11, 31));
+    fromText = `${year}-01-01`;
+    toText = `${year}-12-31`;
     label = String(year);
   } else {
-    const start = parseDateOnly(query.fromDate, "From date");
-    const end = parseDateOnly(query.toDate, "To date");
-    if (start.text > end.text) throw new AppError("From date must not be later than To date", 400);
-    from = start.date;
-    to = end.date;
-    label = `${start.text} to ${end.text}`;
+    fromText = parseDateOnly(query.fromDate, "From date");
+    toText = parseDateOnly(query.toDate, "To date");
+    if (fromText > toText) throw new AppError("From date must not be later than To date", 400);
+    label = `${fromText} to ${toText}`;
   }
-  const fromText = from.toISOString().slice(0, 10);
-  const toText = to.toISOString().slice(0, 10);
-  const toExclusive = nextDate(to);
-  return { period, from, to, toExclusive, fromText, toText, toExclusiveText: toExclusive.toISOString().slice(0, 10), label };
+  const toExclusiveText = addDaysText(toText, 1);
+  const from = dateAtIstMidnight(fromText);
+  const to = dateAtIstMidnight(toText);
+  const toExclusive = dateAtIstMidnight(toExclusiveText);
+  return { period, from, to, toExclusive, fromText, toText, toExclusiveText, label };
 }
-
 function formatDate(value) {
   if (!value) return "-";
   const date = value instanceof Date ? value : new Date(`${String(value).slice(0, 10)}T00:00:00.000Z`);

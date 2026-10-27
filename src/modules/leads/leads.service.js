@@ -231,13 +231,15 @@ export async function addFollowUp(id, payload, actor) {
 }
 export async function listLeadActivities(id, actor) { const lead = await findLead(id, actor); return prisma.leadActivity.findMany({ where: { leadId: lead.id }, orderBy: { createdAt: "desc" }, include: { createdBy: { select: { id: true, fullName: true, email: true } } } }); }
 
-export async function getLeadOptions(actor) {
+export async function getLeadOptions(actor, query = {}) {
   const allowed = await permittedBranches(actor);
   const branchWhere = { status: "ACTIVE", ...(allowed ? { id: { in: allowed } } : {}) };
+  const isMonthlyReport = String(query.view || '').trim().toLowerCase() === 'monthly';
+  const role = String(actor?.role || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const [branches, courses, assignees] = await Promise.all([
     prisma.branch.findMany({ where: branchWhere, select: { id: true, branchId: true, branchName: true, timezone: true }, orderBy: { branchName: "asc" } }),
     prisma.branchCourse.findMany({ where: { status: "ACTIVE", branch: branchWhere }, select: { id: true, branchId: true, courseCode: true, name: true }, orderBy: { name: "asc" } }),
-    prisma.user.findMany({ where: { role: "SALES_ADMIN", active: true, ...(allowed ? { salesAdminBranches: { some: { branchId: { in: allowed } } } } : {}) }, select: { id: true, userCode: true, fullName: true, email: true, salesAdminBranches: { select: { branchId: true } } }, orderBy: { fullName: "asc" } }),
+    prisma.user.findMany({ where: { role: "SALES_ADMIN", active: true, ...(allowed ? { salesAdminBranches: { some: { branchId: { in: allowed } } } } : {}), ...(isMonthlyReport && role === "SALESADMIN" ? { id: actor.userId } : {}) }, select: { id: true, userCode: true, fullName: true, email: true, salesAdminBranches: { select: { branchId: true } } }, orderBy: { fullName: "asc" } }),
   ]);
   return { branches, courses, assignees: assignees.map(({ salesAdminBranches, ...user }) => ({ ...user, branchIds: salesAdminBranches.map((row) => row.branchId) })), nextLeadId: await generatedLeadId(), currentUserId: actor.userId };
 }

@@ -11,7 +11,7 @@ export const updateLeadHandler = asyncHandler(async (req, res) => response(res, 
 export const deleteLeadHandler = asyncHandler(async (req, res) => response(res, "Lead deleted successfully", await deleteLead(req.params.id, req.auth)));
 export const addFollowUpHandler = asyncHandler(async (req, res) => response(res, "Follow-up added successfully", await addFollowUp(req.params.id, req.body || {}, req.auth), 201));
 export const listLeadActivitiesHandler = asyncHandler(async (req, res) => response(res, "Lead activities fetched successfully", await listLeadActivities(req.params.id, req.auth)));
-export const leadOptionsHandler = asyncHandler(async (req, res) => response(res, "Lead options fetched successfully", await getLeadOptions(req.auth)));
+export const leadOptionsHandler = asyncHandler(async (req, res) => response(res, "Lead options fetched successfully", await getLeadOptions(req.auth, req.query || {})));
 export const addLeadRecordingHandler = asyncHandler(async (req, res) => response(res, "Call recording uploaded successfully", await addLeadRecording(req.params.id, req.file, req.auth), 201));
 export const addLeadRecordingsHandler = asyncHandler(async (req, res) => response(res, "Call recordings uploaded successfully", await addLeadRecordings(req.params.id, req.files, req.auth, req.body?.followUpId || null), 201));
 export const getLeadRecordingHandler = asyncHandler(async (req, res) => { const file = await getLeadRecording(req.params.id, req.params.recordingId, req.auth); res.setHeader("Content-Type", file.mimeType); res.setHeader("Content-Disposition", `inline; filename="${String(file.fileName).replace(/[^a-zA-Z0-9._-]/g, "_")}"`); res.send(file.buffer); });
