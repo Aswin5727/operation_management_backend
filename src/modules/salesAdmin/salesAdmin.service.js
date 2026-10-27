@@ -495,7 +495,7 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
     prisma.lead.count({ where: allHotWhere }),
     prisma.lead.count({ where: { ...allHotWhere, status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] } } }),
     prisma.lead.count({ where: { ...allHotWhere, status: "CONVERTED" } }),
-    prisma.branchStudentPayment.aggregate({ where: { branchId: { in: scopedBranchIds }, branchStudent: { is: { sourceLeadId: { not: null } } } }, _sum: { amount: true } }),
+    prisma.lead.aggregate({ where: allHotWhere, _sum: { paymentAmount: true } }),
     prisma.branchCourse.findMany({ where: { branchId: { in: scopedBranchIds }, status: "ACTIVE" }, select: { id: true, name: true }, orderBy: { name: "asc" } }),
     isBranchAdmin ? prisma.user.findUnique({ where: { id: userId }, select: { id: true, fullName: true } }) : Promise.resolve(null),
   ]);
@@ -510,7 +510,7 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
       return { ...row, canRequestBatch: !lead.assignedToId || lead.assignedToId === userId, availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length };
     }),
     meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
-    summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.amount || 0) },
+    summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.paymentAmount || 0) },
     filters: { branches: scope.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
   };
 }
