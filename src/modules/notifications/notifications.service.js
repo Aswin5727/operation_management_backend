@@ -1375,7 +1375,7 @@ export async function listNotifications(query = {}, user = {}) {
   let unreadCount = 0;
 
   try {
-    [total, rows, unreadCount] = await prisma.$transaction([
+    [total, rows, unreadCount] = await Promise.all([
       prisma.notification.count({ where }),
       prisma.notification.findMany({
         where,
@@ -1423,7 +1423,7 @@ export async function listNotifications(query = {}, user = {}) {
       dateWhere,
     );
 
-    const [wideTotal, wideRows, wideUnreadCount] = await prisma.$transaction([
+    const [wideTotal, wideRows, wideUnreadCount] = await Promise.all([
       prisma.notification.count({ where: scopedWideWhere }),
       prisma.notification.findMany({
         where: scopedWideWhere,

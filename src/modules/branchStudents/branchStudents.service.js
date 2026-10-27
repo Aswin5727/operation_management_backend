@@ -2355,6 +2355,8 @@ function toBranchStudentSummary(record) {
   return {
     id: record.id,
     branchId: record.branchId,
+    sourceLeadId: record.sourceLeadId || null,
+    admissionSource: record.admissionSource || null,
     studentId: record.studentId,
     studentName: record.studentName,
     parentName: record.parentName,
@@ -2642,6 +2644,8 @@ export async function listBranchStudents(query = {}, actor = null) {
         select: {
           id: true,
           branchId: true,
+          sourceLeadId: true,
+          admissionSource: true,
           studentId: true,
           studentName: true,
           emailAddress: true,
@@ -2661,8 +2665,8 @@ export async function listBranchStudents(query = {}, actor = null) {
           arrangementType: true,
           enrollmentType: true,
           firstCourseId: true,
-          installments: { select: { id: true, installmentNumber: true, amount: true, amountPaid: true, dueDate: true } },
-          payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { id: true, amount: true, paymentDate: true, paymentMode: true, receiptNumber: true } },
+          installments: { select: { id: true, installmentNumber: true, amount: true, amountPaid: true, dueDate: true, paymentMethod: true, remarks: true } },
+          payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { id: true, amount: true, paymentDate: true, paymentMode: true, paymentMethod: true, transactionReference: true, payAgainst: true, notes: true, receiptNumber: true } },
           batchId: true,
           batchName: true,
           recordStatus: true,

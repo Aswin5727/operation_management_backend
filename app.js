@@ -16,6 +16,7 @@ const allowedOrigins = splitCsvValues(config.corsOrigins);
 const corsOptions = {
   origin: allowedOrigins.length ? allowedOrigins : true,
   credentials: true,
+  exposedHeaders: ["Content-Disposition", "Content-Length"],
 };
 
 app.use(helmet());
