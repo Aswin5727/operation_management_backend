@@ -108,6 +108,7 @@ model Branch {
   branchPhone                String                      @unique
   branchAddress              String
   status                     RecordStatus                @default(ACTIVE)
+  roleAccess                 BranchRoleAccess            @default(BRANCH_ADMIN_ONLY)
   adminUserId                String?                     @unique
   createdBy                  String?
   updatedBy                  String?
@@ -140,6 +141,11 @@ model Branch {
   @@index([status])
   @@index([branchName])
   @@index([branchAdminName])
+}
+
+enum BranchRoleAccess {
+  BRANCH_ADMIN_ONLY
+  BRANCH_ADMIN_SALES_ADMIN
 }
 
 model SalesAdminBranch {

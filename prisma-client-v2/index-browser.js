@@ -179,6 +179,7 @@ exports.Prisma.BranchScalarFieldEnum = {
   branchPhone: 'branchPhone',
   branchAddress: 'branchAddress',
   status: 'status',
+  roleAccess: 'roleAccess',
   adminUserId: 'adminUserId',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy',
@@ -1666,6 +1667,11 @@ exports.RecordStatus = exports.$Enums.RecordStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   PENDING: 'PENDING'
+};
+
+exports.BranchRoleAccess = exports.$Enums.BranchRoleAccess = {
+  BRANCH_ADMIN_ONLY: 'BRANCH_ADMIN_ONLY',
+  BRANCH_ADMIN_SALES_ADMIN: 'BRANCH_ADMIN_SALES_ADMIN'
 };
 
 exports.LoginEventType = exports.$Enums.LoginEventType = {

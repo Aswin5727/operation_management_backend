@@ -12,6 +12,7 @@ import {
   createBranchCreatedNotification,
   createBranchInvitationResentNotification,
 } from "../notifications/notifications.service.js";
+import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -170,6 +171,8 @@ function toBranchSummary(record, options = {}) {
     welcomeMailSent: hasBranchActivated(record),
     lastLoginAt: record?.adminUser?.lastLoginAt || null,
     mustResetPassword: getBranchMustResetPassword(record, options.mustResetPassword),
+    roleAccess: record.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY,
+    roleAccessLabel: BRANCH_ROLE_ACCESS_LABELS[record.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY],
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     ...(options.tempPassword ? { tempPassword: options.tempPassword } : {}),
@@ -389,6 +392,9 @@ function buildBranchPayload(payload, existing = null) {
         ? parseRequiredText(payload.branchAddress, "Branch address")
         : existing?.branchAddress,
     status: payload.status !== undefined ? parseStatus(payload.status) : existing?.status || "ACTIVE",
+    roleAccess: payload.roleAccess !== undefined
+      ? parseBranchRoleAccess(payload.roleAccess)
+      : existing?.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY,
   };
 }
 
@@ -489,6 +495,7 @@ export async function createBranch(payload, actor) {
     branchId: parsed.branchId,
     branchName: parsed.branchName,
     branchAddress: formatBranchLocation(parsed),
+    roleAccess: parsed.roleAccess,
   }).catch((error) => {
     console.warn("Branch credentials email failed to send", error);
   });
@@ -717,6 +724,7 @@ export async function resendBranchInvitation(branchRecordId, actor) {
     branchId: existing.branchId,
     branchName: existing.branchName,
     branchAddress: formatBranchLocation(existing),
+    roleAccess: existing.roleAccess,
   }).catch((error) => {
     console.warn("Branch invitation email failed to send", error);
   });

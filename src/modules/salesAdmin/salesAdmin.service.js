@@ -147,9 +147,22 @@ function admissionLeadInclude() {
   };
 }
 
-async function getAdmissionLeadForSalesAdmin(userId, leadKey) {
-  const branches = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
-  const branchIds = branches.map((item) => item.branchId);
+async function getSalesScope(actorOrUserId) {
+  const actor = typeof actorOrUserId === "string"
+    ? { userId: actorOrUserId, role: "SALES_ADMIN" }
+    : (actorOrUserId || {});
+  const role = String(actor.role || "").toUpperCase();
+  if (role === "BRANCH_ADMIN") {
+    const branch = await prisma.branch.findUnique({ where: { id: actor.branchId }, select: { id: true, branchId: true, branchName: true, status: true } });
+    if (!branch || branch.status !== "ACTIVE") throw new AppError("You do not have access to this branch", 403);
+    return { actor, userId: actor.userId, branchIds: [branch.id], branches: [branch] };
+  }
+  const branches = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: actor.userId, branch: { status: "ACTIVE" } }, select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } });
+  return { actor, userId: actor.userId, branchIds: branches.map(({ branch }) => branch.id), branches: branches.map(({ branch }) => branch) };
+}
+
+async function getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey) {
+  const { branchIds } = await getSalesScope(actorOrUserId);
   const lead = await prisma.lead.findFirst({
     where: { OR: [{ id: clean(leadKey) }, { leadId: clean(leadKey) }], branchId: { in: branchIds }, deletedAt: null },
     include: admissionLeadInclude(),
@@ -185,9 +198,10 @@ function admissionRow(lead) {
   };
 }
 
-async function getSalesAdminStudentFeeDetails(userId, studentId) {
+async function getSalesAdminStudentFeeDetails(actorOrUserId, studentId) {
+  const { userId, branchIds } = await getSalesScope(actorOrUserId);
   const student = await prisma.branchStudent.findFirst({
-    where: { id: clean(studentId), sourceLead: { is: { assignedToId: userId, deletedAt: null, status: "CONVERTED" } } },
+    where: { id: clean(studentId), branchId: { in: branchIds }, sourceLead: { is: { ...(String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN")).toUpperCase() === "SALES_ADMIN" ? { assignedToId: userId } : {}), deletedAt: null, status: "CONVERTED" } } },
     include: {
       sourceLead: { select: { branchId: true } },
       courseEnrollments: { orderBy: { sequenceOrder: "asc" } },
@@ -196,8 +210,7 @@ async function getSalesAdminStudentFeeDetails(userId, studentId) {
     },
   });
   if (!student) throw new AppError("Admitted student not found", 404);
-  const branchAccess = await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: userId, branchId: student.branchId } }, select: { id: true } });
-  if (!branchAccess) throw new AppError("You do not have access to this student", 403);
+  if (!branchIds.includes(student.branchId)) throw new AppError("You do not have access to this student", 403);
   return calculateAdmissionFeeDetails(student);
 }
 
@@ -254,7 +267,8 @@ function getEligibleAdmissionBatches(lead, branchBatches = []) {
   });
 }
 
-async function getAdmissionBatchContext(userId, lead) {
+async function getAdmissionBatchContext(actorOrUserId, lead) {
+  const userId = typeof actorOrUserId === "string" ? actorOrUserId : actorOrUserId.userId;
   const branchBatches = await listAllBranchAdmissionBatches(userId, lead.branchId);
   const batches = getEligibleAdmissionBatches(lead, branchBatches);
   return {
@@ -270,9 +284,10 @@ async function getAdmissionBatchContext(userId, lead) {
   };
 }
 
-async function listSalesAdminAdmissions(userId, query = {}) {
-  const profile = await getSalesAdminProfile(userId);
-  const branchIds = profile.branches.filter((branch) => branch.status === "ACTIVE").map((branch) => branch.id);
+async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
+  const scope = await getSalesScope(actorOrUserId);
+  const userId = scope.userId;
+  const branchIds = scope.branchIds;
   const branchId = clean(query.branchId);
   if (branchId && !branchIds.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
   const scopedBranchIds = branchId ? [branchId] : branchIds;
@@ -313,12 +328,13 @@ async function listSalesAdminAdmissions(userId, query = {}) {
     data: rows.map((lead) => ({ ...admissionRow(lead), canRequestBatch: lead.assignedToId === userId, availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length })),
     meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
     summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.amount || 0) },
-    filters: { branches: profile.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
+    filters: { branches: scope.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
   };
 }
 
-async function getSalesAdminAdmissionLead(userId, leadKey) {
-  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+async function getSalesAdminAdmissionLead(actorOrUserId, leadKey) {
+  const userId = typeof actorOrUserId === "string" ? actorOrUserId : actorOrUserId.userId;
+  const lead = await getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey);
   if (lead.status === "CONVERTED") return { lead: admissionRow(lead) };
   const branchActor = { id: userId, userId, role: "SUPER_ADMIN", impersonatedBranchId: lead.branchId };
   const [courses, batches, faculty, installmentTemplates] = await Promise.all([
@@ -342,30 +358,31 @@ async function getSalesAdminAdmissionLead(userId, leadKey) {
   };
 }
 
-async function getSalesAdminAvailableBatches(userId, leadKey) {
-  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
-  return getAdmissionBatchContext(userId, lead);
+async function getSalesAdminAvailableBatches(actorOrUserId, leadKey) {
+  const lead = await getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey);
+  return getAdmissionBatchContext(actorOrUserId, lead);
 }
 
 async function getPendingHotAdmissionReminder(userId) {
   return checkPendingHotAdmissionReminder(userId);
 }
 
-async function startSalesAdminAdmission(userId, leadKey) {
-  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+async function startSalesAdminAdmission(actorOrUserId, leadKey) {
+  const userId = typeof actorOrUserId === "string" ? actorOrUserId : actorOrUserId.userId;
+  const lead = await getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey);
   if (lead.status !== "CONVERTED" && lead.admissionStatus !== "IN_PROGRESS") {
     await prisma.$transaction(async (tx) => {
       await tx.lead.update({ where: { id: lead.id }, data: { admissionStatus: "IN_PROGRESS", updatedById: userId } });
       await tx.leadActivity.create({ data: { leadId: lead.id, action: "ADMISSION_STARTED", previousValue: { admissionStatus: lead.admissionStatus || "PENDING" }, newValue: { admissionStatus: "IN_PROGRESS" }, createdById: userId } });
     });
   }
-  return getSalesAdminAdmissionLead(userId, lead.id);
+  return getSalesAdminAdmissionLead(actorOrUserId, lead.id);
 }
 
 async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   const userId = clean(auth?.userId || auth?.id);
   if (!userId) throw new AppError("Sales Admin session is required", 401);
-  const lead = await getAdmissionLeadForSalesAdmin(userId, leadKey);
+  const lead = await getAdmissionLeadForSalesAdmin(auth, leadKey);
   if (lead.status === "CONVERTED" && lead.convertedStudent) return lead.convertedStudent;
   return createBranchStudent({ ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" }, { ...auth, id: userId, userId, role: "SALES_ADMIN" });
 }

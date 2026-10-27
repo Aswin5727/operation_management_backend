@@ -12,7 +12,7 @@ async function findBranchForAdmin(user) {
         { branchEmail: { equals: user.email, mode: "insensitive" } },
       ],
     },
-    select: { id: true, status: true },
+    select: { id: true, status: true, roleAccess: true },
   });
 }
 

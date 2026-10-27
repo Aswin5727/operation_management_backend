@@ -1,6 +1,7 @@
 ﻿import express from "express";
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
+import { authorizeSalesAccess } from "../../common/middlewares/authorizeSalesAccess.js";
 import { admissionsHandler, studentFeeDetailsHandler, admissionLeadHandler, availableBatchesHandler, pendingAdmissionReminderHandler, startAdmissionHandler, convertAdmissionHandler, createSalesAdminHandler, dashboardHandler, deleteSalesAdminHandler, listSalesAdminsHandler, profileHandler, resetPasswordHandler, updateSalesAdminHandler, createBatchRequestHandler, listBatchRequestsHandler } from "./salesAdmin.controller.js";
 const router = express.Router();
 router.post("/", authenticate, authorize("SUPER_ADMIN"), createSalesAdminHandler);
@@ -10,15 +11,16 @@ router.patch("/:id", authenticate, authorize("SUPER_ADMIN"), updateSalesAdminHan
 router.delete("/:id", authenticate, authorize("SUPER_ADMIN"), deleteSalesAdminHandler);
 router.get("/me", authenticate, authorize("SALES_ADMIN"), profileHandler);
 router.get("/dashboard", authenticate, authorize("SALES_ADMIN"), dashboardHandler);
-router.get("/admissions", authenticate, authorize("SALES_ADMIN"), admissionsHandler);
-router.get("/admissions/students/:studentId/fee-details", authenticate, authorize("SALES_ADMIN"), studentFeeDetailsHandler);
-router.get("/admissions/pending-reminder", authenticate, authorize("SALES_ADMIN"), pendingAdmissionReminderHandler);
-router.get("/admissions/batch-requests", authenticate, authorize("SALES_ADMIN"), listBatchRequestsHandler);
-router.get("/admissions/leads/:leadId", authenticate, authorize("SALES_ADMIN"), admissionLeadHandler);
-router.get("/admissions/leads/:leadId/available-batches", authenticate, authorize("SALES_ADMIN"), availableBatchesHandler);
-router.post("/admissions/leads/:leadId/batch-requests", authenticate, authorize("SALES_ADMIN"), createBatchRequestHandler);
-router.post("/admissions/leads/:leadId/start", authenticate, authorize("SALES_ADMIN"), startAdmissionHandler);
-router.post("/admissions/leads/:leadId/convert", authenticate, authorize("SALES_ADMIN"), convertAdmissionHandler);
+const salesAdmissionAccess = [authenticate, authorize("SALES_ADMIN", "BRANCH_ADMIN", "SUPER_ADMIN"), authorizeSalesAccess];
+router.get("/admissions", ...salesAdmissionAccess, admissionsHandler);
+router.get("/admissions/students/:studentId/fee-details", ...salesAdmissionAccess, studentFeeDetailsHandler);
+router.get("/admissions/pending-reminder", ...salesAdmissionAccess, pendingAdmissionReminderHandler);
+router.get("/admissions/batch-requests", ...salesAdmissionAccess, listBatchRequestsHandler);
+router.get("/admissions/leads/:leadId", ...salesAdmissionAccess, admissionLeadHandler);
+router.get("/admissions/leads/:leadId/available-batches", ...salesAdmissionAccess, availableBatchesHandler);
+router.post("/admissions/leads/:leadId/batch-requests", ...salesAdmissionAccess, createBatchRequestHandler);
+router.post("/admissions/leads/:leadId/start", ...salesAdmissionAccess, startAdmissionHandler);
+router.post("/admissions/leads/:leadId/convert", ...salesAdmissionAccess, convertAdmissionHandler);
 export default router;
 
 

@@ -8,12 +8,12 @@ const updateSalesAdminHandler = asyncHandler(async (req, res) => res.status(200)
 const deleteSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin deleted", data: await deleteSalesAdmin(req.params.id) }));
 const profileHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminProfile(req.auth.userId) }));
 const dashboardHandler = asyncHandler(async (req, res) => res.status(200).json(await getDashboard(req.auth.userId, req.query || {})));
-const admissionsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminAdmissions(req.auth.userId, req.query || {})));
-const studentFeeDetailsHandler = asyncHandler(async (req, res) => res.status(200).json({ data: { feeDetails: await getSalesAdminStudentFeeDetails(req.auth.userId, req.params.studentId) } }));
+const admissionsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminAdmissions(req.auth, req.query || {})));
+const studentFeeDetailsHandler = asyncHandler(async (req, res) => res.status(200).json({ data: { feeDetails: await getSalesAdminStudentFeeDetails(req.auth, req.params.studentId) } }));
 const pendingAdmissionReminderHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getPendingHotAdmissionReminder(req.auth.userId) }));
-const admissionLeadHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAdmissionLead(req.auth.userId, req.params.leadId) }));
-const availableBatchesHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAvailableBatches(req.auth.userId, req.params.leadId) }));
-const startAdmissionHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await startSalesAdminAdmission(req.auth.userId, req.params.leadId) }));
+const admissionLeadHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAdmissionLead(req.auth, req.params.leadId) }));
+const availableBatchesHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAvailableBatches(req.auth, req.params.leadId) }));
+const startAdmissionHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await startSalesAdminAdmission(req.auth, req.params.leadId) }));
 const convertAdmissionHandler = asyncHandler(async (req, res) => res.status(201).json({ data: await convertSalesAdminLead(req.auth, req.params.leadId, req.body || {}) }));
 const createBatchRequestHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Batch request sent to the branch", data: await createSalesAdminBatchRequest(req.auth.userId, req.params.leadId) }));
 const listBatchRequestsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminBatchRequests(req.auth.userId)));
