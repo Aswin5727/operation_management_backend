@@ -20,28 +20,23 @@ function formatAmount(value) {
 
 function findColumnIndexes(sheet) {
   const indexes = { paidAmount: [], pendingAmount: [], totalFees: [] };
+  const headerRows = [6, 7, 4, 5];
 
-  sheet.getRow(4).eachCell((cell, columnNumber) => {
-    const value = String(cell.value ?? "").trim().toLowerCase();
-    if (value === "paid amount") indexes.paidAmount.push(columnNumber);
-    if (value === "pending amount") indexes.pendingAmount.push(columnNumber);
-    if (value === "total fees") indexes.totalFees.push(columnNumber);
-  });
-
-  if (!indexes.paidAmount.length || !indexes.pendingAmount.length) {
-    sheet.getRow(5).eachCell((cell, columnNumber) => {
+  headerRows.forEach((rowNumber) => {
+    sheet.getRow(rowNumber).eachCell((cell, columnNumber) => {
       const value = String(cell.value ?? "").trim().toLowerCase();
-      if (value === "paid amount" && !indexes.paidAmount.length) indexes.paidAmount.push(columnNumber);
-      if (value === "pending amount" && !indexes.pendingAmount.length) indexes.pendingAmount.push(columnNumber);
+      if (value === "paid amount" && !indexes.paidAmount.includes(columnNumber)) indexes.paidAmount.push(columnNumber);
+      if (value === "pending amount" && !indexes.pendingAmount.includes(columnNumber)) indexes.pendingAmount.push(columnNumber);
+      if (value === "total fees" && !indexes.totalFees.includes(columnNumber)) indexes.totalFees.push(columnNumber);
     });
-  }
+  });
 
   return indexes;
 }
 
-function addCollectionSummary(sheet) {
+function addCollectionSummary(sheet, previousCollection = 0) {
   const indexes = findColumnIndexes(sheet);
-  const firstDataRow = 6;
+  const firstDataRow = 8;
   let actual = 0;
   let expected = 0;
 
@@ -51,27 +46,34 @@ function addCollectionSummary(sheet) {
     indexes.pendingAmount.forEach((columnNumber) => { expected += toNumber(row.getCell(columnNumber).value); });
   }
 
-  const summary = [
-    ["Expected Collection", formatAmount(expected)],
-    ["Actual Collection", formatAmount(actual)],
-    ["Previous Month Collection", 0],
-  ];
-
-  const row = sheet.getRow(3);
-  summary.forEach(([label, value], index) => {
-    const labelCell = row.getCell(index * 2 + 1);
-    const valueCell = row.getCell(index * 2 + 2);
-    labelCell.value = label;
-    valueCell.value = value;
-    labelCell.font = { bold: true, color: { argb: "FF1F4E78" } };
-    valueCell.font = { bold: true, color: { argb: "FF17345F" } };
-    labelCell.alignment = { vertical: "middle" };
-    valueCell.alignment = { vertical: "middle" };
+  const border = {
+    top: { style: "thin", color: { argb: "FFD6E4F0" } },
+    bottom: { style: "thin", color: { argb: "FFD6E4F0" } },
+    left: { style: "thin", color: { argb: "FFD6E4F0" } },
+    right: { style: "thin", color: { argb: "FFD6E4F0" } },
+  };
+  const headerRow = sheet.getRow(3);
+  const valueRow = sheet.getRow(4);
+  ["Expected", "Actual", "Previous Collection"].forEach((label, index) => {
+    const headerCell = headerRow.getCell(index + 1);
+    const valueCell = valueRow.getCell(index + 1);
+    headerCell.value = label;
+    valueCell.value = formatAmount(index === 0 ? expected : index === 1 ? actual : previousCollection);
+    headerCell.font = { bold: true, color: { argb: "FFFFFFFF" }, size: 10 };
+    valueCell.font = { bold: true, color: { argb: "FF17345F" }, size: 12 };
+    headerCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF1F4E78" } };
+    valueCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: index === 0 ? "FFEAF3FA" : index === 1 ? "FFE2F0D9" : "FFFFF1D6" } };
+    headerCell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+    valueCell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+    headerCell.border = border;
+    valueCell.border = border;
+    sheet.getColumn(index + 1).width = Math.max(sheet.getColumn(index + 1).width || 10, 16);
   });
 
-  row.height = 22;
+  headerRow.height = 24;
+  valueRow.height = 26;
+  sheet.getRow(5).height = 12;
 }
-
 function addStatusLegend(sheet) {
   const startRow = sheet.rowCount + 2;
   const title = sheet.getCell(startRow, 1);
@@ -102,7 +104,9 @@ export async function generateBranchMonthlyReport(query, user) {
   const sheet = workbook.worksheets[0];
   if (includeCollectionSummary) {
     sheet.getCell(1, 1).value = "Branch Admin Monthly Collection Report";
-    addCollectionSummary(sheet);
+    const metadataCell = sheet.getCell(2, 1);
+    metadataCell.value = String(metadataCell.value || "") + " | Total Students: " + String(report.totalStudents ?? 0);
+    addCollectionSummary(sheet, report.previousCollection);
   }
   if (includeStatusLegend) addStatusLegend(sheet);
 
