@@ -135,7 +135,7 @@ async function validateRelations(data, actor, existingId = null) {
   }
 }
 
-const includeLead = { branch: { select: { id: true, branchId: true, branchName: true, timezone: true } }, course: { select: { id: true, courseCode: true, name: true, branchId: true } }, assignedTo: { select: { id: true, userCode: true, fullName: true, email: true } } };
+const includeLead = { branch: { select: { id: true, branchId: true, branchName: true, timezone: true, roleAccess: true, adminUserId: true } }, course: { select: { id: true, courseCode: true, name: true, branchId: true } }, assignedTo: { select: { id: true, userCode: true, fullName: true, email: true } } };
 const output = (lead) => lead;
 
 async function findLead(id, actor, history = false) {
@@ -256,12 +256,14 @@ export async function addFollowUp(id, payload, actor) {
     const dateKey = nextFollowUpDate.toISOString().slice(0, 10);
     const timeKey = nextFollowUpTime || "";
     const requestDescription = `LEAD_FOLLOW_UP_SCHEDULED:${lead.id}:${dateKey}:${timeKey}`;
-    const targetUserId = actor.userId;
-    const existingNotification = await prisma.notification.findFirst({
-      where: { kind: "LEAD_FOLLOW_UP_SCHEDULED", targetUserId, requestDescription },
-      select: { id: true },
-    });
-    if (!existingNotification) {
+    const branchAdminId = lead.branch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? lead.branch?.adminUserId : null;
+    const recipientUserIds = [...new Set([actor.userId, branchAdminId].filter(Boolean))];
+    for (const targetUserId of recipientUserIds) {
+      const existingNotification = await prisma.notification.findFirst({
+        where: { kind: "LEAD_FOLLOW_UP_SCHEDULED", targetUserId, requestDescription },
+        select: { id: true },
+      });
+      if (existingNotification) continue;
       try {
         const dateLabel = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(nextFollowUpDate);
         const timeLabel = nextFollowUpTime ? ` at ${nextFollowUpTime}` : "";
@@ -278,7 +280,7 @@ export async function addFollowUp(id, payload, actor) {
           createdBy: actor.userId,
         });
       } catch (error) {
-        console.warn(`Follow-up scheduled notification failed for ${lead.id}: ${error?.message || error}`);
+        console.warn(`Follow-up scheduled notification failed for ${lead.id} (${targetUserId}): ${error?.message || error}`);
       }
     }
   }

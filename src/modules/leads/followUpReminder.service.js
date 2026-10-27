@@ -158,7 +158,7 @@ async function sendDueReminder(reminder) {
   const claimed = await prisma.$queryRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'PROCESSING', "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1 AND "status" = 'PENDING' RETURNING *`, reminder.id);
   if (!claimed[0]) return;
   try {
-    const lead = await prisma.lead.findFirst({ where: { id: reminder.leadId, deletedAt: null }, include: { assignedTo: { select: { id: true, fullName: true, role: true, active: true } }, branch: { select: { id: true, branchName: true, timezone: true, status: true, roleAccess: true } }, followUps: { orderBy: { createdAt: "desc" }, take: 1, select: { callStatus: true, createdAt: true } } } });
+    const lead = await prisma.lead.findFirst({ where: { id: reminder.leadId, deletedAt: null }, include: { assignedTo: { select: { id: true, fullName: true, role: true, active: true } }, branch: { select: { id: true, branchName: true, timezone: true, status: true, roleAccess: true, adminUserId: true } }, followUps: { orderBy: { createdAt: "desc" }, take: 1, select: { callStatus: true, createdAt: true } } } });
     if (!lead || !isReminderEligible(lead) || lead.assignedToId !== reminder.recipientUserId) {
       await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'CANCELLED', "cancelledAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1`, reminder.id);
       return;
@@ -179,7 +179,7 @@ async function sendDueReminder(reminder) {
     const isDaily = !scheduledDateIsCurrent;
     const isTimed = scheduledDateIsCurrent && Boolean(lead.nextFollowUpTime);
     const description = reminderDescription(isDaily ? "LEAD_FOLLOW_UP_DAILY" : "LEAD_FOLLOW_UP_REMINDER", lead.id, reminder.dueDate, isTimed ? lead.nextFollowUpTime : "");
-    const existing = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_DUE", targetUserId: lead.assignedToId, requestDescription: description }, select: { id: true } });
+    const existing = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_DUE", targetUserId: lead.assignedToId, requestDescription: description }, select: { id: true, title: true, message: true } });
     let notification = existing;
     if (!notification && isDaily) {
       const lastCallStatus = lead.lastCallStatus || lead.followUps[0]?.callStatus || "";
@@ -189,6 +189,23 @@ async function sendDueReminder(reminder) {
     if (!notification && !isDaily) {
       const timeLabel = isTimed ? localTimeLabel(lead.nextFollowUpTime) : "";
       notification = await createNotification({ kind: "LEAD_FOLLOW_UP_DUE", tone: "blue", title: `Follow-up Reminder - ${lead.studentName}`, message: timeLabel ? `You scheduled a follow-up call with ${lead.studentName} (${lead.leadId}) for today at ${timeLabel}. Please contact the student and update the follow-up details.` : `You have a scheduled follow-up with ${lead.studentName} (${lead.leadId}) today. Please contact the student and update the follow-up details.`, actionLabel: "View Lead", targetUserId: lead.assignedToId, targetBranchId: lead.branch?.id || null, targetBranchName: lead.branch?.branchName || null, requestDescription: description });
+    }
+    const branchAdminId = lead.branch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? lead.branch?.adminUserId : null;
+    if (branchAdminId && branchAdminId !== lead.assignedToId) {
+      const branchAdminNotification = await prisma.notification.findFirst({ where: { kind: "LEAD_FOLLOW_UP_DUE", targetUserId: branchAdminId, requestDescription: description }, select: { id: true } });
+      if (!branchAdminNotification) {
+        await createNotification({
+          kind: "LEAD_FOLLOW_UP_DUE",
+          tone: "blue",
+          title: notification.title,
+          message: notification.message,
+          actionLabel: "View Lead",
+          targetUserId: branchAdminId,
+          targetBranchId: lead.branch?.id || null,
+          targetBranchName: lead.branch?.branchName || null,
+          requestDescription: description,
+        });
+      }
     }
     await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'SENT', "notificationId" = $2, "deliveredAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1`, reminder.id, notification.id);
     await syncLeadFollowUpReminder(lead.id);
