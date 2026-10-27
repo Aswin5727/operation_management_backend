@@ -100,9 +100,16 @@ function notificationForStatus(row, status, batch = null) {
   };
 }
 
-async function loadSalesAdminLead(userId, leadKey) {
-  const links = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
-  const branchIds = links.map((link) => link.branchId);
+async function getSalesScope(actorOrUserId) {
+  const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
+  const branchIds = String(actor.role || "").toUpperCase() === "BRANCH_ADMIN"
+    ? [actor.branchId]
+    : (await prisma.salesAdminBranch.findMany({ where: { salesAdminId: actor.userId, branch: { status: "ACTIVE" } }, select: { branchId: true } })).map((link) => link.branchId);
+  return { actor, userId: actor.userId, branchIds };
+}
+
+async function loadSalesAdminLead(actorOrUserId, leadKey) {
+  const { actor, userId, branchIds } = await getSalesScope(actorOrUserId);
   const lead = await prisma.lead.findFirst({
     where: { OR: [{ id: clean(leadKey) }, { leadId: clean(leadKey) }], branchId: { in: branchIds }, deletedAt: null },
     include: {
@@ -118,8 +125,9 @@ async function loadSalesAdminLead(userId, leadKey) {
   return lead;
 }
 
-export async function createSalesAdminBatchRequest(userId, leadKey) {
-  const lead = await loadSalesAdminLead(userId, leadKey);
+export async function createSalesAdminBatchRequest(actorOrUserId, leadKey) {
+  const { userId } = await getSalesScope(actorOrUserId);
+  const lead = await loadSalesAdminLead(actorOrUserId, leadKey);
   if (!lead.courseId || !lead.course) throw new AppError("A branch course must be selected before requesting a batch", 400);
   const existingBatch = await suitableBatches({ branchId: lead.branchId, courseId: lead.courseId, mode: lead.courseMode || lead.trainingMode, schedule: lead.classSchedule });
   if (existingBatch.length) throw new AppError("A suitable batch is available now. Refresh the admissions list and continue admission.", 409);
@@ -163,9 +171,9 @@ export async function createSalesAdminBatchRequest(userId, leadKey) {
   }
 }
 
-export async function listSalesAdminBatchRequests(userId) {
-  const links = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
-  const rows = await prisma.salesCrmBatchRequest.findMany({ where: { requestedById: userId, branchId: { in: links.map((link) => link.branchId) } }, include: requestInclude, orderBy: { createdAt: "desc" } });
+export async function listSalesAdminBatchRequests(actorOrUserId) {
+  const { userId, branchIds } = await getSalesScope(actorOrUserId);
+  const rows = await prisma.salesCrmBatchRequest.findMany({ where: { requestedById: userId, branchId: { in: branchIds } }, include: requestInclude, orderBy: { createdAt: "desc" } });
   return { data: rows.map((row) => requestRow(row)), meta: { total: rows.length } };
 }
 

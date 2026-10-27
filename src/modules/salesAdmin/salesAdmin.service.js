@@ -102,9 +102,12 @@ function salesAdminReminderDate(now = new Date()) {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
-async function checkPendingHotAdmissionReminder(userId) {
-  const branchLinks = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } });
-  const branchIds = branchLinks.map(({ branchId }) => branchId);
+async function checkPendingHotAdmissionReminder(actorOrUserId) {
+  const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
+  const userId = actor.userId;
+  const branchIds = String(actor.role || "").toUpperCase() === "BRANCH_ADMIN"
+    ? [actor.branchId]
+    : (await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } })).map(({ branchId }) => branchId);
   const where = { branchId: { in: branchIds }, assignedToId: userId, stage: "HOT", status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] }, deletedAt: null };
   const leads = branchIds.length ? await prisma.lead.findMany({ where, include: {
     branch: { select: { id: true, branchId: true, branchName: true, status: true } },
@@ -129,6 +132,8 @@ async function checkPendingHotAdmissionReminder(userId) {
       message: `You have ${students.length} HOT lead${students.length === 1 ? "" : "s"} whose student admissions are still pending. Please review the list and complete the admission process.`,
       actionLabel: "View Pending Admissions",
       targetUserId: userId,
+      targetBranchId: String(actor.role || "").toUpperCase() === "BRANCH_ADMIN" ? actor.branchId : null,
+      targetBranchName: String(actor.role || "").toUpperCase() === "BRANCH_ADMIN" ? (students[0]?.branchName || leads[0]?.branch?.branchName || null) : null,
       createdBy: userId,
       requestDescription: notificationDescription,
     } });
@@ -168,6 +173,9 @@ async function getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey) {
     include: admissionLeadInclude(),
   });
   if (!lead) throw new AppError("Lead not found in your authorized branches", 404);
+  if (String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN" && lead.assignedToId && lead.assignedToId !== (typeof actorOrUserId === "object" ? actorOrUserId.userId : "")) {
+    throw new AppError("Lead is assigned to another Sales Admin", 403);
+  }
   if (lead.stage !== "HOT" && lead.status !== "CONVERTED") throw new AppError("Only HOT leads can be admitted", 400);
   if (lead.branch?.status !== "ACTIVE") throw new AppError("The lead branch is inactive", 400);
   return lead;
@@ -294,6 +302,7 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   const status = clean(query.status || "ALL").toUpperCase();
   if (!["ALL", "PENDING", "IN_PROGRESS", "PENDING_HOT", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
   const where = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
+  if (String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN") where.assignedToId = userId;
   if (status === "ADMITTED") where.status = "CONVERTED";
   if (status === "IN_PROGRESS") { where.status = { not: "CONVERTED" }; where.admissionStatus = "IN_PROGRESS"; }
   if (status === "PENDING") { where.status = { not: "CONVERTED" }; where.OR = [{ admissionStatus: "PENDING" }, { admissionStatus: null }]; }
@@ -313,6 +322,7 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   const page = Math.max(1, Number.parseInt(query.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20));
   const allHotWhere = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
+  if (String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN") allHotWhere.assignedToId = userId;
   const [total, rows, hotLeads, pendingAdmissions, completedAdmissions, collections, availableCourses] = await Promise.all([
     prisma.lead.count({ where }),
     prisma.lead.findMany({ where, include: admissionLeadInclude(), orderBy: { updatedAt: "desc" }, skip: (page - 1) * limit, take: limit }),
@@ -363,8 +373,8 @@ async function getSalesAdminAvailableBatches(actorOrUserId, leadKey) {
   return getAdmissionBatchContext(actorOrUserId, lead);
 }
 
-async function getPendingHotAdmissionReminder(userId) {
-  return checkPendingHotAdmissionReminder(userId);
+async function getPendingHotAdmissionReminder(actor) {
+  return checkPendingHotAdmissionReminder(actor);
 }
 
 async function startSalesAdminAdmission(actorOrUserId, leadKey) {

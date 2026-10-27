@@ -59,7 +59,9 @@ function addDaysToKey(key, days) {
 function isReminderEligible(lead) {
   const stage = String(lead?.stage || "").toUpperCase();
   const status = String(lead?.status || "").toUpperCase();
-  return ACTIVE_STAGES.has(stage) && !CLOSED_STATUSES.has(status) && Boolean(lead?.assignedToId) && lead?.assignedTo?.active !== false && lead?.assignedTo?.role === "SALES_ADMIN" && lead?.branch?.status !== "INACTIVE";
+  const assignedRole = String(lead?.assignedTo?.role || "").toUpperCase();
+  const combinedBranchAdmin = assignedRole === "BRANCH_ADMIN" && lead?.branch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN";
+  return ACTIVE_STAGES.has(stage) && !CLOSED_STATUSES.has(status) && Boolean(lead?.assignedToId) && lead?.assignedTo?.active !== false && (assignedRole === "SALES_ADMIN" || combinedBranchAdmin) && lead?.branch?.status !== "INACTIVE";
 }
 
 function localTimeLabel(time) {
@@ -71,7 +73,7 @@ function localTimeLabel(time) {
 
 export async function syncLeadFollowUpReminder(leadId, prismaClient = prisma) {
   const rows = await prismaClient.$queryRawUnsafe(`
-    SELECT l."id", l."leadId", l."assignedToId", l."nextFollowUpDate", l."nextFollowUpTime", l."stage", l."status", l."createdById", l."updatedById", b."timezone", b."status" AS "branchStatus", u."role" AS "assignedRole", u."active" AS "assignedActive"
+    SELECT l."id", l."leadId", l."assignedToId", l."nextFollowUpDate", l."nextFollowUpTime", l."stage", l."status", l."createdById", l."updatedById", b."timezone", b."status" AS "branchStatus", b."roleAccess" AS "branchRoleAccess", u."role" AS "assignedRole", u."active" AS "assignedActive"
     FROM "Lead" l JOIN "Branch" b ON b."id" = l."branchId" LEFT JOIN "User" u ON u."id" = l."assignedToId"
     WHERE l."id" = $1 AND l."deletedAt" IS NULL
   `, leadId);
@@ -83,7 +85,7 @@ export async function syncLeadFollowUpReminder(leadId, prismaClient = prisma) {
   const currentStage = String(lead.stage || "").toUpperCase();
   const currentStatus = String(lead.status || "").toUpperCase();
   const currentTimezone = lead.timezone || "Asia/Kolkata";
-  const canReceiveReminder = Boolean(lead.assignedToId) && lead.assignedRole === "SALES_ADMIN" && lead.assignedActive && lead.branchStatus === "ACTIVE" && ACTIVE_STAGES.has(currentStage) && !CLOSED_STATUSES.has(currentStatus);
+  const canReceiveReminder = Boolean(lead.assignedToId) && lead.assignedActive && (lead.assignedRole === "SALES_ADMIN" || (lead.assignedRole === "BRANCH_ADMIN" && lead.branchRoleAccess === "BRANCH_ADMIN_SALES_ADMIN")) && lead.branchStatus === "ACTIVE" && ACTIVE_STAGES.has(currentStage) && !CLOSED_STATUSES.has(currentStatus);
   const pendingRows = await prismaClient.$queryRawUnsafe(`SELECT "dueDate", "scheduledFor", "status" FROM "FollowUpReminder" WHERE "leadId" = $1 AND "status" = 'PENDING' ORDER BY "scheduledFor" ASC LIMIT 1`, lead.id);
   const pending = pendingRows[0];
   const currentDateKey = lead.nextFollowUpDate ? dateKey(lead.nextFollowUpDate) : "";
@@ -97,7 +99,7 @@ export async function syncLeadFollowUpReminder(leadId, prismaClient = prisma) {
   const stage = String(lead.stage || "").toUpperCase();
   const status = String(lead.status || "").toUpperCase();
   const timezone = lead.timezone || "Asia/Kolkata";
-  if (!lead.assignedToId || lead.assignedRole !== "SALES_ADMIN" || !lead.assignedActive || lead.branchStatus !== "ACTIVE" || !ACTIVE_STAGES.has(stage) || CLOSED_STAGES.has(stage) || CLOSED_STATUSES.has(status)) {
+  if (!lead.assignedToId || !lead.assignedActive || !(["SALES_ADMIN", "BRANCH_ADMIN"].includes(lead.assignedRole)) || (lead.assignedRole === "BRANCH_ADMIN" && lead.branchRoleAccess !== "BRANCH_ADMIN_SALES_ADMIN") || lead.branchStatus !== "ACTIVE" || !ACTIVE_STAGES.has(stage) || CLOSED_STAGES.has(stage) || CLOSED_STATUSES.has(status)) {
     if (previous && ["PENDING", "PROCESSING"].includes(previous.status) && (lead.updatedById || lead.createdById)) await prismaClient.leadActivity.create({ data: { leadId: lead.id, action: "REMINDER_LOOP_STOPPED", previousValue: { scheduledFor: previous.scheduledFor.toISOString() }, newValue: { stage, status }, createdById: lead.updatedById || lead.createdById } });
     return null;
   }
@@ -156,7 +158,7 @@ async function sendDueReminder(reminder) {
   const claimed = await prisma.$queryRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'PROCESSING', "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1 AND "status" = 'PENDING' RETURNING *`, reminder.id);
   if (!claimed[0]) return;
   try {
-    const lead = await prisma.lead.findFirst({ where: { id: reminder.leadId, deletedAt: null }, include: { assignedTo: { select: { id: true, fullName: true, role: true, active: true } }, branch: { select: { id: true, branchName: true, timezone: true, status: true } }, followUps: { orderBy: { createdAt: "desc" }, take: 1, select: { callStatus: true, createdAt: true } } } });
+    const lead = await prisma.lead.findFirst({ where: { id: reminder.leadId, deletedAt: null }, include: { assignedTo: { select: { id: true, fullName: true, role: true, active: true } }, branch: { select: { id: true, branchName: true, timezone: true, status: true, roleAccess: true } }, followUps: { orderBy: { createdAt: "desc" }, take: 1, select: { callStatus: true, createdAt: true } } } });
     if (!lead || !isReminderEligible(lead) || lead.assignedToId !== reminder.recipientUserId) {
       await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'CANCELLED', "cancelledAt" = CURRENT_TIMESTAMP, "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1`, reminder.id);
       return;
@@ -222,11 +224,13 @@ async function createMonthlyReportNotifications() {
   const reportMonth = localParts.month === 1 ? 12 : localParts.month - 1;
   const reportYear = localParts.month === 1 ? localParts.year - 1 : localParts.year;
   const marker = `SALES_CRM_MONTHLY_REPORT:${reportYear}-${String(reportMonth).padStart(2, "0")}`;
-  const admins = await prisma.user.findMany({ where: { role: "SALES_ADMIN", active: true }, select: { id: true, fullName: true } });
+  const admins = await prisma.user.findMany({ where: { active: true, OR: [{ role: "SALES_ADMIN" }, { role: "BRANCH_ADMIN", managedBranch: { status: "ACTIVE", roleAccess: "BRANCH_ADMIN_SALES_ADMIN" } }] }, select: { id: true, fullName: true, role: true, managedBranch: { select: { id: true, branchName: true } } } });
   for (const admin of admins) {
-    const existing = await prisma.notification.findFirst({ where: { kind: "SALES_CRM_MONTHLY_REPORT", targetUserId: admin.id, requestDescription: marker }, select: { id: true } });
+    const branchMarker = admin.managedBranch?.id ? `:${admin.managedBranch.id}` : "";
+    const notificationMarker = `${marker}${branchMarker}`;
+    const existing = await prisma.notification.findFirst({ where: { kind: "SALES_CRM_MONTHLY_REPORT", targetUserId: admin.id, requestDescription: notificationMarker }, select: { id: true } });
     if (existing) continue;
-    await createNotification({ kind: "SALES_CRM_MONTHLY_REPORT", tone: "green", title: `${new Date(Date.UTC(reportYear, reportMonth - 1, 1)).toLocaleString("en-US", { month: "long" })} ${reportYear} — Sales CRM Monthly Report`, message: `Your monthly Sales CRM report is ready. View your new leads, conversions, and follow-up performance.`, actionLabel: "View Report", targetUserId: admin.id, requestDescription: marker });
+    await createNotification({ kind: "SALES_CRM_MONTHLY_REPORT", tone: "green", title: `${new Date(Date.UTC(reportYear, reportMonth - 1, 1)).toLocaleString("en-US", { month: "long" })} ${reportYear} — Sales CRM Monthly Report`, message: `Your monthly Sales CRM report is ready. View your new leads, conversions, and follow-up performance.`, actionLabel: "View Report", targetUserId: admin.id, targetBranchId: admin.managedBranch?.id || null, targetBranchName: admin.managedBranch?.branchName || null, requestDescription: notificationMarker });
   }
 }
 

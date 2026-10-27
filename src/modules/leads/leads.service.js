@@ -3,6 +3,7 @@ import path from "node:path";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { syncLeadFollowUpReminder } from "./followUpReminder.service.js";
+import { createNotification } from "../notifications/notifications.service.js";
 
 const CALL_TYPES = new Set(["NEW_LEAD", "REGULAR_CALL", "EXISTING_LEAD_FOLLOW_UP", "STUDENT_JOB_OPENING", "BUSINESS_OPPORTUNITY", "PROMOTIONAL_LEAD", "STUDENT_JOB_OPPORTUNITY", "JOB_OPPORTUNITY", "JOB_OPENING", "EXISTING_LEAD_STUDENT_JOB_OPPORTUNITY", "OTHER"]);
 const STATUSES = new Set(["DRAFT", "ACTIVE", "FOLLOW_UP", "NOT_ANSWERING", "CONTACTED", "INTERESTED", "DEMO_SCHEDULED", "DEMO_ATTENDED", "ADMISSION_CONFIRMED", "ENROLLED", "LOST_LEAD", "SWITCHED_OFF", "OUT_OF_SERVICE", "INCOMING_CALL_BLOCK", "DND", "NOT_REACHABLE", "CALL_WAITING", "CALL_LATER", "UNAVAILABLE_COURSE", "NOT_INTERESTED", "WRONG_NO", "CURRENTLY_NO_IDEA", "FORWARD_TO_HR_TEAM", "MAY_BE_IN_FUTURE", "JOINED_IN_ANOTHER_INSTITUTION", "CONVERTED", "CLOSED", "OTHER"]);
@@ -222,6 +223,36 @@ export async function addFollowUp(id, payload, actor) {
     return saved;
   });
   await syncLeadFollowUpReminder(lead.id);
+  if (nextFollowUpDate) {
+    const dateKey = nextFollowUpDate.toISOString().slice(0, 10);
+    const timeKey = nextFollowUpTime || "";
+    const requestDescription = `LEAD_FOLLOW_UP_SCHEDULED:${lead.id}:${dateKey}:${timeKey}`;
+    const targetUserId = actor.userId;
+    const existingNotification = await prisma.notification.findFirst({
+      where: { kind: "LEAD_FOLLOW_UP_SCHEDULED", targetUserId, requestDescription },
+      select: { id: true },
+    });
+    if (!existingNotification) {
+      try {
+        const dateLabel = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(nextFollowUpDate);
+        const timeLabel = nextFollowUpTime ? ` at ${nextFollowUpTime}` : "";
+        await createNotification({
+          kind: "LEAD_FOLLOW_UP_SCHEDULED",
+          tone: "blue",
+          title: `Next Follow-up Scheduled - ${lead.studentName}`,
+          message: `A follow-up for ${lead.studentName} (${lead.leadId}) is scheduled for ${dateLabel}${timeLabel}.`,
+          actionLabel: "View Lead",
+          targetUserId,
+          targetBranchId: lead.branch?.id || lead.branchId || null,
+          targetBranchName: lead.branch?.branchName || null,
+          requestDescription,
+          createdBy: actor.userId,
+        });
+      } catch (error) {
+        console.warn(`Follow-up scheduled notification failed for ${lead.id}: ${error?.message || error}`);
+      }
+    }
+  }
   return followUp;
 }
 export async function listLeadActivities(id, actor) { const lead = await findLead(id, actor); return prisma.leadActivity.findMany({ where: { leadId: lead.id }, orderBy: { createdAt: "desc" }, include: { createdBy: { select: { id: true, fullName: true, email: true } } } }); }
