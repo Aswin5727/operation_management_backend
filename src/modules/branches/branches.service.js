@@ -906,6 +906,10 @@ export async function listBranchSalesAdminAdmissions(user) {
     throw new AppError('You do not have permission to view branch admissions.', 403);
   }
 
+  if (role === 'BRANCH_ADMIN' && user?.roleAccess !== BRANCH_ROLE_ACCESS.BRANCH_ADMIN_SALES_ADMIN) {
+    throw new AppError('Sales CRM admission access is required.', 403);
+  }
+
   const branch = await getCurrentBranchProfile(user);
   if (!branch?.id) throw new AppError('Branch profile not found.', 404);
 
@@ -921,6 +925,9 @@ export async function listBranchSalesAdminAdmissions(user) {
           OR: [
             { assignedTo: { is: { role: 'SALES_ADMIN' } } },
             { createdBy: { is: { role: 'SALES_ADMIN' } } },
+            ...(role === 'BRANCH_ADMIN'
+              ? [{ assignedToId: user.userId || user.id }, { createdById: user.userId || user.id }]
+              : []),
           ],
         },
       },
@@ -943,7 +950,9 @@ export async function listBranchSalesAdminAdmissions(user) {
     admissions: students.map((student) => {
       const enrollment = student.courseEnrollments?.[0] || {};
       const creator = student.sourceLead?.createdBy;
-      const salesAdmin = creator?.role === 'SALES_ADMIN' ? creator : student.sourceLead?.assignedTo;
+      const salesAdmin = creator?.role === 'SALES_ADMIN'
+        ? creator
+        : student.sourceLead?.assignedTo || creator;
       return {
         id: student.id,
         createdAt: student.createdAt,

@@ -143,6 +143,14 @@ async function findLead(id, actor, history = false) {
   if (!lead) throw new AppError("Lead not found", 404);
   await assertBranchAccess(lead.branchId, actor);
   assertLeadAssignment(lead, actor);
+  const actorRole = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (actorRole === "BRANCHADMIN" && !lead.assignedTo) {
+    const branchAdmin = await prisma.user.findUnique({
+      where: { id: actor.userId },
+      select: { id: true, userCode: true, fullName: true, email: true },
+    });
+    if (branchAdmin) lead.assignedTo = branchAdmin;
+  }
   return lead;
 }
 
