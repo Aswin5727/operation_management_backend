@@ -232,6 +232,7 @@ async function buildBranchAdminScope(user = {}) {
       branchId: true,
       branchEmail: true,
       branchName: true,
+      roleAccess: true,
     },
   });
 
@@ -247,6 +248,8 @@ async function buildBranchAdminScope(user = {}) {
 
     return fallbackScope;
   }
+
+  user.roleAccess = branch.roleAccess || "BRANCH_ADMIN_ONLY";
 
   // Branch ID is the canonical tenant boundary. Older notifications may not
   // have email/name populated, so requiring all three fields hides valid rows.

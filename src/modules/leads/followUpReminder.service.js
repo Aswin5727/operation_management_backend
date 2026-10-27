@@ -200,10 +200,25 @@ async function sendDueReminder(reminder) {
 
 async function createOverdueNotifications() {
   const rows = await prisma.$queryRawUnsafe(`
-    SELECT r."id", r."leadId", r."recipientUserId", l."leadId" AS "displayLeadId", l."studentName", l."nextFollowUpDate", l."branchId", b."branchName", b."timezone"
-    FROM "FollowUpReminder" r JOIN "Lead" l ON l."id" = r."leadId" JOIN "Branch" b ON b."id" = l."branchId"
-    WHERE r."status" = 'SENT' AND l."deletedAt" IS NULL
-      AND l."nextFollowUpDate"::date < (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::date
+    SELECT r."id", r."status" AS "reminderStatus", l."id" AS "leadId", l."assignedToId" AS "recipientUserId", l."leadId" AS "displayLeadId", l."studentName", l."nextFollowUpDate", l."branchId", b."branchName", b."timezone"
+    FROM "Lead" l JOIN "Branch" b ON b."id" = l."branchId"
+    LEFT JOIN LATERAL (
+      SELECT fr."id", fr."status"
+      FROM "FollowUpReminder" fr
+      WHERE fr."leadId" = l."id"
+      ORDER BY fr."updatedAt" DESC
+      LIMIT 1
+    ) r ON TRUE
+    WHERE l."deletedAt" IS NULL
+      AND l."assignedToId" IS NOT NULL
+      AND (
+        l."nextFollowUpDate"::date < (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::date
+        OR (
+          l."nextFollowUpDate"::date = (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::date
+          AND l."nextFollowUpTime" IS NOT NULL
+          AND (CURRENT_TIMESTAMP AT TIME ZONE b."timezone")::time >= l."nextFollowUpTime"::time
+        )
+      )
       AND l."stage" IN ('COLD', 'WARM') AND l."status" <> 'CONVERTED'
   `);
   for (const row of rows) {
@@ -213,7 +228,7 @@ async function createOverdueNotifications() {
     if (!existing) {
       await createNotification({ kind: "LEAD_FOLLOW_UP_OVERDUE", tone: "amber", title: `Overdue follow-up — ${row.studentName}`, message: `The scheduled follow-up for ${row.studentName} (${row.displayLeadId}) is overdue. Please update the lead.`, actionLabel: "View Lead", targetUserId: row.recipientUserId, targetBranchId: row.branchId, targetBranchName: row.branchName, requestDescription: description });
     }
-    await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'OVERDUE', "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1 AND "status" = 'SENT'`, row.id);
+    if (row.id) await prisma.$executeRawUnsafe(`UPDATE "FollowUpReminder" SET "status" = 'OVERDUE', "updatedAt" = CURRENT_TIMESTAMP WHERE "id" = $1 AND "status" = 'SENT'`, row.id);
   }
 }
 

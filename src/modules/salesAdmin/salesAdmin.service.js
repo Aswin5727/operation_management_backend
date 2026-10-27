@@ -17,6 +17,28 @@ const clean = (value) => String(value ?? "").trim();
 const required = (value, label) => { const result = clean(value); if (!result) throw new AppError(`${label} is required`, 400); return result; };
 const emailValue = (value) => { const email = required(value, "Email address").toLowerCase(); if (!/^\S+@\S+\.\S+$/.test(email)) throw new AppError("Enter a valid email address", 400); return email; };
 const phoneValue = (value) => { const phone = required(value, "Phone number"); if (!/^\d{10}$/.test(phone)) throw new AppError("Phone number must contain exactly 10 digits", 400); return phone; };
+const transientDatabaseError = (error) => {
+  const code = String(error?.code || "").toUpperCase();
+  const message = String(error?.message || "").toLowerCase();
+  return ["ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "P1001", "P1002", "P1017"].includes(code)
+    || message.includes("client network socket disconnected")
+    || message.includes("can't reach database server")
+    || message.includes("server has closed the connection");
+};
+
+async function withDatabaseRetry(operation, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (!transientDatabaseError(error) || attempt === attempts) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 350 * attempt));
+    }
+  }
+  throw lastError;
+}
 
 async function resolveBranches(values) {
   const ids = [...new Set((Array.isArray(values) ? values : []).map(clean).filter(Boolean))];
@@ -102,7 +124,7 @@ function salesAdminReminderDate(now = new Date()) {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
-async function checkPendingHotAdmissionReminder(actorOrUserId) {
+async function checkPendingHotAdmissionReminderOnce(actorOrUserId) {
   const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
   const userId = actor.userId;
   const branchIds = String(actor.role || "").toUpperCase() === "BRANCH_ADMIN"
@@ -141,6 +163,10 @@ async function checkPendingHotAdmissionReminder(actorOrUserId) {
     return { notification: created, created: true };
   });
   return { count: students.length, students, notificationCreated: result.created, notification: result.notification };
+}
+
+async function checkPendingHotAdmissionReminder(actorOrUserId) {
+  return withDatabaseRetry(() => checkPendingHotAdmissionReminderOnce(actorOrUserId));
 }
 
 function admissionLeadInclude() {
@@ -301,12 +327,14 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   const scopedBranchIds = branchId ? [branchId] : branchIds;
   const status = clean(query.status || "ALL").toUpperCase();
   if (!["ALL", "PENDING", "IN_PROGRESS", "PENDING_HOT", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
+  const isBranchAdmin = String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN";
+  const branchAdminAssignmentScope = isBranchAdmin ? { OR: [{ assignedToId: userId }, { assignedToId: null }] } : null;
   const where = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
-  if (String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN") where.assignedToId = userId;
+  if (branchAdminAssignmentScope) where.AND = [branchAdminAssignmentScope];
   if (status === "ADMITTED") where.status = "CONVERTED";
   if (status === "IN_PROGRESS") { where.status = { not: "CONVERTED" }; where.admissionStatus = "IN_PROGRESS"; }
-  if (status === "PENDING") { where.status = { not: "CONVERTED" }; where.OR = [{ admissionStatus: "PENDING" }, { admissionStatus: null }]; }
-  if (status === "PENDING_HOT") { where.status = { not: "CONVERTED" }; where.assignedToId = userId; where.admissionStatus = { in: ["PENDING", "IN_PROGRESS"] }; }
+  if (status === "PENDING") { where.status = { not: "CONVERTED" }; where.AND = [...(where.AND || []), { OR: [{ admissionStatus: "PENDING" }, { admissionStatus: null }] }]; }
+  if (status === "PENDING_HOT") { where.status = { not: "CONVERTED" }; where.AND = [...(where.AND || []), { admissionStatus: { in: ["PENDING", "IN_PROGRESS"] } }]; }
   const courseId = clean(query.courseId);
   if (courseId) where.courseId = courseId;
   const search = clean(query.search);
@@ -322,8 +350,8 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   const page = Math.max(1, Number.parseInt(query.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20));
   const allHotWhere = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
-  if (String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN") allHotWhere.assignedToId = userId;
-  const [total, rows, hotLeads, pendingAdmissions, completedAdmissions, collections, availableCourses] = await Promise.all([
+  if (branchAdminAssignmentScope) allHotWhere.AND = [branchAdminAssignmentScope];
+  const [total, rows, hotLeads, pendingAdmissions, completedAdmissions, collections, availableCourses, branchAdmin] = await Promise.all([
     prisma.lead.count({ where }),
     prisma.lead.findMany({ where, include: admissionLeadInclude(), orderBy: { updatedAt: "desc" }, skip: (page - 1) * limit, take: limit }),
     prisma.lead.count({ where: allHotWhere }),
@@ -331,11 +359,19 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
     prisma.lead.count({ where: { ...allHotWhere, status: "CONVERTED" } }),
     prisma.branchStudentPayment.aggregate({ where: { branchId: { in: scopedBranchIds }, branchStudent: { is: { sourceLeadId: { not: null } } } }, _sum: { amount: true } }),
     prisma.branchCourse.findMany({ where: { branchId: { in: scopedBranchIds }, status: "ACTIVE" }, select: { id: true, name: true }, orderBy: { name: "asc" } }),
+    isBranchAdmin ? prisma.user.findUnique({ where: { id: userId }, select: { id: true, fullName: true } }) : Promise.resolve(null),
   ]);
   const branchBatchEntries = await Promise.all([...new Set(rows.map((lead) => lead.branchId).filter(Boolean))].map(async (id) => [id, await listAllBranchAdmissionBatches(userId, id)]));
   const batchesByBranch = new Map(branchBatchEntries);
   return {
-    data: rows.map((lead) => ({ ...admissionRow(lead), canRequestBatch: lead.assignedToId === userId, availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length })),
+    data: rows.map((lead) => {
+      const row = admissionRow(lead);
+      if (isBranchAdmin && !row.assignedAdminName && branchAdmin) {
+        row.assignedAdminName = branchAdmin.fullName;
+        row.assignedToId = branchAdmin.id;
+      }
+      return { ...row, canRequestBatch: !lead.assignedToId || lead.assignedToId === userId, availableBatchCount: getEligibleAdmissionBatches(lead, batchesByBranch.get(lead.branchId) || []).length };
+    }),
     meta: { page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) },
     summary: { hotLeads, pendingAdmissions, completedAdmissions, totalCollections: Number(collections._sum.amount || 0) },
     filters: { branches: scope.branches.filter((branch) => scopedBranchIds.includes(branch.id)), courses: availableCourses },
@@ -394,7 +430,14 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   if (!userId) throw new AppError("Sales Admin session is required", 401);
   const lead = await getAdmissionLeadForSalesAdmin(auth, leadKey);
   if (lead.status === "CONVERTED" && lead.convertedStudent) return lead.convertedStudent;
-  return createBranchStudent({ ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" }, { ...auth, id: userId, userId, role: "SALES_ADMIN" });
+  // Keep the authenticated role here. A combined Branch Admin is authorized by
+  // the Sales CRM route, but is not a row in salesAdminBranch. Re-labeling the
+  // actor as SALES_ADMIN made the final student creation check reject the same
+  // branch with 403.
+  return createBranchStudent(
+    { ...payload, branchId: lead.branchId, sourceLeadId: lead.id, admissionSource: "SALES_CRM" },
+    { ...auth, id: userId, userId, role: auth?.role || "SALES_ADMIN" },
+  );
 }
 
 export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };

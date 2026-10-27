@@ -3127,12 +3127,15 @@ export async function createBranchStudent(payload, actor) {
   const sourceLeadId = normalizeString(payload.sourceLeadId);
   let sourceLead = null;
   let branchProfile = await getBranchContext(actor);
-  if (actorRole === "SALES_ADMIN") {
+  if (actorRole === "SALES_ADMIN" || (actorRole === "BRANCH_ADMIN" && sourceLeadId)) {
     if (!sourceLeadId) throw new AppError("Sales Admin student creation must come from a HOT lead", 403);
     sourceLead = await prisma.lead.findFirst({ where: { id: sourceLeadId, deletedAt: null }, include: { branch: { select: { id: true, branchId: true, branchName: true, branchEmail: true, adminUserId: true, status: true } } } });
     if (!sourceLead) throw new AppError("Source lead not found", 404);
-    const branchAccess = await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId: sourceLead.branchId } }, select: { id: true } });
-    if (!branchAccess || normalizeString(payload.branchId) !== sourceLead.branchId) throw new AppError("You do not have permission to admit a student for this branch", 403);
+    const actorBranchId = normalizeString(branchProfile?.id || actor?.branchId);
+    const hasBranchAccess = actorRole === "BRANCH_ADMIN"
+      ? actorBranchId === normalizeString(sourceLead.branchId)
+      : Boolean(await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId: sourceLead.branchId } }, select: { id: true } }));
+    if (!hasBranchAccess || normalizeString(payload.branchId) !== normalizeString(sourceLead.branchId)) throw new AppError("You do not have permission to admit a student for this branch", 403);
     if (sourceLead.branch.status !== "ACTIVE") throw new AppError("The lead branch is inactive", 400);
     const existingAdmission = await prisma.branchStudent.findUnique({ where: { sourceLeadId }, include: { installments: { orderBy: { installmentNumber: "asc" } }, payments: { orderBy: { paymentDate: "asc" } }, courseEnrollments: { orderBy: { sequenceOrder: "asc" } } } });
     if (existingAdmission) return toBranchStudentSummary(existingAdmission);
@@ -3553,11 +3556,14 @@ export async function createBranchStudent(payload, actor) {
 export async function previewBranchStudentFeePlan(payload = {}, actor = null) {
   const branchProfile = await getBranchContext(actor);
   const branchId = branchProfile?.id || normalizeString(payload.branchId);
-  if (normalizeString(actor?.role).toUpperCase() === "SALES_ADMIN") {
+  const actorRole = normalizeString(actor?.role).toUpperCase();
+  if (actorRole === "SALES_ADMIN" || (actorRole === "BRANCH_ADMIN" && normalizeString(payload.sourceLeadId))) {
     const sourceLeadId = normalizeString(payload.sourceLeadId);
     if (!sourceLeadId) throw new AppError("Source lead is required to preview an admission fee plan", 400);
     const lead = await prisma.lead.findFirst({ where: { id: sourceLeadId, branchId, stage: "HOT", status: { not: "CONVERTED" }, deletedAt: null }, select: { id: true } });
-    const access = lead ? await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId } }, select: { id: true } }) : null;
+    const access = actorRole === "BRANCH_ADMIN"
+      ? (lead && normalizeString(branchProfile?.id || actor?.branchId) === normalizeString(branchId) ? { id: "branch-admin" } : null)
+      : (lead ? await prisma.salesAdminBranch.findUnique({ where: { salesAdminId_branchId: { salesAdminId: normalizeString(actor?.userId || actor?.id), branchId } }, select: { id: true } }) : null);
     if (!lead || !access) throw new AppError("You do not have permission to preview fees for this lead", 403);
   }
   const batchId = normalizeString(payload.batchId || payload.batchEntryId);

@@ -14,6 +14,7 @@ const listNotificationsHandler = asyncHandler(async (req, res) => {
     meta: {
       ...result.meta,
       unreadCount,
+      roleAccess: req.user?.roleAccess || null,
     },
   });
 });
