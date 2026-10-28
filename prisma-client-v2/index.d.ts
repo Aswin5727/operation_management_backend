@@ -49,6 +49,11 @@ export type LoginEvent = $Result.DefaultSelection<Prisma.$LoginEventPayload>
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
 /**
+ * Model SalesCrmReportSubmission
+ * 
+ */
+export type SalesCrmReportSubmission = $Result.DefaultSelection<Prisma.$SalesCrmReportSubmissionPayload>
+/**
  * Model SalesAdminAdmissionReminder
  * 
  */
@@ -894,6 +899,16 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.salesCrmReportSubmission`: Exposes CRUD operations for the **SalesCrmReportSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalesCrmReportSubmissions
+    * const salesCrmReportSubmissions = await prisma.salesCrmReportSubmission.findMany()
+    * ```
+    */
+  get salesCrmReportSubmission(): Prisma.SalesCrmReportSubmissionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.salesAdminAdmissionReminder`: Exposes CRUD operations for the **SalesAdminAdmissionReminder** model.
@@ -2075,6 +2090,7 @@ export namespace Prisma {
     SalesAdminBranch: 'SalesAdminBranch',
     LoginEvent: 'LoginEvent',
     Notification: 'Notification',
+    SalesCrmReportSubmission: 'SalesCrmReportSubmission',
     SalesAdminAdmissionReminder: 'SalesAdminAdmissionReminder',
     SalesCrmBatchRequest: 'SalesCrmBatchRequest',
     CourseEditRequest: 'CourseEditRequest',
@@ -2164,7 +2180,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2683,6 +2699,80 @@ export namespace Prisma {
           count: {
             args: Prisma.NotificationCountArgs<ExtArgs>
             result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      SalesCrmReportSubmission: {
+        payload: Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>
+        fields: Prisma.SalesCrmReportSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalesCrmReportSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalesCrmReportSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.SalesCrmReportSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalesCrmReportSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.SalesCrmReportSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.SalesCrmReportSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.SalesCrmReportSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SalesCrmReportSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.SalesCrmReportSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          update: {
+            args: Prisma.SalesCrmReportSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SalesCrmReportSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalesCrmReportSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SalesCrmReportSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SalesCrmReportSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesCrmReportSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.SalesCrmReportSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalesCrmReportSubmission>
+          }
+          groupBy: {
+            args: Prisma.SalesCrmReportSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalesCrmReportSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalesCrmReportSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<SalesCrmReportSubmissionCountAggregateOutputType> | number
           }
         }
       }
@@ -8277,6 +8367,7 @@ export namespace Prisma {
     salesAdminBranch?: SalesAdminBranchOmit
     loginEvent?: LoginEventOmit
     notification?: NotificationOmit
+    salesCrmReportSubmission?: SalesCrmReportSubmissionOmit
     salesAdminAdmissionReminder?: SalesAdminAdmissionReminderOmit
     salesCrmBatchRequest?: SalesCrmBatchRequestOmit
     courseEditRequest?: CourseEditRequestOmit
@@ -20217,6 +20308,1175 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SalesCrmReportSubmission
+   */
+
+  export type AggregateSalesCrmReportSubmission = {
+    _count: SalesCrmReportSubmissionCountAggregateOutputType | null
+    _min: SalesCrmReportSubmissionMinAggregateOutputType | null
+    _max: SalesCrmReportSubmissionMaxAggregateOutputType | null
+  }
+
+  export type SalesCrmReportSubmissionMinAggregateOutputType = {
+    id: string | null
+    idempotencyKey: string | null
+    salesAdminId: string | null
+    submittedById: string | null
+    branchId: string | null
+    reportName: string | null
+    reportType: string | null
+    fromDate: string | null
+    toDate: string | null
+    fileName: string | null
+    fileFormat: string | null
+    fileData: Bytes | null
+    message: string | null
+    status: string | null
+    viewedAt: Date | null
+    downloadedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesCrmReportSubmissionMaxAggregateOutputType = {
+    id: string | null
+    idempotencyKey: string | null
+    salesAdminId: string | null
+    submittedById: string | null
+    branchId: string | null
+    reportName: string | null
+    reportType: string | null
+    fromDate: string | null
+    toDate: string | null
+    fileName: string | null
+    fileFormat: string | null
+    fileData: Bytes | null
+    message: string | null
+    status: string | null
+    viewedAt: Date | null
+    downloadedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesCrmReportSubmissionCountAggregateOutputType = {
+    id: number
+    idempotencyKey: number
+    salesAdminId: number
+    submittedById: number
+    branchId: number
+    reportName: number
+    reportType: number
+    fromDate: number
+    toDate: number
+    fileName: number
+    fileFormat: number
+    fileData: number
+    message: number
+    status: number
+    viewedAt: number
+    downloadedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SalesCrmReportSubmissionMinAggregateInputType = {
+    id?: true
+    idempotencyKey?: true
+    salesAdminId?: true
+    submittedById?: true
+    branchId?: true
+    reportName?: true
+    reportType?: true
+    fromDate?: true
+    toDate?: true
+    fileName?: true
+    fileFormat?: true
+    fileData?: true
+    message?: true
+    status?: true
+    viewedAt?: true
+    downloadedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesCrmReportSubmissionMaxAggregateInputType = {
+    id?: true
+    idempotencyKey?: true
+    salesAdminId?: true
+    submittedById?: true
+    branchId?: true
+    reportName?: true
+    reportType?: true
+    fromDate?: true
+    toDate?: true
+    fileName?: true
+    fileFormat?: true
+    fileData?: true
+    message?: true
+    status?: true
+    viewedAt?: true
+    downloadedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesCrmReportSubmissionCountAggregateInputType = {
+    id?: true
+    idempotencyKey?: true
+    salesAdminId?: true
+    submittedById?: true
+    branchId?: true
+    reportName?: true
+    reportType?: true
+    fromDate?: true
+    toDate?: true
+    fileName?: true
+    fileFormat?: true
+    fileData?: true
+    message?: true
+    status?: true
+    viewedAt?: true
+    downloadedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SalesCrmReportSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesCrmReportSubmission to aggregate.
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmReportSubmissions to fetch.
+     */
+    orderBy?: SalesCrmReportSubmissionOrderByWithRelationInput | SalesCrmReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalesCrmReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalesCrmReportSubmissions
+    **/
+    _count?: true | SalesCrmReportSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalesCrmReportSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalesCrmReportSubmissionMaxAggregateInputType
+  }
+
+  export type GetSalesCrmReportSubmissionAggregateType<T extends SalesCrmReportSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalesCrmReportSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalesCrmReportSubmission[P]>
+      : GetScalarType<T[P], AggregateSalesCrmReportSubmission[P]>
+  }
+
+
+
+
+  export type SalesCrmReportSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesCrmReportSubmissionWhereInput
+    orderBy?: SalesCrmReportSubmissionOrderByWithAggregationInput | SalesCrmReportSubmissionOrderByWithAggregationInput[]
+    by: SalesCrmReportSubmissionScalarFieldEnum[] | SalesCrmReportSubmissionScalarFieldEnum
+    having?: SalesCrmReportSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalesCrmReportSubmissionCountAggregateInputType | true
+    _min?: SalesCrmReportSubmissionMinAggregateInputType
+    _max?: SalesCrmReportSubmissionMaxAggregateInputType
+  }
+
+  export type SalesCrmReportSubmissionGroupByOutputType = {
+    id: string
+    idempotencyKey: string
+    salesAdminId: string
+    submittedById: string
+    branchId: string | null
+    reportName: string
+    reportType: string
+    fromDate: string
+    toDate: string
+    fileName: string
+    fileFormat: string
+    fileData: Bytes
+    message: string | null
+    status: string
+    viewedAt: Date | null
+    downloadedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SalesCrmReportSubmissionCountAggregateOutputType | null
+    _min: SalesCrmReportSubmissionMinAggregateOutputType | null
+    _max: SalesCrmReportSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetSalesCrmReportSubmissionGroupByPayload<T extends SalesCrmReportSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalesCrmReportSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalesCrmReportSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalesCrmReportSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], SalesCrmReportSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalesCrmReportSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    idempotencyKey?: boolean
+    salesAdminId?: boolean
+    submittedById?: boolean
+    branchId?: boolean
+    reportName?: boolean
+    reportType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    fileName?: boolean
+    fileFormat?: boolean
+    fileData?: boolean
+    message?: boolean
+    status?: boolean
+    viewedAt?: boolean
+    downloadedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["salesCrmReportSubmission"]>
+
+  export type SalesCrmReportSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    idempotencyKey?: boolean
+    salesAdminId?: boolean
+    submittedById?: boolean
+    branchId?: boolean
+    reportName?: boolean
+    reportType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    fileName?: boolean
+    fileFormat?: boolean
+    fileData?: boolean
+    message?: boolean
+    status?: boolean
+    viewedAt?: boolean
+    downloadedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["salesCrmReportSubmission"]>
+
+  export type SalesCrmReportSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    idempotencyKey?: boolean
+    salesAdminId?: boolean
+    submittedById?: boolean
+    branchId?: boolean
+    reportName?: boolean
+    reportType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    fileName?: boolean
+    fileFormat?: boolean
+    fileData?: boolean
+    message?: boolean
+    status?: boolean
+    viewedAt?: boolean
+    downloadedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["salesCrmReportSubmission"]>
+
+  export type SalesCrmReportSubmissionSelectScalar = {
+    id?: boolean
+    idempotencyKey?: boolean
+    salesAdminId?: boolean
+    submittedById?: boolean
+    branchId?: boolean
+    reportName?: boolean
+    reportType?: boolean
+    fromDate?: boolean
+    toDate?: boolean
+    fileName?: boolean
+    fileFormat?: boolean
+    fileData?: boolean
+    message?: boolean
+    status?: boolean
+    viewedAt?: boolean
+    downloadedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SalesCrmReportSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idempotencyKey" | "salesAdminId" | "submittedById" | "branchId" | "reportName" | "reportType" | "fromDate" | "toDate" | "fileName" | "fileFormat" | "fileData" | "message" | "status" | "viewedAt" | "downloadedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["salesCrmReportSubmission"]>
+
+  export type $SalesCrmReportSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalesCrmReportSubmission"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      idempotencyKey: string
+      salesAdminId: string
+      submittedById: string
+      branchId: string | null
+      reportName: string
+      reportType: string
+      fromDate: string
+      toDate: string
+      fileName: string
+      fileFormat: string
+      fileData: Prisma.Bytes
+      message: string | null
+      status: string
+      viewedAt: Date | null
+      downloadedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["salesCrmReportSubmission"]>
+    composites: {}
+  }
+
+  type SalesCrmReportSubmissionGetPayload<S extends boolean | null | undefined | SalesCrmReportSubmissionDefaultArgs> = $Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload, S>
+
+  type SalesCrmReportSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalesCrmReportSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalesCrmReportSubmissionCountAggregateInputType | true
+    }
+
+  export interface SalesCrmReportSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalesCrmReportSubmission'], meta: { name: 'SalesCrmReportSubmission' } }
+    /**
+     * Find zero or one SalesCrmReportSubmission that matches the filter.
+     * @param {SalesCrmReportSubmissionFindUniqueArgs} args - Arguments to find a SalesCrmReportSubmission
+     * @example
+     * // Get one SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalesCrmReportSubmissionFindUniqueArgs>(args: SelectSubset<T, SalesCrmReportSubmissionFindUniqueArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalesCrmReportSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalesCrmReportSubmissionFindUniqueOrThrowArgs} args - Arguments to find a SalesCrmReportSubmission
+     * @example
+     * // Get one SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalesCrmReportSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, SalesCrmReportSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesCrmReportSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionFindFirstArgs} args - Arguments to find a SalesCrmReportSubmission
+     * @example
+     * // Get one SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalesCrmReportSubmissionFindFirstArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionFindFirstArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesCrmReportSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionFindFirstOrThrowArgs} args - Arguments to find a SalesCrmReportSubmission
+     * @example
+     * // Get one SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalesCrmReportSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalesCrmReportSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalesCrmReportSubmissions
+     * const salesCrmReportSubmissions = await prisma.salesCrmReportSubmission.findMany()
+     * 
+     * // Get first 10 SalesCrmReportSubmissions
+     * const salesCrmReportSubmissions = await prisma.salesCrmReportSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salesCrmReportSubmissionWithIdOnly = await prisma.salesCrmReportSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SalesCrmReportSubmissionFindManyArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalesCrmReportSubmission.
+     * @param {SalesCrmReportSubmissionCreateArgs} args - Arguments to create a SalesCrmReportSubmission.
+     * @example
+     * // Create one SalesCrmReportSubmission
+     * const SalesCrmReportSubmission = await prisma.salesCrmReportSubmission.create({
+     *   data: {
+     *     // ... data to create a SalesCrmReportSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalesCrmReportSubmissionCreateArgs>(args: SelectSubset<T, SalesCrmReportSubmissionCreateArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalesCrmReportSubmissions.
+     * @param {SalesCrmReportSubmissionCreateManyArgs} args - Arguments to create many SalesCrmReportSubmissions.
+     * @example
+     * // Create many SalesCrmReportSubmissions
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalesCrmReportSubmissionCreateManyArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SalesCrmReportSubmissions and returns the data saved in the database.
+     * @param {SalesCrmReportSubmissionCreateManyAndReturnArgs} args - Arguments to create many SalesCrmReportSubmissions.
+     * @example
+     * // Create many SalesCrmReportSubmissions
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SalesCrmReportSubmissions and only return the `id`
+     * const salesCrmReportSubmissionWithIdOnly = await prisma.salesCrmReportSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SalesCrmReportSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SalesCrmReportSubmission.
+     * @param {SalesCrmReportSubmissionDeleteArgs} args - Arguments to delete one SalesCrmReportSubmission.
+     * @example
+     * // Delete one SalesCrmReportSubmission
+     * const SalesCrmReportSubmission = await prisma.salesCrmReportSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one SalesCrmReportSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalesCrmReportSubmissionDeleteArgs>(args: SelectSubset<T, SalesCrmReportSubmissionDeleteArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalesCrmReportSubmission.
+     * @param {SalesCrmReportSubmissionUpdateArgs} args - Arguments to update one SalesCrmReportSubmission.
+     * @example
+     * // Update one SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalesCrmReportSubmissionUpdateArgs>(args: SelectSubset<T, SalesCrmReportSubmissionUpdateArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalesCrmReportSubmissions.
+     * @param {SalesCrmReportSubmissionDeleteManyArgs} args - Arguments to filter SalesCrmReportSubmissions to delete.
+     * @example
+     * // Delete a few SalesCrmReportSubmissions
+     * const { count } = await prisma.salesCrmReportSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalesCrmReportSubmissionDeleteManyArgs>(args?: SelectSubset<T, SalesCrmReportSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesCrmReportSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalesCrmReportSubmissions
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalesCrmReportSubmissionUpdateManyArgs>(args: SelectSubset<T, SalesCrmReportSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesCrmReportSubmissions and returns the data updated in the database.
+     * @param {SalesCrmReportSubmissionUpdateManyAndReturnArgs} args - Arguments to update many SalesCrmReportSubmissions.
+     * @example
+     * // Update many SalesCrmReportSubmissions
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SalesCrmReportSubmissions and only return the `id`
+     * const salesCrmReportSubmissionWithIdOnly = await prisma.salesCrmReportSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SalesCrmReportSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, SalesCrmReportSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SalesCrmReportSubmission.
+     * @param {SalesCrmReportSubmissionUpsertArgs} args - Arguments to update or create a SalesCrmReportSubmission.
+     * @example
+     * // Update or create a SalesCrmReportSubmission
+     * const salesCrmReportSubmission = await prisma.salesCrmReportSubmission.upsert({
+     *   create: {
+     *     // ... data to create a SalesCrmReportSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalesCrmReportSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalesCrmReportSubmissionUpsertArgs>(args: SelectSubset<T, SalesCrmReportSubmissionUpsertArgs<ExtArgs>>): Prisma__SalesCrmReportSubmissionClient<$Result.GetResult<Prisma.$SalesCrmReportSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalesCrmReportSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionCountArgs} args - Arguments to filter SalesCrmReportSubmissions to count.
+     * @example
+     * // Count the number of SalesCrmReportSubmissions
+     * const count = await prisma.salesCrmReportSubmission.count({
+     *   where: {
+     *     // ... the filter for the SalesCrmReportSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalesCrmReportSubmissionCountArgs>(
+      args?: Subset<T, SalesCrmReportSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalesCrmReportSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalesCrmReportSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalesCrmReportSubmissionAggregateArgs>(args: Subset<T, SalesCrmReportSubmissionAggregateArgs>): Prisma.PrismaPromise<GetSalesCrmReportSubmissionAggregateType<T>>
+
+    /**
+     * Group by SalesCrmReportSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesCrmReportSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalesCrmReportSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalesCrmReportSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: SalesCrmReportSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalesCrmReportSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesCrmReportSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalesCrmReportSubmission model
+   */
+  readonly fields: SalesCrmReportSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalesCrmReportSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalesCrmReportSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalesCrmReportSubmission model
+   */
+  interface SalesCrmReportSubmissionFieldRefs {
+    readonly id: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly idempotencyKey: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly salesAdminId: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly submittedById: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly branchId: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly reportName: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly reportType: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly fromDate: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly toDate: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly fileName: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly fileFormat: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly fileData: FieldRef<"SalesCrmReportSubmission", 'Bytes'>
+    readonly message: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly status: FieldRef<"SalesCrmReportSubmission", 'String'>
+    readonly viewedAt: FieldRef<"SalesCrmReportSubmission", 'DateTime'>
+    readonly downloadedAt: FieldRef<"SalesCrmReportSubmission", 'DateTime'>
+    readonly createdAt: FieldRef<"SalesCrmReportSubmission", 'DateTime'>
+    readonly updatedAt: FieldRef<"SalesCrmReportSubmission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalesCrmReportSubmission findUnique
+   */
+  export type SalesCrmReportSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmReportSubmission to fetch.
+     */
+    where: SalesCrmReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmReportSubmission findUniqueOrThrow
+   */
+  export type SalesCrmReportSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmReportSubmission to fetch.
+     */
+    where: SalesCrmReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmReportSubmission findFirst
+   */
+  export type SalesCrmReportSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmReportSubmission to fetch.
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmReportSubmissions to fetch.
+     */
+    orderBy?: SalesCrmReportSubmissionOrderByWithRelationInput | SalesCrmReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesCrmReportSubmissions.
+     */
+    cursor?: SalesCrmReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmReportSubmissions.
+     */
+    distinct?: SalesCrmReportSubmissionScalarFieldEnum | SalesCrmReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmReportSubmission findFirstOrThrow
+   */
+  export type SalesCrmReportSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmReportSubmission to fetch.
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmReportSubmissions to fetch.
+     */
+    orderBy?: SalesCrmReportSubmissionOrderByWithRelationInput | SalesCrmReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesCrmReportSubmissions.
+     */
+    cursor?: SalesCrmReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmReportSubmissions.
+     */
+    distinct?: SalesCrmReportSubmissionScalarFieldEnum | SalesCrmReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmReportSubmission findMany
+   */
+  export type SalesCrmReportSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which SalesCrmReportSubmissions to fetch.
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesCrmReportSubmissions to fetch.
+     */
+    orderBy?: SalesCrmReportSubmissionOrderByWithRelationInput | SalesCrmReportSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalesCrmReportSubmissions.
+     */
+    cursor?: SalesCrmReportSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesCrmReportSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesCrmReportSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesCrmReportSubmissions.
+     */
+    distinct?: SalesCrmReportSubmissionScalarFieldEnum | SalesCrmReportSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * SalesCrmReportSubmission create
+   */
+  export type SalesCrmReportSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SalesCrmReportSubmission.
+     */
+    data: XOR<SalesCrmReportSubmissionCreateInput, SalesCrmReportSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * SalesCrmReportSubmission createMany
+   */
+  export type SalesCrmReportSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalesCrmReportSubmissions.
+     */
+    data: SalesCrmReportSubmissionCreateManyInput | SalesCrmReportSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesCrmReportSubmission createManyAndReturn
+   */
+  export type SalesCrmReportSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many SalesCrmReportSubmissions.
+     */
+    data: SalesCrmReportSubmissionCreateManyInput | SalesCrmReportSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesCrmReportSubmission update
+   */
+  export type SalesCrmReportSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SalesCrmReportSubmission.
+     */
+    data: XOR<SalesCrmReportSubmissionUpdateInput, SalesCrmReportSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which SalesCrmReportSubmission to update.
+     */
+    where: SalesCrmReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmReportSubmission updateMany
+   */
+  export type SalesCrmReportSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalesCrmReportSubmissions.
+     */
+    data: XOR<SalesCrmReportSubmissionUpdateManyMutationInput, SalesCrmReportSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesCrmReportSubmissions to update
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * Limit how many SalesCrmReportSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesCrmReportSubmission updateManyAndReturn
+   */
+  export type SalesCrmReportSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update SalesCrmReportSubmissions.
+     */
+    data: XOR<SalesCrmReportSubmissionUpdateManyMutationInput, SalesCrmReportSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesCrmReportSubmissions to update
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * Limit how many SalesCrmReportSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesCrmReportSubmission upsert
+   */
+  export type SalesCrmReportSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SalesCrmReportSubmission to update in case it exists.
+     */
+    where: SalesCrmReportSubmissionWhereUniqueInput
+    /**
+     * In case the SalesCrmReportSubmission found by the `where` argument doesn't exist, create a new SalesCrmReportSubmission with this data.
+     */
+    create: XOR<SalesCrmReportSubmissionCreateInput, SalesCrmReportSubmissionUncheckedCreateInput>
+    /**
+     * In case the SalesCrmReportSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalesCrmReportSubmissionUpdateInput, SalesCrmReportSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * SalesCrmReportSubmission delete
+   */
+  export type SalesCrmReportSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter which SalesCrmReportSubmission to delete.
+     */
+    where: SalesCrmReportSubmissionWhereUniqueInput
+  }
+
+  /**
+   * SalesCrmReportSubmission deleteMany
+   */
+  export type SalesCrmReportSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesCrmReportSubmissions to delete
+     */
+    where?: SalesCrmReportSubmissionWhereInput
+    /**
+     * Limit how many SalesCrmReportSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesCrmReportSubmission without action
+   */
+  export type SalesCrmReportSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesCrmReportSubmission
+     */
+    select?: SalesCrmReportSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesCrmReportSubmission
+     */
+    omit?: SalesCrmReportSubmissionOmit<ExtArgs> | null
   }
 
 
@@ -114129,6 +115389,30 @@ export namespace Prisma {
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+  export const SalesCrmReportSubmissionScalarFieldEnum: {
+    id: 'id',
+    idempotencyKey: 'idempotencyKey',
+    salesAdminId: 'salesAdminId',
+    submittedById: 'submittedById',
+    branchId: 'branchId',
+    reportName: 'reportName',
+    reportType: 'reportType',
+    fromDate: 'fromDate',
+    toDate: 'toDate',
+    fileName: 'fileName',
+    fileFormat: 'fileFormat',
+    fileData: 'fileData',
+    message: 'message',
+    status: 'status',
+    viewedAt: 'viewedAt',
+    downloadedAt: 'downloadedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SalesCrmReportSubmissionScalarFieldEnum = (typeof SalesCrmReportSubmissionScalarFieldEnum)[keyof typeof SalesCrmReportSubmissionScalarFieldEnum]
+
+
   export const SalesAdminAdmissionReminderScalarFieldEnum: {
     id: 'id',
     salesAdminId: 'salesAdminId',
@@ -115911,6 +117195,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes[]'
+   */
+  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+  /**
    * Reference to a field of type 'SalesCrmBatchRequestStatus'
    */
   export type EnumSalesCrmBatchRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SalesCrmBatchRequestStatus'>
@@ -116998,6 +118296,123 @@ export namespace Prisma {
     facultySkillAssignmentId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
     subModuleName?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+  }
+
+  export type SalesCrmReportSubmissionWhereInput = {
+    AND?: SalesCrmReportSubmissionWhereInput | SalesCrmReportSubmissionWhereInput[]
+    OR?: SalesCrmReportSubmissionWhereInput[]
+    NOT?: SalesCrmReportSubmissionWhereInput | SalesCrmReportSubmissionWhereInput[]
+    id?: StringFilter<"SalesCrmReportSubmission"> | string
+    idempotencyKey?: StringFilter<"SalesCrmReportSubmission"> | string
+    salesAdminId?: StringFilter<"SalesCrmReportSubmission"> | string
+    submittedById?: StringFilter<"SalesCrmReportSubmission"> | string
+    branchId?: StringNullableFilter<"SalesCrmReportSubmission"> | string | null
+    reportName?: StringFilter<"SalesCrmReportSubmission"> | string
+    reportType?: StringFilter<"SalesCrmReportSubmission"> | string
+    fromDate?: StringFilter<"SalesCrmReportSubmission"> | string
+    toDate?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileName?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileFormat?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileData?: BytesFilter<"SalesCrmReportSubmission"> | Bytes
+    message?: StringNullableFilter<"SalesCrmReportSubmission"> | string | null
+    status?: StringFilter<"SalesCrmReportSubmission"> | string
+    viewedAt?: DateTimeNullableFilter<"SalesCrmReportSubmission"> | Date | string | null
+    downloadedAt?: DateTimeNullableFilter<"SalesCrmReportSubmission"> | Date | string | null
+    createdAt?: DateTimeFilter<"SalesCrmReportSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesCrmReportSubmission"> | Date | string
+  }
+
+  export type SalesCrmReportSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    idempotencyKey?: SortOrder
+    salesAdminId?: SortOrder
+    submittedById?: SortOrder
+    branchId?: SortOrderInput | SortOrder
+    reportName?: SortOrder
+    reportType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    fileName?: SortOrder
+    fileFormat?: SortOrder
+    fileData?: SortOrder
+    message?: SortOrderInput | SortOrder
+    status?: SortOrder
+    viewedAt?: SortOrderInput | SortOrder
+    downloadedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesCrmReportSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    idempotencyKey?: string
+    AND?: SalesCrmReportSubmissionWhereInput | SalesCrmReportSubmissionWhereInput[]
+    OR?: SalesCrmReportSubmissionWhereInput[]
+    NOT?: SalesCrmReportSubmissionWhereInput | SalesCrmReportSubmissionWhereInput[]
+    salesAdminId?: StringFilter<"SalesCrmReportSubmission"> | string
+    submittedById?: StringFilter<"SalesCrmReportSubmission"> | string
+    branchId?: StringNullableFilter<"SalesCrmReportSubmission"> | string | null
+    reportName?: StringFilter<"SalesCrmReportSubmission"> | string
+    reportType?: StringFilter<"SalesCrmReportSubmission"> | string
+    fromDate?: StringFilter<"SalesCrmReportSubmission"> | string
+    toDate?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileName?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileFormat?: StringFilter<"SalesCrmReportSubmission"> | string
+    fileData?: BytesFilter<"SalesCrmReportSubmission"> | Bytes
+    message?: StringNullableFilter<"SalesCrmReportSubmission"> | string | null
+    status?: StringFilter<"SalesCrmReportSubmission"> | string
+    viewedAt?: DateTimeNullableFilter<"SalesCrmReportSubmission"> | Date | string | null
+    downloadedAt?: DateTimeNullableFilter<"SalesCrmReportSubmission"> | Date | string | null
+    createdAt?: DateTimeFilter<"SalesCrmReportSubmission"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesCrmReportSubmission"> | Date | string
+  }, "id" | "idempotencyKey">
+
+  export type SalesCrmReportSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    idempotencyKey?: SortOrder
+    salesAdminId?: SortOrder
+    submittedById?: SortOrder
+    branchId?: SortOrderInput | SortOrder
+    reportName?: SortOrder
+    reportType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    fileName?: SortOrder
+    fileFormat?: SortOrder
+    fileData?: SortOrder
+    message?: SortOrderInput | SortOrder
+    status?: SortOrder
+    viewedAt?: SortOrderInput | SortOrder
+    downloadedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SalesCrmReportSubmissionCountOrderByAggregateInput
+    _max?: SalesCrmReportSubmissionMaxOrderByAggregateInput
+    _min?: SalesCrmReportSubmissionMinOrderByAggregateInput
+  }
+
+  export type SalesCrmReportSubmissionScalarWhereWithAggregatesInput = {
+    AND?: SalesCrmReportSubmissionScalarWhereWithAggregatesInput | SalesCrmReportSubmissionScalarWhereWithAggregatesInput[]
+    OR?: SalesCrmReportSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: SalesCrmReportSubmissionScalarWhereWithAggregatesInput | SalesCrmReportSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    idempotencyKey?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    salesAdminId?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    submittedById?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    branchId?: StringNullableWithAggregatesFilter<"SalesCrmReportSubmission"> | string | null
+    reportName?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    reportType?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    fromDate?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    toDate?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    fileName?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    fileFormat?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    fileData?: BytesWithAggregatesFilter<"SalesCrmReportSubmission"> | Bytes
+    message?: StringNullableWithAggregatesFilter<"SalesCrmReportSubmission"> | string | null
+    status?: StringWithAggregatesFilter<"SalesCrmReportSubmission"> | string
+    viewedAt?: DateTimeNullableWithAggregatesFilter<"SalesCrmReportSubmission"> | Date | string | null
+    downloadedAt?: DateTimeNullableWithAggregatesFilter<"SalesCrmReportSubmission"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SalesCrmReportSubmission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SalesCrmReportSubmission"> | Date | string
   }
 
   export type SalesAdminAdmissionReminderWhereInput = {
@@ -126660,6 +128075,153 @@ export namespace Prisma {
     facultySkillAssignmentId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleId?: NullableStringFieldUpdateOperationsInput | string | null
     subModuleName?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SalesCrmReportSubmissionCreateInput = {
+    id?: string
+    idempotencyKey: string
+    salesAdminId: string
+    submittedById: string
+    branchId?: string | null
+    reportName: string
+    reportType: string
+    fromDate: string
+    toDate: string
+    fileName: string
+    fileFormat?: string
+    fileData: Bytes
+    message?: string | null
+    status?: string
+    viewedAt?: Date | string | null
+    downloadedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmReportSubmissionUncheckedCreateInput = {
+    id?: string
+    idempotencyKey: string
+    salesAdminId: string
+    submittedById: string
+    branchId?: string | null
+    reportName: string
+    reportType: string
+    fromDate: string
+    toDate: string
+    fileName: string
+    fileFormat?: string
+    fileData: Bytes
+    message?: string | null
+    status?: string
+    viewedAt?: Date | string | null
+    downloadedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmReportSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    submittedById?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportName?: StringFieldUpdateOperationsInput | string
+    reportType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileFormat?: StringFieldUpdateOperationsInput | string
+    fileData?: BytesFieldUpdateOperationsInput | Bytes
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    viewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downloadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmReportSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    submittedById?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportName?: StringFieldUpdateOperationsInput | string
+    reportType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileFormat?: StringFieldUpdateOperationsInput | string
+    fileData?: BytesFieldUpdateOperationsInput | Bytes
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    viewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downloadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmReportSubmissionCreateManyInput = {
+    id?: string
+    idempotencyKey: string
+    salesAdminId: string
+    submittedById: string
+    branchId?: string | null
+    reportName: string
+    reportType: string
+    fromDate: string
+    toDate: string
+    fileName: string
+    fileFormat?: string
+    fileData: Bytes
+    message?: string | null
+    status?: string
+    viewedAt?: Date | string | null
+    downloadedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesCrmReportSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    submittedById?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportName?: StringFieldUpdateOperationsInput | string
+    reportType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileFormat?: StringFieldUpdateOperationsInput | string
+    fileData?: BytesFieldUpdateOperationsInput | Bytes
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    viewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downloadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesCrmReportSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    salesAdminId?: StringFieldUpdateOperationsInput | string
+    submittedById?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportName?: StringFieldUpdateOperationsInput | string
+    reportType?: StringFieldUpdateOperationsInput | string
+    fromDate?: StringFieldUpdateOperationsInput | string
+    toDate?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    fileFormat?: StringFieldUpdateOperationsInput | string
+    fileData?: BytesFieldUpdateOperationsInput | Bytes
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    viewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    downloadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SalesAdminAdmissionReminderCreateInput = {
@@ -137639,6 +139201,86 @@ export namespace Prisma {
     _max?: NestedEnumNotificationKindFilter<$PrismaModel>
   }
 
+  export type BytesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Bytes
+  }
+
+  export type SalesCrmReportSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    idempotencyKey?: SortOrder
+    salesAdminId?: SortOrder
+    submittedById?: SortOrder
+    branchId?: SortOrder
+    reportName?: SortOrder
+    reportType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    fileName?: SortOrder
+    fileFormat?: SortOrder
+    fileData?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    viewedAt?: SortOrder
+    downloadedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesCrmReportSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    idempotencyKey?: SortOrder
+    salesAdminId?: SortOrder
+    submittedById?: SortOrder
+    branchId?: SortOrder
+    reportName?: SortOrder
+    reportType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    fileName?: SortOrder
+    fileFormat?: SortOrder
+    fileData?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    viewedAt?: SortOrder
+    downloadedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesCrmReportSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    idempotencyKey?: SortOrder
+    salesAdminId?: SortOrder
+    submittedById?: SortOrder
+    branchId?: SortOrder
+    reportName?: SortOrder
+    reportType?: SortOrder
+    fromDate?: SortOrder
+    toDate?: SortOrder
+    fileName?: SortOrder
+    fileFormat?: SortOrder
+    fileData?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    viewedAt?: SortOrder
+    downloadedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
+  }
+
   export type SalesAdminAdmissionReminderSalesAdminIdNotificationTypeReminderDateCompoundUniqueInput = {
     salesAdminId: string
     notificationType: string
@@ -145485,6 +147127,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTargetedNotificationsInput, UserUpdateWithoutTargetedNotificationsInput>, UserUncheckedUpdateWithoutTargetedNotificationsInput>
   }
 
+  export type BytesFieldUpdateOperationsInput = {
+    set?: Bytes
+  }
+
   export type LeadCreateNestedOneWithoutSalesCrmBatchRequestsInput = {
     create?: XOR<LeadCreateWithoutSalesCrmBatchRequestsInput, LeadUncheckedCreateWithoutSalesCrmBatchRequestsInput>
     connectOrCreate?: LeadCreateOrConnectWithoutSalesCrmBatchRequestsInput
@@ -151815,6 +153461,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumNotificationKindFilter<$PrismaModel>
     _max?: NestedEnumNotificationKindFilter<$PrismaModel>
+  }
+
+  export type NestedBytesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Bytes
+  }
+
+  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type NestedEnumSalesCrmBatchRequestStatusFilter<$PrismaModel = never> = {

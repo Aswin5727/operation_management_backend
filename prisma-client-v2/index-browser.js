@@ -250,6 +250,27 @@ exports.Prisma.NotificationScalarFieldEnum = {
   subModuleName: 'subModuleName'
 };
 
+exports.Prisma.SalesCrmReportSubmissionScalarFieldEnum = {
+  id: 'id',
+  idempotencyKey: 'idempotencyKey',
+  salesAdminId: 'salesAdminId',
+  submittedById: 'submittedById',
+  branchId: 'branchId',
+  reportName: 'reportName',
+  reportType: 'reportType',
+  fromDate: 'fromDate',
+  toDate: 'toDate',
+  fileName: 'fileName',
+  fileFormat: 'fileFormat',
+  fileData: 'fileData',
+  message: 'message',
+  status: 'status',
+  viewedAt: 'viewedAt',
+  downloadedAt: 'downloadedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SalesAdminAdmissionReminderScalarFieldEnum = {
   id: 'id',
   salesAdminId: 'salesAdminId',
@@ -1828,6 +1849,7 @@ exports.Prisma.ModelName = {
   SalesAdminBranch: 'SalesAdminBranch',
   LoginEvent: 'LoginEvent',
   Notification: 'Notification',
+  SalesCrmReportSubmission: 'SalesCrmReportSubmission',
   SalesAdminAdmissionReminder: 'SalesAdminAdmissionReminder',
   SalesCrmBatchRequest: 'SalesCrmBatchRequest',
   CourseEditRequest: 'CourseEditRequest',

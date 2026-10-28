@@ -227,6 +227,32 @@ model Notification {
   @@index([facultySkillAssignmentId])
 }
 
+model SalesCrmReportSubmission {
+  id             String    @id @default(cuid())
+  idempotencyKey String    @unique
+  salesAdminId   String
+  submittedById  String
+  branchId       String?
+  reportName     String
+  reportType     String
+  fromDate       String
+  toDate         String
+  fileName       String
+  fileFormat     String    @default("xlsx")
+  fileData       Bytes
+  message        String?
+  status         String    @default("SUBMITTED")
+  viewedAt       DateTime?
+  downloadedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([salesAdminId, createdAt])
+  @@index([submittedById, createdAt])
+  @@index([branchId, createdAt])
+  @@index([status, createdAt])
+}
+
 model SalesAdminAdmissionReminder {
   id               String   @id @default(cuid())
   salesAdminId     String
