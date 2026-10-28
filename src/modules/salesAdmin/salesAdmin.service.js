@@ -211,8 +211,27 @@ function dateOnlyKey(value) {
   return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
 }
 
-async function getDashboard(userId, query = {}) {
-  const profile = await getSalesAdminProfile(userId);
+async function getDashboard(userId, query = {}, auth = {}) {
+  let profile;
+  if (String(auth.role || "").toUpperCase() === "SALES_ADMIN") {
+    profile = await getSalesAdminProfile(userId);
+  } else if (
+    String(auth.role || "").toUpperCase() === "BRANCH_ADMIN"
+    && String(auth.roleAccess || "").toUpperCase() === "BRANCH_ADMIN_SALES_ADMIN"
+  ) {
+    if (!auth.branchId) throw new AppError("Branch access could not be verified", 403);
+    const [user, branch] = await Promise.all([
+      prisma.user.findUnique({ where: { id: userId }, select: USER_SELECT }),
+      prisma.branch.findUnique({ where: { id: auth.branchId }, select: { id: true, branchId: true, branchName: true, status: true, timezone: true } }),
+    ]);
+    if (!user || user.role !== "BRANCH_ADMIN" || !branch) throw new AppError("Sales Admin dashboard access is unavailable", 403);
+    profile = { ...toSafeUser(user), branches: [branch] };
+  } else {
+    throw new AppError("Sales Admin dashboard access is required", 403);
+  }
+
+  // The branch for a combined-role Branch Admin comes from authenticated server
+  // context. A request parameter can narrow that scope, but cannot expand it.
   const allowed = profile.branches.map((branch) => branch.id);
   const branchId = clean(query.branchId);
   if (branchId && !allowed.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
@@ -225,9 +244,11 @@ async function getDashboard(userId, query = {}) {
   if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) throw new AppError("Dashboard date range is invalid", 400);
   if (from > to) throw new AppError("Dashboard start date cannot be after end date", 400);
 
-  void checkPendingHotAdmissionReminder(userId).catch((error) => {
-    console.error("Unable to create daily pending admission reminder:", error?.message || error);
-  });
+  if (String(auth.role || "").toUpperCase() === "SALES_ADMIN") {
+    void checkPendingHotAdmissionReminder(userId).catch((error) => {
+      console.error("Unable to create daily pending admission reminder:", error?.message || error);
+    });
+  }
 
   const leadScope = { deletedAt: null, branchId: { in: branchIds }, assignedToId: userId };
   const periodScope = { createdAt: { gte: from, lte: to } };

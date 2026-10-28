@@ -8,7 +8,7 @@ const updateSalesAdminHandler = asyncHandler(async (req, res) => res.status(200)
 const deleteSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin deleted", data: await deleteSalesAdmin(req.params.id) }));
 const profileHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminProfile(req.auth.userId) }));
 const updateProfileHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Profile updated", data: await updateOwnSalesAdminProfile(req.auth.userId, req.body || {}) }));
-const dashboardHandler = asyncHandler(async (req, res) => res.status(200).json(await getDashboard(req.auth.userId, req.query || {})));
+const dashboardHandler = asyncHandler(async (req, res) => res.status(200).json(await getDashboard(req.auth.userId, req.query || {}, req.auth || {})));
 const admissionsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminAdmissions(req.auth, req.query || {})));
 const studentFeeDetailsHandler = asyncHandler(async (req, res) => res.status(200).json({ data: { feeDetails: await getSalesAdminStudentFeeDetails(req.auth, req.params.studentId) } }));
 const pendingAdmissionReminderHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getPendingHotAdmissionReminder(req.auth) }));
