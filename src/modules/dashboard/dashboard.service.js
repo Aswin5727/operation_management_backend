@@ -1226,6 +1226,80 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   return result;
 }
 
-export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, getSuperAdminOverview, invalidateRevenueSummaryCache };
+function analyticsDateRange(period) {
+  const today = getIstToday();
+  const end = new Date(`${today}T00:00:00Z`);
+  const normalized = ["daily", "weekly", "monthly"].includes(period) ? period : "monthly";
+  const start = new Date(end);
+  if (normalized === "daily") start.setUTCDate(start.getUTCDate() - 29);
+  if (normalized === "weekly") start.setUTCDate(start.getUTCDate() - 7 * 11);
+  if (normalized === "monthly") start.setUTCMonth(start.getUTCMonth() - 11, 1);
+  return { period: normalized, startDate: start.toISOString().slice(0, 10), endDate: today };
+}
+
+function utcDayStart(value) { return new Date(`${value}T00:00:00.000Z`); }
+function utcDayEnd(value) { const date = utcDayStart(value); date.setUTCDate(date.getUTCDate() + 1); return date; }
+
+function buildCrmBuckets(range) {
+  const rows = [];
+  const cursor = utcDayStart(range.startDate);
+  const end = utcDayStart(range.endDate);
+  while (cursor <= end) {
+    const date = new Date(cursor);
+    let key = date.toISOString().slice(0, 10);
+    if (range.period === "weekly") {
+      date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7));
+      key = date.toISOString().slice(0, 10);
+    } else if (range.period === "monthly") key = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+    if (!rows.some((row) => row.key === key)) rows.push({ key, leads: 0, admissions: 0, hotLeads: 0, warmLeads: 0, coldLeads: 0 });
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+  return rows;
+}
+
+function crmBucketKey(value, period) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const parts = toIstDateParts(date);
+  const day = toDateStringFromParts(parts.year, parts.month, parts.day);
+  if (period === "daily") return day;
+  if (period === "monthly") return `${parts.year}-${String(parts.month).padStart(2, "0")}`;
+  const monday = new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
+  monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7));
+  return monday.toISOString().slice(0, 10);
+}
+
+async function getSuperAdminSalesCrmAnalytics(options = {}) {
+  const range = analyticsDateRange(normalizeString(options.period).toLowerCase());
+  const requestedBranch = normalizeString(options.branchId);
+  const branch = requestedBranch ? await prisma.branch.findFirst({ where: { OR: [{ id: requestedBranch }, { branchId: requestedBranch }], status: "ACTIVE" }, select: { id: true, branchId: true, branchName: true } }) : null;
+  if (requestedBranch && !branch) throw new AppError("Branch not found or inactive", 404);
+  const branches = branch ? [branch] : await prisma.branch.findMany({ where: { status: "ACTIVE" }, orderBy: { branchName: "asc" }, select: { id: true, branchId: true, branchName: true } });
+  const branchIds = branches.map((item) => item.id);
+  const adminSearch = normalizeString(options.salesAdminSearch);
+  const adminWhere = { role: "SALES_ADMIN", active: true, ...(branchIds.length ? { salesAdminBranches: { some: { branchId: { in: branchIds } } } } : {}), ...(adminSearch ? { OR: [{ fullName: { contains: adminSearch, mode: "insensitive" } }, { userCode: { contains: adminSearch, mode: "insensitive" } }, { email: { contains: adminSearch, mode: "insensitive" } }] } : {}) };
+  const admins = await prisma.user.findMany({ where: adminWhere, orderBy: { fullName: "asc" }, select: { id: true, userCode: true, fullName: true, email: true, salesAdminBranches: { select: { branchId: true } } } });
+  const adminId = normalizeString(options.salesAdminId);
+  if (adminId && !admins.some((admin) => admin.id === adminId)) throw new AppError("Sales Admin is not authorized for the selected scope", 403);
+  const baseWhere = { deletedAt: null, ...(branchIds.length ? { branchId: { in: branchIds } } : { id: "__none__" }), ...(adminId ? { assignedToId: adminId } : {}) };
+  const rangeWhere = { ...baseWhere, createdAt: { gte: utcDayStart(range.startDate), lt: utcDayEnd(range.endDate) } };
+  const [totalLeads, thisMonthLeads, stageRows, crmAdmissions, periodLeads, periodAdmissions] = await Promise.all([
+    prisma.lead.count({ where: baseWhere }),
+    prisma.lead.count({ where: { ...baseWhere, createdAt: { gte: utcDayStart(getIstMonthStart()), lt: utcDayEnd(getIstToday()) } } }),
+    prisma.lead.groupBy({ by: ["stage"], where: baseWhere, _count: { _all: true } }),
+    prisma.branchStudent.count({ where: { branchId: { in: branchIds.length ? branchIds : ["__none__"] }, sourceLead: { is: { deletedAt: null, ...(adminId ? { assignedToId: adminId } : {}), status: "CONVERTED" } } } }),
+    prisma.lead.findMany({ where: rangeWhere, select: { createdAt: true, stage: true } }),
+    prisma.branchStudent.findMany({ where: { branchId: { in: branchIds.length ? branchIds : ["__none__"] }, admissionDate: { gte: range.startDate, lte: range.endDate }, sourceLead: { is: { deletedAt: null, status: "CONVERTED", ...(adminId ? { assignedToId: adminId } : {}) } } }, select: { admissionDate: true, createdAt: true } }),
+  ]);
+  const buckets = buildCrmBuckets(range);
+  const bucketMap = new Map(buckets.map((item) => [item.key, item]));
+  periodLeads.forEach((lead) => { const bucket = bucketMap.get(crmBucketKey(lead.createdAt, range.period)); if (!bucket) return; bucket.leads += 1; const stage = String(lead.stage || "").toUpperCase(); if (stage === "HOT") bucket.hotLeads += 1; if (stage === "WARM") bucket.warmLeads += 1; if (stage === "COLD") bucket.coldLeads += 1; });
+  periodAdmissions.forEach((student) => { const bucket = bucketMap.get(crmBucketKey(student.admissionDate || student.createdAt, range.period)); if (bucket) bucket.admissions += 1; });
+  const countStage = (stage) => stageRows.find((row) => row.stage === stage)?._count?._all || 0;
+  return { generatedAt: new Date().toISOString(), filters: { branchId: branch?.branchId || "", salesAdminId: adminId || "", salesAdminSearch: adminSearch }, branches, salesAdmins: admins.map(({ salesAdminBranches, ...admin }) => ({ ...admin, branchIds: salesAdminBranches.map((row) => row.branchId) })), summary: { totalLeads, thisMonthLeads, totalAdmissions: crmAdmissions, totalStudentsFromSalesCrm: crmAdmissions, hotLeads: countStage("HOT"), warmLeads: countStage("WARM"), coldLeads: countStage("COLD") }, chart: { ...range, buckets, stageMetricRule: "Current lead stage grouped by lead creation date." } };
+}
+
+export { getRevenueSummary, getFacultyMyBatchesSummary, getFacultyDashboardOverview, getSuperAdminOverview, getSuperAdminSalesCrmAnalytics, invalidateRevenueSummaryCache };
 
 

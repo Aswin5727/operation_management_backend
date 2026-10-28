@@ -2,7 +2,7 @@ import express from "express";
 
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
-import { getFacultyDashboardOverviewHandler, getFacultyMyBatchesSummaryHandler, getRevenueSummaryHandler, getSuperAdminOverviewHandler } from "./dashboard.controller.js";
+import { getFacultyDashboardOverviewHandler, getFacultyMyBatchesSummaryHandler, getRevenueSummaryHandler, getSuperAdminOverviewHandler, getSuperAdminSalesCrmAnalyticsHandler } from "./dashboard.controller.js";
 import { getBranchAdminWidgetsHandler, resetBranchAdminWidgetsHandler, saveBranchAdminWidgetsHandler } from "./branchDashboardWidgets.controller.js";
 
 const router = express.Router();
@@ -10,6 +10,7 @@ const router = express.Router();
 router.get("/faculty/my-batches-summary", authenticate, authorize("FACULTY"), getFacultyMyBatchesSummaryHandler);
 router.get("/faculty/overview", authenticate, authorize("FACULTY"), getFacultyDashboardOverviewHandler);
 router.get("/super-admin/overview", authenticate, authorize("SUPER_ADMIN"), getSuperAdminOverviewHandler);
+router.get("/super-admin/sales-crm-analytics", authenticate, authorize("SUPER_ADMIN"), getSuperAdminSalesCrmAnalyticsHandler);
 
 const branchWidgetRoles = ["BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"];
 router.get("/branch/widgets", authenticate, authorize(...branchWidgetRoles), getBranchAdminWidgetsHandler);

@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { getFacultyDashboardOverview, getFacultyMyBatchesSummary, getRevenueSummary, getSuperAdminOverview } from "./dashboard.service.js";
+import { getFacultyDashboardOverview, getFacultyMyBatchesSummary, getRevenueSummary, getSuperAdminOverview, getSuperAdminSalesCrmAnalytics } from "./dashboard.service.js";
 
 function sendSuccess(res, message, data, statusCode = 200) {
   return res.status(statusCode).json({
@@ -31,4 +31,9 @@ export const getSuperAdminOverviewHandler = asyncHandler(async (req, res) => {
     endDate: req.query?.endDate,
   });
   return sendSuccess(res, "Super Admin dashboard overview fetched successfully", overview);
+});
+
+export const getSuperAdminSalesCrmAnalyticsHandler = asyncHandler(async (req, res) => {
+  const analytics = await getSuperAdminSalesCrmAnalytics(req.query || {});
+  return sendSuccess(res, "Super Admin Sales CRM analytics fetched successfully", analytics);
 });
