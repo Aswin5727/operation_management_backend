@@ -81,7 +81,10 @@ async function createSalesAdmin(payload, auth) {
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, salesAdminId: user.userCode, branches: user.salesAdminBranches.map(({ branch }) => branch), invitationSent: true };
 }
 
-async function listSalesAdmins(includeCombinedBranchAdmins = false) {
+async function listSalesAdmins(includeCombinedBranchAdmins = false, startDateValue = "", endDateValue = "") {
+  const rangeStart = startDateValue ? new Date(`${startDateValue}T00:00:00.000Z`) : null;
+  const rangeEnd = endDateValue ? new Date(`${endDateValue}T23:59:59.999Z`) : null;
+  const hasDateRange = rangeStart && rangeEnd && !Number.isNaN(rangeStart.getTime()) && !Number.isNaN(rangeEnd.getTime()) && rangeStart <= rangeEnd;
   const users = await prisma.user.findMany({ where: { role: "SALES_ADMIN" }, orderBy: { createdAt: "desc" }, select: USER_SELECT });
   const salesRows = users.map((user) => ({ ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address, branches: user.salesAdminBranches.map(({ branch }) => branch) }));
   if (!includeCombinedBranchAdmins) return { data: salesRows };
@@ -89,9 +92,11 @@ async function listSalesAdmins(includeCombinedBranchAdmins = false) {
   const branchRows = combinedBranches.filter((branch) => branch.adminUser?.active && branch.adminUser?.role === "BRANCH_ADMIN").map((branch) => ({ ...toSafeUser(branch.adminUser), country: branch.adminUser.country || branch.branchCountry || "", state: branch.adminUser.state || branch.branchState || "", city: branch.adminUser.city || branch.branchCity || "", address: branch.adminUser.address || branch.branchAddress || "", branches: [{ id: branch.id, branchId: branch.branchId, branchName: branch.branchName, status: branch.status, timezone: branch.timezone, branchCountry: branch.branchCountry, branchState: branch.branchState, branchCity: branch.branchCity, branchAddress: branch.branchAddress }], accountType: "BRANCH_ADMIN_SALES_ADMIN" }));
   const rows = [...salesRows, ...branchRows];
   const adminIds = rows.map((row) => row.id).filter(Boolean);
-  const leadRows = adminIds.length ? await prisma.lead.findMany({ where: { deletedAt: null, createdById: { in: adminIds } }, select: { id: true, createdById: true, stage: true } }) : [];
+  const leadRows = adminIds.length ? await prisma.lead.findMany({ where: { deletedAt: null, createdById: { in: adminIds }, ...(hasDateRange ? { createdAt: { gte: rangeStart, lte: rangeEnd } } : {}) }, orderBy: { createdAt: "desc" }, select: { id: true, leadId: true, studentName: true, phoneNumber: true, email: true, createdById: true, branch: { select: { branchName: true } }, stage: true, status: true, leadSource: true, createdAt: true, nextFollowUpDate: true, nextFollowUpTime: true, course: { select: { name: true } }, followUps: { orderBy: { followUpDate: "desc" }, take: 1, select: { followUpDate: true, callStatus: true, notes: true, nextFollowUpDate: true, nextFollowUpTime: true } } } }) : [];
   const leadById = new Map(leadRows.map((lead) => [lead.id, lead.createdById]));
-  const metrics = new Map(adminIds.map((id) => [id, { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0 }]));
+  const activityRows = leadRows.length ? await prisma.leadActivity.findMany({ where: { leadId: { in: leadRows.map((lead) => lead.id) }, ...(hasDateRange ? { createdAt: { gte: rangeStart, lte: rangeEnd } } : {}) }, include: { lead: { select: { id: true, leadId: true, studentName: true, branch: { select: { branchName: true } } }, }, createdBy: { select: { fullName: true } } }, orderBy: { createdAt: "desc" }, take: 100 }) : [];
+  const metrics = new Map(adminIds.map((id) => [id, { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0, pendingFollowUpCount: 0, overdueFollowUpCount: 0, sourceBreakdown: {}, courseBreakdown: {}, statusBreakdown: {}, ageingBreakdown: { "0_7_DAYS": 0, "8_30_DAYS": 0, "30_PLUS_DAYS": 0 }, recentLeads: [], admissionRecords: [], followUpRecords: [], activityRecords: [] }]));
+  const now = Date.now();
   leadRows.forEach((lead) => {
     const metric = metrics.get(lead.createdById);
     if (!metric) return;
@@ -101,16 +106,46 @@ async function listSalesAdmins(includeCombinedBranchAdmins = false) {
     if (stage === "WARM") metric.warmCount += 1;
     if (stage === "COLD") metric.coldCount += 1;
     if (stage === "CLOSED") metric.closedCount += 1;
+    const source = String(lead.leadSource || "Unknown"); metric.sourceBreakdown[source] = (metric.sourceBreakdown[source] || 0) + 1;
+    const course = String(lead.course?.name || "Unknown"); metric.courseBreakdown[course] = (metric.courseBreakdown[course] || 0) + 1;
+    const status = String(lead.status || "Unknown"); metric.statusBreakdown[status] = (metric.statusBreakdown[status] || 0) + 1;
+    const ageDays = Math.max(0, Math.floor((now - new Date(lead.createdAt).getTime()) / 86400000));
+    metric.ageingBreakdown[ageDays <= 7 ? "0_7_DAYS" : ageDays <= 30 ? "8_30_DAYS" : "30_PLUS_DAYS"] += 1;
+    if (lead.nextFollowUpDate && !["CONVERTED", "CLOSED"].includes(status)) {
+      if (new Date(lead.nextFollowUpDate).getTime() < now) metric.overdueFollowUpCount += 1;
+      else metric.pendingFollowUpCount += 1;
+    }
+    const latestFollowUp = lead.followUps?.[0];
+    if (latestFollowUp || lead.nextFollowUpDate) metric.followUpRecords.push({ leadId: lead.leadId, studentName: lead.studentName, phoneNumber: lead.phoneNumber, email: lead.email, stage: lead.stage, status: lead.status, courseName: lead.course?.name, branchName: lead.branch?.branchName, lastFollowUpDate: latestFollowUp?.followUpDate || null, nextFollowUpDate: lead.nextFollowUpDate || latestFollowUp?.nextFollowUpDate || null, nextFollowUpTime: lead.nextFollowUpTime || latestFollowUp?.nextFollowUpTime || null, followUpStatus: lead.nextFollowUpDate ? (new Date(lead.nextFollowUpDate).getTime() < now ? "OVERDUE" : "PENDING") : "COMPLETED", notes: latestFollowUp?.notes || "" });
+    if (metric.recentLeads.length < 5) metric.recentLeads.push({ leadId: lead.leadId, studentName: lead.studentName, stage: lead.stage, status: lead.status, createdAt: lead.createdAt, courseName: lead.course?.name || null });
+  });
+  activityRows.forEach((activity) => {
+    const metric = metrics.get(leadById.get(activity.lead?.id));
+    if (metric) metric.activityRecords.push({ id: activity.id, action: activity.action, leadId: activity.lead?.leadId || "", studentName: activity.lead?.studentName || "", branchName: activity.lead?.branch?.branchName || "", updatedBy: activity.createdBy?.fullName || "Sales Admin", createdAt: activity.createdAt });
   });
   if (leadRows.length) {
-    const admittedStudents = await prisma.branchStudent.findMany({ where: { sourceLeadId: { in: leadRows.map((lead) => lead.id) }, admissionDate: { not: "" } }, select: { sourceLeadId: true } });
+    const admittedStudents = await prisma.branchStudent.findMany({ where: { sourceLeadId: { in: leadRows.map((lead) => lead.id) }, admissionDate: { not: "" } }, orderBy: { admissionDate: "desc" }, select: { studentId: true, studentName: true, mobileNumber: true, emailAddress: true, admissionDate: true, courseName: true, branchId: true, batchName: true, batchTiming: true, courseMode: true, facultyName: true, sourceLeadId: true, sourceLead: { select: { leadId: true } }, branch: { select: { branchName: true } } } });
     admittedStudents.forEach((student) => {
+      if (hasDateRange) {
+        const admissionDate = new Date(`${String(student.admissionDate).slice(0, 10)}T00:00:00.000Z`);
+        if (Number.isNaN(admissionDate.getTime()) || admissionDate < rangeStart || admissionDate > rangeEnd) return;
+      }
       const adminId = leadById.get(student.sourceLeadId);
       const metric = metrics.get(adminId);
-      if (metric) metric.admissionCount += 1;
+      if (metric) {
+        metric.admissionCount += 1;
+        metric.admissionRecords.push({ studentId: student.studentId, studentName: student.studentName, phoneNumber: student.mobileNumber, email: student.emailAddress, admissionDate: student.admissionDate, courseName: student.courseName, branchName: student.branch?.branchName, batchName: student.batchName, batchTiming: student.batchTiming, courseMode: student.courseMode, facultyName: student.facultyName, leadId: student.sourceLead?.leadId || "" });
+      }
+    });
+    metrics.forEach((metric) => {
+      const admittedLeadIds = new Set(metric.admissionRecords.map((record) => record.leadId).filter(Boolean));
+      metric.followUpRecords.forEach((record) => {
+        if (admittedLeadIds.has(record.leadId)) record.followUpStatus = "ADMISSION COMPLETED";
+      });
     });
   }
-  return { data: rows.map((row) => ({ ...row, leadMetrics: metrics.get(row.id) || { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0 } })) };
+  const emptyMetrics = { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0, pendingFollowUpCount: 0, overdueFollowUpCount: 0, sourceBreakdown: {}, courseBreakdown: {}, statusBreakdown: {}, ageingBreakdown: { "0_7_DAYS": 0, "8_30_DAYS": 0, "30_PLUS_DAYS": 0 }, recentLeads: [], admissionRecords: [], followUpRecords: [], activityRecords: [] };
+  return { data: rows.map((row) => ({ ...row, leadMetrics: metrics.get(row.id) || emptyMetrics })) };
 }
 
 async function updateSalesAdmin(userId, payload, auth) {

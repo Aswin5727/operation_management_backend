@@ -2,7 +2,7 @@
 import { createSalesAdmin, deleteSalesAdmin, getDashboard, getSalesAdminProfile, updateOwnSalesAdminProfile, listSalesAdmins, resetSalesAdminPassword, updateSalesAdmin, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead } from "./salesAdmin.service.js";
 import { createSalesAdminBatchRequest, listSalesAdminBatchRequests } from "./batchRequests.service.js";
 const createSalesAdminHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Sales Admin created and invitation sent", data: await createSalesAdmin(req.body || {}, req.auth || {}) }));
-const listSalesAdminsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdmins(Boolean(req.query?.includeCombinedBranchAdmins))));
+const listSalesAdminsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdmins(Boolean(req.query?.includeCombinedBranchAdmins), req.query?.startDate, req.query?.endDate)));
 const resetPasswordHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Password reset email sent", data: await resetSalesAdminPassword(req.params.id, req.auth || {}) }));
 const updateSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin updated", data: await updateSalesAdmin(req.params.id, req.body || {}, req.auth || {}) }));
 const deleteSalesAdminHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Sales Admin deleted", data: await deleteSalesAdmin(req.params.id) }));
