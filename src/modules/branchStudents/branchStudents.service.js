@@ -2666,7 +2666,7 @@ export async function listBranchStudents(query = {}, actor = null) {
           enrollmentType: true,
           firstCourseId: true,
           installments: { select: { id: true, installmentNumber: true, amount: true, amountPaid: true, dueDate: true, paymentMethod: true, remarks: true } },
-          payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { id: true, amount: true, paymentDate: true, paymentMode: true, paymentMethod: true, transactionReference: true, payAgainst: true, notes: true, receiptNumber: true } },
+          payments: { orderBy: [{ paymentDate: "asc" }, { createdAt: "asc" }], select: { id: true, amount: true, paymentDate: true, paymentMode: true, transactionReference: true, payAgainst: true, notes: true, receiptNumber: true } },
           batchId: true,
           batchName: true,
           recordStatus: true,

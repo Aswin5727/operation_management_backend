@@ -87,7 +87,30 @@ async function listSalesAdmins(includeCombinedBranchAdmins = false) {
   if (!includeCombinedBranchAdmins) return { data: salesRows };
   const combinedBranches = await prisma.branch.findMany({ where: { status: "ACTIVE", roleAccess: "BRANCH_ADMIN_SALES_ADMIN", adminUserId: { not: null } }, orderBy: { createdAt: "desc" }, select: { id: true, branchId: true, branchName: true, status: true, timezone: true, branchCountry: true, branchState: true, branchCity: true, branchAddress: true, adminUser: { select: { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, createdAt: true, updatedAt: true, passwordChangedAt: true, lastLoginAt: true } } } });
   const branchRows = combinedBranches.filter((branch) => branch.adminUser?.active && branch.adminUser?.role === "BRANCH_ADMIN").map((branch) => ({ ...toSafeUser(branch.adminUser), country: branch.adminUser.country || branch.branchCountry || "", state: branch.adminUser.state || branch.branchState || "", city: branch.adminUser.city || branch.branchCity || "", address: branch.adminUser.address || branch.branchAddress || "", branches: [{ id: branch.id, branchId: branch.branchId, branchName: branch.branchName, status: branch.status, timezone: branch.timezone, branchCountry: branch.branchCountry, branchState: branch.branchState, branchCity: branch.branchCity, branchAddress: branch.branchAddress }], accountType: "BRANCH_ADMIN_SALES_ADMIN" }));
-  return { data: [...salesRows, ...branchRows] };
+  const rows = [...salesRows, ...branchRows];
+  const adminIds = rows.map((row) => row.id).filter(Boolean);
+  const leadRows = adminIds.length ? await prisma.lead.findMany({ where: { deletedAt: null, createdById: { in: adminIds } }, select: { id: true, createdById: true, stage: true } }) : [];
+  const leadById = new Map(leadRows.map((lead) => [lead.id, lead.createdById]));
+  const metrics = new Map(adminIds.map((id) => [id, { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0 }]));
+  leadRows.forEach((lead) => {
+    const metric = metrics.get(lead.createdById);
+    if (!metric) return;
+    metric.leadCount += 1;
+    const stage = String(lead.stage || "").toUpperCase();
+    if (stage === "HOT") metric.hotCount += 1;
+    if (stage === "WARM") metric.warmCount += 1;
+    if (stage === "COLD") metric.coldCount += 1;
+    if (stage === "CLOSED") metric.closedCount += 1;
+  });
+  if (leadRows.length) {
+    const admittedStudents = await prisma.branchStudent.findMany({ where: { sourceLeadId: { in: leadRows.map((lead) => lead.id) }, admissionDate: { not: "" } }, select: { sourceLeadId: true } });
+    admittedStudents.forEach((student) => {
+      const adminId = leadById.get(student.sourceLeadId);
+      const metric = metrics.get(adminId);
+      if (metric) metric.admissionCount += 1;
+    });
+  }
+  return { data: rows.map((row) => ({ ...row, leadMetrics: metrics.get(row.id) || { leadCount: 0, hotCount: 0, warmCount: 0, coldCount: 0, closedCount: 0, admissionCount: 0 } })) };
 }
 
 async function updateSalesAdmin(userId, payload, auth) {
