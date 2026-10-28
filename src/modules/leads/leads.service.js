@@ -143,11 +143,12 @@ async function notifyNextFollowUpScheduled(lead, nextFollowUpDate, nextFollowUpT
   const dateKey = nextFollowUpDate.toISOString().slice(0, 10);
   const timeKey = nextFollowUpTime || "";
   const requestDescription = `LEAD_FOLLOW_UP_SCHEDULED:${lead.id}:${dateKey}:${timeKey}`;
+  // Follow-up notifications belong to the lead assignee. A Branch Admin
+  // must not receive a Sales Admin's lead reminders just because both users
+  // are attached to the same branch.
   const recipientUserIds = [...new Set([
-    actorUserId,
     lead.assignedToId,
     lead.assignedTo?.id,
-    lead.branch?.adminUserId,
   ].filter(Boolean))];
   if (!recipientUserIds.length) return;
   const dateLabel = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(nextFollowUpDate);

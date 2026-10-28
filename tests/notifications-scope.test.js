@@ -52,3 +52,36 @@ test("Super Admin notification queries retain the global role scope and visibili
   assert.ok(Array.isArray(where.OR));
   assert.equal(Object.hasOwn(where, "targetBranchId"), false);
 });
+test("Branch Admin follow-up notifications are assignee scoped", () => {
+  const visibleKindsWithFollowUps = new Set([
+    "BRANCH_LOGIN",
+    "LEAD_FOLLOW_UP_SCHEDULED",
+    "LEAD_FOLLOW_UP_DUE",
+    "LEAD_FOLLOW_UP_OVERDUE",
+  ]);
+  const where = buildNotificationWhere({
+    user: { id: "admin-a", role: "BRANCH_ADMIN" },
+    branchScope: { targetBranchId: "branch-a" },
+    visibleKinds: visibleKindsWithFollowUps,
+    unreadOnly: true,
+  });
+
+  assert.ok(Array.isArray(where.OR));
+  const branchScope = where.OR.find((scope) => scope.targetBranchId === "branch-a");
+  const ownScope = where.OR.find((scope) => scope.targetUserId === "admin-a");
+  assert.ok(branchScope);
+  assert.ok(ownScope);
+  assert.ok(!branchScope.kind.in.includes("LEAD_FOLLOW_UP_DUE"));
+  assert.ok(ownScope.kind.in.includes("LEAD_FOLLOW_UP_DUE"));
+
+  const specific = buildNotificationWhere({
+    user: { id: "admin-a", role: "BRANCH_ADMIN" },
+    branchScope: { targetBranchId: "branch-a" },
+    visibleKinds: visibleKindsWithFollowUps,
+    kind: "LEAD_FOLLOW_UP_DUE",
+    unreadOnly: true,
+  });
+  assert.equal(specific.targetUserId, "admin-a");
+  assert.equal(specific.kind, "LEAD_FOLLOW_UP_DUE");
+  assert.equal(Object.hasOwn(specific, "OR"), false);
+});

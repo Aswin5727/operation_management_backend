@@ -272,6 +272,37 @@ async function buildBranchAdminScope(user = {}) {
   return scope;
 }
 
+const BRANCH_ADMIN_FOLLOW_UP_KINDS = [
+  "LEAD_FOLLOW_UP_SCHEDULED",
+  "LEAD_FOLLOW_UP_DUE",
+  "LEAD_FOLLOW_UP_OVERDUE",
+];
+const BRANCH_ADMIN_FOLLOW_UP_MARKER_PREFIXES = [
+  "LEAD_FOLLOW_UP_SCHEDULED:",
+  "LEAD_FOLLOW_UP_REMINDER:",
+  "LEAD_FOLLOW_UP_DAILY:",
+  "LEAD_FOLLOW_UP_OVERDUE:",
+];
+
+async function buildBranchAdminFollowUpOwnershipFilter(user = {}, branchScope = {}) {
+  if (normalizeString(user?.role).toUpperCase() !== "BRANCH_ADMIN" || !user?.id || !branchScope?.targetBranchId) return {};
+
+  const salesAdminLeads = await prisma.lead.findMany({
+    where: {
+      branchId: branchScope.targetBranchId,
+      deletedAt: null,
+      assignedTo: { is: { role: "SALES_ADMIN" } },
+    },
+    select: { id: true },
+  });
+  if (!salesAdminLeads.length) return {};
+
+  const staleRows = salesAdminLeads.flatMap(({ id }) => BRANCH_ADMIN_FOLLOW_UP_MARKER_PREFIXES.map((prefix) => ({
+    kind: { in: BRANCH_ADMIN_FOLLOW_UP_KINDS },
+    requestDescription: { startsWith: prefix + id + ":" },
+  })));
+  return staleRows.length ? { NOT: { OR: staleRows } } : {};
+}
 function getVisibleNotificationKindsForRole(user = {}) {
   const role = normalizeString(user?.role).toUpperCase();
   if (role === "SUPER_ADMIN") {
@@ -347,6 +378,8 @@ export function buildNotificationWhere({
   }
 
   if (role === "BRANCH_ADMIN") {
+    const followUpKinds = new Set(["LEAD_FOLLOW_UP_SCHEDULED", "LEAD_FOLLOW_UP_DUE", "LEAD_FOLLOW_UP_OVERDUE"]);
+    const branchOnlyKinds = Array.from(visibleKinds).filter((value) => !followUpKinds.has(value));
     const recipientScopes = [
       ...(Object.keys(branchScope).length ? [branchScope] : []),
       ...(user?.id ? [{ targetUserId: user.id }] : []),
@@ -354,17 +387,30 @@ export function buildNotificationWhere({
     const recipientScope = recipientScopes.length > 1
       ? { OR: recipientScopes }
       : recipientScopes[0] || { targetUserId: "__unresolved_branch_admin__" };
+    const ownUserScope = user?.id ? { targetUserId: user.id } : { targetUserId: "__unresolved_branch_admin__" };
+
+    // Follow-up reminders belong to the assigned lead user only.
+    if (normalizedKind && followUpKinds.has(normalizedKind)) {
+      return {
+        ...ownUserScope,
+        kind: normalizedKind,
+        ...(unreadOnly ? { read: false } : {}),
+      };
+    }
 
     if (user?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN") {
       const salesKinds = Array.from(SALES_ADMIN_VISIBLE_NOTIFICATION_KINDS);
       const branchKinds = Array.from(BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS);
-      const ownUserScope = user?.id ? { targetUserId: user.id } : { targetUserId: "__unresolved_branch_admin__" };
+      const branchKindsWithoutFollowUps = branchKinds.filter((value) => !followUpKinds.has(value));
+      const ownKinds = [...new Set([...branchKinds, ...salesKinds])];
       const scope = normalizedKind
         ? (salesKinds.includes(normalizedKind) ? ownUserScope : recipientScope)
         : {
             OR: [
-              ...(Object.keys(branchScope).length ? [{ ...branchScope, kind: { in: branchKinds } }] : []),
-              ...(user?.id ? [{ targetUserId: user.id, kind: { in: [...branchKinds, ...salesKinds] } }] : []),
+              ...(Object.keys(branchScope).length && branchKindsWithoutFollowUps.length
+                ? [{ ...branchScope, kind: { in: branchKindsWithoutFollowUps } }]
+                : []),
+              ...(user?.id ? [{ targetUserId: user.id, kind: { in: ownKinds } }] : []),
             ],
           };
 
@@ -386,8 +432,19 @@ export function buildNotificationWhere({
       };
     }
 
+    const scope = !normalizedKind && Array.from(visibleKinds).some((value) => followUpKinds.has(value))
+      ? {
+          OR: [
+            ...(Object.keys(branchScope).length && branchOnlyKinds.length
+              ? [{ ...branchScope, kind: { in: branchOnlyKinds } }]
+              : []),
+            ...(user?.id ? [{ targetUserId: user.id, kind: { in: Array.from(visibleKinds) } }] : []),
+          ],
+        }
+      : recipientScope;
+
     return {
-      ...recipientScope,
+      ...scope,
       ...(!normalizedKind
         ? {
             NOT: {
@@ -1351,13 +1408,14 @@ export async function listNotifications(query = {}, user = {}) {
   await ensureSequentialCourseSchedulingNotifications(user);
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
-  const baseWhere = buildNotificationWhere({
+  const leadFollowUpOwnershipFilter = await buildBranchAdminFollowUpOwnershipFilter(user, branchScope);
+  const baseWhere = combineNotificationWhere(buildNotificationWhere({
     user,
     branchScope,
     visibleKinds,
     unreadOnly,
     kind,
-  });
+  }), leadFollowUpOwnershipFilter);
   const dateWhere = normalizeString(user?.role).toUpperCase() === "SALES_ADMIN"
     ? await getSalesAdminDateFilter(query, user)
     : null;
@@ -1367,6 +1425,7 @@ export async function listNotifications(query = {}, user = {}) {
   const where = combineNotificationWhere(baseWhere, statusWhere, dateWhere);
   const filteredUnreadWhere = combineNotificationWhere(
     buildNotificationWhere({ user, branchScope, visibleKinds, unreadOnly: true, kind }),
+    leadFollowUpOwnershipFilter,
     dateWhere,
   );
   const sort = normalizeString(query.sort).toLowerCase();
@@ -1420,9 +1479,10 @@ export async function listNotifications(query = {}, user = {}) {
       unreadOnly,
       kind,
     });
-    const scopedWideWhere = combineNotificationWhere(wideWhere, statusWhere, dateWhere);
+    const scopedWideWhere = combineNotificationWhere(wideWhere, leadFollowUpOwnershipFilter, statusWhere, dateWhere);
     const wideUnreadWhere = combineNotificationWhere(
       buildNotificationWhere({ user, branchScope: {}, visibleKinds, unreadOnly: true, kind }),
+      leadFollowUpOwnershipFilter,
       dateWhere,
     );
 
@@ -1493,12 +1553,15 @@ export async function markNotificationsAsRead(
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
 
-  const accessScope = buildNotificationWhere({
-    user,
-    branchScope,
-    visibleKinds,
-    unreadOnly: !hasIds,
-  });
+  const accessScope = combineNotificationWhere(
+    buildNotificationWhere({
+      user,
+      branchScope,
+      visibleKinds,
+      unreadOnly: !hasIds,
+    }),
+    await buildBranchAdminFollowUpOwnershipFilter(user, branchScope),
+  );
   const where = hasIds
     ? {
         AND: [
@@ -1528,12 +1591,15 @@ export async function getUnreadNotificationCount(
 ) {
   const branchScope = await buildBranchAdminScope(user);
   const visibleKinds = getVisibleNotificationKindsForRole(user);
-  const where = buildNotificationWhere({
-    user,
-    branchScope,
-    visibleKinds,
-    unreadOnly: true,
-  });
+  const where = combineNotificationWhere(
+    buildNotificationWhere({
+      user,
+      branchScope,
+      visibleKinds,
+      unreadOnly: true,
+    }),
+    await buildBranchAdminFollowUpOwnershipFilter(user, branchScope),
+  );
 
   let count = 0;
   try {
