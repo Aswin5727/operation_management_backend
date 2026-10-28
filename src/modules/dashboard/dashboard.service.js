@@ -1226,12 +1226,13 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
   return result;
 }
 
-function analyticsDateRange(period) {
+function analyticsDateRange(period, options = {}) {
   const today = getIstToday();
   const todayParts = toIstDateParts();
   const end = new Date(`${today}T00:00:00Z`);
   const normalized = ["daily", "weekly", "monthly"].includes(period) ? period : "monthly";
   const start = new Date(end);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(options.startDate || "") && /^\d{4}-\d{2}-\d{2}$/.test(options.endDate || "") && options.startDate <= options.endDate) return { period: normalized, startDate: options.startDate, endDate: options.endDate };
   if (normalized === "daily") {
     const weekStart = getIstWeekStart();
     return { period: normalized, startDate: weekStart, endDate: addDays(weekStart, 6) };
@@ -1275,7 +1276,7 @@ function crmBucketKey(value, period) {
 }
 
 async function getSuperAdminSalesCrmAnalytics(options = {}) {
-  const range = analyticsDateRange(normalizeString(options.period).toLowerCase());
+  const range = analyticsDateRange(normalizeString(options.period).toLowerCase(), options);
   const requestedBranch = normalizeString(options.branchId);
   const branch = requestedBranch ? await prisma.branch.findFirst({ where: { OR: [{ id: requestedBranch }, { branchId: requestedBranch }], status: "ACTIVE" }, select: { id: true, branchId: true, branchName: true } }) : null;
   if (requestedBranch && !branch) throw new AppError("Branch not found or inactive", 404);
