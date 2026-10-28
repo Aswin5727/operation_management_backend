@@ -557,6 +557,16 @@ export async function listDiscontinuationRequests(actor, query = {}) {
     if (!branch?.id) throw new AppError("Branch profile not found", 404);
     where.branchId = branch.id;
     if (!text(query.status)) where.status = { not: "CANCELLED" };
+  } else if (role === "SUPER_ADMIN" && text(query.branchId)) {
+    // Super Admin can inspect one branch from the embedded Branch Dashboard.
+    // Scope financial/discontinuation rows to that branch as well; otherwise
+    // the branch dashboard would show the global approved outstanding amount.
+    const branch = await prisma.branch.findFirst({
+      where: { OR: [{ id: text(query.branchId) }, { branchId: text(query.branchId) }] },
+      select: { id: true },
+    });
+    if (!branch?.id) throw new AppError("Branch not found", 404);
+    where.branchId = branch.id;
   } else if (role === "STUDENT") {
     where.requestedByUserId = actor.id;
   }
