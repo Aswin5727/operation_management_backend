@@ -81,7 +81,14 @@ async function createSalesAdmin(payload, auth) {
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, salesAdminId: user.userCode, branches: user.salesAdminBranches.map(({ branch }) => branch), invitationSent: true };
 }
 
-async function listSalesAdmins() { const users = await prisma.user.findMany({ where: { role: "SALES_ADMIN" }, orderBy: { createdAt: "desc" }, select: USER_SELECT }); return { data: users.map((user) => ({ ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address, branches: user.salesAdminBranches.map(({ branch }) => branch) })) }; }
+async function listSalesAdmins(includeCombinedBranchAdmins = false) {
+  const users = await prisma.user.findMany({ where: { role: "SALES_ADMIN" }, orderBy: { createdAt: "desc" }, select: USER_SELECT });
+  const salesRows = users.map((user) => ({ ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address, branches: user.salesAdminBranches.map(({ branch }) => branch) }));
+  if (!includeCombinedBranchAdmins) return { data: salesRows };
+  const combinedBranches = await prisma.branch.findMany({ where: { status: "ACTIVE", roleAccess: "BRANCH_ADMIN_SALES_ADMIN", adminUserId: { not: null } }, orderBy: { createdAt: "desc" }, select: { id: true, branchId: true, branchName: true, status: true, timezone: true, branchCountry: true, branchState: true, branchCity: true, branchAddress: true, adminUser: { select: { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, createdAt: true, updatedAt: true, passwordChangedAt: true, lastLoginAt: true } } } });
+  const branchRows = combinedBranches.filter((branch) => branch.adminUser?.active && branch.adminUser?.role === "BRANCH_ADMIN").map((branch) => ({ ...toSafeUser(branch.adminUser), country: branch.adminUser.country || branch.branchCountry || "", state: branch.adminUser.state || branch.branchState || "", city: branch.adminUser.city || branch.branchCity || "", address: branch.adminUser.address || branch.branchAddress || "", branches: [{ id: branch.id, branchId: branch.branchId, branchName: branch.branchName, status: branch.status, timezone: branch.timezone, branchCountry: branch.branchCountry, branchState: branch.branchState, branchCity: branch.branchCity, branchAddress: branch.branchAddress }], accountType: "BRANCH_ADMIN_SALES_ADMIN" }));
+  return { data: [...salesRows, ...branchRows] };
+}
 
 async function updateSalesAdmin(userId, payload, auth) {
   const existing = await prisma.user.findFirst({ where: { id: userId, role: "SALES_ADMIN" }, select: { id: true, country: true, state: true, city: true, address: true } });
