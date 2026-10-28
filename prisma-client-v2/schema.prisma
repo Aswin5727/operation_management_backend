@@ -1844,7 +1844,7 @@ enum LeadStage {
 
 model Lead {
   id                    String                 @id @default(cuid())
-  leadId                String                 @unique
+  leadId                String
   studentName           String
   phoneNumber           String
   alternativeNumber     String?
@@ -1895,6 +1895,7 @@ model Lead {
   followUpReminders     FollowUpReminder[]
   salesCrmBatchRequests SalesCrmBatchRequest[]
 
+  @@unique([branchId, leadId])
   @@index([branchId, createdAt])
   @@index([courseId])
   @@index([stage, status])

@@ -244,12 +244,6 @@ async function getDashboard(userId, query = {}, auth = {}) {
   if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) throw new AppError("Dashboard date range is invalid", 400);
   if (from > to) throw new AppError("Dashboard start date cannot be after end date", 400);
 
-  if (String(auth.role || "").toUpperCase() === "SALES_ADMIN") {
-    void checkPendingHotAdmissionReminder(userId).catch((error) => {
-      console.error("Unable to create daily pending admission reminder:", error?.message || error);
-    });
-  }
-
   const leadScope = { deletedAt: null, branchId: { in: branchIds }, assignedToId: userId };
   const periodScope = { createdAt: { gte: from, lte: to } };
   const selectedLeadScope = { ...leadScope, ...periodScope };
@@ -390,7 +384,8 @@ function salesAdminReminderDate(now = new Date()) {
 async function checkPendingHotAdmissionReminderOnce(actorOrUserId) {
   const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
   const userId = actor.userId;
-  const branchIds = String(actor.role || "").toUpperCase() === "BRANCH_ADMIN"
+  const role = String(actor.role || "").toUpperCase();
+  const branchIds = role === "BRANCH_ADMIN"
     ? [actor.branchId]
     : (await prisma.salesAdminBranch.findMany({ where: { salesAdminId: userId, branch: { status: "ACTIVE" } }, select: { branchId: true } })).map(({ branchId }) => branchId);
   const where = { branchId: { in: branchIds }, assignedToId: userId, stage: "HOT", status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] }, deletedAt: null };
@@ -404,28 +399,48 @@ async function checkPendingHotAdmissionReminderOnce(actorOrUserId) {
   const reminderDate = salesAdminReminderDate();
   const notificationDescription = `PENDING_HOT_ADMISSIONS:${reminderDate}`;
   const result = await prisma.$transaction(async (tx) => {
-    const claim = await tx.salesAdminAdmissionReminder.createMany({ data: [{ salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate }], skipDuplicates: true });
-    if (!claim.count) {
-      const existing = await tx.salesAdminAdmissionReminder.findUnique({ where: { salesAdminId_notificationType_reminderDate: { salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate } }, select: { notificationId: true } });
-      return { notification: existing?.notificationId ? await tx.notification.findUnique({ where: { id: existing.notificationId } }) : null, created: false };
+    const reminderKey = { salesAdminId_notificationType_reminderDate: { salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate } };
+    const existing = await tx.salesAdminAdmissionReminder.findUnique({ where: reminderKey, select: { notificationId: true } });
+    if (!students.length) {
+      if (!existing?.notificationId) return { notification: null, created: false, updated: false, removed: false };
+      const deleted = await tx.notification.deleteMany({ where: { id: existing.notificationId, kind: "PENDING_STUDENT_ADMISSION_REMINDER", targetUserId: userId, requestDescription: notificationDescription } });
+      if (deleted.count) await tx.salesAdminAdmissionReminder.update({ where: reminderKey, data: { notificationId: null } });
+      return { notification: null, created: false, updated: false, removed: deleted.count > 0 };
     }
-    if (!students.length) return { notification: null, created: false };
+
+    const studentDetails = students.map((student) => {
+      const identifier = student.studentId ? `Student ID: ${student.studentId}` : `Lead ID: ${student.leadId}`;
+      return `• ${identifier} | Name: ${student.studentName}`;
+    }).join("\n");
+    const message = `You have ${students.length} HOT lead${students.length === 1 ? "" : "s"} whose student admissions are still pending.\n\nPending students:\n${studentDetails}\n\nPlease review the list and complete the admission process.`;
+    const claim = await tx.salesAdminAdmissionReminder.createMany({ data: [{ salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate }], skipDuplicates: true });
+    if (existing?.notificationId) {
+      const existingNotification = await tx.notification.findUnique({ where: { id: existing.notificationId }, select: { id: true, message: true, kind: true, targetUserId: true, requestDescription: true } });
+      if (existingNotification?.kind === "PENDING_STUDENT_ADMISSION_REMINDER" && existingNotification.targetUserId === userId && existingNotification.requestDescription === notificationDescription) {
+        const updated = existingNotification.message !== message;
+        const notification = updated
+          ? await tx.notification.update({ where: { id: existingNotification.id }, data: { message, read: false, readAt: null } })
+          : existingNotification;
+        return { notification, created: false, updated, removed: false };
+      }
+    }
+    if (!claim.count && !existing) return { notification: null, created: false };
     const created = await tx.notification.create({ data: {
       kind: "PENDING_STUDENT_ADMISSION_REMINDER",
       tone: "blue",
       title: "Good Morning! Pending HOT Student Admissions",
-      message: `You have ${students.length} HOT lead${students.length === 1 ? "" : "s"} whose student admissions are still pending. Please review the list and complete the admission process.`,
+      message,
       actionLabel: "View Pending Admissions",
       targetUserId: userId,
-      targetBranchId: String(actor.role || "").toUpperCase() === "BRANCH_ADMIN" ? actor.branchId : null,
-      targetBranchName: String(actor.role || "").toUpperCase() === "BRANCH_ADMIN" ? (students[0]?.branchName || leads[0]?.branch?.branchName || null) : null,
+      targetBranchId: role === "BRANCH_ADMIN" ? actor.branchId : null,
+      targetBranchName: role === "BRANCH_ADMIN" ? (students[0]?.branchName || leads[0]?.branch?.branchName || null) : null,
       createdBy: userId,
       requestDescription: notificationDescription,
     } });
-    await tx.salesAdminAdmissionReminder.update({ where: { salesAdminId_notificationType_reminderDate: { salesAdminId: userId, notificationType: "PENDING_HOT_ADMISSIONS", reminderDate } }, data: { notificationId: created.id } });
-    return { notification: created, created: true };
+    await tx.salesAdminAdmissionReminder.update({ where: reminderKey, data: { notificationId: created.id } });
+    return { notification: created, created: true, updated: false, removed: false };
   });
-  return { count: students.length, students, notificationCreated: result.created, notification: result.notification };
+  return { count: students.length, students, notificationCreated: result.created, notificationUpdated: result.updated || false, notificationRemoved: result.removed || false, notification: result.notification };
 }
 
 async function checkPendingHotAdmissionReminder(actorOrUserId) {

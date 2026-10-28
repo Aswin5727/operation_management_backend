@@ -124071,10 +124071,11 @@ export namespace Prisma {
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    leadId?: string
+    branchId_leadId?: LeadBranchIdLeadIdCompoundUniqueInput
     AND?: LeadWhereInput | LeadWhereInput[]
     OR?: LeadWhereInput[]
     NOT?: LeadWhereInput | LeadWhereInput[]
+    leadId?: StringFilter<"Lead"> | string
     studentName?: StringFilter<"Lead"> | string
     phoneNumber?: StringFilter<"Lead"> | string
     alternativeNumber?: StringNullableFilter<"Lead"> | string | null
@@ -124124,7 +124125,7 @@ export namespace Prisma {
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
-  }, "id" | "leadId">
+  }, "id" | "branchId_leadId">
 
   export type LeadOrderByWithAggregationInput = {
     id?: SortOrder
@@ -142376,6 +142377,11 @@ export namespace Prisma {
     in?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
     notIn?: $Enums.LeadStage[] | ListEnumLeadStageFieldRefInput<$PrismaModel>
     not?: NestedEnumLeadStageFilter<$PrismaModel> | $Enums.LeadStage
+  }
+
+  export type LeadBranchIdLeadIdCompoundUniqueInput = {
+    branchId: string
+    leadId: string
   }
 
   export type LeadCountOrderByAggregateInput = {
