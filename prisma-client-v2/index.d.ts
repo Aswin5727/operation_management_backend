@@ -576,7 +576,8 @@ export const NotificationKind: {
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
   SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
-  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED'
+  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED',
+  LEAD_DELETED: 'LEAD_DELETED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -98216,6 +98217,9 @@ export namespace Prisma {
     createdById: string | null
     updatedById: string | null
     deletedAt: Date | null
+    deletedById: string | null
+    deletedByName: string | null
+    deletedByRole: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -98258,6 +98262,9 @@ export namespace Prisma {
     createdById: string | null
     updatedById: string | null
     deletedAt: Date | null
+    deletedById: string | null
+    deletedByName: string | null
+    deletedByRole: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -98300,6 +98307,9 @@ export namespace Prisma {
     createdById: number
     updatedById: number
     deletedAt: number
+    deletedById: number
+    deletedByName: number
+    deletedByRole: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -98352,6 +98362,9 @@ export namespace Prisma {
     createdById?: true
     updatedById?: true
     deletedAt?: true
+    deletedById?: true
+    deletedByName?: true
+    deletedByRole?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -98394,6 +98407,9 @@ export namespace Prisma {
     createdById?: true
     updatedById?: true
     deletedAt?: true
+    deletedById?: true
+    deletedByName?: true
+    deletedByRole?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -98436,6 +98452,9 @@ export namespace Prisma {
     createdById?: true
     updatedById?: true
     deletedAt?: true
+    deletedById?: true
+    deletedByName?: true
+    deletedByRole?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -98565,6 +98584,9 @@ export namespace Prisma {
     createdById: string
     updatedById: string | null
     deletedAt: Date | null
+    deletedById: string | null
+    deletedByName: string | null
+    deletedByRole: string | null
     createdAt: Date
     updatedAt: Date
     _count: LeadCountAggregateOutputType | null
@@ -98626,6 +98648,9 @@ export namespace Prisma {
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
+    deletedById?: boolean
+    deletedByName?: boolean
+    deletedByRole?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -98682,6 +98707,9 @@ export namespace Prisma {
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
+    deletedById?: boolean
+    deletedByName?: boolean
+    deletedByRole?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -98729,6 +98757,9 @@ export namespace Prisma {
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
+    deletedById?: boolean
+    deletedByName?: boolean
+    deletedByRole?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     branch?: boolean | BranchDefaultArgs<ExtArgs>
@@ -98776,11 +98807,14 @@ export namespace Prisma {
     createdById?: boolean
     updatedById?: boolean
     deletedAt?: boolean
+    deletedById?: boolean
+    deletedByName?: boolean
+    deletedByRole?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "nextFollowUpTime" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "admissionStatus" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "studentName" | "phoneNumber" | "alternativeNumber" | "email" | "qualification" | "location" | "callType" | "otherCallType" | "status" | "otherStatus" | "stage" | "otherStage" | "courseId" | "otherCourse" | "nextFollowUpDate" | "nextFollowUpTime" | "lastCallStatus" | "branchId" | "leadSource" | "otherLeadSource" | "referredBy" | "referredName" | "paymentStatus" | "paymentAmount" | "admissionStatus" | "trainingMode" | "classSchedule" | "courseMode" | "locationDistance" | "otherLocationDistance" | "leadDate" | "assignedToId" | "createdById" | "updatedById" | "deletedAt" | "deletedById" | "deletedByName" | "deletedByRole" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     branch?: boolean | BranchDefaultArgs<ExtArgs>
     course?: boolean | BranchCourseDefaultArgs<ExtArgs>
@@ -98867,6 +98901,9 @@ export namespace Prisma {
       createdById: string
       updatedById: string | null
       deletedAt: Date | null
+      deletedById: string | null
+      deletedByName: string | null
+      deletedByRole: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["lead"]>
@@ -99342,6 +99379,9 @@ export namespace Prisma {
     readonly createdById: FieldRef<"Lead", 'String'>
     readonly updatedById: FieldRef<"Lead", 'String'>
     readonly deletedAt: FieldRef<"Lead", 'DateTime'>
+    readonly deletedById: FieldRef<"Lead", 'String'>
+    readonly deletedByName: FieldRef<"Lead", 'String'>
+    readonly deletedByRole: FieldRef<"Lead", 'String'>
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
@@ -120667,6 +120707,9 @@ export namespace Prisma {
     createdById: 'createdById',
     updatedById: 'updatedById',
     deletedAt: 'deletedAt',
+    deletedById: 'deletedById',
+    deletedByName: 'deletedByName',
+    deletedByRole: 'deletedByRole',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -129393,6 +129436,9 @@ export namespace Prisma {
     createdById?: StringFilter<"Lead"> | string
     updatedById?: StringNullableFilter<"Lead"> | string | null
     deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    deletedById?: StringNullableFilter<"Lead"> | string | null
+    deletedByName?: StringNullableFilter<"Lead"> | string | null
+    deletedByRole?: StringNullableFilter<"Lead"> | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
@@ -129448,6 +129494,9 @@ export namespace Prisma {
     createdById?: SortOrder
     updatedById?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletedByName?: SortOrderInput | SortOrder
+    deletedByRole?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     branch?: BranchOrderByWithRelationInput
@@ -129507,6 +129556,9 @@ export namespace Prisma {
     createdById?: StringFilter<"Lead"> | string
     updatedById?: StringNullableFilter<"Lead"> | string | null
     deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    deletedById?: StringNullableFilter<"Lead"> | string | null
+    deletedByName?: StringNullableFilter<"Lead"> | string | null
+    deletedByRole?: StringNullableFilter<"Lead"> | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
@@ -129562,6 +129614,9 @@ export namespace Prisma {
     createdById?: SortOrder
     updatedById?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletedByName?: SortOrderInput | SortOrder
+    deletedByRole?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeadCountOrderByAggregateInput
@@ -129612,6 +129667,9 @@ export namespace Prisma {
     createdById?: StringWithAggregatesFilter<"Lead"> | string
     updatedById?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    deletedById?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    deletedByName?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    deletedByRole?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
   }
@@ -140493,6 +140551,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -140548,6 +140609,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -140593,6 +140657,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -140648,6 +140715,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -140698,6 +140768,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -140735,6 +140808,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -140777,6 +140853,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -148532,6 +148611,9 @@ export namespace Prisma {
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletedByName?: SortOrder
+    deletedByRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -148578,6 +148660,9 @@ export namespace Prisma {
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletedByName?: SortOrder
+    deletedByRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -148620,6 +148705,9 @@ export namespace Prisma {
     createdById?: SortOrder
     updatedById?: SortOrder
     deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletedByName?: SortOrder
+    deletedByRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -159776,6 +159864,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -159829,6 +159920,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -159972,6 +160066,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -160025,6 +160122,9 @@ export namespace Prisma {
     assignedToId?: string | null
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -160080,6 +160180,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -160133,6 +160236,9 @@ export namespace Prisma {
     assignedToId?: string | null
     createdById: string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -161264,6 +161370,9 @@ export namespace Prisma {
     createdById?: StringFilter<"Lead"> | string
     updatedById?: StringNullableFilter<"Lead"> | string | null
     deletedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    deletedById?: StringNullableFilter<"Lead"> | string | null
+    deletedByName?: StringNullableFilter<"Lead"> | string | null
+    deletedByRole?: StringNullableFilter<"Lead"> | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }
@@ -163090,6 +163199,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     course: BranchCourseCreateNestedOneWithoutLeadsInput
@@ -163143,6 +163255,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -165040,6 +165155,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -165094,6 +165212,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -165657,6 +165778,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -165711,6 +165835,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -168408,6 +168535,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -168461,6 +168591,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -175011,6 +175144,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -175065,6 +175201,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -175975,6 +176114,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -176029,6 +176171,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -191258,6 +191403,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -191312,6 +191460,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
@@ -191531,6 +191682,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -191585,6 +191739,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
@@ -191776,6 +191933,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -191830,6 +191990,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -192015,6 +192178,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -192069,6 +192235,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -192244,6 +192413,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -192298,6 +192470,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -192483,6 +192658,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -192537,6 +192715,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -192712,6 +192893,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -192766,6 +192950,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -193010,6 +193197,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -193064,6 +193254,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -193306,6 +193499,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -193360,6 +193556,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -193779,6 +193978,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -193833,6 +194035,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -194380,6 +194585,9 @@ export namespace Prisma {
     otherLocationDistance?: string | null
     leadDate: Date | string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     branch: BranchCreateNestedOneWithoutLeadsInput
@@ -194434,6 +194642,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
@@ -194619,6 +194830,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -194673,6 +194887,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -197726,6 +197943,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -197801,6 +198021,9 @@ export namespace Prisma {
     assignedToId?: string | null
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -197842,6 +198065,9 @@ export namespace Prisma {
     assignedToId?: string | null
     createdById: string
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -198946,6 +199172,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -198999,6 +199228,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -199048,6 +199280,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -199187,6 +199422,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -199240,6 +199478,9 @@ export namespace Prisma {
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -199289,6 +199530,9 @@ export namespace Prisma {
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -199326,6 +199570,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -199379,6 +199626,9 @@ export namespace Prisma {
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -199428,6 +199678,9 @@ export namespace Prisma {
     assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
     createdById?: StringFieldUpdateOperationsInput | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -200124,6 +200377,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -201376,6 +201632,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
@@ -201429,6 +201688,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -201478,6 +201740,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -202613,6 +202878,9 @@ export namespace Prisma {
     createdById: string
     updatedById?: string | null
     deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletedByName?: string | null
+    deletedByRole?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -203632,6 +203900,9 @@ export namespace Prisma {
     otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
     leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
@@ -203685,6 +203956,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
@@ -203734,6 +204008,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     updatedById?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedByRole?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

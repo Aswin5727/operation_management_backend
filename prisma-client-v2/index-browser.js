@@ -1419,6 +1419,9 @@ exports.Prisma.LeadScalarFieldEnum = {
   createdById: 'createdById',
   updatedById: 'updatedById',
   deletedAt: 'deletedAt',
+  deletedById: 'deletedById',
+  deletedByName: 'deletedByName',
+  deletedByRole: 'deletedByRole',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1773,7 +1776,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
   SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
-  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED'
+  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED',
+  LEAD_DELETED: 'LEAD_DELETED'
 };
 
 exports.SalesCrmBatchRequestStatus = exports.$Enums.SalesCrmBatchRequestStatus = {

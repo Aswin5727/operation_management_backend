@@ -6,7 +6,7 @@ const response = (res, message, data, status = 200, meta = undefined) => res.sta
 export const listLeadsHandler = asyncHandler(async (req, res) => { const result = await listLeads(req.query, req.auth); return response(res, "Leads fetched successfully", result.data, 200, result.meta); });
 export const checkLeadDuplicatesHandler = asyncHandler(async (req, res) => response(res, 'Lead duplicate check completed', await checkLeadDuplicates(req.query, req.auth)));
 export const createLeadHandler = asyncHandler(async (req, res) => response(res, "Lead created successfully", await createLead(req.body || {}, req.auth), 201));
-export const getLeadHandler = asyncHandler(async (req, res) => response(res, "Lead fetched successfully", await getLead(req.params.id, req.auth)));
+export const getLeadHandler = asyncHandler(async (req, res) => response(res, "Lead fetched successfully", await getLead(req.params.id, req.auth, req.query?.includeDeleted === "true")));
 export const updateLeadHandler = asyncHandler(async (req, res) => response(res, "Lead updated successfully", await updateLead(req.params.id, req.body || {}, req.auth)));
 export const deleteLeadHandler = asyncHandler(async (req, res) => response(res, "Lead deleted successfully", await deleteLead(req.params.id, req.auth)));
 export const addFollowUpHandler = asyncHandler(async (req, res) => response(res, "Follow-up added successfully", await addFollowUp(req.params.id, req.body || {}, req.auth), 201));

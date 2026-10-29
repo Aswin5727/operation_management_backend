@@ -1910,6 +1910,9 @@ model Lead {
   createdById       String
   updatedById       String?
   deletedAt         DateTime?
+  deletedById       String?
+  deletedByName     String?
+  deletedByRole     String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   branch            Branch             @relation(fields: [branchId], references: [id], onDelete: Restrict)
@@ -1934,6 +1937,7 @@ model Lead {
   @@index([assignedToId, status])
   @@index([phoneNumber])
   @@index([leadDate])
+  @@index([deletedAt, branchId])
 }
 
 model LeadIdSequence {
@@ -2127,6 +2131,7 @@ enum NotificationKind {
   SALES_CRM_BATCH_REQUEST
   SALES_CRM_BATCH_REQUEST_UPDATE
   CALL_RECORDING_SHARED
+  LEAD_DELETED
 }
 
 enum SalesCrmBatchRequestStatus {
