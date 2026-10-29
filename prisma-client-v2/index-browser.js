@@ -1423,6 +1423,15 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LeadIdSequenceScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  prefix: 'prefix',
+  nextNumber: 'nextNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.LeadFollowUpScalarFieldEnum = {
   id: 'id',
   leadId: 'leadId',
@@ -1911,6 +1920,7 @@ exports.Prisma.ModelName = {
   ExamAttempt: 'ExamAttempt',
   ExamAnswer: 'ExamAnswer',
   Lead: 'Lead',
+  LeadIdSequence: 'LeadIdSequence',
   LeadFollowUp: 'LeadFollowUp',
   LeadStageHistory: 'LeadStageHistory',
   LeadActivity: 'LeadActivity',
