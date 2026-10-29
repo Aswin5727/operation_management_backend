@@ -101,6 +101,8 @@ export async function validateAcademicImportValues(tx, student, course, enrollme
 }
 
 export async function applyAcademicImportValues(tx, student, course, enrollment, data) {
+  const values = Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value));
+  if (!values.length) return;
   const academic = await context(tx, student, course, enrollment?.batchId || student.batchId);
   if (!academic.items.length) return;
   const scheduleByItem = new Map();
