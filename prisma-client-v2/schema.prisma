@@ -64,6 +64,8 @@ model User {
   leadStageChanges               LeadStageHistory[]             @relation("LeadStageHistoryCreatedBy")
   leadRecordings                 LeadRecording[]                @relation("LeadRecordingCreatedBy")
   followUpReminders              FollowUpReminder[]             @relation("FollowUpReminderRecipient")
+  leadRecordingSharesSent        LeadRecordingShare[]           @relation("LeadRecordingShareSender")
+  leadRecordingSharesReceived    LeadRecordingShare[]           @relation("LeadRecordingShareRecipient")
 
   @@index([role])
   @@index([active])
@@ -138,6 +140,7 @@ model Branch {
   salesAdminBranches         SalesAdminBranch[]
   salesCrmBatchRequests      SalesCrmBatchRequest[]
   leads                      Lead[]
+  leadRecordingShares        LeadRecordingShare[]
 
   @@index([status])
   @@index([branchName])
@@ -1907,6 +1910,9 @@ model Lead {
   createdById           String
   updatedById           String?
   deletedAt             DateTime?
+  deletedById           String?
+  deletedByName         String?
+  deletedByRole         String?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   branch                Branch                 @relation(fields: [branchId], references: [id], onDelete: Restrict)
@@ -1918,6 +1924,7 @@ model Lead {
   stageHistory          LeadStageHistory[]
   activities            LeadActivity[]
   recordings            LeadRecording[]
+  recordingShares       LeadRecordingShare[]
   convertedStudent      BranchStudent?         @relation("LeadBranchStudentAdmission")
   followUpReminders     FollowUpReminder[]
   salesCrmBatchRequests SalesCrmBatchRequest[]
@@ -1930,6 +1937,7 @@ model Lead {
   @@index([assignedToId, status])
   @@index([phoneNumber])
   @@index([leadDate])
+  @@index([deletedAt, branchId])
 }
 
 model LeadIdSequence {
@@ -1990,20 +1998,59 @@ model LeadActivity {
 }
 
 model LeadRecording {
-  id           String        @id @default(cuid())
+  id           String                   @id @default(cuid())
   leadId       String
   followUpId   String?
   originalName String
-  storageKey   String        @unique
+  storageKey   String                   @unique
   mimeType     String
   sizeBytes    Int
   createdById  String
-  createdAt    DateTime      @default(now())
-  lead         Lead          @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  followUp     LeadFollowUp? @relation(fields: [followUpId], references: [id], onDelete: Cascade)
-  createdBy    User          @relation("LeadRecordingCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt    DateTime                 @default(now())
+  lead         Lead                     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  followUp     LeadFollowUp?            @relation(fields: [followUpId], references: [id], onDelete: Cascade)
+  createdBy    User                     @relation("LeadRecordingCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  shareItems   LeadRecordingShareItem[]
 
   @@index([leadId, createdAt])
+}
+
+model LeadRecordingShare {
+  id              String                   @id @default(cuid())
+  leadId          String
+  branchId        String
+  senderUserId    String
+  senderRole      String
+  recipientUserId String
+  recipientRole   String
+  message         String?
+  idempotencyKey  String                   @unique
+  sharedAt        DateTime                 @default(now())
+  createdAt       DateTime                 @default(now())
+  lead            Lead                     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  branch          Branch                   @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  sender          User                     @relation("LeadRecordingShareSender", fields: [senderUserId], references: [id], onDelete: Restrict)
+  recipient       User                     @relation("LeadRecordingShareRecipient", fields: [recipientUserId], references: [id], onDelete: Restrict)
+  items           LeadRecordingShareItem[]
+
+  @@index([leadId, createdAt])
+  @@index([recipientUserId, createdAt])
+  @@index([senderUserId, createdAt])
+  @@index([branchId, createdAt])
+}
+
+model LeadRecordingShareItem {
+  id           String             @id @default(cuid())
+  shareId      String
+  recordingId  String
+  originalName String
+  uploadedAt   DateTime
+  createdAt    DateTime           @default(now())
+  share        LeadRecordingShare @relation(fields: [shareId], references: [id], onDelete: Cascade)
+  recording    LeadRecording      @relation(fields: [recordingId], references: [id], onDelete: Restrict)
+
+  @@unique([shareId, recordingId])
+  @@index([recordingId, createdAt])
 }
 
 model FollowUpReminder {
@@ -2084,6 +2131,8 @@ enum NotificationKind {
   PENDING_STUDENT_ADMISSION_REMINDER
   SALES_CRM_BATCH_REQUEST
   SALES_CRM_BATCH_REQUEST_UPDATE
+  CALL_RECORDING_SHARED
+  LEAD_DELETED
 }
 
 enum SalesCrmBatchRequestStatus {
