@@ -1,4 +1,4 @@
-﻿import courseImportRoutes from "../modules/branchCourses/courseImport.routes.js";
+import courseImportRoutes from "../modules/branchCourses/courseImport.routes.js";
 import express from "express";
 
 import attendanceRoutes from "../modules/attendance/attendance.routes.js";
@@ -33,6 +33,7 @@ import salesAdminRoutes from "../modules/salesAdmin/salesAdmin.routes.js";
 import leadsRoutes from "../modules/leads/leads.routes.js";
 import salesCrmReportRoutes from "../modules/salesCrm/salesCrmReport.routes.js";
 import salesCrmReportSubmissionRoutes from "../modules/salesCrm/salesCrmReportSubmission.routes.js";
+import leadRecordingShareRoutes from "../modules/leads/leadRecordingShare.routes.js";
 const router = express.Router();
 router.use("/branch-holidays", branchHolidaysRoutes);
 router.use("/institute-leaves", instituteLeaveRoutes);
@@ -72,6 +73,7 @@ router.use("/faculty-skills", facultySkillsRoutes);
 router.use("/student-discontinuation", studentDiscontinuationRoutes);
 router.use("/sales-admins", salesAdminRoutes);
 router.use("/sales-crm-report-submissions", salesCrmReportSubmissionRoutes);
+router.use("/lead-recording-shares", leadRecordingShareRoutes);
 router.use("/leads", leadsRoutes);
 router.use("/sales-crm/reports", salesCrmReportRoutes);
 

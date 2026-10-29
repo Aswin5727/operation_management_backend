@@ -1,0 +1,2 @@
+ALTER TYPE "public"."NotificationKind"
+  ADD VALUE IF NOT EXISTS 'CALL_RECORDING_SHARED';

@@ -1468,6 +1468,29 @@ exports.Prisma.LeadRecordingScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.LeadRecordingShareScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  branchId: 'branchId',
+  senderUserId: 'senderUserId',
+  senderRole: 'senderRole',
+  recipientUserId: 'recipientUserId',
+  recipientRole: 'recipientRole',
+  message: 'message',
+  idempotencyKey: 'idempotencyKey',
+  sharedAt: 'sharedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LeadRecordingShareItemScalarFieldEnum = {
+  id: 'id',
+  shareId: 'shareId',
+  recordingId: 'recordingId',
+  originalName: 'originalName',
+  uploadedAt: 'uploadedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.FollowUpReminderScalarFieldEnum = {
   id: 'id',
   leadId: 'leadId',
@@ -1740,7 +1763,8 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
-  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE'
+  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
+  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED'
 };
 
 exports.SalesCrmBatchRequestStatus = exports.$Enums.SalesCrmBatchRequestStatus = {
@@ -1915,6 +1939,8 @@ exports.Prisma.ModelName = {
   LeadStageHistory: 'LeadStageHistory',
   LeadActivity: 'LeadActivity',
   LeadRecording: 'LeadRecording',
+  LeadRecordingShare: 'LeadRecordingShare',
+  LeadRecordingShareItem: 'LeadRecordingShareItem',
   FollowUpReminder: 'FollowUpReminder',
   MotivationMailHistory: 'MotivationMailHistory',
   StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',

@@ -379,6 +379,16 @@ export type LeadActivity = $Result.DefaultSelection<Prisma.$LeadActivityPayload>
  */
 export type LeadRecording = $Result.DefaultSelection<Prisma.$LeadRecordingPayload>
 /**
+ * Model LeadRecordingShare
+ * 
+ */
+export type LeadRecordingShare = $Result.DefaultSelection<Prisma.$LeadRecordingSharePayload>
+/**
+ * Model LeadRecordingShareItem
+ * 
+ */
+export type LeadRecordingShareItem = $Result.DefaultSelection<Prisma.$LeadRecordingShareItemPayload>
+/**
  * Model FollowUpReminder
  * 
  */
@@ -560,7 +570,8 @@ export const NotificationKind: {
   SALES_CRM_ADMISSION: 'SALES_CRM_ADMISSION',
   PENDING_STUDENT_ADMISSION_REMINDER: 'PENDING_STUDENT_ADMISSION_REMINDER',
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
-  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE'
+  SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
+  CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -1561,6 +1572,26 @@ export class PrismaClient<
   get leadRecording(): Prisma.LeadRecordingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.leadRecordingShare`: Exposes CRUD operations for the **LeadRecordingShare** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadRecordingShares
+    * const leadRecordingShares = await prisma.leadRecordingShare.findMany()
+    * ```
+    */
+  get leadRecordingShare(): Prisma.LeadRecordingShareDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.leadRecordingShareItem`: Exposes CRUD operations for the **LeadRecordingShareItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadRecordingShareItems
+    * const leadRecordingShareItems = await prisma.leadRecordingShareItem.findMany()
+    * ```
+    */
+  get leadRecordingShareItem(): Prisma.LeadRecordingShareItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.followUpReminder`: Exposes CRUD operations for the **FollowUpReminder** model.
     * Example usage:
     * ```ts
@@ -2156,6 +2187,8 @@ export namespace Prisma {
     LeadStageHistory: 'LeadStageHistory',
     LeadActivity: 'LeadActivity',
     LeadRecording: 'LeadRecording',
+    LeadRecordingShare: 'LeadRecordingShare',
+    LeadRecordingShareItem: 'LeadRecordingShareItem',
     FollowUpReminder: 'FollowUpReminder',
     MotivationMailHistory: 'MotivationMailHistory',
     StudentDiscontinuationRequest: 'StudentDiscontinuationRequest',
@@ -2180,7 +2213,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -7586,6 +7619,154 @@ export namespace Prisma {
           }
         }
       }
+      LeadRecordingShare: {
+        payload: Prisma.$LeadRecordingSharePayload<ExtArgs>
+        fields: Prisma.LeadRecordingShareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadRecordingShareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadRecordingShareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          findFirst: {
+            args: Prisma.LeadRecordingShareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadRecordingShareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          findMany: {
+            args: Prisma.LeadRecordingShareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>[]
+          }
+          create: {
+            args: Prisma.LeadRecordingShareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          createMany: {
+            args: Prisma.LeadRecordingShareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadRecordingShareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>[]
+          }
+          delete: {
+            args: Prisma.LeadRecordingShareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          update: {
+            args: Prisma.LeadRecordingShareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadRecordingShareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadRecordingShareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadRecordingShareUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadRecordingShareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingSharePayload>
+          }
+          aggregate: {
+            args: Prisma.LeadRecordingShareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadRecordingShare>
+          }
+          groupBy: {
+            args: Prisma.LeadRecordingShareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingShareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadRecordingShareCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingShareCountAggregateOutputType> | number
+          }
+        }
+      }
+      LeadRecordingShareItem: {
+        payload: Prisma.$LeadRecordingShareItemPayload<ExtArgs>
+        fields: Prisma.LeadRecordingShareItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadRecordingShareItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadRecordingShareItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          findFirst: {
+            args: Prisma.LeadRecordingShareItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadRecordingShareItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          findMany: {
+            args: Prisma.LeadRecordingShareItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>[]
+          }
+          create: {
+            args: Prisma.LeadRecordingShareItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          createMany: {
+            args: Prisma.LeadRecordingShareItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadRecordingShareItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>[]
+          }
+          delete: {
+            args: Prisma.LeadRecordingShareItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          update: {
+            args: Prisma.LeadRecordingShareItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadRecordingShareItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadRecordingShareItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadRecordingShareItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadRecordingShareItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadRecordingShareItemPayload>
+          }
+          aggregate: {
+            args: Prisma.LeadRecordingShareItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadRecordingShareItem>
+          }
+          groupBy: {
+            args: Prisma.LeadRecordingShareItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingShareItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadRecordingShareItemCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadRecordingShareItemCountAggregateOutputType> | number
+          }
+        }
+      }
       FollowUpReminder: {
         payload: Prisma.$FollowUpReminderPayload<ExtArgs>
         fields: Prisma.FollowUpReminderFieldRefs
@@ -8433,6 +8614,8 @@ export namespace Prisma {
     leadStageHistory?: LeadStageHistoryOmit
     leadActivity?: LeadActivityOmit
     leadRecording?: LeadRecordingOmit
+    leadRecordingShare?: LeadRecordingShareOmit
+    leadRecordingShareItem?: LeadRecordingShareItemOmit
     followUpReminder?: FollowUpReminderOmit
     motivationMailHistory?: MotivationMailHistoryOmit
     studentDiscontinuationRequest?: StudentDiscontinuationRequestOmit
@@ -8551,6 +8734,8 @@ export namespace Prisma {
     leadStageChanges: number
     leadRecordings: number
     followUpReminders: number
+    leadRecordingSharesSent: number
+    leadRecordingSharesReceived: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8583,6 +8768,8 @@ export namespace Prisma {
     leadStageChanges?: boolean | UserCountOutputTypeCountLeadStageChangesArgs
     leadRecordings?: boolean | UserCountOutputTypeCountLeadRecordingsArgs
     followUpReminders?: boolean | UserCountOutputTypeCountFollowUpRemindersArgs
+    leadRecordingSharesSent?: boolean | UserCountOutputTypeCountLeadRecordingSharesSentArgs
+    leadRecordingSharesReceived?: boolean | UserCountOutputTypeCountLeadRecordingSharesReceivedArgs
   }
 
   // Custom InputTypes
@@ -8799,6 +8986,20 @@ export namespace Prisma {
     where?: FollowUpReminderWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadRecordingSharesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLeadRecordingSharesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareWhereInput
+  }
+
 
   /**
    * Count Type DashboardWidgetCountOutputType
@@ -8852,6 +9053,7 @@ export namespace Prisma {
     salesAdminBranches: number
     salesCrmBatchRequests: number
     leads: number
+    leadRecordingShares: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8871,6 +9073,7 @@ export namespace Prisma {
     salesAdminBranches?: boolean | BranchCountOutputTypeCountSalesAdminBranchesArgs
     salesCrmBatchRequests?: boolean | BranchCountOutputTypeCountSalesCrmBatchRequestsArgs
     leads?: boolean | BranchCountOutputTypeCountLeadsArgs
+    leadRecordingShares?: boolean | BranchCountOutputTypeCountLeadRecordingSharesArgs
   }
 
   // Custom InputTypes
@@ -8994,6 +9197,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountLeadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountLeadRecordingSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareWhereInput
   }
 
 
@@ -10330,6 +10540,7 @@ export namespace Prisma {
     stageHistory: number
     activities: number
     recordings: number
+    recordingShares: number
     followUpReminders: number
     salesCrmBatchRequests: number
   }
@@ -10339,6 +10550,7 @@ export namespace Prisma {
     stageHistory?: boolean | LeadCountOutputTypeCountStageHistoryArgs
     activities?: boolean | LeadCountOutputTypeCountActivitiesArgs
     recordings?: boolean | LeadCountOutputTypeCountRecordingsArgs
+    recordingShares?: boolean | LeadCountOutputTypeCountRecordingSharesArgs
     followUpReminders?: boolean | LeadCountOutputTypeCountFollowUpRemindersArgs
     salesCrmBatchRequests?: boolean | LeadCountOutputTypeCountSalesCrmBatchRequestsArgs
   }
@@ -10385,6 +10597,13 @@ export namespace Prisma {
   /**
    * LeadCountOutputType without action
    */
+  export type LeadCountOutputTypeCountRecordingSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
   export type LeadCountOutputTypeCountFollowUpRemindersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FollowUpReminderWhereInput
   }
@@ -10425,6 +10644,68 @@ export namespace Prisma {
    */
   export type LeadFollowUpCountOutputTypeCountRecordingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadRecordingWhereInput
+  }
+
+
+  /**
+   * Count Type LeadRecordingCountOutputType
+   */
+
+  export type LeadRecordingCountOutputType = {
+    shareItems: number
+  }
+
+  export type LeadRecordingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shareItems?: boolean | LeadRecordingCountOutputTypeCountShareItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadRecordingCountOutputType without action
+   */
+  export type LeadRecordingCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingCountOutputType
+     */
+    select?: LeadRecordingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingCountOutputType without action
+   */
+  export type LeadRecordingCountOutputTypeCountShareItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareItemWhereInput
+  }
+
+
+  /**
+   * Count Type LeadRecordingShareCountOutputType
+   */
+
+  export type LeadRecordingShareCountOutputType = {
+    items: number
+  }
+
+  export type LeadRecordingShareCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | LeadRecordingShareCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadRecordingShareCountOutputType without action
+   */
+  export type LeadRecordingShareCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareCountOutputType
+     */
+    select?: LeadRecordingShareCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingShareCountOutputType without action
+   */
+  export type LeadRecordingShareCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareItemWhereInput
   }
 
 
@@ -10855,6 +11136,8 @@ export namespace Prisma {
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
     leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
     followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
+    leadRecordingSharesSent?: boolean | User$leadRecordingSharesSentArgs<ExtArgs>
+    leadRecordingSharesReceived?: boolean | User$leadRecordingSharesReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -10974,6 +11257,8 @@ export namespace Prisma {
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
     leadRecordings?: boolean | User$leadRecordingsArgs<ExtArgs>
     followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
+    leadRecordingSharesSent?: boolean | User$leadRecordingSharesSentArgs<ExtArgs>
+    leadRecordingSharesReceived?: boolean | User$leadRecordingSharesReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11012,6 +11297,8 @@ export namespace Prisma {
       leadStageChanges: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
       leadRecordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
       followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
+      leadRecordingSharesSent: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
+      leadRecordingSharesReceived: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11463,6 +11750,8 @@ export namespace Prisma {
     leadStageChanges<T extends User$leadStageChangesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadStageChangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadRecordings<T extends User$leadRecordingsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     followUpReminders<T extends User$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, User$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadRecordingSharesSent<T extends User$leadRecordingSharesSentArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingSharesSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadRecordingSharesReceived<T extends User$leadRecordingSharesReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingSharesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12622,6 +12911,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FollowUpReminderScalarFieldEnum | FollowUpReminderScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadRecordingSharesSent
+   */
+  export type User$leadRecordingSharesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    where?: LeadRecordingShareWhereInput
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadRecordingSharesReceived
+   */
+  export type User$leadRecordingSharesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    where?: LeadRecordingShareWhereInput
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
   }
 
   /**
@@ -15198,6 +15535,7 @@ export namespace Prisma {
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
     salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
+    leadRecordingShares?: boolean | Branch$leadRecordingSharesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -15291,6 +15629,7 @@ export namespace Prisma {
     salesAdminBranches?: boolean | Branch$salesAdminBranchesArgs<ExtArgs>
     salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
+    leadRecordingShares?: boolean | Branch$leadRecordingSharesArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15320,6 +15659,7 @@ export namespace Prisma {
       salesAdminBranches: Prisma.$SalesAdminBranchPayload<ExtArgs>[]
       salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       leads: Prisma.$LeadPayload<ExtArgs>[]
+      leadRecordingShares: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15753,6 +16093,7 @@ export namespace Prisma {
     salesAdminBranches<T extends Branch$salesAdminBranchesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesAdminBranchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesAdminBranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesCrmBatchRequests<T extends Branch$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leads<T extends Branch$leadsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadRecordingShares<T extends Branch$leadRecordingSharesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadRecordingSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16603,6 +16944,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.leadRecordingShares
+   */
+  export type Branch$leadRecordingSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    where?: LeadRecordingShareWhereInput
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
   }
 
   /**
@@ -98158,6 +98523,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    recordingShares?: boolean | Lead$recordingSharesArgs<ExtArgs>
     convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     salesCrmBatchRequests?: boolean | Lead$salesCrmBatchRequestsArgs<ExtArgs>
@@ -98311,6 +98677,7 @@ export namespace Prisma {
     stageHistory?: boolean | Lead$stageHistoryArgs<ExtArgs>
     activities?: boolean | Lead$activitiesArgs<ExtArgs>
     recordings?: boolean | Lead$recordingsArgs<ExtArgs>
+    recordingShares?: boolean | Lead$recordingSharesArgs<ExtArgs>
     convertedStudent?: boolean | Lead$convertedStudentArgs<ExtArgs>
     followUpReminders?: boolean | Lead$followUpRemindersArgs<ExtArgs>
     salesCrmBatchRequests?: boolean | Lead$salesCrmBatchRequestsArgs<ExtArgs>
@@ -98343,6 +98710,7 @@ export namespace Prisma {
       stageHistory: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
       activities: Prisma.$LeadActivityPayload<ExtArgs>[]
       recordings: Prisma.$LeadRecordingPayload<ExtArgs>[]
+      recordingShares: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
       convertedStudent: Prisma.$BranchStudentPayload<ExtArgs> | null
       followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
       salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
@@ -98790,6 +99158,7 @@ export namespace Prisma {
     stageHistory<T extends Lead$stageHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Lead$stageHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     activities<T extends Lead$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recordings<T extends Lead$recordingsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recordingShares<T extends Lead$recordingSharesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$recordingSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     convertedStudent<T extends Lead$convertedStudentArgs<ExtArgs> = {}>(args?: Subset<T, Lead$convertedStudentArgs<ExtArgs>>): Prisma__BranchStudentClient<$Result.GetResult<Prisma.$BranchStudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     followUpReminders<T extends Lead$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, Lead$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesCrmBatchRequests<T extends Lead$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -99393,6 +99762,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadRecordingScalarFieldEnum | LeadRecordingScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.recordingShares
+   */
+  export type Lead$recordingSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    where?: LeadRecordingShareWhereInput
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
   }
 
   /**
@@ -103066,6 +103459,8 @@ export namespace Prisma {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
     followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    shareItems?: boolean | LeadRecording$shareItemsArgs<ExtArgs>
+    _count?: boolean | LeadRecordingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["leadRecording"]>
 
   export type LeadRecordingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -103115,6 +103510,8 @@ export namespace Prisma {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
     followUp?: boolean | LeadRecording$followUpArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    shareItems?: boolean | LeadRecording$shareItemsArgs<ExtArgs>
+    _count?: boolean | LeadRecordingCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadRecordingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | LeadDefaultArgs<ExtArgs>
@@ -103133,6 +103530,7 @@ export namespace Prisma {
       lead: Prisma.$LeadPayload<ExtArgs>
       followUp: Prisma.$LeadFollowUpPayload<ExtArgs> | null
       createdBy: Prisma.$UserPayload<ExtArgs>
+      shareItems: Prisma.$LeadRecordingShareItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -103541,6 +103939,7 @@ export namespace Prisma {
     lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     followUp<T extends LeadRecording$followUpArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecording$followUpArgs<ExtArgs>>): Prisma__LeadFollowUpClient<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    shareItems<T extends LeadRecording$shareItemsArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecording$shareItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -103999,6 +104398,30 @@ export namespace Prisma {
   }
 
   /**
+   * LeadRecording.shareItems
+   */
+  export type LeadRecording$shareItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    where?: LeadRecordingShareItemWhereInput
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareItemScalarFieldEnum | LeadRecordingShareItemScalarFieldEnum[]
+  }
+
+  /**
    * LeadRecording without action
    */
   export type LeadRecordingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -104014,6 +104437,2285 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeadRecordingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadRecordingShare
+   */
+
+  export type AggregateLeadRecordingShare = {
+    _count: LeadRecordingShareCountAggregateOutputType | null
+    _min: LeadRecordingShareMinAggregateOutputType | null
+    _max: LeadRecordingShareMaxAggregateOutputType | null
+  }
+
+  export type LeadRecordingShareMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    branchId: string | null
+    senderUserId: string | null
+    senderRole: string | null
+    recipientUserId: string | null
+    recipientRole: string | null
+    message: string | null
+    idempotencyKey: string | null
+    sharedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingShareMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    branchId: string | null
+    senderUserId: string | null
+    senderRole: string | null
+    recipientUserId: string | null
+    recipientRole: string | null
+    message: string | null
+    idempotencyKey: string | null
+    sharedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingShareCountAggregateOutputType = {
+    id: number
+    leadId: number
+    branchId: number
+    senderUserId: number
+    senderRole: number
+    recipientUserId: number
+    recipientRole: number
+    message: number
+    idempotencyKey: number
+    sharedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LeadRecordingShareMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    senderUserId?: true
+    senderRole?: true
+    recipientUserId?: true
+    recipientRole?: true
+    message?: true
+    idempotencyKey?: true
+    sharedAt?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingShareMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    senderUserId?: true
+    senderRole?: true
+    recipientUserId?: true
+    recipientRole?: true
+    message?: true
+    idempotencyKey?: true
+    sharedAt?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingShareCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    branchId?: true
+    senderUserId?: true
+    senderRole?: true
+    recipientUserId?: true
+    recipientRole?: true
+    message?: true
+    idempotencyKey?: true
+    sharedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LeadRecordingShareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecordingShare to aggregate.
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShares to fetch.
+     */
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadRecordingShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadRecordingShares
+    **/
+    _count?: true | LeadRecordingShareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadRecordingShareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadRecordingShareMaxAggregateInputType
+  }
+
+  export type GetLeadRecordingShareAggregateType<T extends LeadRecordingShareAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadRecordingShare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadRecordingShare[P]>
+      : GetScalarType<T[P], AggregateLeadRecordingShare[P]>
+  }
+
+
+
+
+  export type LeadRecordingShareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareWhereInput
+    orderBy?: LeadRecordingShareOrderByWithAggregationInput | LeadRecordingShareOrderByWithAggregationInput[]
+    by: LeadRecordingShareScalarFieldEnum[] | LeadRecordingShareScalarFieldEnum
+    having?: LeadRecordingShareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadRecordingShareCountAggregateInputType | true
+    _min?: LeadRecordingShareMinAggregateInputType
+    _max?: LeadRecordingShareMaxAggregateInputType
+  }
+
+  export type LeadRecordingShareGroupByOutputType = {
+    id: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message: string | null
+    idempotencyKey: string
+    sharedAt: Date
+    createdAt: Date
+    _count: LeadRecordingShareCountAggregateOutputType | null
+    _min: LeadRecordingShareMinAggregateOutputType | null
+    _max: LeadRecordingShareMaxAggregateOutputType | null
+  }
+
+  type GetLeadRecordingShareGroupByPayload<T extends LeadRecordingShareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadRecordingShareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadRecordingShareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadRecordingShareGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadRecordingShareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadRecordingShareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    senderUserId?: boolean
+    senderRole?: boolean
+    recipientUserId?: boolean
+    recipientRole?: boolean
+    message?: boolean
+    idempotencyKey?: boolean
+    sharedAt?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | LeadRecordingShare$itemsArgs<ExtArgs>
+    _count?: boolean | LeadRecordingShareCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShare"]>
+
+  export type LeadRecordingShareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    senderUserId?: boolean
+    senderRole?: boolean
+    recipientUserId?: boolean
+    recipientRole?: boolean
+    message?: boolean
+    idempotencyKey?: boolean
+    sharedAt?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShare"]>
+
+  export type LeadRecordingShareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    senderUserId?: boolean
+    senderRole?: boolean
+    recipientUserId?: boolean
+    recipientRole?: boolean
+    message?: boolean
+    idempotencyKey?: boolean
+    sharedAt?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShare"]>
+
+  export type LeadRecordingShareSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    branchId?: boolean
+    senderUserId?: boolean
+    senderRole?: boolean
+    recipientUserId?: boolean
+    recipientRole?: boolean
+    message?: boolean
+    idempotencyKey?: boolean
+    sharedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type LeadRecordingShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "branchId" | "senderUserId" | "senderRole" | "recipientUserId" | "recipientRole" | "message" | "idempotencyKey" | "sharedAt" | "createdAt", ExtArgs["result"]["leadRecordingShare"]>
+  export type LeadRecordingShareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | LeadRecordingShare$itemsArgs<ExtArgs>
+    _count?: boolean | LeadRecordingShareCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingShareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingShareIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    sender?: boolean | UserDefaultArgs<ExtArgs>
+    recipient?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadRecordingSharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadRecordingShare"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      branch: Prisma.$BranchPayload<ExtArgs>
+      sender: Prisma.$UserPayload<ExtArgs>
+      recipient: Prisma.$UserPayload<ExtArgs>
+      items: Prisma.$LeadRecordingShareItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      branchId: string
+      senderUserId: string
+      senderRole: string
+      recipientUserId: string
+      recipientRole: string
+      message: string | null
+      idempotencyKey: string
+      sharedAt: Date
+      createdAt: Date
+    }, ExtArgs["result"]["leadRecordingShare"]>
+    composites: {}
+  }
+
+  type LeadRecordingShareGetPayload<S extends boolean | null | undefined | LeadRecordingShareDefaultArgs> = $Result.GetResult<Prisma.$LeadRecordingSharePayload, S>
+
+  type LeadRecordingShareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadRecordingShareFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadRecordingShareCountAggregateInputType | true
+    }
+
+  export interface LeadRecordingShareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadRecordingShare'], meta: { name: 'LeadRecordingShare' } }
+    /**
+     * Find zero or one LeadRecordingShare that matches the filter.
+     * @param {LeadRecordingShareFindUniqueArgs} args - Arguments to find a LeadRecordingShare
+     * @example
+     * // Get one LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadRecordingShareFindUniqueArgs>(args: SelectSubset<T, LeadRecordingShareFindUniqueArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadRecordingShare that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadRecordingShareFindUniqueOrThrowArgs} args - Arguments to find a LeadRecordingShare
+     * @example
+     * // Get one LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadRecordingShareFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadRecordingShareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecordingShare that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareFindFirstArgs} args - Arguments to find a LeadRecordingShare
+     * @example
+     * // Get one LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadRecordingShareFindFirstArgs>(args?: SelectSubset<T, LeadRecordingShareFindFirstArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecordingShare that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareFindFirstOrThrowArgs} args - Arguments to find a LeadRecordingShare
+     * @example
+     * // Get one LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadRecordingShareFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadRecordingShareFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadRecordingShares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadRecordingShares
+     * const leadRecordingShares = await prisma.leadRecordingShare.findMany()
+     * 
+     * // Get first 10 LeadRecordingShares
+     * const leadRecordingShares = await prisma.leadRecordingShare.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadRecordingShareWithIdOnly = await prisma.leadRecordingShare.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadRecordingShareFindManyArgs>(args?: SelectSubset<T, LeadRecordingShareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadRecordingShare.
+     * @param {LeadRecordingShareCreateArgs} args - Arguments to create a LeadRecordingShare.
+     * @example
+     * // Create one LeadRecordingShare
+     * const LeadRecordingShare = await prisma.leadRecordingShare.create({
+     *   data: {
+     *     // ... data to create a LeadRecordingShare
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadRecordingShareCreateArgs>(args: SelectSubset<T, LeadRecordingShareCreateArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadRecordingShares.
+     * @param {LeadRecordingShareCreateManyArgs} args - Arguments to create many LeadRecordingShares.
+     * @example
+     * // Create many LeadRecordingShares
+     * const leadRecordingShare = await prisma.leadRecordingShare.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadRecordingShareCreateManyArgs>(args?: SelectSubset<T, LeadRecordingShareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadRecordingShares and returns the data saved in the database.
+     * @param {LeadRecordingShareCreateManyAndReturnArgs} args - Arguments to create many LeadRecordingShares.
+     * @example
+     * // Create many LeadRecordingShares
+     * const leadRecordingShare = await prisma.leadRecordingShare.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadRecordingShares and only return the `id`
+     * const leadRecordingShareWithIdOnly = await prisma.leadRecordingShare.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadRecordingShareCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadRecordingShareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadRecordingShare.
+     * @param {LeadRecordingShareDeleteArgs} args - Arguments to delete one LeadRecordingShare.
+     * @example
+     * // Delete one LeadRecordingShare
+     * const LeadRecordingShare = await prisma.leadRecordingShare.delete({
+     *   where: {
+     *     // ... filter to delete one LeadRecordingShare
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadRecordingShareDeleteArgs>(args: SelectSubset<T, LeadRecordingShareDeleteArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadRecordingShare.
+     * @param {LeadRecordingShareUpdateArgs} args - Arguments to update one LeadRecordingShare.
+     * @example
+     * // Update one LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadRecordingShareUpdateArgs>(args: SelectSubset<T, LeadRecordingShareUpdateArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadRecordingShares.
+     * @param {LeadRecordingShareDeleteManyArgs} args - Arguments to filter LeadRecordingShares to delete.
+     * @example
+     * // Delete a few LeadRecordingShares
+     * const { count } = await prisma.leadRecordingShare.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadRecordingShareDeleteManyArgs>(args?: SelectSubset<T, LeadRecordingShareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordingShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadRecordingShares
+     * const leadRecordingShare = await prisma.leadRecordingShare.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadRecordingShareUpdateManyArgs>(args: SelectSubset<T, LeadRecordingShareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordingShares and returns the data updated in the database.
+     * @param {LeadRecordingShareUpdateManyAndReturnArgs} args - Arguments to update many LeadRecordingShares.
+     * @example
+     * // Update many LeadRecordingShares
+     * const leadRecordingShare = await prisma.leadRecordingShare.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadRecordingShares and only return the `id`
+     * const leadRecordingShareWithIdOnly = await prisma.leadRecordingShare.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadRecordingShareUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadRecordingShareUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadRecordingShare.
+     * @param {LeadRecordingShareUpsertArgs} args - Arguments to update or create a LeadRecordingShare.
+     * @example
+     * // Update or create a LeadRecordingShare
+     * const leadRecordingShare = await prisma.leadRecordingShare.upsert({
+     *   create: {
+     *     // ... data to create a LeadRecordingShare
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadRecordingShare we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadRecordingShareUpsertArgs>(args: SelectSubset<T, LeadRecordingShareUpsertArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadRecordingShares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareCountArgs} args - Arguments to filter LeadRecordingShares to count.
+     * @example
+     * // Count the number of LeadRecordingShares
+     * const count = await prisma.leadRecordingShare.count({
+     *   where: {
+     *     // ... the filter for the LeadRecordingShares we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadRecordingShareCountArgs>(
+      args?: Subset<T, LeadRecordingShareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadRecordingShareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadRecordingShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadRecordingShareAggregateArgs>(args: Subset<T, LeadRecordingShareAggregateArgs>): Prisma.PrismaPromise<GetLeadRecordingShareAggregateType<T>>
+
+    /**
+     * Group by LeadRecordingShare.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadRecordingShareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadRecordingShareGroupByArgs['orderBy'] }
+        : { orderBy?: LeadRecordingShareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadRecordingShareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadRecordingShareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadRecordingShare model
+   */
+  readonly fields: LeadRecordingShareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadRecordingShare.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadRecordingShareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sender<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recipient<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends LeadRecordingShare$itemsArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecordingShare$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadRecordingShare model
+   */
+  interface LeadRecordingShareFieldRefs {
+    readonly id: FieldRef<"LeadRecordingShare", 'String'>
+    readonly leadId: FieldRef<"LeadRecordingShare", 'String'>
+    readonly branchId: FieldRef<"LeadRecordingShare", 'String'>
+    readonly senderUserId: FieldRef<"LeadRecordingShare", 'String'>
+    readonly senderRole: FieldRef<"LeadRecordingShare", 'String'>
+    readonly recipientUserId: FieldRef<"LeadRecordingShare", 'String'>
+    readonly recipientRole: FieldRef<"LeadRecordingShare", 'String'>
+    readonly message: FieldRef<"LeadRecordingShare", 'String'>
+    readonly idempotencyKey: FieldRef<"LeadRecordingShare", 'String'>
+    readonly sharedAt: FieldRef<"LeadRecordingShare", 'DateTime'>
+    readonly createdAt: FieldRef<"LeadRecordingShare", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadRecordingShare findUnique
+   */
+  export type LeadRecordingShareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShare to fetch.
+     */
+    where: LeadRecordingShareWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShare findUniqueOrThrow
+   */
+  export type LeadRecordingShareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShare to fetch.
+     */
+    where: LeadRecordingShareWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShare findFirst
+   */
+  export type LeadRecordingShareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShare to fetch.
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShares to fetch.
+     */
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordingShares.
+     */
+    cursor?: LeadRecordingShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShares.
+     */
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShare findFirstOrThrow
+   */
+  export type LeadRecordingShareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShare to fetch.
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShares to fetch.
+     */
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordingShares.
+     */
+    cursor?: LeadRecordingShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShares.
+     */
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShare findMany
+   */
+  export type LeadRecordingShareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShares to fetch.
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShares to fetch.
+     */
+    orderBy?: LeadRecordingShareOrderByWithRelationInput | LeadRecordingShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadRecordingShares.
+     */
+    cursor?: LeadRecordingShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShares.
+     */
+    distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShare create
+   */
+  export type LeadRecordingShareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadRecordingShare.
+     */
+    data: XOR<LeadRecordingShareCreateInput, LeadRecordingShareUncheckedCreateInput>
+  }
+
+  /**
+   * LeadRecordingShare createMany
+   */
+  export type LeadRecordingShareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadRecordingShares.
+     */
+    data: LeadRecordingShareCreateManyInput | LeadRecordingShareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadRecordingShare createManyAndReturn
+   */
+  export type LeadRecordingShareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadRecordingShares.
+     */
+    data: LeadRecordingShareCreateManyInput | LeadRecordingShareCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingShare update
+   */
+  export type LeadRecordingShareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadRecordingShare.
+     */
+    data: XOR<LeadRecordingShareUpdateInput, LeadRecordingShareUncheckedUpdateInput>
+    /**
+     * Choose, which LeadRecordingShare to update.
+     */
+    where: LeadRecordingShareWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShare updateMany
+   */
+  export type LeadRecordingShareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadRecordingShares.
+     */
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordingShares to update
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * Limit how many LeadRecordingShares to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecordingShare updateManyAndReturn
+   */
+  export type LeadRecordingShareUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadRecordingShares.
+     */
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordingShares to update
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * Limit how many LeadRecordingShares to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingShare upsert
+   */
+  export type LeadRecordingShareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadRecordingShare to update in case it exists.
+     */
+    where: LeadRecordingShareWhereUniqueInput
+    /**
+     * In case the LeadRecordingShare found by the `where` argument doesn't exist, create a new LeadRecordingShare with this data.
+     */
+    create: XOR<LeadRecordingShareCreateInput, LeadRecordingShareUncheckedCreateInput>
+    /**
+     * In case the LeadRecordingShare was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadRecordingShareUpdateInput, LeadRecordingShareUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadRecordingShare delete
+   */
+  export type LeadRecordingShareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+    /**
+     * Filter which LeadRecordingShare to delete.
+     */
+    where: LeadRecordingShareWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShare deleteMany
+   */
+  export type LeadRecordingShareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecordingShares to delete
+     */
+    where?: LeadRecordingShareWhereInput
+    /**
+     * Limit how many LeadRecordingShares to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecordingShare.items
+   */
+  export type LeadRecordingShare$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    where?: LeadRecordingShareItemWhereInput
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LeadRecordingShareItemScalarFieldEnum | LeadRecordingShareItemScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShare without action
+   */
+  export type LeadRecordingShareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShare
+     */
+    select?: LeadRecordingShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShare
+     */
+    omit?: LeadRecordingShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LeadRecordingShareItem
+   */
+
+  export type AggregateLeadRecordingShareItem = {
+    _count: LeadRecordingShareItemCountAggregateOutputType | null
+    _min: LeadRecordingShareItemMinAggregateOutputType | null
+    _max: LeadRecordingShareItemMaxAggregateOutputType | null
+  }
+
+  export type LeadRecordingShareItemMinAggregateOutputType = {
+    id: string | null
+    shareId: string | null
+    recordingId: string | null
+    originalName: string | null
+    uploadedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingShareItemMaxAggregateOutputType = {
+    id: string | null
+    shareId: string | null
+    recordingId: string | null
+    originalName: string | null
+    uploadedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type LeadRecordingShareItemCountAggregateOutputType = {
+    id: number
+    shareId: number
+    recordingId: number
+    originalName: number
+    uploadedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type LeadRecordingShareItemMinAggregateInputType = {
+    id?: true
+    shareId?: true
+    recordingId?: true
+    originalName?: true
+    uploadedAt?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingShareItemMaxAggregateInputType = {
+    id?: true
+    shareId?: true
+    recordingId?: true
+    originalName?: true
+    uploadedAt?: true
+    createdAt?: true
+  }
+
+  export type LeadRecordingShareItemCountAggregateInputType = {
+    id?: true
+    shareId?: true
+    recordingId?: true
+    originalName?: true
+    uploadedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type LeadRecordingShareItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecordingShareItem to aggregate.
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShareItems to fetch.
+     */
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShareItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShareItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadRecordingShareItems
+    **/
+    _count?: true | LeadRecordingShareItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadRecordingShareItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadRecordingShareItemMaxAggregateInputType
+  }
+
+  export type GetLeadRecordingShareItemAggregateType<T extends LeadRecordingShareItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadRecordingShareItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadRecordingShareItem[P]>
+      : GetScalarType<T[P], AggregateLeadRecordingShareItem[P]>
+  }
+
+
+
+
+  export type LeadRecordingShareItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadRecordingShareItemWhereInput
+    orderBy?: LeadRecordingShareItemOrderByWithAggregationInput | LeadRecordingShareItemOrderByWithAggregationInput[]
+    by: LeadRecordingShareItemScalarFieldEnum[] | LeadRecordingShareItemScalarFieldEnum
+    having?: LeadRecordingShareItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadRecordingShareItemCountAggregateInputType | true
+    _min?: LeadRecordingShareItemMinAggregateInputType
+    _max?: LeadRecordingShareItemMaxAggregateInputType
+  }
+
+  export type LeadRecordingShareItemGroupByOutputType = {
+    id: string
+    shareId: string
+    recordingId: string
+    originalName: string
+    uploadedAt: Date
+    createdAt: Date
+    _count: LeadRecordingShareItemCountAggregateOutputType | null
+    _min: LeadRecordingShareItemMinAggregateOutputType | null
+    _max: LeadRecordingShareItemMaxAggregateOutputType | null
+  }
+
+  type GetLeadRecordingShareItemGroupByPayload<T extends LeadRecordingShareItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadRecordingShareItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadRecordingShareItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadRecordingShareItemGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadRecordingShareItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadRecordingShareItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shareId?: boolean
+    recordingId?: boolean
+    originalName?: boolean
+    uploadedAt?: boolean
+    createdAt?: boolean
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShareItem"]>
+
+  export type LeadRecordingShareItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shareId?: boolean
+    recordingId?: boolean
+    originalName?: boolean
+    uploadedAt?: boolean
+    createdAt?: boolean
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShareItem"]>
+
+  export type LeadRecordingShareItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    shareId?: boolean
+    recordingId?: boolean
+    originalName?: boolean
+    uploadedAt?: boolean
+    createdAt?: boolean
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadRecordingShareItem"]>
+
+  export type LeadRecordingShareItemSelectScalar = {
+    id?: boolean
+    shareId?: boolean
+    recordingId?: boolean
+    originalName?: boolean
+    uploadedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type LeadRecordingShareItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "shareId" | "recordingId" | "originalName" | "uploadedAt" | "createdAt", ExtArgs["result"]["leadRecordingShareItem"]>
+  export type LeadRecordingShareItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingShareItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }
+  export type LeadRecordingShareItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    share?: boolean | LeadRecordingShareDefaultArgs<ExtArgs>
+    recording?: boolean | LeadRecordingDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadRecordingShareItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadRecordingShareItem"
+    objects: {
+      share: Prisma.$LeadRecordingSharePayload<ExtArgs>
+      recording: Prisma.$LeadRecordingPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      shareId: string
+      recordingId: string
+      originalName: string
+      uploadedAt: Date
+      createdAt: Date
+    }, ExtArgs["result"]["leadRecordingShareItem"]>
+    composites: {}
+  }
+
+  type LeadRecordingShareItemGetPayload<S extends boolean | null | undefined | LeadRecordingShareItemDefaultArgs> = $Result.GetResult<Prisma.$LeadRecordingShareItemPayload, S>
+
+  type LeadRecordingShareItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadRecordingShareItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadRecordingShareItemCountAggregateInputType | true
+    }
+
+  export interface LeadRecordingShareItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadRecordingShareItem'], meta: { name: 'LeadRecordingShareItem' } }
+    /**
+     * Find zero or one LeadRecordingShareItem that matches the filter.
+     * @param {LeadRecordingShareItemFindUniqueArgs} args - Arguments to find a LeadRecordingShareItem
+     * @example
+     * // Get one LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadRecordingShareItemFindUniqueArgs>(args: SelectSubset<T, LeadRecordingShareItemFindUniqueArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadRecordingShareItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadRecordingShareItemFindUniqueOrThrowArgs} args - Arguments to find a LeadRecordingShareItem
+     * @example
+     * // Get one LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadRecordingShareItemFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadRecordingShareItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecordingShareItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemFindFirstArgs} args - Arguments to find a LeadRecordingShareItem
+     * @example
+     * // Get one LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadRecordingShareItemFindFirstArgs>(args?: SelectSubset<T, LeadRecordingShareItemFindFirstArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadRecordingShareItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemFindFirstOrThrowArgs} args - Arguments to find a LeadRecordingShareItem
+     * @example
+     * // Get one LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadRecordingShareItemFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadRecordingShareItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadRecordingShareItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadRecordingShareItems
+     * const leadRecordingShareItems = await prisma.leadRecordingShareItem.findMany()
+     * 
+     * // Get first 10 LeadRecordingShareItems
+     * const leadRecordingShareItems = await prisma.leadRecordingShareItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadRecordingShareItemWithIdOnly = await prisma.leadRecordingShareItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadRecordingShareItemFindManyArgs>(args?: SelectSubset<T, LeadRecordingShareItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadRecordingShareItem.
+     * @param {LeadRecordingShareItemCreateArgs} args - Arguments to create a LeadRecordingShareItem.
+     * @example
+     * // Create one LeadRecordingShareItem
+     * const LeadRecordingShareItem = await prisma.leadRecordingShareItem.create({
+     *   data: {
+     *     // ... data to create a LeadRecordingShareItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadRecordingShareItemCreateArgs>(args: SelectSubset<T, LeadRecordingShareItemCreateArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadRecordingShareItems.
+     * @param {LeadRecordingShareItemCreateManyArgs} args - Arguments to create many LeadRecordingShareItems.
+     * @example
+     * // Create many LeadRecordingShareItems
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadRecordingShareItemCreateManyArgs>(args?: SelectSubset<T, LeadRecordingShareItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadRecordingShareItems and returns the data saved in the database.
+     * @param {LeadRecordingShareItemCreateManyAndReturnArgs} args - Arguments to create many LeadRecordingShareItems.
+     * @example
+     * // Create many LeadRecordingShareItems
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadRecordingShareItems and only return the `id`
+     * const leadRecordingShareItemWithIdOnly = await prisma.leadRecordingShareItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadRecordingShareItemCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadRecordingShareItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadRecordingShareItem.
+     * @param {LeadRecordingShareItemDeleteArgs} args - Arguments to delete one LeadRecordingShareItem.
+     * @example
+     * // Delete one LeadRecordingShareItem
+     * const LeadRecordingShareItem = await prisma.leadRecordingShareItem.delete({
+     *   where: {
+     *     // ... filter to delete one LeadRecordingShareItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadRecordingShareItemDeleteArgs>(args: SelectSubset<T, LeadRecordingShareItemDeleteArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadRecordingShareItem.
+     * @param {LeadRecordingShareItemUpdateArgs} args - Arguments to update one LeadRecordingShareItem.
+     * @example
+     * // Update one LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadRecordingShareItemUpdateArgs>(args: SelectSubset<T, LeadRecordingShareItemUpdateArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadRecordingShareItems.
+     * @param {LeadRecordingShareItemDeleteManyArgs} args - Arguments to filter LeadRecordingShareItems to delete.
+     * @example
+     * // Delete a few LeadRecordingShareItems
+     * const { count } = await prisma.leadRecordingShareItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadRecordingShareItemDeleteManyArgs>(args?: SelectSubset<T, LeadRecordingShareItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordingShareItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadRecordingShareItems
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadRecordingShareItemUpdateManyArgs>(args: SelectSubset<T, LeadRecordingShareItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadRecordingShareItems and returns the data updated in the database.
+     * @param {LeadRecordingShareItemUpdateManyAndReturnArgs} args - Arguments to update many LeadRecordingShareItems.
+     * @example
+     * // Update many LeadRecordingShareItems
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadRecordingShareItems and only return the `id`
+     * const leadRecordingShareItemWithIdOnly = await prisma.leadRecordingShareItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadRecordingShareItemUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadRecordingShareItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadRecordingShareItem.
+     * @param {LeadRecordingShareItemUpsertArgs} args - Arguments to update or create a LeadRecordingShareItem.
+     * @example
+     * // Update or create a LeadRecordingShareItem
+     * const leadRecordingShareItem = await prisma.leadRecordingShareItem.upsert({
+     *   create: {
+     *     // ... data to create a LeadRecordingShareItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadRecordingShareItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadRecordingShareItemUpsertArgs>(args: SelectSubset<T, LeadRecordingShareItemUpsertArgs<ExtArgs>>): Prisma__LeadRecordingShareItemClient<$Result.GetResult<Prisma.$LeadRecordingShareItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadRecordingShareItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemCountArgs} args - Arguments to filter LeadRecordingShareItems to count.
+     * @example
+     * // Count the number of LeadRecordingShareItems
+     * const count = await prisma.leadRecordingShareItem.count({
+     *   where: {
+     *     // ... the filter for the LeadRecordingShareItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadRecordingShareItemCountArgs>(
+      args?: Subset<T, LeadRecordingShareItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadRecordingShareItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadRecordingShareItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadRecordingShareItemAggregateArgs>(args: Subset<T, LeadRecordingShareItemAggregateArgs>): Prisma.PrismaPromise<GetLeadRecordingShareItemAggregateType<T>>
+
+    /**
+     * Group by LeadRecordingShareItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadRecordingShareItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadRecordingShareItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadRecordingShareItemGroupByArgs['orderBy'] }
+        : { orderBy?: LeadRecordingShareItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadRecordingShareItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadRecordingShareItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadRecordingShareItem model
+   */
+  readonly fields: LeadRecordingShareItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadRecordingShareItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadRecordingShareItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    share<T extends LeadRecordingShareDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecordingShareDefaultArgs<ExtArgs>>): Prisma__LeadRecordingShareClient<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recording<T extends LeadRecordingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadRecordingDefaultArgs<ExtArgs>>): Prisma__LeadRecordingClient<$Result.GetResult<Prisma.$LeadRecordingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadRecordingShareItem model
+   */
+  interface LeadRecordingShareItemFieldRefs {
+    readonly id: FieldRef<"LeadRecordingShareItem", 'String'>
+    readonly shareId: FieldRef<"LeadRecordingShareItem", 'String'>
+    readonly recordingId: FieldRef<"LeadRecordingShareItem", 'String'>
+    readonly originalName: FieldRef<"LeadRecordingShareItem", 'String'>
+    readonly uploadedAt: FieldRef<"LeadRecordingShareItem", 'DateTime'>
+    readonly createdAt: FieldRef<"LeadRecordingShareItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadRecordingShareItem findUnique
+   */
+  export type LeadRecordingShareItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShareItem to fetch.
+     */
+    where: LeadRecordingShareItemWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShareItem findUniqueOrThrow
+   */
+  export type LeadRecordingShareItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShareItem to fetch.
+     */
+    where: LeadRecordingShareItemWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShareItem findFirst
+   */
+  export type LeadRecordingShareItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShareItem to fetch.
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShareItems to fetch.
+     */
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordingShareItems.
+     */
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShareItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShareItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShareItems.
+     */
+    distinct?: LeadRecordingShareItemScalarFieldEnum | LeadRecordingShareItemScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShareItem findFirstOrThrow
+   */
+  export type LeadRecordingShareItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShareItem to fetch.
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShareItems to fetch.
+     */
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadRecordingShareItems.
+     */
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShareItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShareItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShareItems.
+     */
+    distinct?: LeadRecordingShareItemScalarFieldEnum | LeadRecordingShareItemScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShareItem findMany
+   */
+  export type LeadRecordingShareItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadRecordingShareItems to fetch.
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadRecordingShareItems to fetch.
+     */
+    orderBy?: LeadRecordingShareItemOrderByWithRelationInput | LeadRecordingShareItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadRecordingShareItems.
+     */
+    cursor?: LeadRecordingShareItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadRecordingShareItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadRecordingShareItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadRecordingShareItems.
+     */
+    distinct?: LeadRecordingShareItemScalarFieldEnum | LeadRecordingShareItemScalarFieldEnum[]
+  }
+
+  /**
+   * LeadRecordingShareItem create
+   */
+  export type LeadRecordingShareItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadRecordingShareItem.
+     */
+    data: XOR<LeadRecordingShareItemCreateInput, LeadRecordingShareItemUncheckedCreateInput>
+  }
+
+  /**
+   * LeadRecordingShareItem createMany
+   */
+  export type LeadRecordingShareItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadRecordingShareItems.
+     */
+    data: LeadRecordingShareItemCreateManyInput | LeadRecordingShareItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadRecordingShareItem createManyAndReturn
+   */
+  export type LeadRecordingShareItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadRecordingShareItems.
+     */
+    data: LeadRecordingShareItemCreateManyInput | LeadRecordingShareItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingShareItem update
+   */
+  export type LeadRecordingShareItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadRecordingShareItem.
+     */
+    data: XOR<LeadRecordingShareItemUpdateInput, LeadRecordingShareItemUncheckedUpdateInput>
+    /**
+     * Choose, which LeadRecordingShareItem to update.
+     */
+    where: LeadRecordingShareItemWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShareItem updateMany
+   */
+  export type LeadRecordingShareItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadRecordingShareItems.
+     */
+    data: XOR<LeadRecordingShareItemUpdateManyMutationInput, LeadRecordingShareItemUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordingShareItems to update
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * Limit how many LeadRecordingShareItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecordingShareItem updateManyAndReturn
+   */
+  export type LeadRecordingShareItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadRecordingShareItems.
+     */
+    data: XOR<LeadRecordingShareItemUpdateManyMutationInput, LeadRecordingShareItemUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadRecordingShareItems to update
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * Limit how many LeadRecordingShareItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadRecordingShareItem upsert
+   */
+  export type LeadRecordingShareItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadRecordingShareItem to update in case it exists.
+     */
+    where: LeadRecordingShareItemWhereUniqueInput
+    /**
+     * In case the LeadRecordingShareItem found by the `where` argument doesn't exist, create a new LeadRecordingShareItem with this data.
+     */
+    create: XOR<LeadRecordingShareItemCreateInput, LeadRecordingShareItemUncheckedCreateInput>
+    /**
+     * In case the LeadRecordingShareItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadRecordingShareItemUpdateInput, LeadRecordingShareItemUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadRecordingShareItem delete
+   */
+  export type LeadRecordingShareItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
+    /**
+     * Filter which LeadRecordingShareItem to delete.
+     */
+    where: LeadRecordingShareItemWhereUniqueInput
+  }
+
+  /**
+   * LeadRecordingShareItem deleteMany
+   */
+  export type LeadRecordingShareItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadRecordingShareItems to delete
+     */
+    where?: LeadRecordingShareItemWhereInput
+    /**
+     * Limit how many LeadRecordingShareItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadRecordingShareItem without action
+   */
+  export type LeadRecordingShareItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadRecordingShareItem
+     */
+    select?: LeadRecordingShareItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadRecordingShareItem
+     */
+    omit?: LeadRecordingShareItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadRecordingShareItemInclude<ExtArgs> | null
   }
 
 
@@ -116805,6 +119507,35 @@ export namespace Prisma {
   export type LeadRecordingScalarFieldEnum = (typeof LeadRecordingScalarFieldEnum)[keyof typeof LeadRecordingScalarFieldEnum]
 
 
+  export const LeadRecordingShareScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    branchId: 'branchId',
+    senderUserId: 'senderUserId',
+    senderRole: 'senderRole',
+    recipientUserId: 'recipientUserId',
+    recipientRole: 'recipientRole',
+    message: 'message',
+    idempotencyKey: 'idempotencyKey',
+    sharedAt: 'sharedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type LeadRecordingShareScalarFieldEnum = (typeof LeadRecordingShareScalarFieldEnum)[keyof typeof LeadRecordingShareScalarFieldEnum]
+
+
+  export const LeadRecordingShareItemScalarFieldEnum: {
+    id: 'id',
+    shareId: 'shareId',
+    recordingId: 'recordingId',
+    originalName: 'originalName',
+    uploadedAt: 'uploadedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type LeadRecordingShareItemScalarFieldEnum = (typeof LeadRecordingShareItemScalarFieldEnum)[keyof typeof LeadRecordingShareItemScalarFieldEnum]
+
+
   export const FollowUpReminderScalarFieldEnum: {
     id: 'id',
     leadId: 'leadId',
@@ -117452,6 +120183,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryListRelationFilter
     leadRecordings?: LeadRecordingListRelationFilter
     followUpReminders?: FollowUpReminderListRelationFilter
+    leadRecordingSharesSent?: LeadRecordingShareListRelationFilter
+    leadRecordingSharesReceived?: LeadRecordingShareListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -117510,6 +120243,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryOrderByRelationAggregateInput
     leadRecordings?: LeadRecordingOrderByRelationAggregateInput
     followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
+    leadRecordingSharesSent?: LeadRecordingShareOrderByRelationAggregateInput
+    leadRecordingSharesReceived?: LeadRecordingShareOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -117571,6 +120306,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryListRelationFilter
     leadRecordings?: LeadRecordingListRelationFilter
     followUpReminders?: FollowUpReminderListRelationFilter
+    leadRecordingSharesSent?: LeadRecordingShareListRelationFilter
+    leadRecordingSharesReceived?: LeadRecordingShareListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -117824,6 +120561,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
+    leadRecordingShares?: LeadRecordingShareListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -117864,6 +120602,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchOrderByRelationAggregateInput
     salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     leads?: LeadOrderByRelationAggregateInput
+    leadRecordingShares?: LeadRecordingShareOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -117907,6 +120646,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
+    leadRecordingShares?: LeadRecordingShareListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -125425,6 +128165,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    recordingShares?: LeadRecordingShareListRelationFilter
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
@@ -125479,6 +128220,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryOrderByRelationAggregateInput
     activities?: LeadActivityOrderByRelationAggregateInput
     recordings?: LeadRecordingOrderByRelationAggregateInput
+    recordingShares?: LeadRecordingShareOrderByRelationAggregateInput
     convertedStudent?: BranchStudentOrderByWithRelationInput
     followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
     salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
@@ -125537,6 +128279,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryListRelationFilter
     activities?: LeadActivityListRelationFilter
     recordings?: LeadRecordingListRelationFilter
+    recordingShares?: LeadRecordingShareListRelationFilter
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
@@ -125872,6 +128615,7 @@ export namespace Prisma {
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
     followUp?: XOR<LeadFollowUpNullableScalarRelationFilter, LeadFollowUpWhereInput> | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    shareItems?: LeadRecordingShareItemListRelationFilter
   }
 
   export type LeadRecordingOrderByWithRelationInput = {
@@ -125887,6 +128631,7 @@ export namespace Prisma {
     lead?: LeadOrderByWithRelationInput
     followUp?: LeadFollowUpOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
+    shareItems?: LeadRecordingShareItemOrderByRelationAggregateInput
   }
 
   export type LeadRecordingWhereUniqueInput = Prisma.AtLeast<{
@@ -125905,6 +128650,7 @@ export namespace Prisma {
     lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
     followUp?: XOR<LeadFollowUpNullableScalarRelationFilter, LeadFollowUpWhereInput> | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    shareItems?: LeadRecordingShareItemListRelationFilter
   }, "id" | "storageKey">
 
   export type LeadRecordingOrderByWithAggregationInput = {
@@ -125937,6 +128683,167 @@ export namespace Prisma {
     sizeBytes?: IntWithAggregatesFilter<"LeadRecording"> | number
     createdById?: StringWithAggregatesFilter<"LeadRecording"> | string
     createdAt?: DateTimeWithAggregatesFilter<"LeadRecording"> | Date | string
+  }
+
+  export type LeadRecordingShareWhereInput = {
+    AND?: LeadRecordingShareWhereInput | LeadRecordingShareWhereInput[]
+    OR?: LeadRecordingShareWhereInput[]
+    NOT?: LeadRecordingShareWhereInput | LeadRecordingShareWhereInput[]
+    id?: StringFilter<"LeadRecordingShare"> | string
+    leadId?: StringFilter<"LeadRecordingShare"> | string
+    branchId?: StringFilter<"LeadRecordingShare"> | string
+    senderUserId?: StringFilter<"LeadRecordingShare"> | string
+    senderRole?: StringFilter<"LeadRecordingShare"> | string
+    recipientUserId?: StringFilter<"LeadRecordingShare"> | string
+    recipientRole?: StringFilter<"LeadRecordingShare"> | string
+    message?: StringNullableFilter<"LeadRecordingShare"> | string | null
+    idempotencyKey?: StringFilter<"LeadRecordingShare"> | string
+    sharedAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: LeadRecordingShareItemListRelationFilter
+  }
+
+  export type LeadRecordingShareOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    senderUserId?: SortOrder
+    senderRole?: SortOrder
+    recipientUserId?: SortOrder
+    recipientRole?: SortOrder
+    message?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrder
+    sharedAt?: SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    branch?: BranchOrderByWithRelationInput
+    sender?: UserOrderByWithRelationInput
+    recipient?: UserOrderByWithRelationInput
+    items?: LeadRecordingShareItemOrderByRelationAggregateInput
+  }
+
+  export type LeadRecordingShareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    idempotencyKey?: string
+    AND?: LeadRecordingShareWhereInput | LeadRecordingShareWhereInput[]
+    OR?: LeadRecordingShareWhereInput[]
+    NOT?: LeadRecordingShareWhereInput | LeadRecordingShareWhereInput[]
+    leadId?: StringFilter<"LeadRecordingShare"> | string
+    branchId?: StringFilter<"LeadRecordingShare"> | string
+    senderUserId?: StringFilter<"LeadRecordingShare"> | string
+    senderRole?: StringFilter<"LeadRecordingShare"> | string
+    recipientUserId?: StringFilter<"LeadRecordingShare"> | string
+    recipientRole?: StringFilter<"LeadRecordingShare"> | string
+    message?: StringNullableFilter<"LeadRecordingShare"> | string | null
+    sharedAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    sender?: XOR<UserScalarRelationFilter, UserWhereInput>
+    recipient?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: LeadRecordingShareItemListRelationFilter
+  }, "id" | "idempotencyKey">
+
+  export type LeadRecordingShareOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    senderUserId?: SortOrder
+    senderRole?: SortOrder
+    recipientUserId?: SortOrder
+    recipientRole?: SortOrder
+    message?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrder
+    sharedAt?: SortOrder
+    createdAt?: SortOrder
+    _count?: LeadRecordingShareCountOrderByAggregateInput
+    _max?: LeadRecordingShareMaxOrderByAggregateInput
+    _min?: LeadRecordingShareMinOrderByAggregateInput
+  }
+
+  export type LeadRecordingShareScalarWhereWithAggregatesInput = {
+    AND?: LeadRecordingShareScalarWhereWithAggregatesInput | LeadRecordingShareScalarWhereWithAggregatesInput[]
+    OR?: LeadRecordingShareScalarWhereWithAggregatesInput[]
+    NOT?: LeadRecordingShareScalarWhereWithAggregatesInput | LeadRecordingShareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    leadId?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    branchId?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    senderUserId?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    senderRole?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    recipientUserId?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    recipientRole?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    message?: StringNullableWithAggregatesFilter<"LeadRecordingShare"> | string | null
+    idempotencyKey?: StringWithAggregatesFilter<"LeadRecordingShare"> | string
+    sharedAt?: DateTimeWithAggregatesFilter<"LeadRecordingShare"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadRecordingShare"> | Date | string
+  }
+
+  export type LeadRecordingShareItemWhereInput = {
+    AND?: LeadRecordingShareItemWhereInput | LeadRecordingShareItemWhereInput[]
+    OR?: LeadRecordingShareItemWhereInput[]
+    NOT?: LeadRecordingShareItemWhereInput | LeadRecordingShareItemWhereInput[]
+    id?: StringFilter<"LeadRecordingShareItem"> | string
+    shareId?: StringFilter<"LeadRecordingShareItem"> | string
+    recordingId?: StringFilter<"LeadRecordingShareItem"> | string
+    originalName?: StringFilter<"LeadRecordingShareItem"> | string
+    uploadedAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+    share?: XOR<LeadRecordingShareScalarRelationFilter, LeadRecordingShareWhereInput>
+    recording?: XOR<LeadRecordingScalarRelationFilter, LeadRecordingWhereInput>
+  }
+
+  export type LeadRecordingShareItemOrderByWithRelationInput = {
+    id?: SortOrder
+    shareId?: SortOrder
+    recordingId?: SortOrder
+    originalName?: SortOrder
+    uploadedAt?: SortOrder
+    createdAt?: SortOrder
+    share?: LeadRecordingShareOrderByWithRelationInput
+    recording?: LeadRecordingOrderByWithRelationInput
+  }
+
+  export type LeadRecordingShareItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    shareId_recordingId?: LeadRecordingShareItemShareIdRecordingIdCompoundUniqueInput
+    AND?: LeadRecordingShareItemWhereInput | LeadRecordingShareItemWhereInput[]
+    OR?: LeadRecordingShareItemWhereInput[]
+    NOT?: LeadRecordingShareItemWhereInput | LeadRecordingShareItemWhereInput[]
+    shareId?: StringFilter<"LeadRecordingShareItem"> | string
+    recordingId?: StringFilter<"LeadRecordingShareItem"> | string
+    originalName?: StringFilter<"LeadRecordingShareItem"> | string
+    uploadedAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+    share?: XOR<LeadRecordingShareScalarRelationFilter, LeadRecordingShareWhereInput>
+    recording?: XOR<LeadRecordingScalarRelationFilter, LeadRecordingWhereInput>
+  }, "id" | "shareId_recordingId">
+
+  export type LeadRecordingShareItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    shareId?: SortOrder
+    recordingId?: SortOrder
+    originalName?: SortOrder
+    uploadedAt?: SortOrder
+    createdAt?: SortOrder
+    _count?: LeadRecordingShareItemCountOrderByAggregateInput
+    _max?: LeadRecordingShareItemMaxOrderByAggregateInput
+    _min?: LeadRecordingShareItemMinOrderByAggregateInput
+  }
+
+  export type LeadRecordingShareItemScalarWhereWithAggregatesInput = {
+    AND?: LeadRecordingShareItemScalarWhereWithAggregatesInput | LeadRecordingShareItemScalarWhereWithAggregatesInput[]
+    OR?: LeadRecordingShareItemScalarWhereWithAggregatesInput[]
+    NOT?: LeadRecordingShareItemScalarWhereWithAggregatesInput | LeadRecordingShareItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadRecordingShareItem"> | string
+    shareId?: StringWithAggregatesFilter<"LeadRecordingShareItem"> | string
+    recordingId?: StringWithAggregatesFilter<"LeadRecordingShareItem"> | string
+    originalName?: StringWithAggregatesFilter<"LeadRecordingShareItem"> | string
+    uploadedAt?: DateTimeWithAggregatesFilter<"LeadRecordingShareItem"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"LeadRecordingShareItem"> | Date | string
   }
 
   export type FollowUpReminderWhereInput = {
@@ -127043,6 +129950,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -127101,6 +130010,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUpdateInput = {
@@ -127159,6 +130070,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -127217,6 +130130,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -127496,6 +130411,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -127535,6 +130451,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -127574,6 +130491,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -127613,6 +130531,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -136280,6 +139199,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -136329,6 +139249,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -136378,6 +139299,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -136427,6 +139349,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -136792,6 +139715,7 @@ export namespace Prisma {
     lead: LeadCreateNestedOneWithoutRecordingsInput
     followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
     createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+    shareItems?: LeadRecordingShareItemCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingUncheckedCreateInput = {
@@ -136804,6 +139728,7 @@ export namespace Prisma {
     sizeBytes: number
     createdById: string
     createdAt?: Date | string
+    shareItems?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingUpdateInput = {
@@ -136816,6 +139741,7 @@ export namespace Prisma {
     lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
     followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+    shareItems?: LeadRecordingShareItemUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateInput = {
@@ -136828,6 +139754,7 @@ export namespace Prisma {
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shareItems?: LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingCreateManyInput = {
@@ -136860,6 +139787,165 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareCreateInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingSharesInput
+    branch: BranchCreateNestedOneWithoutLeadRecordingSharesInput
+    sender: UserCreateNestedOneWithoutLeadRecordingSharesSentInput
+    recipient: UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput
+    items?: LeadRecordingShareItemCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    items?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingSharesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput
+    sender?: UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput
+    recipient?: UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput
+    items?: LeadRecordingShareItemUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareCreateManyInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemCreateInput = {
+    id?: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+    share: LeadRecordingShareCreateNestedOneWithoutItemsInput
+    recording: LeadRecordingCreateNestedOneWithoutShareItemsInput
+  }
+
+  export type LeadRecordingShareItemUncheckedCreateInput = {
+    id?: string
+    shareId: string
+    recordingId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    share?: LeadRecordingShareUpdateOneRequiredWithoutItemsNestedInput
+    recording?: LeadRecordingUpdateOneRequiredWithoutShareItemsNestedInput
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: StringFieldUpdateOperationsInput | string
+    recordingId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemCreateManyInput = {
+    id?: string
+    shareId: string
+    recordingId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: StringFieldUpdateOperationsInput | string
+    recordingId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -138320,6 +141406,12 @@ export namespace Prisma {
     none?: FollowUpReminderWhereInput
   }
 
+  export type LeadRecordingShareListRelationFilter = {
+    every?: LeadRecordingShareWhereInput
+    some?: LeadRecordingShareWhereInput
+    none?: LeadRecordingShareWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -138426,6 +141518,10 @@ export namespace Prisma {
   }
 
   export type FollowUpReminderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LeadRecordingShareOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -144297,6 +147393,16 @@ export namespace Prisma {
     isNot?: LeadFollowUpWhereInput | null
   }
 
+  export type LeadRecordingShareItemListRelationFilter = {
+    every?: LeadRecordingShareItemWhereInput
+    some?: LeadRecordingShareItemWhereInput
+    none?: LeadRecordingShareItemWhereInput
+  }
+
+  export type LeadRecordingShareItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type LeadRecordingCountOrderByAggregateInput = {
     id?: SortOrder
     leadId?: SortOrder
@@ -144339,6 +147445,90 @@ export namespace Prisma {
 
   export type LeadRecordingSumOrderByAggregateInput = {
     sizeBytes?: SortOrder
+  }
+
+  export type LeadRecordingShareCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    senderUserId?: SortOrder
+    senderRole?: SortOrder
+    recipientUserId?: SortOrder
+    recipientRole?: SortOrder
+    message?: SortOrder
+    idempotencyKey?: SortOrder
+    sharedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingShareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    senderUserId?: SortOrder
+    senderRole?: SortOrder
+    recipientUserId?: SortOrder
+    recipientRole?: SortOrder
+    message?: SortOrder
+    idempotencyKey?: SortOrder
+    sharedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingShareMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    branchId?: SortOrder
+    senderUserId?: SortOrder
+    senderRole?: SortOrder
+    recipientUserId?: SortOrder
+    recipientRole?: SortOrder
+    message?: SortOrder
+    idempotencyKey?: SortOrder
+    sharedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingShareScalarRelationFilter = {
+    is?: LeadRecordingShareWhereInput
+    isNot?: LeadRecordingShareWhereInput
+  }
+
+  export type LeadRecordingScalarRelationFilter = {
+    is?: LeadRecordingWhereInput
+    isNot?: LeadRecordingWhereInput
+  }
+
+  export type LeadRecordingShareItemShareIdRecordingIdCompoundUniqueInput = {
+    shareId: string
+    recordingId: string
+  }
+
+  export type LeadRecordingShareItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    shareId?: SortOrder
+    recordingId?: SortOrder
+    originalName?: SortOrder
+    uploadedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingShareItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    shareId?: SortOrder
+    recordingId?: SortOrder
+    originalName?: SortOrder
+    uploadedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type LeadRecordingShareItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    shareId?: SortOrder
+    recordingId?: SortOrder
+    originalName?: SortOrder
+    uploadedAt?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type FollowUpReminderLeadIdRecipientUserIdDueDateCompoundUniqueInput = {
@@ -145195,6 +148385,20 @@ export namespace Prisma {
     connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
   }
 
+  export type LeadRecordingShareCreateNestedManyWithoutSenderInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput> | LeadRecordingShareCreateWithoutSenderInput[] | LeadRecordingShareUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutSenderInput | LeadRecordingShareCreateOrConnectWithoutSenderInput[]
+    createMany?: LeadRecordingShareCreateManySenderInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput> | LeadRecordingShareCreateWithoutRecipientInput[] | LeadRecordingShareUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutRecipientInput | LeadRecordingShareCreateOrConnectWithoutRecipientInput[]
+    createMany?: LeadRecordingShareCreateManyRecipientInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -145402,6 +148606,20 @@ export namespace Prisma {
     connectOrCreate?: FollowUpReminderCreateOrConnectWithoutRecipientInput | FollowUpReminderCreateOrConnectWithoutRecipientInput[]
     createMany?: FollowUpReminderCreateManyRecipientInputEnvelope
     connect?: FollowUpReminderWhereUniqueInput | FollowUpReminderWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput> | LeadRecordingShareCreateWithoutSenderInput[] | LeadRecordingShareUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutSenderInput | LeadRecordingShareCreateOrConnectWithoutSenderInput[]
+    createMany?: LeadRecordingShareCreateManySenderInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput> | LeadRecordingShareCreateWithoutRecipientInput[] | LeadRecordingShareUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutRecipientInput | LeadRecordingShareCreateOrConnectWithoutRecipientInput[]
+    createMany?: LeadRecordingShareCreateManyRecipientInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -145852,6 +149070,34 @@ export namespace Prisma {
     deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
   }
 
+  export type LeadRecordingShareUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput> | LeadRecordingShareCreateWithoutSenderInput[] | LeadRecordingShareUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutSenderInput | LeadRecordingShareCreateOrConnectWithoutSenderInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutSenderInput | LeadRecordingShareUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: LeadRecordingShareCreateManySenderInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutSenderInput | LeadRecordingShareUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutSenderInput | LeadRecordingShareUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput> | LeadRecordingShareCreateWithoutRecipientInput[] | LeadRecordingShareUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutRecipientInput | LeadRecordingShareCreateOrConnectWithoutRecipientInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutRecipientInput | LeadRecordingShareUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: LeadRecordingShareCreateManyRecipientInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutRecipientInput | LeadRecordingShareUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutRecipientInput | LeadRecordingShareUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -146268,6 +149514,34 @@ export namespace Prisma {
     deleteMany?: FollowUpReminderScalarWhereInput | FollowUpReminderScalarWhereInput[]
   }
 
+  export type LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput> | LeadRecordingShareCreateWithoutSenderInput[] | LeadRecordingShareUncheckedCreateWithoutSenderInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutSenderInput | LeadRecordingShareCreateOrConnectWithoutSenderInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutSenderInput | LeadRecordingShareUpsertWithWhereUniqueWithoutSenderInput[]
+    createMany?: LeadRecordingShareCreateManySenderInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutSenderInput | LeadRecordingShareUpdateWithWhereUniqueWithoutSenderInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutSenderInput | LeadRecordingShareUpdateManyWithWhereWithoutSenderInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput> | LeadRecordingShareCreateWithoutRecipientInput[] | LeadRecordingShareUncheckedCreateWithoutRecipientInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutRecipientInput | LeadRecordingShareCreateOrConnectWithoutRecipientInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutRecipientInput | LeadRecordingShareUpsertWithWhereUniqueWithoutRecipientInput[]
+    createMany?: LeadRecordingShareCreateManyRecipientInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutRecipientInput | LeadRecordingShareUpdateWithWhereUniqueWithoutRecipientInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutRecipientInput | LeadRecordingShareUpdateManyWithWhereWithoutRecipientInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
   export type DashboardWidgetCreateallowedRolesInput = {
     set: string[]
   }
@@ -146465,6 +149739,13 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
+  export type LeadRecordingShareCreateNestedManyWithoutBranchInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput> | LeadRecordingShareCreateWithoutBranchInput[] | LeadRecordingShareUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutBranchInput | LeadRecordingShareCreateOrConnectWithoutBranchInput[]
+    createMany?: LeadRecordingShareCreateManyBranchInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
   export type BranchCourseUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -146575,6 +149856,13 @@ export namespace Prisma {
     connectOrCreate?: LeadCreateOrConnectWithoutBranchInput | LeadCreateOrConnectWithoutBranchInput[]
     createMany?: LeadCreateManyBranchInputEnvelope
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput> | LeadRecordingShareCreateWithoutBranchInput[] | LeadRecordingShareUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutBranchInput | LeadRecordingShareCreateOrConnectWithoutBranchInput[]
+    createMany?: LeadRecordingShareCreateManyBranchInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -146819,6 +150107,20 @@ export namespace Prisma {
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
   }
 
+  export type LeadRecordingShareUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput> | LeadRecordingShareCreateWithoutBranchInput[] | LeadRecordingShareUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutBranchInput | LeadRecordingShareCreateOrConnectWithoutBranchInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutBranchInput | LeadRecordingShareUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: LeadRecordingShareCreateManyBranchInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutBranchInput | LeadRecordingShareUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutBranchInput | LeadRecordingShareUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
   export type BranchCourseUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -147041,6 +150343,20 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutBranchInput | LeadUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutBranchInput | LeadUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput> | LeadRecordingShareCreateWithoutBranchInput[] | LeadRecordingShareUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutBranchInput | LeadRecordingShareCreateOrConnectWithoutBranchInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutBranchInput | LeadRecordingShareUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: LeadRecordingShareCreateManyBranchInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutBranchInput | LeadRecordingShareUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutBranchInput | LeadRecordingShareUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSalesAdminBranchesInput = {
@@ -152437,6 +155753,13 @@ export namespace Prisma {
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
   }
 
+  export type LeadRecordingShareCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput> | LeadRecordingShareCreateWithoutLeadInput[] | LeadRecordingShareUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutLeadInput | LeadRecordingShareCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadRecordingShareCreateManyLeadInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
   export type BranchStudentCreateNestedOneWithoutSourceLeadInput = {
     create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
@@ -152483,6 +155806,13 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingCreateOrConnectWithoutLeadInput | LeadRecordingCreateOrConnectWithoutLeadInput[]
     createMany?: LeadRecordingCreateManyLeadInputEnvelope
     connect?: LeadRecordingWhereUniqueInput | LeadRecordingWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput> | LeadRecordingShareCreateWithoutLeadInput[] | LeadRecordingShareUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutLeadInput | LeadRecordingShareCreateOrConnectWithoutLeadInput[]
+    createMany?: LeadRecordingShareCreateManyLeadInputEnvelope
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
   }
 
   export type BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput = {
@@ -152613,6 +155943,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
   }
 
+  export type LeadRecordingShareUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput> | LeadRecordingShareCreateWithoutLeadInput[] | LeadRecordingShareUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutLeadInput | LeadRecordingShareCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutLeadInput | LeadRecordingShareUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadRecordingShareCreateManyLeadInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingShareUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutLeadInput | LeadRecordingShareUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+  }
+
   export type BranchStudentUpdateOneWithoutSourceLeadNestedInput = {
     create?: XOR<BranchStudentCreateWithoutSourceLeadInput, BranchStudentUncheckedCreateWithoutSourceLeadInput>
     connectOrCreate?: BranchStudentCreateOrConnectWithoutSourceLeadInput
@@ -152705,6 +156049,20 @@ export namespace Prisma {
     update?: LeadRecordingUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingUpdateWithWhereUniqueWithoutLeadInput[]
     updateMany?: LeadRecordingUpdateManyWithWhereWithoutLeadInput | LeadRecordingUpdateManyWithWhereWithoutLeadInput[]
     deleteMany?: LeadRecordingScalarWhereInput | LeadRecordingScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput> | LeadRecordingShareCreateWithoutLeadInput[] | LeadRecordingShareUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutLeadInput | LeadRecordingShareCreateOrConnectWithoutLeadInput[]
+    upsert?: LeadRecordingShareUpsertWithWhereUniqueWithoutLeadInput | LeadRecordingShareUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: LeadRecordingShareCreateManyLeadInputEnvelope
+    set?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    disconnect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    delete?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+    update?: LeadRecordingShareUpdateWithWhereUniqueWithoutLeadInput | LeadRecordingShareUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: LeadRecordingShareUpdateManyWithWhereWithoutLeadInput | LeadRecordingShareUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
   export type BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput = {
@@ -152893,6 +156251,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type LeadRecordingShareItemCreateNestedManyWithoutRecordingInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput> | LeadRecordingShareItemCreateWithoutRecordingInput[] | LeadRecordingShareItemUncheckedCreateWithoutRecordingInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutRecordingInput | LeadRecordingShareItemCreateOrConnectWithoutRecordingInput[]
+    createMany?: LeadRecordingShareItemCreateManyRecordingInputEnvelope
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareItemUncheckedCreateNestedManyWithoutRecordingInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput> | LeadRecordingShareItemCreateWithoutRecordingInput[] | LeadRecordingShareItemUncheckedCreateWithoutRecordingInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutRecordingInput | LeadRecordingShareItemCreateOrConnectWithoutRecordingInput[]
+    createMany?: LeadRecordingShareItemCreateManyRecordingInputEnvelope
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+  }
+
   export type LeadUpdateOneRequiredWithoutRecordingsNestedInput = {
     create?: XOR<LeadCreateWithoutRecordingsInput, LeadUncheckedCreateWithoutRecordingsInput>
     connectOrCreate?: LeadCreateOrConnectWithoutRecordingsInput
@@ -152917,6 +156289,160 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutLeadRecordingsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadRecordingsInput, UserUpdateWithoutLeadRecordingsInput>, UserUncheckedUpdateWithoutLeadRecordingsInput>
+  }
+
+  export type LeadRecordingShareItemUpdateManyWithoutRecordingNestedInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput> | LeadRecordingShareItemCreateWithoutRecordingInput[] | LeadRecordingShareItemUncheckedCreateWithoutRecordingInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutRecordingInput | LeadRecordingShareItemCreateOrConnectWithoutRecordingInput[]
+    upsert?: LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput | LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput[]
+    createMany?: LeadRecordingShareItemCreateManyRecordingInputEnvelope
+    set?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    disconnect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    delete?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    update?: LeadRecordingShareItemUpdateWithWhereUniqueWithoutRecordingInput | LeadRecordingShareItemUpdateWithWhereUniqueWithoutRecordingInput[]
+    updateMany?: LeadRecordingShareItemUpdateManyWithWhereWithoutRecordingInput | LeadRecordingShareItemUpdateManyWithWhereWithoutRecordingInput[]
+    deleteMany?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingNestedInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput> | LeadRecordingShareItemCreateWithoutRecordingInput[] | LeadRecordingShareItemUncheckedCreateWithoutRecordingInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutRecordingInput | LeadRecordingShareItemCreateOrConnectWithoutRecordingInput[]
+    upsert?: LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput | LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput[]
+    createMany?: LeadRecordingShareItemCreateManyRecordingInputEnvelope
+    set?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    disconnect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    delete?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    update?: LeadRecordingShareItemUpdateWithWhereUniqueWithoutRecordingInput | LeadRecordingShareItemUpdateWithWhereUniqueWithoutRecordingInput[]
+    updateMany?: LeadRecordingShareItemUpdateManyWithWhereWithoutRecordingInput | LeadRecordingShareItemUpdateManyWithWhereWithoutRecordingInput[]
+    deleteMany?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+  }
+
+  export type LeadCreateNestedOneWithoutRecordingSharesInput = {
+    create?: XOR<LeadCreateWithoutRecordingSharesInput, LeadUncheckedCreateWithoutRecordingSharesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRecordingSharesInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type BranchCreateNestedOneWithoutLeadRecordingSharesInput = {
+    create?: XOR<BranchCreateWithoutLeadRecordingSharesInput, BranchUncheckedCreateWithoutLeadRecordingSharesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLeadRecordingSharesInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadRecordingSharesSentInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingSharesSentInput, UserUncheckedCreateWithoutLeadRecordingSharesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingSharesSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingSharesReceivedInput, UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingSharesReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type LeadRecordingShareItemCreateNestedManyWithoutShareInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput> | LeadRecordingShareItemCreateWithoutShareInput[] | LeadRecordingShareItemUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutShareInput | LeadRecordingShareItemCreateOrConnectWithoutShareInput[]
+    createMany?: LeadRecordingShareItemCreateManyShareInputEnvelope
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+  }
+
+  export type LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput> | LeadRecordingShareItemCreateWithoutShareInput[] | LeadRecordingShareItemUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutShareInput | LeadRecordingShareItemCreateOrConnectWithoutShareInput[]
+    createMany?: LeadRecordingShareItemCreateManyShareInputEnvelope
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+  }
+
+  export type LeadUpdateOneRequiredWithoutRecordingSharesNestedInput = {
+    create?: XOR<LeadCreateWithoutRecordingSharesInput, LeadUncheckedCreateWithoutRecordingSharesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRecordingSharesInput
+    upsert?: LeadUpsertWithoutRecordingSharesInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRecordingSharesInput, LeadUpdateWithoutRecordingSharesInput>, LeadUncheckedUpdateWithoutRecordingSharesInput>
+  }
+
+  export type BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput = {
+    create?: XOR<BranchCreateWithoutLeadRecordingSharesInput, BranchUncheckedCreateWithoutLeadRecordingSharesInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutLeadRecordingSharesInput
+    upsert?: BranchUpsertWithoutLeadRecordingSharesInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutLeadRecordingSharesInput, BranchUpdateWithoutLeadRecordingSharesInput>, BranchUncheckedUpdateWithoutLeadRecordingSharesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingSharesSentInput, UserUncheckedCreateWithoutLeadRecordingSharesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingSharesSentInput
+    upsert?: UserUpsertWithoutLeadRecordingSharesSentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadRecordingSharesSentInput, UserUpdateWithoutLeadRecordingSharesSentInput>, UserUncheckedUpdateWithoutLeadRecordingSharesSentInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutLeadRecordingSharesReceivedInput, UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadRecordingSharesReceivedInput
+    upsert?: UserUpsertWithoutLeadRecordingSharesReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadRecordingSharesReceivedInput, UserUpdateWithoutLeadRecordingSharesReceivedInput>, UserUncheckedUpdateWithoutLeadRecordingSharesReceivedInput>
+  }
+
+  export type LeadRecordingShareItemUpdateManyWithoutShareNestedInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput> | LeadRecordingShareItemCreateWithoutShareInput[] | LeadRecordingShareItemUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutShareInput | LeadRecordingShareItemCreateOrConnectWithoutShareInput[]
+    upsert?: LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput | LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput[]
+    createMany?: LeadRecordingShareItemCreateManyShareInputEnvelope
+    set?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    disconnect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    delete?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    update?: LeadRecordingShareItemUpdateWithWhereUniqueWithoutShareInput | LeadRecordingShareItemUpdateWithWhereUniqueWithoutShareInput[]
+    updateMany?: LeadRecordingShareItemUpdateManyWithWhereWithoutShareInput | LeadRecordingShareItemUpdateManyWithWhereWithoutShareInput[]
+    deleteMany?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput = {
+    create?: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput> | LeadRecordingShareItemCreateWithoutShareInput[] | LeadRecordingShareItemUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LeadRecordingShareItemCreateOrConnectWithoutShareInput | LeadRecordingShareItemCreateOrConnectWithoutShareInput[]
+    upsert?: LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput | LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput[]
+    createMany?: LeadRecordingShareItemCreateManyShareInputEnvelope
+    set?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    disconnect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    delete?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    connect?: LeadRecordingShareItemWhereUniqueInput | LeadRecordingShareItemWhereUniqueInput[]
+    update?: LeadRecordingShareItemUpdateWithWhereUniqueWithoutShareInput | LeadRecordingShareItemUpdateWithWhereUniqueWithoutShareInput[]
+    updateMany?: LeadRecordingShareItemUpdateManyWithWhereWithoutShareInput | LeadRecordingShareItemUpdateManyWithWhereWithoutShareInput[]
+    deleteMany?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+  }
+
+  export type LeadRecordingShareCreateNestedOneWithoutItemsInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutItemsInput, LeadRecordingShareUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutItemsInput
+    connect?: LeadRecordingShareWhereUniqueInput
+  }
+
+  export type LeadRecordingCreateNestedOneWithoutShareItemsInput = {
+    create?: XOR<LeadRecordingCreateWithoutShareItemsInput, LeadRecordingUncheckedCreateWithoutShareItemsInput>
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutShareItemsInput
+    connect?: LeadRecordingWhereUniqueInput
+  }
+
+  export type LeadRecordingShareUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<LeadRecordingShareCreateWithoutItemsInput, LeadRecordingShareUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutItemsInput
+    upsert?: LeadRecordingShareUpsertWithoutItemsInput
+    connect?: LeadRecordingShareWhereUniqueInput
+    update?: XOR<XOR<LeadRecordingShareUpdateToOneWithWhereWithoutItemsInput, LeadRecordingShareUpdateWithoutItemsInput>, LeadRecordingShareUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type LeadRecordingUpdateOneRequiredWithoutShareItemsNestedInput = {
+    create?: XOR<LeadRecordingCreateWithoutShareItemsInput, LeadRecordingUncheckedCreateWithoutShareItemsInput>
+    connectOrCreate?: LeadRecordingCreateOrConnectWithoutShareItemsInput
+    upsert?: LeadRecordingUpsertWithoutShareItemsInput
+    connect?: LeadRecordingWhereUniqueInput
+    update?: XOR<XOR<LeadRecordingUpdateToOneWithWhereWithoutShareItemsInput, LeadRecordingUpdateWithoutShareItemsInput>, LeadRecordingUncheckedUpdateWithoutShareItemsInput>
   }
 
   export type LeadCreateNestedOneWithoutFollowUpRemindersInput = {
@@ -153905,6 +157431,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -153943,6 +157470,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -154805,6 +158333,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -154853,6 +158382,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -154999,6 +158529,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -155047,6 +158578,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -155105,6 +158637,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -155153,6 +158686,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -155269,6 +158803,7 @@ export namespace Prisma {
     createdAt?: Date | string
     lead: LeadCreateNestedOneWithoutRecordingsInput
     followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
+    shareItems?: LeadRecordingShareItemCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingUncheckedCreateWithoutCreatedByInput = {
@@ -155280,6 +158815,7 @@ export namespace Prisma {
     mimeType: string
     sizeBytes: number
     createdAt?: Date | string
+    shareItems?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingCreateOrConnectWithoutCreatedByInput = {
@@ -155327,6 +158863,82 @@ export namespace Prisma {
 
   export type FollowUpReminderCreateManyRecipientInputEnvelope = {
     data: FollowUpReminderCreateManyRecipientInput | FollowUpReminderCreateManyRecipientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingShareCreateWithoutSenderInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingSharesInput
+    branch: BranchCreateNestedOneWithoutLeadRecordingSharesInput
+    recipient: UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput
+    items?: LeadRecordingShareItemCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateWithoutSenderInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    items?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareCreateOrConnectWithoutSenderInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    create: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput>
+  }
+
+  export type LeadRecordingShareCreateManySenderInputEnvelope = {
+    data: LeadRecordingShareCreateManySenderInput | LeadRecordingShareCreateManySenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingShareCreateWithoutRecipientInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingSharesInput
+    branch: BranchCreateNestedOneWithoutLeadRecordingSharesInput
+    sender: UserCreateNestedOneWithoutLeadRecordingSharesSentInput
+    items?: LeadRecordingShareItemCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateWithoutRecipientInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    items?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareCreateOrConnectWithoutRecipientInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    create: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type LeadRecordingShareCreateManyRecipientInputEnvelope = {
+    data: LeadRecordingShareCreateManyRecipientInput | LeadRecordingShareCreateManyRecipientInput[]
     skipDuplicates?: boolean
   }
 
@@ -155413,6 +159025,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -155451,6 +159064,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
@@ -156420,6 +160034,55 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"FollowUpReminder"> | Date | string
   }
 
+  export type LeadRecordingShareUpsertWithWhereUniqueWithoutSenderInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    update: XOR<LeadRecordingShareUpdateWithoutSenderInput, LeadRecordingShareUncheckedUpdateWithoutSenderInput>
+    create: XOR<LeadRecordingShareCreateWithoutSenderInput, LeadRecordingShareUncheckedCreateWithoutSenderInput>
+  }
+
+  export type LeadRecordingShareUpdateWithWhereUniqueWithoutSenderInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    data: XOR<LeadRecordingShareUpdateWithoutSenderInput, LeadRecordingShareUncheckedUpdateWithoutSenderInput>
+  }
+
+  export type LeadRecordingShareUpdateManyWithWhereWithoutSenderInput = {
+    where: LeadRecordingShareScalarWhereInput
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutSenderInput>
+  }
+
+  export type LeadRecordingShareScalarWhereInput = {
+    AND?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+    OR?: LeadRecordingShareScalarWhereInput[]
+    NOT?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
+    id?: StringFilter<"LeadRecordingShare"> | string
+    leadId?: StringFilter<"LeadRecordingShare"> | string
+    branchId?: StringFilter<"LeadRecordingShare"> | string
+    senderUserId?: StringFilter<"LeadRecordingShare"> | string
+    senderRole?: StringFilter<"LeadRecordingShare"> | string
+    recipientUserId?: StringFilter<"LeadRecordingShare"> | string
+    recipientRole?: StringFilter<"LeadRecordingShare"> | string
+    message?: StringNullableFilter<"LeadRecordingShare"> | string | null
+    idempotencyKey?: StringFilter<"LeadRecordingShare"> | string
+    sharedAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShare"> | Date | string
+  }
+
+  export type LeadRecordingShareUpsertWithWhereUniqueWithoutRecipientInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    update: XOR<LeadRecordingShareUpdateWithoutRecipientInput, LeadRecordingShareUncheckedUpdateWithoutRecipientInput>
+    create: XOR<LeadRecordingShareCreateWithoutRecipientInput, LeadRecordingShareUncheckedCreateWithoutRecipientInput>
+  }
+
+  export type LeadRecordingShareUpdateWithWhereUniqueWithoutRecipientInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    data: XOR<LeadRecordingShareUpdateWithoutRecipientInput, LeadRecordingShareUncheckedUpdateWithoutRecipientInput>
+  }
+
+  export type LeadRecordingShareUpdateManyWithWhereWithoutRecipientInput = {
+    where: LeadRecordingShareScalarWhereInput
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutRecipientInput>
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -156519,6 +160182,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -156576,6 +160241,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -156678,6 +160345,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -156735,6 +160404,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -156827,6 +160498,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -156884,6 +160557,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -157918,6 +161593,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -157966,6 +161642,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -157978,6 +161655,44 @@ export namespace Prisma {
 
   export type LeadCreateManyBranchInputEnvelope = {
     data: LeadCreateManyBranchInput | LeadCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingShareCreateWithoutBranchInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingSharesInput
+    sender: UserCreateNestedOneWithoutLeadRecordingSharesSentInput
+    recipient: UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput
+    items?: LeadRecordingShareItemCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateWithoutBranchInput = {
+    id?: string
+    leadId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    items?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareCreateOrConnectWithoutBranchInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    create: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput>
+  }
+
+  export type LeadRecordingShareCreateManyBranchInputEnvelope = {
+    data: LeadRecordingShareCreateManyBranchInput | LeadRecordingShareCreateManyBranchInput[]
     skipDuplicates?: boolean
   }
 
@@ -158047,6 +161762,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -158104,6 +161821,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -158699,6 +162418,22 @@ export namespace Prisma {
     data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutBranchInput>
   }
 
+  export type LeadRecordingShareUpsertWithWhereUniqueWithoutBranchInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    update: XOR<LeadRecordingShareUpdateWithoutBranchInput, LeadRecordingShareUncheckedUpdateWithoutBranchInput>
+    create: XOR<LeadRecordingShareCreateWithoutBranchInput, LeadRecordingShareUncheckedCreateWithoutBranchInput>
+  }
+
+  export type LeadRecordingShareUpdateWithWhereUniqueWithoutBranchInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    data: XOR<LeadRecordingShareUpdateWithoutBranchInput, LeadRecordingShareUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type LeadRecordingShareUpdateManyWithWhereWithoutBranchInput = {
+    where: LeadRecordingShareScalarWhereInput
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutBranchInput>
+  }
+
   export type UserCreateWithoutSalesAdminBranchesInput = {
     id?: string
     userCode: string
@@ -158754,6 +162489,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -158811,6 +162548,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -158854,6 +162593,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -158892,6 +162632,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -158965,6 +162706,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -159022,6 +162765,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchUpsertWithoutSalesAdminBranchesInput = {
@@ -159071,6 +162816,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -159109,6 +162855,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -159166,6 +162913,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -159223,6 +162972,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -159296,6 +163047,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -159353,6 +163106,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -159469,6 +163224,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -159526,6 +163283,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -159664,6 +163423,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -159721,6 +163482,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadCreateWithoutSalesCrmBatchRequestsInput = {
@@ -159767,6 +163530,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
   }
@@ -159815,6 +163579,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
   }
@@ -159860,6 +163625,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput = {
@@ -159898,6 +163664,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutSalesCrmBatchRequestsInput = {
@@ -160045,6 +163812,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -160102,6 +163871,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -160164,6 +163935,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -160221,6 +163994,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -160368,6 +164143,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
   }
@@ -160416,6 +164192,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
   }
@@ -160467,6 +164244,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput = {
@@ -160505,6 +164283,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutSalesCrmBatchRequestsInput = {
@@ -160664,6 +164443,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -160721,6 +164502,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUpsertWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -160789,6 +164572,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -160846,6 +164631,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchBatchUpsertWithoutResolvedSalesCrmRequestsInput = {
@@ -161094,6 +164881,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -161151,6 +164940,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -161224,6 +165015,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -161281,6 +165074,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -161433,6 +165228,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -161471,6 +165267,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -161859,6 +165656,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -161897,6 +165695,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -162161,6 +165960,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -162199,6 +165999,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -163084,6 +166885,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -163132,6 +166934,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -163238,6 +167041,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -163276,6 +167080,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
@@ -164676,6 +168481,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -164733,6 +168540,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -164861,6 +168670,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -164918,6 +168729,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -164956,6 +168769,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchBatchesInput = {
@@ -164994,6 +168808,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchBatchesInput = {
@@ -165534,6 +169349,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchBatchesInput = {
@@ -165572,6 +169388,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchBatchesInput = {
@@ -169577,6 +173394,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -169615,6 +173433,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -169666,6 +173485,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
@@ -169714,6 +173534,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
@@ -170531,6 +174352,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -170569,6 +174391,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type LeadUpsertWithoutConvertedStudentInput = {
@@ -170626,6 +174449,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
@@ -170674,6 +174498,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
@@ -171294,6 +175119,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutStudentEnrollmentsInput = {
@@ -171332,6 +175158,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutStudentEnrollmentsInput = {
@@ -171689,6 +175516,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutStudentEnrollmentsInput = {
@@ -171727,6 +175555,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutStudentEnrollmentsInput = {
@@ -172038,6 +175867,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -172095,6 +175926,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -172337,6 +176170,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -172394,6 +176229,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -172432,6 +176269,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarHolidaysInput = {
@@ -172470,6 +176308,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarHolidaysInput = {
@@ -172524,6 +176363,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarHolidaysInput = {
@@ -172562,6 +176402,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateWithoutCalendarLeavesInput = {
@@ -172600,6 +176441,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarLeavesInput = {
@@ -172638,6 +176480,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarLeavesInput = {
@@ -172692,6 +176535,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarLeavesInput = {
@@ -172730,6 +176574,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentCreateWithoutInstallmentsInput = {
@@ -173228,6 +177073,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -173266,6 +177112,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -173383,6 +177230,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -173440,6 +177289,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -173561,6 +177412,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -173599,6 +177451,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyUpsertWithoutSkillAssignmentsInput = {
@@ -173728,6 +177581,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -173785,6 +177640,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultySkillUpsertWithoutAssignmentsInput = {
@@ -174717,6 +178574,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -174774,6 +178633,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -174879,6 +178740,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -174936,6 +178799,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
@@ -175009,6 +178874,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
@@ -175066,6 +178933,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
@@ -175139,6 +179008,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
@@ -175196,6 +179067,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
@@ -175288,6 +179161,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
@@ -175345,6 +179220,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
@@ -175459,6 +179336,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
@@ -175516,6 +179395,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -175573,6 +179454,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -175630,6 +179513,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -175832,6 +179717,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -175889,6 +179776,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -176689,6 +180578,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -176746,6 +180637,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -176928,6 +180821,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -176985,6 +180880,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -177223,6 +181120,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
@@ -177261,6 +181159,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
@@ -177653,6 +181552,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -177691,6 +181591,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseUpsertWithoutBranchFacultiesInput = {
@@ -177879,6 +181780,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -177936,6 +181839,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -177979,6 +181884,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -178017,6 +181923,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -178090,6 +181997,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -178147,6 +182056,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
@@ -178196,6 +182107,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -178234,6 +182146,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyCreateWithoutCourseAssignmentsInput = {
@@ -178564,6 +182477,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
@@ -178602,6 +182516,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
@@ -178741,6 +182656,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
@@ -178779,6 +182695,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
@@ -179179,6 +183096,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -179236,6 +183155,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -179901,6 +183822,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -179958,6 +183881,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type AssessmentSubmissionUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -180487,6 +184412,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedSubmissionsInput = {
@@ -180544,6 +184471,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedSubmissionsInput = {
@@ -180843,6 +184772,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedSubmissionsInput = {
@@ -180900,6 +184831,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchCourseCreateWithoutExamsInput = {
@@ -181081,6 +185014,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedExamsInput = {
@@ -181138,6 +185073,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedExamsInput = {
@@ -181729,6 +185666,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedExamsInput = {
@@ -181786,6 +185725,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type ExamScheduleUpsertWithWhereUniqueWithoutExamInput = {
@@ -182981,6 +186922,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutExamAttemptsInput = {
@@ -183038,6 +186981,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutExamAttemptsInput = {
@@ -183394,6 +187339,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExamAttemptsInput = {
@@ -183451,6 +187398,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type ExamAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -183665,6 +187614,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLeadsInput = {
@@ -183703,6 +187653,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLeadsInput = {
@@ -183850,6 +187801,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutAssignedLeadsInput = {
@@ -183907,6 +187860,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutAssignedLeadsInput = {
@@ -183969,6 +187924,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutCreatedLeadsInput = {
@@ -184026,6 +187983,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutCreatedLeadsInput = {
@@ -184088,6 +188047,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutUpdatedLeadsInput = {
@@ -184145,6 +188106,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutUpdatedLeadsInput = {
@@ -184253,6 +188216,7 @@ export namespace Prisma {
     createdAt?: Date | string
     followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
     createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+    shareItems?: LeadRecordingShareItemCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingUncheckedCreateWithoutLeadInput = {
@@ -184264,6 +188228,7 @@ export namespace Prisma {
     sizeBytes: number
     createdById: string
     createdAt?: Date | string
+    shareItems?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingCreateOrConnectWithoutLeadInput = {
@@ -184273,6 +188238,44 @@ export namespace Prisma {
 
   export type LeadRecordingCreateManyLeadInputEnvelope = {
     data: LeadRecordingCreateManyLeadInput | LeadRecordingCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadRecordingShareCreateWithoutLeadInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadRecordingSharesInput
+    sender: UserCreateNestedOneWithoutLeadRecordingSharesSentInput
+    recipient: UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput
+    items?: LeadRecordingShareItemCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateWithoutLeadInput = {
+    id?: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    items?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type LeadRecordingShareCreateOrConnectWithoutLeadInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    create: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadRecordingShareCreateManyLeadInputEnvelope = {
+    data: LeadRecordingShareCreateManyLeadInput | LeadRecordingShareCreateManyLeadInput[]
     skipDuplicates?: boolean
   }
 
@@ -184568,6 +188571,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLeadsInput = {
@@ -184606,6 +188610,7 @@ export namespace Prisma {
     facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutLeadsInput = {
@@ -184765,6 +188770,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
@@ -184822,6 +188829,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUpsertWithoutCreatedLeadsInput = {
@@ -184890,6 +188899,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
@@ -184947,6 +188958,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUpsertWithoutUpdatedLeadsInput = {
@@ -185015,6 +189028,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdatedLeadsInput = {
@@ -185072,6 +189087,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput = {
@@ -185136,6 +189153,22 @@ export namespace Prisma {
   export type LeadRecordingUpdateManyWithWhereWithoutLeadInput = {
     where: LeadRecordingScalarWhereInput
     data: XOR<LeadRecordingUpdateManyMutationInput, LeadRecordingUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type LeadRecordingShareUpsertWithWhereUniqueWithoutLeadInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    update: XOR<LeadRecordingShareUpdateWithoutLeadInput, LeadRecordingShareUncheckedUpdateWithoutLeadInput>
+    create: XOR<LeadRecordingShareCreateWithoutLeadInput, LeadRecordingShareUncheckedCreateWithoutLeadInput>
+  }
+
+  export type LeadRecordingShareUpdateWithWhereUniqueWithoutLeadInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    data: XOR<LeadRecordingShareUpdateWithoutLeadInput, LeadRecordingShareUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type LeadRecordingShareUpdateManyWithWhereWithoutLeadInput = {
+    where: LeadRecordingShareScalarWhereInput
+    data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutLeadInput>
   }
 
   export type BranchStudentUpsertWithoutSourceLeadInput = {
@@ -185382,6 +189415,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -185430,6 +189464,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -185495,6 +189530,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadFollowUpsInput = {
@@ -185552,6 +189589,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadFollowUpsInput = {
@@ -185568,6 +189607,7 @@ export namespace Prisma {
     createdAt?: Date | string
     lead: LeadCreateNestedOneWithoutRecordingsInput
     createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+    shareItems?: LeadRecordingShareItemCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingUncheckedCreateWithoutFollowUpInput = {
@@ -185579,6 +189619,7 @@ export namespace Prisma {
     sizeBytes: number
     createdById: string
     createdAt?: Date | string
+    shareItems?: LeadRecordingShareItemUncheckedCreateNestedManyWithoutRecordingInput
   }
 
   export type LeadRecordingCreateOrConnectWithoutFollowUpInput = {
@@ -185645,6 +189686,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -185693,6 +189735,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -185764,6 +189807,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadFollowUpsInput = {
@@ -185821,6 +189866,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput = {
@@ -185882,6 +189929,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -185930,6 +189978,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -185995,6 +190044,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadStageChangesInput = {
@@ -186052,6 +190103,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadStageChangesInput = {
@@ -186113,6 +190166,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -186161,6 +190215,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -186232,6 +190287,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadStageChangesInput = {
@@ -186289,6 +190346,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadCreateWithoutActivitiesInput = {
@@ -186334,6 +190393,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -186382,6 +190442,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -186447,6 +190508,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadActivitiesInput = {
@@ -186504,6 +190567,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadActivitiesInput = {
@@ -186565,6 +190630,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -186613,6 +190679,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -186684,6 +190751,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadActivitiesInput = {
@@ -186741,6 +190810,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type LeadCreateWithoutRecordingsInput = {
@@ -186786,6 +190857,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
@@ -186834,6 +190906,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
@@ -186932,6 +191005,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutLeadRecordingsInput = {
@@ -186989,11 +191064,39 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutLeadRecordingsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutLeadRecordingsInput, UserUncheckedCreateWithoutLeadRecordingsInput>
+  }
+
+  export type LeadRecordingShareItemCreateWithoutRecordingInput = {
+    id?: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+    share: LeadRecordingShareCreateNestedOneWithoutItemsInput
+  }
+
+  export type LeadRecordingShareItemUncheckedCreateWithoutRecordingInput = {
+    id?: string
+    shareId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemCreateOrConnectWithoutRecordingInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    create: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput>
+  }
+
+  export type LeadRecordingShareItemCreateManyRecordingInputEnvelope = {
+    data: LeadRecordingShareItemCreateManyRecordingInput | LeadRecordingShareItemCreateManyRecordingInput[]
+    skipDuplicates?: boolean
   }
 
   export type LeadUpsertWithoutRecordingsInput = {
@@ -187050,6 +191153,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -187098,6 +191202,7 @@ export namespace Prisma {
     followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -187208,6 +191313,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadRecordingsInput = {
@@ -187265,6 +191372,1102 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    update: XOR<LeadRecordingShareItemUpdateWithoutRecordingInput, LeadRecordingShareItemUncheckedUpdateWithoutRecordingInput>
+    create: XOR<LeadRecordingShareItemCreateWithoutRecordingInput, LeadRecordingShareItemUncheckedCreateWithoutRecordingInput>
+  }
+
+  export type LeadRecordingShareItemUpdateWithWhereUniqueWithoutRecordingInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    data: XOR<LeadRecordingShareItemUpdateWithoutRecordingInput, LeadRecordingShareItemUncheckedUpdateWithoutRecordingInput>
+  }
+
+  export type LeadRecordingShareItemUpdateManyWithWhereWithoutRecordingInput = {
+    where: LeadRecordingShareItemScalarWhereInput
+    data: XOR<LeadRecordingShareItemUpdateManyMutationInput, LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingInput>
+  }
+
+  export type LeadRecordingShareItemScalarWhereInput = {
+    AND?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+    OR?: LeadRecordingShareItemScalarWhereInput[]
+    NOT?: LeadRecordingShareItemScalarWhereInput | LeadRecordingShareItemScalarWhereInput[]
+    id?: StringFilter<"LeadRecordingShareItem"> | string
+    shareId?: StringFilter<"LeadRecordingShareItem"> | string
+    recordingId?: StringFilter<"LeadRecordingShareItem"> | string
+    originalName?: StringFilter<"LeadRecordingShareItem"> | string
+    uploadedAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+    createdAt?: DateTimeFilter<"LeadRecordingShareItem"> | Date | string
+  }
+
+  export type LeadCreateWithoutRecordingSharesInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    branch: BranchCreateNestedOneWithoutLeadsInput
+    course: BranchCourseCreateNestedOneWithoutLeadsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedLeadsInput
+    createdBy: UserCreateNestedOneWithoutCreatedLeadsInput
+    updatedBy?: UserCreateNestedOneWithoutUpdatedLeadsInput
+    followUps?: LeadFollowUpCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRecordingSharesInput = {
+    id?: string
+    leadId: string
+    studentName: string
+    phoneNumber: string
+    alternativeNumber?: string | null
+    email?: string | null
+    qualification?: string | null
+    location?: string | null
+    callType: string
+    otherCallType?: string | null
+    status?: $Enums.LeadStatus
+    otherStatus?: string | null
+    stage?: $Enums.LeadStage
+    otherStage?: string | null
+    courseId: string
+    otherCourse?: string | null
+    nextFollowUpDate?: Date | string | null
+    nextFollowUpTime?: string | null
+    lastCallStatus?: string | null
+    branchId: string
+    leadSource: string
+    otherLeadSource?: string | null
+    referredBy?: string | null
+    referredName?: string | null
+    paymentStatus?: string
+    paymentAmount?: number | null
+    admissionStatus?: string
+    trainingMode?: string | null
+    classSchedule?: string | null
+    courseMode?: string | null
+    locationDistance?: string | null
+    otherLocationDistance?: string | null
+    leadDate: Date | string
+    assignedToId?: string | null
+    createdById: string
+    updatedById?: string | null
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    followUps?: LeadFollowUpUncheckedCreateNestedManyWithoutLeadInput
+    stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
+    activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
+    recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutLeadInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRecordingSharesInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRecordingSharesInput, LeadUncheckedCreateWithoutRecordingSharesInput>
+  }
+
+  export type BranchCreateWithoutLeadRecordingSharesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutLeadRecordingSharesInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutLeadRecordingSharesInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutLeadRecordingSharesInput, BranchUncheckedCreateWithoutLeadRecordingSharesInput>
+  }
+
+  export type UserCreateWithoutLeadRecordingSharesSentInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadRecordingSharesSentInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadRecordingSharesSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadRecordingSharesSentInput, UserUncheckedCreateWithoutLeadRecordingSharesSentInput>
+  }
+
+  export type UserCreateWithoutLeadRecordingSharesReceivedInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadRecordingSharesReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadRecordingSharesReceivedInput, UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput>
+  }
+
+  export type LeadRecordingShareItemCreateWithoutShareInput = {
+    id?: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+    recording: LeadRecordingCreateNestedOneWithoutShareItemsInput
+  }
+
+  export type LeadRecordingShareItemUncheckedCreateWithoutShareInput = {
+    id?: string
+    recordingId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemCreateOrConnectWithoutShareInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    create: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput>
+  }
+
+  export type LeadRecordingShareItemCreateManyShareInputEnvelope = {
+    data: LeadRecordingShareItemCreateManyShareInput | LeadRecordingShareItemCreateManyShareInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LeadUpsertWithoutRecordingSharesInput = {
+    update: XOR<LeadUpdateWithoutRecordingSharesInput, LeadUncheckedUpdateWithoutRecordingSharesInput>
+    create: XOR<LeadCreateWithoutRecordingSharesInput, LeadUncheckedCreateWithoutRecordingSharesInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRecordingSharesInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRecordingSharesInput, LeadUncheckedUpdateWithoutRecordingSharesInput>
+  }
+
+  export type LeadUpdateWithoutRecordingSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadsNestedInput
+    course?: BranchCourseUpdateOneRequiredWithoutLeadsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedLeadsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedLeadsNestedInput
+    updatedBy?: UserUpdateOneWithoutUpdatedLeadsNestedInput
+    followUps?: LeadFollowUpUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRecordingSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    studentName?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    alternativeNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    qualification?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    callType?: StringFieldUpdateOperationsInput | string
+    otherCallType?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    otherStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: EnumLeadStageFieldUpdateOperationsInput | $Enums.LeadStage
+    otherStage?: NullableStringFieldUpdateOperationsInput | string | null
+    courseId?: StringFieldUpdateOperationsInput | string
+    otherCourse?: NullableStringFieldUpdateOperationsInput | string | null
+    nextFollowUpDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpTime?: NullableStringFieldUpdateOperationsInput | string | null
+    lastCallStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: StringFieldUpdateOperationsInput | string
+    leadSource?: StringFieldUpdateOperationsInput | string
+    otherLeadSource?: NullableStringFieldUpdateOperationsInput | string | null
+    referredBy?: NullableStringFieldUpdateOperationsInput | string | null
+    referredName?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    paymentAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    admissionStatus?: StringFieldUpdateOperationsInput | string
+    trainingMode?: NullableStringFieldUpdateOperationsInput | string | null
+    classSchedule?: NullableStringFieldUpdateOperationsInput | string | null
+    courseMode?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    otherLocationDistance?: NullableStringFieldUpdateOperationsInput | string | null
+    leadDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    updatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    followUps?: LeadFollowUpUncheckedUpdateManyWithoutLeadNestedInput
+    stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
+    activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
+    recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type BranchUpsertWithoutLeadRecordingSharesInput = {
+    update: XOR<BranchUpdateWithoutLeadRecordingSharesInput, BranchUncheckedUpdateWithoutLeadRecordingSharesInput>
+    create: XOR<BranchCreateWithoutLeadRecordingSharesInput, BranchUncheckedCreateWithoutLeadRecordingSharesInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutLeadRecordingSharesInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutLeadRecordingSharesInput, BranchUncheckedUpdateWithoutLeadRecordingSharesInput>
+  }
+
+  export type BranchUpdateWithoutLeadRecordingSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutLeadRecordingSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type UserUpsertWithoutLeadRecordingSharesSentInput = {
+    update: XOR<UserUpdateWithoutLeadRecordingSharesSentInput, UserUncheckedUpdateWithoutLeadRecordingSharesSentInput>
+    create: XOR<UserCreateWithoutLeadRecordingSharesSentInput, UserUncheckedCreateWithoutLeadRecordingSharesSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadRecordingSharesSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadRecordingSharesSentInput, UserUncheckedUpdateWithoutLeadRecordingSharesSentInput>
+  }
+
+  export type UserUpdateWithoutLeadRecordingSharesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadRecordingSharesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUpsertWithoutLeadRecordingSharesReceivedInput = {
+    update: XOR<UserUpdateWithoutLeadRecordingSharesReceivedInput, UserUncheckedUpdateWithoutLeadRecordingSharesReceivedInput>
+    create: XOR<UserCreateWithoutLeadRecordingSharesReceivedInput, UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadRecordingSharesReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadRecordingSharesReceivedInput, UserUncheckedUpdateWithoutLeadRecordingSharesReceivedInput>
+  }
+
+  export type UserUpdateWithoutLeadRecordingSharesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadRecordingSharesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+  }
+
+  export type LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    update: XOR<LeadRecordingShareItemUpdateWithoutShareInput, LeadRecordingShareItemUncheckedUpdateWithoutShareInput>
+    create: XOR<LeadRecordingShareItemCreateWithoutShareInput, LeadRecordingShareItemUncheckedCreateWithoutShareInput>
+  }
+
+  export type LeadRecordingShareItemUpdateWithWhereUniqueWithoutShareInput = {
+    where: LeadRecordingShareItemWhereUniqueInput
+    data: XOR<LeadRecordingShareItemUpdateWithoutShareInput, LeadRecordingShareItemUncheckedUpdateWithoutShareInput>
+  }
+
+  export type LeadRecordingShareItemUpdateManyWithWhereWithoutShareInput = {
+    where: LeadRecordingShareItemScalarWhereInput
+    data: XOR<LeadRecordingShareItemUpdateManyMutationInput, LeadRecordingShareItemUncheckedUpdateManyWithoutShareInput>
+  }
+
+  export type LeadRecordingShareCreateWithoutItemsInput = {
+    id?: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingSharesInput
+    branch: BranchCreateNestedOneWithoutLeadRecordingSharesInput
+    sender: UserCreateNestedOneWithoutLeadRecordingSharesSentInput
+    recipient: UserCreateNestedOneWithoutLeadRecordingSharesReceivedInput
+  }
+
+  export type LeadRecordingShareUncheckedCreateWithoutItemsInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareCreateOrConnectWithoutItemsInput = {
+    where: LeadRecordingShareWhereUniqueInput
+    create: XOR<LeadRecordingShareCreateWithoutItemsInput, LeadRecordingShareUncheckedCreateWithoutItemsInput>
+  }
+
+  export type LeadRecordingCreateWithoutShareItemsInput = {
+    id?: string
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRecordingsInput
+    followUp?: LeadFollowUpCreateNestedOneWithoutRecordingsInput
+    createdBy: UserCreateNestedOneWithoutLeadRecordingsInput
+  }
+
+  export type LeadRecordingUncheckedCreateWithoutShareItemsInput = {
+    id?: string
+    leadId: string
+    followUpId?: string | null
+    originalName: string
+    storageKey: string
+    mimeType: string
+    sizeBytes: number
+    createdById: string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingCreateOrConnectWithoutShareItemsInput = {
+    where: LeadRecordingWhereUniqueInput
+    create: XOR<LeadRecordingCreateWithoutShareItemsInput, LeadRecordingUncheckedCreateWithoutShareItemsInput>
+  }
+
+  export type LeadRecordingShareUpsertWithoutItemsInput = {
+    update: XOR<LeadRecordingShareUpdateWithoutItemsInput, LeadRecordingShareUncheckedUpdateWithoutItemsInput>
+    create: XOR<LeadRecordingShareCreateWithoutItemsInput, LeadRecordingShareUncheckedCreateWithoutItemsInput>
+    where?: LeadRecordingShareWhereInput
+  }
+
+  export type LeadRecordingShareUpdateToOneWithWhereWithoutItemsInput = {
+    where?: LeadRecordingShareWhereInput
+    data: XOR<LeadRecordingShareUpdateWithoutItemsInput, LeadRecordingShareUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type LeadRecordingShareUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingSharesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput
+    sender?: UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput
+    recipient?: UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingUpsertWithoutShareItemsInput = {
+    update: XOR<LeadRecordingUpdateWithoutShareItemsInput, LeadRecordingUncheckedUpdateWithoutShareItemsInput>
+    create: XOR<LeadRecordingCreateWithoutShareItemsInput, LeadRecordingUncheckedCreateWithoutShareItemsInput>
+    where?: LeadRecordingWhereInput
+  }
+
+  export type LeadRecordingUpdateToOneWithWhereWithoutShareItemsInput = {
+    where?: LeadRecordingWhereInput
+    data: XOR<LeadRecordingUpdateWithoutShareItemsInput, LeadRecordingUncheckedUpdateWithoutShareItemsInput>
+  }
+
+  export type LeadRecordingUpdateWithoutShareItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
+    followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+  }
+
+  export type LeadRecordingUncheckedUpdateWithoutShareItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    followUpId?: NullableStringFieldUpdateOperationsInput | string | null
+    originalName?: StringFieldUpdateOperationsInput | string
+    storageKey?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeadCreateWithoutFollowUpRemindersInput = {
@@ -187311,6 +192514,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryCreateNestedManyWithoutLeadInput
     activities?: LeadActivityCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentCreateNestedOneWithoutSourceLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutLeadInput
   }
@@ -187359,6 +192563,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedCreateNestedManyWithoutLeadInput
     activities?: LeadActivityUncheckedCreateNestedManyWithoutLeadInput
     recordings?: LeadRecordingUncheckedCreateNestedManyWithoutLeadInput
+    recordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutLeadInput
     convertedStudent?: BranchStudentUncheckedCreateNestedOneWithoutSourceLeadInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutLeadInput
   }
@@ -187423,6 +192628,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutFollowUpRemindersInput = {
@@ -187480,6 +192687,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutFollowUpRemindersInput = {
@@ -187542,6 +192751,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
   }
@@ -187590,6 +192800,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
   }
@@ -187660,6 +192871,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowUpRemindersInput = {
@@ -187717,6 +192930,8 @@ export namespace Prisma {
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
@@ -188949,6 +194164,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
   }
 
   export type UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput = {
@@ -189006,6 +194223,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
   }
 
   export type UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput = {
@@ -189108,6 +194327,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput = {
@@ -189165,6 +194386,8 @@ export namespace Prisma {
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -189366,6 +194589,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutPaymentsInput = {
@@ -189404,6 +194628,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutPaymentsInput = {
@@ -189666,6 +194891,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutPaymentsInput = {
@@ -189704,6 +194930,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithoutPaymentsInput = {
@@ -189787,6 +195014,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLedgerEntriesInput = {
@@ -189825,6 +195053,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLedgerEntriesInput = {
@@ -190042,6 +195271,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -190080,6 +195310,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentUpsertWithoutLedgerEntriesInput = {
@@ -190783,6 +196014,32 @@ export namespace Prisma {
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type LeadRecordingShareCreateManySenderInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareCreateManyRecipientInput = {
+    id?: string
+    leadId: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
   }
 
   export type BatchFacultyAssignmentUpdateWithoutFacultyInput = {
@@ -191814,6 +197071,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -191862,6 +197120,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -192053,6 +197312,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -192101,6 +197361,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -192190,6 +197451,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -192238,6 +197500,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -192385,6 +197648,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
     followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
+    shareItems?: LeadRecordingShareItemUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateWithoutCreatedByInput = {
@@ -192396,6 +197660,7 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shareItems?: LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateManyWithoutCreatedByInput = {
@@ -192449,6 +197714,88 @@ export namespace Prisma {
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingSharesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput
+    recipient?: UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput
+    items?: LeadRecordingShareItemUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutSenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingSharesNestedInput
+    branch?: BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput
+    sender?: UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput
+    items?: LeadRecordingShareItemUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutRecipientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserDashboardWidgetCreateManyWidgetInput = {
@@ -192894,6 +198241,19 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type LeadRecordingShareCreateManyBranchInput = {
+    id?: string
+    leadId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
   }
 
   export type BranchCourseUpdateWithoutBranchInput = {
@@ -194141,6 +199501,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -194189,6 +199550,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -194233,6 +199595,47 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRecordingSharesNestedInput
+    sender?: UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput
+    recipient?: UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput
+    items?: LeadRecordingShareItemUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NotificationCreateManyRequestInput = {
@@ -196354,6 +201757,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutLeadNestedInput
@@ -196402,6 +201806,7 @@ export namespace Prisma {
     stageHistory?: LeadStageHistoryUncheckedUpdateManyWithoutLeadNestedInput
     activities?: LeadActivityUncheckedUpdateManyWithoutLeadNestedInput
     recordings?: LeadRecordingUncheckedUpdateManyWithoutLeadNestedInput
+    recordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutLeadNestedInput
     convertedStudent?: BranchStudentUncheckedUpdateOneWithoutSourceLeadNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutLeadNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadNestedInput
@@ -200684,6 +206089,19 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type LeadRecordingShareCreateManyLeadInput = {
+    id?: string
+    branchId: string
+    senderUserId: string
+    senderRole: string
+    recipientUserId: string
+    recipientRole: string
+    message?: string | null
+    idempotencyKey: string
+    sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
   export type FollowUpReminderCreateManyLeadInput = {
     id?: string
     recipientUserId: string
@@ -200816,6 +206234,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     followUp?: LeadFollowUpUpdateOneWithoutRecordingsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+    shareItems?: LeadRecordingShareItemUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateWithoutLeadInput = {
@@ -200827,6 +206246,7 @@ export namespace Prisma {
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shareItems?: LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateManyWithoutLeadInput = {
@@ -200837,6 +206257,47 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutLeadRecordingSharesNestedInput
+    sender?: UserUpdateOneRequiredWithoutLeadRecordingSharesSentNestedInput
+    recipient?: UserUpdateOneRequiredWithoutLeadRecordingSharesReceivedNestedInput
+    items?: LeadRecordingShareItemUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: LeadRecordingShareItemUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type LeadRecordingShareUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    senderUserId?: StringFieldUpdateOperationsInput | string
+    senderRole?: StringFieldUpdateOperationsInput | string
+    recipientUserId?: StringFieldUpdateOperationsInput | string
+    recipientRole?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    idempotencyKey?: StringFieldUpdateOperationsInput | string
+    sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -200953,6 +206414,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneRequiredWithoutRecordingsNestedInput
     createdBy?: UserUpdateOneRequiredWithoutLeadRecordingsNestedInput
+    shareItems?: LeadRecordingShareItemUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateWithoutFollowUpInput = {
@@ -200964,6 +206426,7 @@ export namespace Prisma {
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shareItems?: LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingNestedInput
   }
 
   export type LeadRecordingUncheckedUpdateManyWithoutFollowUpInput = {
@@ -200974,6 +206437,70 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
     sizeBytes?: IntFieldUpdateOperationsInput | number
     createdById?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemCreateManyRecordingInput = {
+    id?: string
+    shareId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemUpdateWithoutRecordingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    share?: LeadRecordingShareUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateWithoutRecordingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateManyWithoutRecordingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemCreateManyShareInput = {
+    id?: string
+    recordingId: string
+    originalName: string
+    uploadedAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type LeadRecordingShareItemUpdateWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recording?: LeadRecordingUpdateOneRequiredWithoutShareItemsNestedInput
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordingId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadRecordingShareItemUncheckedUpdateManyWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordingId?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    uploadedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
