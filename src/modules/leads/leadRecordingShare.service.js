@@ -54,7 +54,7 @@ export async function createLeadRecordingShare({ leadId, recordingIds, message, 
       recipientUserId: superAdmins[0].id, recipientRole: "SUPER_ADMIN", message: clean(message) || null, idempotencyKey: key,
       items: { create: recordings.map((recording) => ({ recordingId: recording.id, originalName: recording.originalName, uploadedAt: recording.createdAt })) },
     }, include: { items: true } });
-    const messageText = `${sender.fullName} (${sender.role === "BRANCH_ADMIN" ? "Branch Admin" : "Sales Admin"}) submitted ${recordings.length} call recording${recordings.length === 1 ? "" : "s"} for Lead ${lead.leadId}, Student ${lead.studentName}, Course ${lead.course?.name || "-"} on ${new Date().toISOString()}.`;
+    const messageText = `${sender.fullName} (${sender.role === "BRANCH_ADMIN" ? "Branch Admin" : "Sales Admin"}) has submitted ${recordings.length} call recording${recordings.length === 1 ? "" : "s"}\nLead ID- ${lead.leadId}\nStudent Name- ${lead.studentName}\nCourse -${lead.course?.name || "-"}. The recordings have been received successfully.`;
     for (const admin of superAdmins) await createNotification({ kind: "CALL_RECORDING_SHARED", tone: "blue", title: "New Call Recordings Received", message: messageText, actionLabel: "View call recordings", targetUserId: admin.id, targetBranchId: lead.branchId, requestDescription: `CALL_RECORDING_SHARE:${share.id}:${lead.id}:${reportSalesAdminId}`, createdBy: sender.id }, tx);
     return share;
   });
