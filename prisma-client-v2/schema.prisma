@@ -58,6 +58,7 @@ model User {
   assignedSalesCrmBatchRequests  SalesCrmBatchRequest[]         @relation("SalesCrmBatchRequestAssignee")
   createdLeads                   Lead[]                         @relation("LeadCreatedBy")
   updatedLeads                   Lead[]                         @relation("LeadUpdatedBy")
+  leadIdSequence                 LeadIdSequence?                @relation("LeadIdSequenceOwner")
   leadFollowUps                  LeadFollowUp[]                 @relation("LeadFollowUpCreatedBy")
   leadActivities                 LeadActivity[]                 @relation("LeadActivityCreatedBy")
   leadStageChanges               LeadStageHistory[]             @relation("LeadStageHistoryCreatedBy")
@@ -1925,13 +1926,24 @@ model Lead {
   followUpReminders     FollowUpReminder[]
   salesCrmBatchRequests SalesCrmBatchRequest[]
 
-  @@unique([branchId, leadId])
+  @@unique([createdById, leadId])
   @@index([branchId, createdAt])
+  @@index([createdById, createdAt])
   @@index([courseId])
   @@index([stage, status])
   @@index([assignedToId, status])
   @@index([phoneNumber])
   @@index([leadDate])
+}
+
+model LeadIdSequence {
+  id         String   @id @default(cuid())
+  ownerId    String   @unique
+  prefix     String
+  nextNumber Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  owner      User     @relation("LeadIdSequenceOwner", fields: [ownerId], references: [id], onDelete: Restrict)
 }
 
 model LeadFollowUp {

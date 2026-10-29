@@ -4,6 +4,7 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { syncLeadFollowUpReminder } from "./followUpReminder.service.js";
 import { createNotification } from "../notifications/notifications.service.js";
+import { allocateAdminLeadId, peekAdminLeadId } from "./leadId.service.js";
 
 const CALL_TYPES = new Set(["NEW_LEAD", "REGULAR_CALL", "EXISTING_LEAD_FOLLOW_UP", "STUDENT_JOB_OPENING", "BUSINESS_OPPORTUNITY", "PROMOTIONAL_LEAD", "STUDENT_JOB_OPPORTUNITY", "JOB_OPPORTUNITY", "JOB_OPENING", "EXISTING_LEAD_STUDENT_JOB_OPPORTUNITY", "OTHER"]);
 const STATUSES = new Set(["DRAFT", "ACTIVE", "FOLLOW_UP", "NOT_ANSWERING", "CONTACTED", "INTERESTED", "DEMO_SCHEDULED", "DEMO_ATTENDED", "ADMISSION_CONFIRMED", "ENROLLED", "LOST_LEAD", "SWITCHED_OFF", "OUT_OF_SERVICE", "INCOMING_CALL_BLOCK", "DND", "NOT_REACHABLE", "CALL_WAITING", "CALL_LATER", "UNAVAILABLE_COURSE", "NOT_INTERESTED", "WRONG_NO", "CURRENTLY_NO_IDEA", "FORWARD_TO_HR_TEAM", "MAY_BE_IN_FUTURE", "JOINED_IN_ANOTHER_INSTITUTION", "CONVERTED", "CLOSED", "OTHER"]);
@@ -44,13 +45,6 @@ async function validateFollowUpSchedule(data, branchId) {
 }
 const phone = (v, label = "Phone number", isRequired = true) => { const value = text(v); if (!value && !isRequired) return null; if (!/^\d{10}$/.test(value)) throw new AppError(`${label} must contain exactly 10 digits`, 400); return value; };
 const paymentAmountValue = (value, status, existing) => { if (status === "NOT_PAID") return null; const raw = value ?? existing; if (raw === null || raw === undefined || text(raw) === "") throw new AppError("Payment amount is required when payment status is not Not Paid", 400); const amount = Number(raw); if (!Number.isFinite(amount) || amount < 0) throw new AppError("Payment amount must be a valid non-negative number", 400); return amount; };
-async function generatedLeadId(client = prisma, branchId) {
-  if (!branchId) return '';
-  const rows = await client.lead.findMany({ where: { branchId, leadId: { startsWith: 'CISLEA' } }, select: { leadId: true } });
-  const highest = rows.reduce((max, row) => { const match = /^CISLEA(\d+)$/.exec(row.leadId || ''); return Math.max(max, match ? Number(match[1]) : 0); }, 0);
-  return `CISLEA${String(highest + 1).padStart(3, '0')}`;
-}
-
 function normalizePayload(payload = {}, existing = null, fallbackLeadId = null) {
   const studentName = required(payload.studentName ?? existing?.studentName, "Student name", 120);
   if (!/^[\p{L}][\p{L} .'-]*$/u.test(studentName)) throw new AppError("Enter a valid student name", 400);
@@ -104,7 +98,7 @@ async function assertBranchAccess(branchId, actor, allowed = undefined) {
   return branch;
 }
 
-async function validateRelations(data, actor, existingId = null, client = prisma) {
+async function validateRelations(data, actor, existingId = null, client = prisma, leadIdOwnerId = actor?.userId) {
   const allowed = await permittedBranches(actor);
   await assertBranchAccess(data.branchId, actor, allowed);
   const actorRole = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -122,7 +116,7 @@ async function validateRelations(data, actor, existingId = null, client = prisma
       deletedAt: null,
       ...(existingId ? { id: { not: existingId } } : {}),
       OR: [
-        { branchId: data.branchId, leadId: { equals: data.leadId, mode: "insensitive" } },
+        { createdById: leadIdOwnerId, leadId: { equals: data.leadId, mode: "insensitive" } },
         { email: { equals: data.email, mode: "insensitive" } },
         { phoneNumber: data.phoneNumber },
       ],
@@ -226,7 +220,7 @@ export async function checkLeadDuplicates(query = {}, actor) {
   const phoneNumber = text(query.phoneNumber);
   const excludeId = text(query.excludeId);
   const checks = [
-    leadId ? { ...(text(query.branchId) ? { branchId: text(query.branchId) } : {}), leadId: { equals: leadId, mode: 'insensitive' } } : null,
+    leadId ? { createdById: text(query.ownerId) || actor?.userId, leadId: { equals: leadId, mode: 'insensitive' } } : null,
     email ? { email: { equals: email, mode: 'insensitive' } } : null,
     phoneNumber ? { phoneNumber } : null,
   ].filter(Boolean);
@@ -247,12 +241,16 @@ export async function createLead(payload, actor) {
   const isBranchAdmin = actorRole === 'BRANCHADMIN';
   const requestedAssignee = text(payload.assignedToId);
   if ((isSalesAdmin || isBranchAdmin) && requestedAssignee && requestedAssignee !== actor.userId) throw new AppError('You can only assign leads to your own account', 403);
+
+  const leadIdOwner = await prisma.user.findUnique({ where: { id: actor.userId }, select: { id: true, fullName: true } });
+  if (!leadIdOwner) throw new AppError('Lead ID owner account was not found', 404);
+
   const data = normalizePayload({ ...payload, ...((isSalesAdmin || isBranchAdmin) ? { assignedToId: actor.userId } : {}), leadId: 'CISLEA001' });
   await validateFollowUpSchedule(data, data.branchId);
   const created = await prisma.$transaction(async (tx) => {
-    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtextextended(${data.branchId}, 0)) IS NULL AS "lockAcquired"`;
-    data.leadId = await generatedLeadId(tx, data.branchId);
-    await validateRelations(data, actor, null, tx);
+    await tx.$queryRawUnsafe('SELECT pg_advisory_xact_lock(hashtextextended($1, 0)) IS NULL AS "lockAcquired"', actor.userId);
+    data.leadId = await allocateAdminLeadId(tx, actor.userId, leadIdOwner.fullName);
+    await validateRelations(data, actor, null, tx, actor.userId);
     const lead = await tx.lead.create({ data: { ...data, createdById: actor.userId }, include: includeLead });
     await tx.leadActivity.create({ data: { leadId: lead.id, action: 'LEAD_CREATED', newValue: { leadId: lead.leadId, stage: lead.stage, status: lead.status }, createdById: actor.userId } });
     await tx.leadStageHistory.create({ data: { leadId: lead.id, toStage: lead.stage, createdById: actor.userId } });
@@ -264,7 +262,7 @@ export async function createLead(payload, actor) {
   return created;
 }
 export async function getLead(id, actor) { const lead = await findLead(id, actor, true); const followUpReminders = await prisma.followUpReminder.findMany({ where: { leadId: lead.id }, orderBy: { scheduledFor: "desc" }, take: 10, select: { id: true, dueDate: true, scheduledFor: true, timezone: true, status: true, notificationId: true, deliveredAt: true } }); return { ...lead, followUpReminders }; }
-export async function updateLead(id, payload, actor) { const existing = await prisma.lead.findFirst({ where: { id, deletedAt: null } }); if (!existing) throw new AppError("Lead not found", 404); await assertBranchAccess(existing.branchId, actor); assertLeadAssignment(existing, actor); const actorRole = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); const data = normalizePayload({ ...payload, ...(actorRole === "BRANCHADMIN" ? { assignedToId: actor.userId } : {}) }, existing); await validateRelations(data, actor, id); await validateFollowUpSchedule(data, data.branchId); const changedStage = existing.stage !== data.stage; const scheduleChanged = (existing.nextFollowUpDate?.getTime() || null) !== (data.nextFollowUpDate?.getTime() || null) || (existing.nextFollowUpTime || null) !== (data.nextFollowUpTime || null); const updated = await prisma.$transaction(async (tx) => { const lead = await tx.lead.update({ where: { id }, data: { ...data, updatedById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: id, action: changedStage ? "LEAD_UPDATED_STAGE_CHANGED" : "LEAD_UPDATED", previousValue: { stage: existing.stage, status: existing.status }, newValue: { stage: data.stage, status: data.status }, createdById: actor.userId } }); if (changedStage) await tx.leadStageHistory.create({ data: { leadId: id, fromStage: existing.stage, toStage: data.stage, createdById: actor.userId } }); if (scheduleChanged) await tx.leadActivity.create({ data: { leadId: id, action: 'NEXT_FOLLOW_UP_CHANGED', previousValue: { nextFollowUpDate: existing.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: existing.nextFollowUpTime || null }, newValue: { nextFollowUpDate: data.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: data.nextFollowUpTime || null }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(updated.id); if (scheduleChanged && updated.nextFollowUpDate) await notifyNextFollowUpScheduled(updated, updated.nextFollowUpDate, updated.nextFollowUpTime, actor.userId); return updated; }
+export async function updateLead(id, payload, actor) { const existing = await prisma.lead.findFirst({ where: { id, deletedAt: null } }); if (!existing) throw new AppError("Lead not found", 404); await assertBranchAccess(existing.branchId, actor); assertLeadAssignment(existing, actor); const actorRole = String(actor?.role || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); const data = normalizePayload({ ...payload, ...(actorRole === "BRANCHADMIN" ? { assignedToId: actor.userId } : {}) }, existing); await validateRelations(data, actor, id, prisma, existing.createdById); await validateFollowUpSchedule(data, data.branchId); const changedStage = existing.stage !== data.stage; const scheduleChanged = (existing.nextFollowUpDate?.getTime() || null) !== (data.nextFollowUpDate?.getTime() || null) || (existing.nextFollowUpTime || null) !== (data.nextFollowUpTime || null); const updated = await prisma.$transaction(async (tx) => { const lead = await tx.lead.update({ where: { id }, data: { ...data, updatedById: actor.userId }, include: includeLead }); await tx.leadActivity.create({ data: { leadId: id, action: changedStage ? "LEAD_UPDATED_STAGE_CHANGED" : "LEAD_UPDATED", previousValue: { stage: existing.stage, status: existing.status }, newValue: { stage: data.stage, status: data.status }, createdById: actor.userId } }); if (changedStage) await tx.leadStageHistory.create({ data: { leadId: id, fromStage: existing.stage, toStage: data.stage, createdById: actor.userId } }); if (scheduleChanged) await tx.leadActivity.create({ data: { leadId: id, action: 'NEXT_FOLLOW_UP_CHANGED', previousValue: { nextFollowUpDate: existing.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: existing.nextFollowUpTime || null }, newValue: { nextFollowUpDate: data.nextFollowUpDate?.toISOString() || null, nextFollowUpTime: data.nextFollowUpTime || null }, createdById: actor.userId } }); return output(lead); }); await syncLeadFollowUpReminder(updated.id); if (scheduleChanged && updated.nextFollowUpDate) await notifyNextFollowUpScheduled(updated, updated.nextFollowUpDate, updated.nextFollowUpTime, actor.userId); return updated; }
 export async function deleteLead(id, actor) { const lead = await prisma.lead.findFirst({ where: { id, deletedAt: null }, select: { id: true, branchId: true, status: true, assignedToId: true } }); if (!lead) throw new AppError("Lead not found", 404); await assertBranchAccess(lead.branchId, actor); assertLeadAssignment(lead, actor); if (lead.status === "CONVERTED" && String(actor.role).toUpperCase().replace(/[^A-Z0-9]/g, "") !== "SUPERADMIN") throw new AppError("Converted leads require authorized archival workflow", 403); await prisma.lead.delete({ where: { id } }); return { deleted: true }; }
 export async function addFollowUp(id, payload, actor) {
   const lead = await findLead(id, actor);
@@ -328,16 +326,15 @@ export async function getLeadOptions(actor, query = {}) {
   const branchWhere = { status: "ACTIVE", ...(allowed ? { id: { in: allowed } } : {}) };
   const isMonthlyReport = String(query.view || '').trim().toLowerCase() === 'monthly';
   const role = String(actor?.role || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const [branches, courses, assignees] = await Promise.all([
+  const [branches, courses, assignees, leadIdOwner] = await Promise.all([
     prisma.branch.findMany({ where: branchWhere, select: { id: true, branchId: true, branchName: true, timezone: true }, orderBy: { branchName: "asc" } }),
     prisma.branchCourse.findMany({ where: { status: "ACTIVE", branch: branchWhere }, select: { id: true, branchId: true, courseCode: true, name: true }, orderBy: { name: "asc" } }),
     prisma.user.findMany({ where: { role: "SALES_ADMIN", active: true, ...(allowed ? { salesAdminBranches: { some: { branchId: { in: allowed } } } } : {}), ...(isMonthlyReport && role === "SALESADMIN" ? { id: actor.userId } : {}) }, select: { id: true, userCode: true, fullName: true, email: true, salesAdminBranches: { select: { branchId: true } } }, orderBy: { fullName: "asc" } }),
+    prisma.user.findUnique({ where: { id: actor.userId }, select: { id: true, fullName: true } }),
   ]);
   const requestedBranchId = text(query.branchId);
   if (requestedBranchId) await assertBranchAccess(requestedBranchId, actor, allowed);
-  const nextLeadId = requestedBranchId
-    ? await generatedLeadId(prisma, requestedBranchId)
-    : branches.length === 1 ? await generatedLeadId(prisma, branches[0].id) : '';
+  const nextLeadId = leadIdOwner ? await peekAdminLeadId(prisma, leadIdOwner.id, leadIdOwner.fullName) : '';
   return { branches, courses, assignees: assignees.map(({ salesAdminBranches, ...user }) => ({ ...user, branchIds: salesAdminBranches.map((row) => row.branchId) })), nextLeadId, currentUserId: actor.userId };
 }
 

@@ -359,6 +359,11 @@ export type ExamAnswer = $Result.DefaultSelection<Prisma.$ExamAnswerPayload>
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 /**
+ * Model LeadIdSequence
+ * 
+ */
+export type LeadIdSequence = $Result.DefaultSelection<Prisma.$LeadIdSequencePayload>
+/**
  * Model LeadFollowUp
  * 
  */
@@ -1532,6 +1537,16 @@ export class PrismaClient<
   get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.leadIdSequence`: Exposes CRUD operations for the **LeadIdSequence** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LeadIdSequences
+    * const leadIdSequences = await prisma.leadIdSequence.findMany()
+    * ```
+    */
+  get leadIdSequence(): Prisma.LeadIdSequenceDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.leadFollowUp`: Exposes CRUD operations for the **LeadFollowUp** model.
     * Example usage:
     * ```ts
@@ -2183,6 +2198,7 @@ export namespace Prisma {
     ExamAttempt: 'ExamAttempt',
     ExamAnswer: 'ExamAnswer',
     Lead: 'Lead',
+    LeadIdSequence: 'LeadIdSequence',
     LeadFollowUp: 'LeadFollowUp',
     LeadStageHistory: 'LeadStageHistory',
     LeadActivity: 'LeadActivity',
@@ -2213,7 +2229,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadIdSequence" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -7323,6 +7339,80 @@ export namespace Prisma {
           }
         }
       }
+      LeadIdSequence: {
+        payload: Prisma.$LeadIdSequencePayload<ExtArgs>
+        fields: Prisma.LeadIdSequenceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LeadIdSequenceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LeadIdSequenceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          findFirst: {
+            args: Prisma.LeadIdSequenceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LeadIdSequenceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          findMany: {
+            args: Prisma.LeadIdSequenceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>[]
+          }
+          create: {
+            args: Prisma.LeadIdSequenceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          createMany: {
+            args: Prisma.LeadIdSequenceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LeadIdSequenceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>[]
+          }
+          delete: {
+            args: Prisma.LeadIdSequenceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          update: {
+            args: Prisma.LeadIdSequenceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          deleteMany: {
+            args: Prisma.LeadIdSequenceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LeadIdSequenceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LeadIdSequenceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>[]
+          }
+          upsert: {
+            args: Prisma.LeadIdSequenceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LeadIdSequencePayload>
+          }
+          aggregate: {
+            args: Prisma.LeadIdSequenceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLeadIdSequence>
+          }
+          groupBy: {
+            args: Prisma.LeadIdSequenceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LeadIdSequenceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LeadIdSequenceCountArgs<ExtArgs>
+            result: $Utils.Optional<LeadIdSequenceCountAggregateOutputType> | number
+          }
+        }
+      }
       LeadFollowUp: {
         payload: Prisma.$LeadFollowUpPayload<ExtArgs>
         fields: Prisma.LeadFollowUpFieldRefs
@@ -8610,6 +8700,7 @@ export namespace Prisma {
     examAttempt?: ExamAttemptOmit
     examAnswer?: ExamAnswerOmit
     lead?: LeadOmit
+    leadIdSequence?: LeadIdSequenceOmit
     leadFollowUp?: LeadFollowUpOmit
     leadStageHistory?: LeadStageHistoryOmit
     leadActivity?: LeadActivityOmit
@@ -11131,6 +11222,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: boolean | User$assignedSalesCrmBatchRequestsArgs<ExtArgs>
     createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
     updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
+    leadIdSequence?: boolean | User$leadIdSequenceArgs<ExtArgs>
     leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
     leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
@@ -11252,6 +11344,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: boolean | User$assignedSalesCrmBatchRequestsArgs<ExtArgs>
     createdLeads?: boolean | User$createdLeadsArgs<ExtArgs>
     updatedLeads?: boolean | User$updatedLeadsArgs<ExtArgs>
+    leadIdSequence?: boolean | User$leadIdSequenceArgs<ExtArgs>
     leadFollowUps?: boolean | User$leadFollowUpsArgs<ExtArgs>
     leadActivities?: boolean | User$leadActivitiesArgs<ExtArgs>
     leadStageChanges?: boolean | User$leadStageChangesArgs<ExtArgs>
@@ -11292,6 +11385,7 @@ export namespace Prisma {
       assignedSalesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       createdLeads: Prisma.$LeadPayload<ExtArgs>[]
       updatedLeads: Prisma.$LeadPayload<ExtArgs>[]
+      leadIdSequence: Prisma.$LeadIdSequencePayload<ExtArgs> | null
       leadFollowUps: Prisma.$LeadFollowUpPayload<ExtArgs>[]
       leadActivities: Prisma.$LeadActivityPayload<ExtArgs>[]
       leadStageChanges: Prisma.$LeadStageHistoryPayload<ExtArgs>[]
@@ -11745,6 +11839,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests<T extends User$assignedSalesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedSalesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdLeads<T extends User$createdLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     updatedLeads<T extends User$updatedLeadsArgs<ExtArgs> = {}>(args?: Subset<T, User$updatedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    leadIdSequence<T extends User$leadIdSequenceArgs<ExtArgs> = {}>(args?: Subset<T, User$leadIdSequenceArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     leadFollowUps<T extends User$leadFollowUpsArgs<ExtArgs> = {}>(args?: Subset<T, User$leadFollowUpsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadFollowUpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadActivities<T extends User$leadActivitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadActivitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadStageChanges<T extends User$leadStageChangesArgs<ExtArgs> = {}>(args?: Subset<T, User$leadStageChangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadStageHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12791,6 +12886,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
+  }
+
+  /**
+   * User.leadIdSequence
+   */
+  export type User$leadIdSequenceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    where?: LeadIdSequenceWhereInput
   }
 
   /**
@@ -99875,6 +99989,1116 @@ export namespace Prisma {
 
 
   /**
+   * Model LeadIdSequence
+   */
+
+  export type AggregateLeadIdSequence = {
+    _count: LeadIdSequenceCountAggregateOutputType | null
+    _avg: LeadIdSequenceAvgAggregateOutputType | null
+    _sum: LeadIdSequenceSumAggregateOutputType | null
+    _min: LeadIdSequenceMinAggregateOutputType | null
+    _max: LeadIdSequenceMaxAggregateOutputType | null
+  }
+
+  export type LeadIdSequenceAvgAggregateOutputType = {
+    nextNumber: number | null
+  }
+
+  export type LeadIdSequenceSumAggregateOutputType = {
+    nextNumber: number | null
+  }
+
+  export type LeadIdSequenceMinAggregateOutputType = {
+    id: string | null
+    ownerId: string | null
+    prefix: string | null
+    nextNumber: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadIdSequenceMaxAggregateOutputType = {
+    id: string | null
+    ownerId: string | null
+    prefix: string | null
+    nextNumber: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LeadIdSequenceCountAggregateOutputType = {
+    id: number
+    ownerId: number
+    prefix: number
+    nextNumber: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LeadIdSequenceAvgAggregateInputType = {
+    nextNumber?: true
+  }
+
+  export type LeadIdSequenceSumAggregateInputType = {
+    nextNumber?: true
+  }
+
+  export type LeadIdSequenceMinAggregateInputType = {
+    id?: true
+    ownerId?: true
+    prefix?: true
+    nextNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadIdSequenceMaxAggregateInputType = {
+    id?: true
+    ownerId?: true
+    prefix?: true
+    nextNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LeadIdSequenceCountAggregateInputType = {
+    id?: true
+    ownerId?: true
+    prefix?: true
+    nextNumber?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LeadIdSequenceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadIdSequence to aggregate.
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadIdSequences to fetch.
+     */
+    orderBy?: LeadIdSequenceOrderByWithRelationInput | LeadIdSequenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LeadIdSequenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadIdSequences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadIdSequences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LeadIdSequences
+    **/
+    _count?: true | LeadIdSequenceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LeadIdSequenceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LeadIdSequenceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LeadIdSequenceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LeadIdSequenceMaxAggregateInputType
+  }
+
+  export type GetLeadIdSequenceAggregateType<T extends LeadIdSequenceAggregateArgs> = {
+        [P in keyof T & keyof AggregateLeadIdSequence]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLeadIdSequence[P]>
+      : GetScalarType<T[P], AggregateLeadIdSequence[P]>
+  }
+
+
+
+
+  export type LeadIdSequenceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LeadIdSequenceWhereInput
+    orderBy?: LeadIdSequenceOrderByWithAggregationInput | LeadIdSequenceOrderByWithAggregationInput[]
+    by: LeadIdSequenceScalarFieldEnum[] | LeadIdSequenceScalarFieldEnum
+    having?: LeadIdSequenceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LeadIdSequenceCountAggregateInputType | true
+    _avg?: LeadIdSequenceAvgAggregateInputType
+    _sum?: LeadIdSequenceSumAggregateInputType
+    _min?: LeadIdSequenceMinAggregateInputType
+    _max?: LeadIdSequenceMaxAggregateInputType
+  }
+
+  export type LeadIdSequenceGroupByOutputType = {
+    id: string
+    ownerId: string
+    prefix: string
+    nextNumber: number
+    createdAt: Date
+    updatedAt: Date
+    _count: LeadIdSequenceCountAggregateOutputType | null
+    _avg: LeadIdSequenceAvgAggregateOutputType | null
+    _sum: LeadIdSequenceSumAggregateOutputType | null
+    _min: LeadIdSequenceMinAggregateOutputType | null
+    _max: LeadIdSequenceMaxAggregateOutputType | null
+  }
+
+  type GetLeadIdSequenceGroupByPayload<T extends LeadIdSequenceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LeadIdSequenceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LeadIdSequenceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LeadIdSequenceGroupByOutputType[P]>
+            : GetScalarType<T[P], LeadIdSequenceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LeadIdSequenceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerId?: boolean
+    prefix?: boolean
+    nextNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadIdSequence"]>
+
+  export type LeadIdSequenceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerId?: boolean
+    prefix?: boolean
+    nextNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadIdSequence"]>
+
+  export type LeadIdSequenceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    ownerId?: boolean
+    prefix?: boolean
+    nextNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["leadIdSequence"]>
+
+  export type LeadIdSequenceSelectScalar = {
+    id?: boolean
+    ownerId?: boolean
+    prefix?: boolean
+    nextNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LeadIdSequenceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ownerId" | "prefix" | "nextNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["leadIdSequence"]>
+  export type LeadIdSequenceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadIdSequenceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LeadIdSequenceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LeadIdSequencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LeadIdSequence"
+    objects: {
+      owner: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      ownerId: string
+      prefix: string
+      nextNumber: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["leadIdSequence"]>
+    composites: {}
+  }
+
+  type LeadIdSequenceGetPayload<S extends boolean | null | undefined | LeadIdSequenceDefaultArgs> = $Result.GetResult<Prisma.$LeadIdSequencePayload, S>
+
+  type LeadIdSequenceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LeadIdSequenceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LeadIdSequenceCountAggregateInputType | true
+    }
+
+  export interface LeadIdSequenceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LeadIdSequence'], meta: { name: 'LeadIdSequence' } }
+    /**
+     * Find zero or one LeadIdSequence that matches the filter.
+     * @param {LeadIdSequenceFindUniqueArgs} args - Arguments to find a LeadIdSequence
+     * @example
+     * // Get one LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LeadIdSequenceFindUniqueArgs>(args: SelectSubset<T, LeadIdSequenceFindUniqueArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LeadIdSequence that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LeadIdSequenceFindUniqueOrThrowArgs} args - Arguments to find a LeadIdSequence
+     * @example
+     * // Get one LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LeadIdSequenceFindUniqueOrThrowArgs>(args: SelectSubset<T, LeadIdSequenceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadIdSequence that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceFindFirstArgs} args - Arguments to find a LeadIdSequence
+     * @example
+     * // Get one LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LeadIdSequenceFindFirstArgs>(args?: SelectSubset<T, LeadIdSequenceFindFirstArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LeadIdSequence that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceFindFirstOrThrowArgs} args - Arguments to find a LeadIdSequence
+     * @example
+     * // Get one LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LeadIdSequenceFindFirstOrThrowArgs>(args?: SelectSubset<T, LeadIdSequenceFindFirstOrThrowArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LeadIdSequences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LeadIdSequences
+     * const leadIdSequences = await prisma.leadIdSequence.findMany()
+     * 
+     * // Get first 10 LeadIdSequences
+     * const leadIdSequences = await prisma.leadIdSequence.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const leadIdSequenceWithIdOnly = await prisma.leadIdSequence.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LeadIdSequenceFindManyArgs>(args?: SelectSubset<T, LeadIdSequenceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LeadIdSequence.
+     * @param {LeadIdSequenceCreateArgs} args - Arguments to create a LeadIdSequence.
+     * @example
+     * // Create one LeadIdSequence
+     * const LeadIdSequence = await prisma.leadIdSequence.create({
+     *   data: {
+     *     // ... data to create a LeadIdSequence
+     *   }
+     * })
+     * 
+     */
+    create<T extends LeadIdSequenceCreateArgs>(args: SelectSubset<T, LeadIdSequenceCreateArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LeadIdSequences.
+     * @param {LeadIdSequenceCreateManyArgs} args - Arguments to create many LeadIdSequences.
+     * @example
+     * // Create many LeadIdSequences
+     * const leadIdSequence = await prisma.leadIdSequence.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LeadIdSequenceCreateManyArgs>(args?: SelectSubset<T, LeadIdSequenceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LeadIdSequences and returns the data saved in the database.
+     * @param {LeadIdSequenceCreateManyAndReturnArgs} args - Arguments to create many LeadIdSequences.
+     * @example
+     * // Create many LeadIdSequences
+     * const leadIdSequence = await prisma.leadIdSequence.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LeadIdSequences and only return the `id`
+     * const leadIdSequenceWithIdOnly = await prisma.leadIdSequence.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LeadIdSequenceCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadIdSequenceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LeadIdSequence.
+     * @param {LeadIdSequenceDeleteArgs} args - Arguments to delete one LeadIdSequence.
+     * @example
+     * // Delete one LeadIdSequence
+     * const LeadIdSequence = await prisma.leadIdSequence.delete({
+     *   where: {
+     *     // ... filter to delete one LeadIdSequence
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LeadIdSequenceDeleteArgs>(args: SelectSubset<T, LeadIdSequenceDeleteArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LeadIdSequence.
+     * @param {LeadIdSequenceUpdateArgs} args - Arguments to update one LeadIdSequence.
+     * @example
+     * // Update one LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LeadIdSequenceUpdateArgs>(args: SelectSubset<T, LeadIdSequenceUpdateArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LeadIdSequences.
+     * @param {LeadIdSequenceDeleteManyArgs} args - Arguments to filter LeadIdSequences to delete.
+     * @example
+     * // Delete a few LeadIdSequences
+     * const { count } = await prisma.leadIdSequence.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LeadIdSequenceDeleteManyArgs>(args?: SelectSubset<T, LeadIdSequenceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadIdSequences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LeadIdSequences
+     * const leadIdSequence = await prisma.leadIdSequence.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LeadIdSequenceUpdateManyArgs>(args: SelectSubset<T, LeadIdSequenceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LeadIdSequences and returns the data updated in the database.
+     * @param {LeadIdSequenceUpdateManyAndReturnArgs} args - Arguments to update many LeadIdSequences.
+     * @example
+     * // Update many LeadIdSequences
+     * const leadIdSequence = await prisma.leadIdSequence.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LeadIdSequences and only return the `id`
+     * const leadIdSequenceWithIdOnly = await prisma.leadIdSequence.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LeadIdSequenceUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadIdSequenceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LeadIdSequence.
+     * @param {LeadIdSequenceUpsertArgs} args - Arguments to update or create a LeadIdSequence.
+     * @example
+     * // Update or create a LeadIdSequence
+     * const leadIdSequence = await prisma.leadIdSequence.upsert({
+     *   create: {
+     *     // ... data to create a LeadIdSequence
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LeadIdSequence we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LeadIdSequenceUpsertArgs>(args: SelectSubset<T, LeadIdSequenceUpsertArgs<ExtArgs>>): Prisma__LeadIdSequenceClient<$Result.GetResult<Prisma.$LeadIdSequencePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LeadIdSequences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceCountArgs} args - Arguments to filter LeadIdSequences to count.
+     * @example
+     * // Count the number of LeadIdSequences
+     * const count = await prisma.leadIdSequence.count({
+     *   where: {
+     *     // ... the filter for the LeadIdSequences we want to count
+     *   }
+     * })
+    **/
+    count<T extends LeadIdSequenceCountArgs>(
+      args?: Subset<T, LeadIdSequenceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LeadIdSequenceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LeadIdSequence.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LeadIdSequenceAggregateArgs>(args: Subset<T, LeadIdSequenceAggregateArgs>): Prisma.PrismaPromise<GetLeadIdSequenceAggregateType<T>>
+
+    /**
+     * Group by LeadIdSequence.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LeadIdSequenceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LeadIdSequenceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LeadIdSequenceGroupByArgs['orderBy'] }
+        : { orderBy?: LeadIdSequenceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LeadIdSequenceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLeadIdSequenceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LeadIdSequence model
+   */
+  readonly fields: LeadIdSequenceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LeadIdSequence.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LeadIdSequenceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LeadIdSequence model
+   */
+  interface LeadIdSequenceFieldRefs {
+    readonly id: FieldRef<"LeadIdSequence", 'String'>
+    readonly ownerId: FieldRef<"LeadIdSequence", 'String'>
+    readonly prefix: FieldRef<"LeadIdSequence", 'String'>
+    readonly nextNumber: FieldRef<"LeadIdSequence", 'Int'>
+    readonly createdAt: FieldRef<"LeadIdSequence", 'DateTime'>
+    readonly updatedAt: FieldRef<"LeadIdSequence", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LeadIdSequence findUnique
+   */
+  export type LeadIdSequenceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadIdSequence to fetch.
+     */
+    where: LeadIdSequenceWhereUniqueInput
+  }
+
+  /**
+   * LeadIdSequence findUniqueOrThrow
+   */
+  export type LeadIdSequenceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadIdSequence to fetch.
+     */
+    where: LeadIdSequenceWhereUniqueInput
+  }
+
+  /**
+   * LeadIdSequence findFirst
+   */
+  export type LeadIdSequenceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadIdSequence to fetch.
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadIdSequences to fetch.
+     */
+    orderBy?: LeadIdSequenceOrderByWithRelationInput | LeadIdSequenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadIdSequences.
+     */
+    cursor?: LeadIdSequenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadIdSequences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadIdSequences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadIdSequences.
+     */
+    distinct?: LeadIdSequenceScalarFieldEnum | LeadIdSequenceScalarFieldEnum[]
+  }
+
+  /**
+   * LeadIdSequence findFirstOrThrow
+   */
+  export type LeadIdSequenceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadIdSequence to fetch.
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadIdSequences to fetch.
+     */
+    orderBy?: LeadIdSequenceOrderByWithRelationInput | LeadIdSequenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LeadIdSequences.
+     */
+    cursor?: LeadIdSequenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadIdSequences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadIdSequences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadIdSequences.
+     */
+    distinct?: LeadIdSequenceScalarFieldEnum | LeadIdSequenceScalarFieldEnum[]
+  }
+
+  /**
+   * LeadIdSequence findMany
+   */
+  export type LeadIdSequenceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter, which LeadIdSequences to fetch.
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LeadIdSequences to fetch.
+     */
+    orderBy?: LeadIdSequenceOrderByWithRelationInput | LeadIdSequenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LeadIdSequences.
+     */
+    cursor?: LeadIdSequenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LeadIdSequences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LeadIdSequences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LeadIdSequences.
+     */
+    distinct?: LeadIdSequenceScalarFieldEnum | LeadIdSequenceScalarFieldEnum[]
+  }
+
+  /**
+   * LeadIdSequence create
+   */
+  export type LeadIdSequenceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LeadIdSequence.
+     */
+    data: XOR<LeadIdSequenceCreateInput, LeadIdSequenceUncheckedCreateInput>
+  }
+
+  /**
+   * LeadIdSequence createMany
+   */
+  export type LeadIdSequenceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LeadIdSequences.
+     */
+    data: LeadIdSequenceCreateManyInput | LeadIdSequenceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LeadIdSequence createManyAndReturn
+   */
+  export type LeadIdSequenceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * The data used to create many LeadIdSequences.
+     */
+    data: LeadIdSequenceCreateManyInput | LeadIdSequenceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadIdSequence update
+   */
+  export type LeadIdSequenceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LeadIdSequence.
+     */
+    data: XOR<LeadIdSequenceUpdateInput, LeadIdSequenceUncheckedUpdateInput>
+    /**
+     * Choose, which LeadIdSequence to update.
+     */
+    where: LeadIdSequenceWhereUniqueInput
+  }
+
+  /**
+   * LeadIdSequence updateMany
+   */
+  export type LeadIdSequenceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LeadIdSequences.
+     */
+    data: XOR<LeadIdSequenceUpdateManyMutationInput, LeadIdSequenceUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadIdSequences to update
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * Limit how many LeadIdSequences to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadIdSequence updateManyAndReturn
+   */
+  export type LeadIdSequenceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * The data used to update LeadIdSequences.
+     */
+    data: XOR<LeadIdSequenceUpdateManyMutationInput, LeadIdSequenceUncheckedUpdateManyInput>
+    /**
+     * Filter which LeadIdSequences to update
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * Limit how many LeadIdSequences to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LeadIdSequence upsert
+   */
+  export type LeadIdSequenceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LeadIdSequence to update in case it exists.
+     */
+    where: LeadIdSequenceWhereUniqueInput
+    /**
+     * In case the LeadIdSequence found by the `where` argument doesn't exist, create a new LeadIdSequence with this data.
+     */
+    create: XOR<LeadIdSequenceCreateInput, LeadIdSequenceUncheckedCreateInput>
+    /**
+     * In case the LeadIdSequence was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LeadIdSequenceUpdateInput, LeadIdSequenceUncheckedUpdateInput>
+  }
+
+  /**
+   * LeadIdSequence delete
+   */
+  export type LeadIdSequenceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+    /**
+     * Filter which LeadIdSequence to delete.
+     */
+    where: LeadIdSequenceWhereUniqueInput
+  }
+
+  /**
+   * LeadIdSequence deleteMany
+   */
+  export type LeadIdSequenceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LeadIdSequences to delete
+     */
+    where?: LeadIdSequenceWhereInput
+    /**
+     * Limit how many LeadIdSequences to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LeadIdSequence without action
+   */
+  export type LeadIdSequenceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadIdSequence
+     */
+    select?: LeadIdSequenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LeadIdSequence
+     */
+    omit?: LeadIdSequenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadIdSequenceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model LeadFollowUp
    */
 
@@ -119450,6 +120674,18 @@ export namespace Prisma {
   export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
 
 
+  export const LeadIdSequenceScalarFieldEnum: {
+    id: 'id',
+    ownerId: 'ownerId',
+    prefix: 'prefix',
+    nextNumber: 'nextNumber',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LeadIdSequenceScalarFieldEnum = (typeof LeadIdSequenceScalarFieldEnum)[keyof typeof LeadIdSequenceScalarFieldEnum]
+
+
   export const LeadFollowUpScalarFieldEnum: {
     id: 'id',
     leadId: 'leadId',
@@ -120178,6 +121414,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     createdLeads?: LeadListRelationFilter
     updatedLeads?: LeadListRelationFilter
+    leadIdSequence?: XOR<LeadIdSequenceNullableScalarRelationFilter, LeadIdSequenceWhereInput> | null
     leadFollowUps?: LeadFollowUpListRelationFilter
     leadActivities?: LeadActivityListRelationFilter
     leadStageChanges?: LeadStageHistoryListRelationFilter
@@ -120238,6 +121475,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     createdLeads?: LeadOrderByRelationAggregateInput
     updatedLeads?: LeadOrderByRelationAggregateInput
+    leadIdSequence?: LeadIdSequenceOrderByWithRelationInput
     leadFollowUps?: LeadFollowUpOrderByRelationAggregateInput
     leadActivities?: LeadActivityOrderByRelationAggregateInput
     leadStageChanges?: LeadStageHistoryOrderByRelationAggregateInput
@@ -120301,6 +121539,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     createdLeads?: LeadListRelationFilter
     updatedLeads?: LeadListRelationFilter
+    leadIdSequence?: XOR<LeadIdSequenceNullableScalarRelationFilter, LeadIdSequenceWhereInput> | null
     leadFollowUps?: LeadFollowUpListRelationFilter
     leadActivities?: LeadActivityListRelationFilter
     leadStageChanges?: LeadStageHistoryListRelationFilter
@@ -128228,7 +129467,7 @@ export namespace Prisma {
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    branchId_leadId?: LeadBranchIdLeadIdCompoundUniqueInput
+    createdById_leadId?: LeadCreatedByIdLeadIdCompoundUniqueInput
     AND?: LeadWhereInput | LeadWhereInput[]
     OR?: LeadWhereInput[]
     NOT?: LeadWhereInput | LeadWhereInput[]
@@ -128283,7 +129522,7 @@ export namespace Prisma {
     convertedStudent?: XOR<BranchStudentNullableScalarRelationFilter, BranchStudentWhereInput> | null
     followUpReminders?: FollowUpReminderListRelationFilter
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
-  }, "id" | "branchId_leadId">
+  }, "id" | "createdById_leadId">
 
   export type LeadOrderByWithAggregationInput = {
     id?: SortOrder
@@ -128375,6 +129614,68 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+  }
+
+  export type LeadIdSequenceWhereInput = {
+    AND?: LeadIdSequenceWhereInput | LeadIdSequenceWhereInput[]
+    OR?: LeadIdSequenceWhereInput[]
+    NOT?: LeadIdSequenceWhereInput | LeadIdSequenceWhereInput[]
+    id?: StringFilter<"LeadIdSequence"> | string
+    ownerId?: StringFilter<"LeadIdSequence"> | string
+    prefix?: StringFilter<"LeadIdSequence"> | string
+    nextNumber?: IntFilter<"LeadIdSequence"> | number
+    createdAt?: DateTimeFilter<"LeadIdSequence"> | Date | string
+    updatedAt?: DateTimeFilter<"LeadIdSequence"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LeadIdSequenceOrderByWithRelationInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+    prefix?: SortOrder
+    nextNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    owner?: UserOrderByWithRelationInput
+  }
+
+  export type LeadIdSequenceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    ownerId?: string
+    AND?: LeadIdSequenceWhereInput | LeadIdSequenceWhereInput[]
+    OR?: LeadIdSequenceWhereInput[]
+    NOT?: LeadIdSequenceWhereInput | LeadIdSequenceWhereInput[]
+    prefix?: StringFilter<"LeadIdSequence"> | string
+    nextNumber?: IntFilter<"LeadIdSequence"> | number
+    createdAt?: DateTimeFilter<"LeadIdSequence"> | Date | string
+    updatedAt?: DateTimeFilter<"LeadIdSequence"> | Date | string
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "ownerId">
+
+  export type LeadIdSequenceOrderByWithAggregationInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+    prefix?: SortOrder
+    nextNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LeadIdSequenceCountOrderByAggregateInput
+    _avg?: LeadIdSequenceAvgOrderByAggregateInput
+    _max?: LeadIdSequenceMaxOrderByAggregateInput
+    _min?: LeadIdSequenceMinOrderByAggregateInput
+    _sum?: LeadIdSequenceSumOrderByAggregateInput
+  }
+
+  export type LeadIdSequenceScalarWhereWithAggregatesInput = {
+    AND?: LeadIdSequenceScalarWhereWithAggregatesInput | LeadIdSequenceScalarWhereWithAggregatesInput[]
+    OR?: LeadIdSequenceScalarWhereWithAggregatesInput[]
+    NOT?: LeadIdSequenceScalarWhereWithAggregatesInput | LeadIdSequenceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LeadIdSequence"> | string
+    ownerId?: StringWithAggregatesFilter<"LeadIdSequence"> | string
+    prefix?: StringWithAggregatesFilter<"LeadIdSequence"> | string
+    nextNumber?: IntWithAggregatesFilter<"LeadIdSequence"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"LeadIdSequence"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LeadIdSequence"> | Date | string
   }
 
   export type LeadFollowUpWhereInput = {
@@ -129945,6 +131246,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -130005,6 +131307,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -130065,6 +131368,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -130125,6 +131429,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -139476,6 +140781,68 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LeadIdSequenceCreateInput = {
+    id?: string
+    prefix: string
+    nextNumber?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutLeadIdSequenceInput
+  }
+
+  export type LeadIdSequenceUncheckedCreateInput = {
+    id?: string
+    ownerId: string
+    prefix: string
+    nextNumber?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadIdSequenceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutLeadIdSequenceNestedInput
+  }
+
+  export type LeadIdSequenceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadIdSequenceCreateManyInput = {
+    id?: string
+    ownerId: string
+    prefix: string
+    nextNumber?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadIdSequenceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadIdSequenceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LeadFollowUpCreateInput = {
     id?: string
     followUpDate: Date | string
@@ -141374,6 +142741,11 @@ export namespace Prisma {
     every?: SalesCrmBatchRequestWhereInput
     some?: SalesCrmBatchRequestWhereInput
     none?: SalesCrmBatchRequestWhereInput
+  }
+
+  export type LeadIdSequenceNullableScalarRelationFilter = {
+    is?: LeadIdSequenceWhereInput | null
+    isNot?: LeadIdSequenceWhereInput | null
   }
 
   export type LeadFollowUpListRelationFilter = {
@@ -147117,8 +148489,8 @@ export namespace Prisma {
     not?: NestedEnumLeadStageFilter<$PrismaModel> | $Enums.LeadStage
   }
 
-  export type LeadBranchIdLeadIdCompoundUniqueInput = {
-    branchId: string
+  export type LeadCreatedByIdLeadIdCompoundUniqueInput = {
+    createdById: string
     leadId: string
   }
 
@@ -147274,6 +148646,41 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLeadStageFilter<$PrismaModel>
     _max?: NestedEnumLeadStageFilter<$PrismaModel>
+  }
+
+  export type LeadIdSequenceCountOrderByAggregateInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+    prefix?: SortOrder
+    nextNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadIdSequenceAvgOrderByAggregateInput = {
+    nextNumber?: SortOrder
+  }
+
+  export type LeadIdSequenceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+    prefix?: SortOrder
+    nextNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadIdSequenceMinOrderByAggregateInput = {
+    id?: SortOrder
+    ownerId?: SortOrder
+    prefix?: SortOrder
+    nextNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LeadIdSequenceSumOrderByAggregateInput = {
+    nextNumber?: SortOrder
   }
 
   export type LeadFollowUpCountOrderByAggregateInput = {
@@ -148350,6 +149757,12 @@ export namespace Prisma {
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
   }
 
+  export type LeadIdSequenceCreateNestedOneWithoutOwnerInput = {
+    create?: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: LeadIdSequenceCreateOrConnectWithoutOwnerInput
+    connect?: LeadIdSequenceWhereUniqueInput
+  }
+
   export type LeadFollowUpCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<LeadFollowUpCreateWithoutCreatedByInput, LeadFollowUpUncheckedCreateWithoutCreatedByInput> | LeadFollowUpCreateWithoutCreatedByInput[] | LeadFollowUpUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: LeadFollowUpCreateOrConnectWithoutCreatedByInput | LeadFollowUpCreateOrConnectWithoutCreatedByInput[]
@@ -148571,6 +149984,12 @@ export namespace Prisma {
     connectOrCreate?: LeadCreateOrConnectWithoutUpdatedByInput | LeadCreateOrConnectWithoutUpdatedByInput[]
     createMany?: LeadCreateManyUpdatedByInputEnvelope
     connect?: LeadWhereUniqueInput | LeadWhereUniqueInput[]
+  }
+
+  export type LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput = {
+    create?: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: LeadIdSequenceCreateOrConnectWithoutOwnerInput
+    connect?: LeadIdSequenceWhereUniqueInput
   }
 
   export type LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -148998,6 +150417,16 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutUpdatedByInput | LeadUpdateWithWhereUniqueWithoutUpdatedByInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutUpdatedByInput | LeadUpdateManyWithWhereWithoutUpdatedByInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadIdSequenceUpdateOneWithoutOwnerNestedInput = {
+    create?: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: LeadIdSequenceCreateOrConnectWithoutOwnerInput
+    upsert?: LeadIdSequenceUpsertWithoutOwnerInput
+    disconnect?: LeadIdSequenceWhereInput | boolean
+    delete?: LeadIdSequenceWhereInput | boolean
+    connect?: LeadIdSequenceWhereUniqueInput
+    update?: XOR<XOR<LeadIdSequenceUpdateToOneWithWhereWithoutOwnerInput, LeadIdSequenceUpdateWithoutOwnerInput>, LeadIdSequenceUncheckedUpdateWithoutOwnerInput>
   }
 
   export type LeadFollowUpUpdateManyWithoutCreatedByNestedInput = {
@@ -149442,6 +150871,16 @@ export namespace Prisma {
     update?: LeadUpdateWithWhereUniqueWithoutUpdatedByInput | LeadUpdateWithWhereUniqueWithoutUpdatedByInput[]
     updateMany?: LeadUpdateManyWithWhereWithoutUpdatedByInput | LeadUpdateManyWithWhereWithoutUpdatedByInput[]
     deleteMany?: LeadScalarWhereInput | LeadScalarWhereInput[]
+  }
+
+  export type LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput = {
+    create?: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: LeadIdSequenceCreateOrConnectWithoutOwnerInput
+    upsert?: LeadIdSequenceUpsertWithoutOwnerInput
+    disconnect?: LeadIdSequenceWhereInput | boolean
+    delete?: LeadIdSequenceWhereInput | boolean
+    connect?: LeadIdSequenceWhereUniqueInput
+    update?: XOR<XOR<LeadIdSequenceUpdateToOneWithWhereWithoutOwnerInput, LeadIdSequenceUpdateWithoutOwnerInput>, LeadIdSequenceUncheckedUpdateWithoutOwnerInput>
   }
 
   export type LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput = {
@@ -156103,6 +157542,20 @@ export namespace Prisma {
     deleteMany?: SalesCrmBatchRequestScalarWhereInput | SalesCrmBatchRequestScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutLeadIdSequenceInput = {
+    create?: XOR<UserCreateWithoutLeadIdSequenceInput, UserUncheckedCreateWithoutLeadIdSequenceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadIdSequenceInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutLeadIdSequenceNestedInput = {
+    create?: XOR<UserCreateWithoutLeadIdSequenceInput, UserUncheckedCreateWithoutLeadIdSequenceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLeadIdSequenceInput
+    upsert?: UserUpsertWithoutLeadIdSequenceInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLeadIdSequenceInput, UserUpdateWithoutLeadIdSequenceInput>, UserUncheckedUpdateWithoutLeadIdSequenceInput>
+  }
+
   export type LeadCreateNestedOneWithoutFollowUpsInput = {
     create?: XOR<LeadCreateWithoutFollowUpsInput, LeadUncheckedCreateWithoutFollowUpsInput>
     connectOrCreate?: LeadCreateOrConnectWithoutFollowUpsInput
@@ -158702,6 +160155,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LeadIdSequenceCreateWithoutOwnerInput = {
+    id?: string
+    prefix: string
+    nextNumber?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadIdSequenceUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    prefix: string
+    nextNumber?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LeadIdSequenceCreateOrConnectWithoutOwnerInput = {
+    where: LeadIdSequenceWhereUniqueInput
+    create: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+  }
+
   export type LeadFollowUpCreateWithoutCreatedByInput = {
     id?: string
     followUpDate: Date | string
@@ -159879,6 +161353,33 @@ export namespace Prisma {
     data: XOR<LeadUpdateManyMutationInput, LeadUncheckedUpdateManyWithoutUpdatedByInput>
   }
 
+  export type LeadIdSequenceUpsertWithoutOwnerInput = {
+    update: XOR<LeadIdSequenceUpdateWithoutOwnerInput, LeadIdSequenceUncheckedUpdateWithoutOwnerInput>
+    create: XOR<LeadIdSequenceCreateWithoutOwnerInput, LeadIdSequenceUncheckedCreateWithoutOwnerInput>
+    where?: LeadIdSequenceWhereInput
+  }
+
+  export type LeadIdSequenceUpdateToOneWithWhereWithoutOwnerInput = {
+    where?: LeadIdSequenceWhereInput
+    data: XOR<LeadIdSequenceUpdateWithoutOwnerInput, LeadIdSequenceUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type LeadIdSequenceUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadIdSequenceUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prefix?: StringFieldUpdateOperationsInput | string
+    nextNumber?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LeadFollowUpUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: LeadFollowUpWhereUniqueInput
     update: XOR<LeadFollowUpUpdateWithoutCreatedByInput, LeadFollowUpUncheckedUpdateWithoutCreatedByInput>
@@ -160177,6 +161678,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -160236,6 +161738,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -160340,6 +161843,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -160399,6 +161903,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -160493,6 +161998,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -160552,6 +162058,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -161757,6 +163264,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -161816,6 +163324,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -162484,6 +163993,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -162543,6 +164053,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -162701,6 +164212,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -162760,6 +164272,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -162908,6 +164421,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -162967,6 +164481,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -163042,6 +164557,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -163101,6 +164617,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -163219,6 +164736,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -163278,6 +164796,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -163418,6 +164937,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -163477,6 +164997,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -163807,6 +165328,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -163866,6 +165388,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -163930,6 +165453,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -163989,6 +165513,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -164438,6 +165963,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -164497,6 +166023,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -164567,6 +166094,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -164626,6 +166154,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -164876,6 +166405,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -164935,6 +166465,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -165010,6 +166541,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -165069,6 +166601,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -168476,6 +170009,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -168535,6 +170069,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -168665,6 +170200,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -168724,6 +170260,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -175862,6 +177399,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -175921,6 +177459,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -176165,6 +177704,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -176224,6 +177764,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -177225,6 +178766,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -177284,6 +178826,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -177576,6 +179119,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -177635,6 +179179,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -178569,6 +180114,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -178628,6 +180174,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -178735,6 +180282,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -178794,6 +180342,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -178869,6 +180418,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -178928,6 +180478,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -179003,6 +180554,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -179062,6 +180614,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -179156,6 +180709,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -179215,6 +180769,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -179331,6 +180886,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -179390,6 +180946,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -179449,6 +181006,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -179508,6 +181066,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -179712,6 +181271,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -179771,6 +181331,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -180573,6 +182134,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -180632,6 +182194,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -180816,6 +182379,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -180875,6 +182439,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -181775,6 +183340,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -181834,6 +183400,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -181992,6 +183559,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -182051,6 +183619,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -183091,6 +184660,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -183150,6 +184720,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -183817,6 +185388,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -183876,6 +185448,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -184407,6 +185980,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -184466,6 +186040,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -184767,6 +186342,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -184826,6 +186402,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -185009,6 +186586,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -185068,6 +186646,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -185661,6 +187240,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -185720,6 +187300,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -186917,6 +188498,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -186976,6 +188558,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -187334,6 +188917,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -187393,6 +188977,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -187796,6 +189381,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -187855,6 +189441,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -187919,6 +189506,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -187978,6 +189566,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -188042,6 +189631,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -188101,6 +189691,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -188765,6 +190356,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -188824,6 +190416,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -188894,6 +190487,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -188953,6 +190547,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -189023,6 +190618,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -189082,6 +190678,7 @@ export namespace Prisma {
     createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -189372,6 +190969,262 @@ export namespace Prisma {
     data: XOR<SalesCrmBatchRequestUpdateManyMutationInput, SalesCrmBatchRequestUncheckedUpdateManyWithoutLeadInput>
   }
 
+  export type UserCreateWithoutLeadIdSequenceInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserUncheckedCreateWithoutLeadIdSequenceInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+  }
+
+  export type UserCreateOrConnectWithoutLeadIdSequenceInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLeadIdSequenceInput, UserUncheckedCreateWithoutLeadIdSequenceInput>
+  }
+
+  export type UserUpsertWithoutLeadIdSequenceInput = {
+    update: XOR<UserUpdateWithoutLeadIdSequenceInput, UserUncheckedUpdateWithoutLeadIdSequenceInput>
+    create: XOR<UserCreateWithoutLeadIdSequenceInput, UserUncheckedCreateWithoutLeadIdSequenceInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLeadIdSequenceInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLeadIdSequenceInput, UserUncheckedUpdateWithoutLeadIdSequenceInput>
+  }
+
+  export type UserUpdateWithoutLeadIdSequenceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLeadIdSequenceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+  }
+
   export type LeadCreateWithoutFollowUpsInput = {
     id?: string
     leadId: string
@@ -189526,6 +191379,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
@@ -189585,6 +191439,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
@@ -189803,6 +191658,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
@@ -189862,6 +191718,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -190040,6 +191897,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
@@ -190099,6 +191957,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
@@ -190283,6 +192142,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
@@ -190342,6 +192202,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -190504,6 +192365,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
@@ -190563,6 +192425,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
@@ -190747,6 +192610,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
@@ -190806,6 +192670,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -191001,6 +192866,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -191060,6 +192926,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -191309,6 +193176,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -191368,6 +193236,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -191641,6 +193510,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -191700,6 +193570,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -191764,6 +193635,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -191823,6 +193695,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -192122,6 +193995,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -192181,6 +194055,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -192251,6 +194126,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -192310,6 +194186,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -192624,6 +194501,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -192683,6 +194561,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -192867,6 +194746,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -192926,6 +194806,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -194159,6 +196040,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
@@ -194218,6 +196100,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
     createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
     updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
     leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
     leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
     leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
@@ -194322,6 +196205,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
@@ -194381,6 +196265,7 @@ export namespace Prisma {
     assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
     createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
     updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
     leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
     leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
     leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
