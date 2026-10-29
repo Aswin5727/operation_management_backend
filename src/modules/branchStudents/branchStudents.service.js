@@ -3096,7 +3096,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         ? await getCompletedCourseAcademicTests(student, enrollment)
         : []
       studentRecords.push({
-        recordId: enrollment.id || `${student.id}:${enrollment.courseId}`, branchId: student.branchId, branchName: student.branch?.branchName, branchAdminName: student.branch?.branchAdminName,
+        recordId: enrollment.id || `${student.id}:${enrollment.courseId}`, createdAt: enrollment.updatedAt || enrollment.createdAt || student.updatedAt || student.createdAt || null, updatedAt: enrollment.updatedAt || student.updatedAt || null, branchId: student.branchId, branchName: student.branch?.branchName, branchAdminName: student.branch?.branchAdminName,
         studentId: student.studentId, studentName: student.studentName, parentName: student.parentName, parentSpouseNumber: student.parentSpouseNumber, mobileNumber: student.mobileNumber, emailAddress: student.emailAddress, linkedInUrl: student.linkedInUrl, currentStatus: student.currentStatus, customCurrentStatus: student.customCurrentStatus, purpose: student.purpose, customPurpose: student.customPurpose, qualification: student.qualification, educationLevel: student.educationLevel, educationStatus: student.educationStatus, passedOutYear: student.passedOutYear, designation: student.designation, companyName: student.companyName, source: student.source || null,
         courseId: enrollment.courseId, courseName: enrollment.courseName || enrollment.course?.name || student.courseName, courseStartDate: enrollment.startDate || student.courseStartDate, courseEndDate: enrollment.endDate || student.courseEndDate,
         scheduleType: enrollment.scheduleType || student.classSchedule, classSchedule: enrollment.scheduleType || student.classSchedule, mode: enrollment.mode || enrollment.course?.mode || student.courseMode, courseMode: enrollment.mode || enrollment.course?.mode || student.courseMode,
@@ -3117,9 +3117,18 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
     ? records.filter((row) => String(row.courseId || '').trim() === requestedCourseId)
     : records
   const filtered = courseFilteredRecords.filter((row) => lifecycleSearchMatch(row, query.search))
-  const sortBy = ['studentName', 'courseName', 'courseStartDate', 'courseEndDate'].includes(normalizeString(query.sortBy)) ? normalizeString(query.sortBy) : 'studentName'
-  const sortOrder = normalizeString(query.sortOrder).toLowerCase() === 'desc' ? -1 : 1
-  filtered.sort((left, right) => String(left[sortBy] || '').localeCompare(String(right[sortBy] || ''), undefined, { numeric: true }) * sortOrder)
+  const sortBy = ['createdAt', 'studentName', 'courseName', 'courseStartDate', 'courseEndDate'].includes(normalizeString(query.sortBy)) ? normalizeString(query.sortBy) : 'createdAt'
+  const sortOrder = normalizeString(query.sortOrder).toLowerCase() === 'asc' ? 1 : -1
+  filtered.sort((left, right) => {
+    if (sortBy === 'createdAt') {
+      const leftTime = new Date(left.createdAt || left.updatedAt || 0).getTime()
+      const rightTime = new Date(right.createdAt || right.updatedAt || 0).getTime()
+      if (leftTime !== rightTime) return (rightTime - leftTime) * (sortOrder === 1 ? -1 : 1)
+    }
+    const comparison = String(left[sortBy] || '').localeCompare(String(right[sortBy] || ''), undefined, { numeric: true, sensitivity: 'base' })
+    if (comparison !== 0) return comparison * sortOrder
+    return String(left.recordId || left.studentId || '').localeCompare(String(right.recordId || right.studentId || ''), undefined, { numeric: true, sensitivity: 'base' })
+  })
   const page = Math.max(1, Number.parseInt(query.page, 10) || 1)
   const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20))
   const total = filtered.length
