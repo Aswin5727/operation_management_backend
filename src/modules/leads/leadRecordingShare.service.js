@@ -62,7 +62,32 @@ export async function createLeadRecordingShare({ leadId, recordingIds, message, 
 }
 
 function decorateShare(share) {
-  return { id: share.id, leadId: share.lead.leadId, studentName: share.lead.studentName, studentId: share.lead.convertedStudent?.studentId || null, courseName: share.lead.course?.name || null, branch: share.branch.branchName, submitterName: share.sender.fullName, submittedBy: share.sender.fullName, submitterRole: share.senderRole, submissionStatus: "SUBMITTED", submissionDate: share.sharedAt, message: share.message, recordings: share.items.map((item) => ({ recordingId: item.recordingId, originalName: item.originalName, recordingDate: item.recording.createdAt, recordingType: item.recording.followUp?.followUpType || null, mimeType: item.recording.mimeType, sizeBytes: item.recording.sizeBytes, playbackUrl: `/lead-recording-shares/${share.id}/recordings/${item.recordingId}` })) };
+  const lead = share.lead || null;
+  const branch = share.branch || null;
+  const sender = share.sender || null;
+  return {
+    id: share.id,
+    leadId: lead?.leadId || null,
+    studentName: lead?.studentName || null,
+    studentId: lead?.convertedStudent?.studentId || null,
+    courseName: lead?.course?.name || null,
+    branch: branch?.branchName || null,
+    submitterName: sender?.fullName || "Staff member",
+    submittedBy: sender?.fullName || "Staff member",
+    submitterRole: share.senderRole || null,
+    submissionStatus: "SUBMITTED",
+    submissionDate: share.sharedAt,
+    message: share.message,
+    recordings: (share.items || []).map((item) => ({
+      recordingId: item.recordingId,
+      originalName: item.originalName,
+      recordingDate: item.recording?.createdAt || item.uploadedAt || null,
+      recordingType: item.recording?.followUp?.followUpType || null,
+      mimeType: item.recording?.mimeType || null,
+      sizeBytes: item.recording?.sizeBytes || null,
+      playbackUrl: "/lead-recording-shares/" + share.id + "/recordings/" + item.recordingId,
+    })),
+  };
 }
 
 export async function listLeadRecordingShares({ actor, salesAdminId, leadId, branchId } = {}) {
