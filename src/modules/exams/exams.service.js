@@ -31,21 +31,54 @@ async function batchCourseAndAcademicCompletion(batchId, cache = new Map()) {
     const cycle = batch?.cycles?.[0];
     if (!batch || !cycle) return false;
     const students = await prisma.branchStudent.findMany({
-      where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, courseEnrollments: { some: { status: "ACTIVE", batchCycleId: cycle.id, batchId: { in: [batch.id, batch.batchId] } } } },
-      select: { id: true, branchId: true, batchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: { status: "ACTIVE", batchCycleId: cycle.id, batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true } } },
+      where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] },
+      select: { id: true, branchId: true, batchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true } } },
     });
     if (!students.length) return false;
-    const completed = await Promise.all(students.map(async (student) => {
+    const [reportSchedules, sentReportShares] = await Promise.all([
+      prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, academicTestItemId: true, questionPaperId: true } }),
+      prisma.facultyReportShare.findMany({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { academicTestIds: true } }),
+    ]);
+    const sentReportIds = new Set(sentReportShares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean));
+    const allAcademicReportsSent = reportSchedules.length > 0 && reportSchedules.every((schedule) => sentReportIds.has(schedule.id));
+    if (!allAcademicReportsSent) return false;
+    const allSchedules = await prisma.academicScheduledTest.findMany({
+      where: { branchBatchId: batch.id, status: { not: "CANCELLED" } },
+      select: { id: true, academicTestItemId: true, questionPaperId: true, isRetest: true, originalScheduleId: true, parentScheduleId: true },
+    });
+    const scheduleIds = allSchedules.map((schedule) => schedule.id);
+    const [scheduleItems, papers, submissions, projectSubmissions] = await Promise.all([
+      Promise.resolve(allSchedules),
+      prisma.academicQuestionPaper.findMany({ where: { id: { in: [...new Set(allSchedules.map((schedule) => schedule.questionPaperId).filter(Boolean))] } }, select: { id: true, questions: { select: { questionType: true } } } }),
+      prisma.academicTestSubmission.findMany({ where: { academicTestId: { in: scheduleIds }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, status: true, resultStatus: true } }),
+      prisma.academicProjectSubmission.findMany({ where: { academicTestId: { in: scheduleIds }, branchStudentId: { in: students.map((student) => student.id) } }, select: { academicTestId: true, branchStudentId: true, marksAwarded: true, status: true } }),
+    ]);
+    const itemIds = [...new Set(scheduleItems.map((schedule) => schedule.academicTestItemId))];
+    const items = await prisma.academicTestItem.findMany({ where: { id: { in: itemIds } }, select: { id: true, testType: true } });
+    const itemById = new Map(items.map((item) => [item.id, item]));
+    const paperById = new Map(papers.map((paper) => [paper.id, paper]));
+    const submissionByKey = new Map(submissions.map((submission) => [`${submission.academicTestId}:${submission.branchStudentId}`, submission]));
+    const projectByKey = new Map(projectSubmissions.map((submission) => [`${submission.academicTestId}:${submission.branchStudentId}`, submission]));
+    const completed = students.map((student) => {
       const enrollment = student.courseEnrollments[0];
       const courseProgress = Number(enrollment?.courseProgress ?? student.courseProgress ?? 0);
       if (courseProgress < 100) return false;
-      const progress = await getAcademicTestProgressForStudent({ ...student, batchId: enrollment?.batchId || student.batchId, courseId: enrollment?.courseId || student.courseId || batch.branchCourseId, courseProgress });
-      return Number(progress.totalTests || 0) + Number(progress.totalProjects || 0) > 0
-        && progress.academicComplete === true
-        && Number(progress.pendingTests || 0) === 0
-        && Number(progress.pendingProjects || 0) === 0
-        && Number(progress.pendingEvaluations || 0) === 0;
-    }));
+      return reportSchedules.length > 0 && reportSchedules.every((schedule) => {
+        const item = itemById.get(schedule.academicTestItemId);
+        if (!item) return false;
+        const testRequired = ["TEST", "TEST_AND_PROJECT"].includes(item.testType);
+        const projectRequired = ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType);
+        const attempts = scheduleItems.filter((attempt) => attempt.id === schedule.id || attempt.originalScheduleId === schedule.id || attempt.parentScheduleId === schedule.id);
+        const testComplete = !testRequired || attempts.some((attempt) => {
+          const submission = submissionByKey.get(`${attempt.id}:${student.id}`);
+          const hasAssessment = (paperById.get(attempt.questionPaperId)?.questions || []).some((question) => question.questionType === "ASSESSMENT");
+          const testStatus = text(submission?.status).toUpperCase();
+          return (testStatus === "EVALUATED" || (testStatus === "SUBMITTED" && !hasAssessment)) && text(submission?.resultStatus).toUpperCase() !== "FAIL";
+        });
+        const projectComplete = !projectRequired || attempts.some((attempt) => projectByKey.get(`${attempt.id}:${student.id}`)?.marksAwarded != null);
+        return testComplete && projectComplete;
+      });
+    });
     return completed.every(Boolean);
   })().catch(() => false);
   cache.set(key, promise);
@@ -854,8 +887,6 @@ export async function listFacultyAssessmentReports(user) {
   const groups = new Map();
   for (const assessment of assessments) {
     if (await batchCourseAndAcademicCompletion(assessment.branchBatchId)) continue;
-    const start = await syllabusCycleStart(assessment.branchBatchId, assessment.branchCourseId, assessment.moduleId, "ASSESSMENT");
-    if (await batchCourseAndAcademicCompletion(assessment.branchBatchId) && start && new Date(assessment.createdAt) < new Date(start)) continue;
     const key = `${assessment.branchCourseId}:${assessment.branchBatchId}:${assessment.moduleId}`; const row = groups.get(key) || { course: assessment.branchCourse, batch: { id: assessment.branchBatch.id, batchId: assessment.branchBatch.batchId, name: assessment.branchBatch.batchName, timing: assessment.branchBatch.batchTiming }, module: { id: assessment.module.id, name: assessment.module.title }, assessmentCount: 0, totalMarks: 0 }; row.assessmentCount += 1; row.totalMarks += Number(assessment.totalMarks || 0); groups.set(key, row);
   }
   return Array.from(groups.values()).sort((a, b) => `${a.course.name}:${a.batch.name}:${a.module.name}`.localeCompare(`${b.course.name}:${b.batch.name}:${b.module.name}`));

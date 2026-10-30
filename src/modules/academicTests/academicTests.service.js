@@ -249,9 +249,38 @@ export async function getFacultyCreateOptions(actor) {
     getFacultyMyBatchesSummary(actor),
     batchIds.length ? prisma.facultyTodayWorkEntry.findMany({ where: { courseId: { in: [...new Set(rows.map((row) => row.branchCourse.id).filter(Boolean))] }, batchId: { in: [...new Set([...batchIds, ...batchCodes])] } }, select: { courseId: true, batchId: true, moduleId: true, studentEntries: { where: { completionStatus: "COMPLETED" }, select: { branchStudentId: true, submoduleId: true } } } }) : [],
   ]);
+  const [reportSchedules, sentReportShares] = await Promise.all([
+    batchIds.length ? prisma.academicScheduledTest.findMany({ where: { branchBatchId: { in: batchIds }, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, branchBatchId: true } }) : [],
+    batchIds.length ? prisma.facultyReportShare.findMany({ where: { batchId: { in: batchIds }, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { batchId: true, academicTestIds: true } }) : [],
+  ]);
+  const sentReportIdsByBatch = new Map();
+  sentReportShares.forEach((share) => {
+    const key = text(share.batchId).toLowerCase();
+    if (!key) return;
+    const ids = sentReportIdsByBatch.get(key) || new Set();
+    (Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean).forEach((id) => ids.add(id));
+    sentReportIdsByBatch.set(key, ids);
+  });
+  const fullyReportedBatchKeys = new Set();
+  const scheduleIdsByBatch = new Map();
+  reportSchedules.forEach((schedule) => {
+    const key = text(schedule.branchBatchId).toLowerCase();
+    if (!key) return;
+    if (!scheduleIdsByBatch.has(key)) scheduleIdsByBatch.set(key, []);
+    scheduleIdsByBatch.get(key).push(schedule.id);
+  });
+  scheduleIdsByBatch.forEach((requiredIds, key) => {
+    const sentIds = sentReportIdsByBatch.get(key) || new Set();
+    if (requiredIds.length > 0 && requiredIds.every((id) => sentIds.has(id))) fullyReportedBatchKeys.add(key);
+  });
+  rows.flatMap((row) => row.batches.map(({ branchBatch }) => branchBatch).filter(Boolean)).forEach((branchBatch) => {
+    const internalKey = text(branchBatch.id).toLowerCase();
+    const publicKey = text(branchBatch.batchId).toLowerCase();
+    if (fullyReportedBatchKeys.has(internalKey)) fullyReportedBatchKeys.add(publicKey);
+  });
   const incompleteAcademicBatchIds = new Set(schedules.filter((schedule) => schedule.status !== "COMPLETED").map((schedule) => text(schedule.branchBatchId)).filter(Boolean));
   const incompleteAcademicBatchKeys = new Set(rows.flatMap((row) => row.batches.map(({ branchBatch }) => incompleteAcademicBatchIds.has(branchBatch?.id) ? [branchBatch.id, branchBatch.batchId] : []).flat()).map((key) => text(key).toLowerCase()).filter(Boolean));
-  const completedBatchKeys = new Set(completedStudents.flatMap((student) => (student.courseEnrollments || []).map((enrollment) => text(enrollment.batchId).toLowerCase()).filter((key) => !incompleteAcademicBatchKeys.has(key))));
+  const completedBatchKeys = new Set(completedStudents.flatMap((student) => (student.courseEnrollments || []).map((enrollment) => text(enrollment.batchId).toLowerCase()).filter((key) => fullyReportedBatchKeys.has(key) && !incompleteAcademicBatchKeys.has(key))));
   const progressByBatch = new Map((facultySummary?.batchCounts || []).map((entry) => [text(entry?.batchId || entry?.id).toLowerCase(), Number(entry?.courseProgress) || 0]));
   const paperByKey = new Map(papers.map((paper) => [`${paper.academicTestItemId}:${paper.branchBatchId}`, paper]));
   const projectByKey = new Map(projects.map((project) => [`${project.academicTestItemId}:${project.branchBatchId}`, project]));
@@ -263,7 +292,6 @@ export async function getFacultyCreateOptions(actor) {
       const key = text(studentBatchId).toLowerCase();
       const enrollment = (student.courseEnrollments || []).find((entry) => text(entry.batchId).toLowerCase() === key);
       const progress = enrollment?.courseProgress ?? (student.batchId && text(student.batchId).toLowerCase() === key ? student.courseProgress : null);
-      if (Number(progress) >= 100 && completedBatchKeys.has(key) && !incompleteAcademicBatchKeys.has(key)) return;
       if (!studentIdsByBatch.has(studentBatchId)) studentIdsByBatch.set(studentBatchId, new Set());
       studentIdsByBatch.get(studentBatchId).add(student.id);
     });
@@ -326,8 +354,9 @@ export async function getFacultyCreateOptions(actor) {
               : nextItem && !projectReady
                 ? `Project has not been prepared for ${branchBatch.batchName || branchBatch.batchId}. Please prepare the project before creating Test ${nextItem.sequence}.`
                 : null;
-      const hasCompletedStudents = [branchBatch.id, branchBatch.batchId].some((key) => completedBatchKeys.has(text(key).toLowerCase()));
-      return { ...branchBatch, testType: nextItem?.testType || null, studentCount, hasCompletedStudents, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || (needsPaper ? "NOT_PREPARED" : null), projectId: project?.id || null, projectStatus: project?.status || (needsProject ? "NOT_PREPARED" : null), currentCourseProgress, requiredProgress, eligible, available, blocker, schedules: batchSchedules };
+      const reportSent = [branchBatch.id, branchBatch.batchId].some((key) => fullyReportedBatchKeys.has(text(key).toLowerCase()));
+      const hasCompletedStudents = reportSent && [branchBatch.id, branchBatch.batchId].some((key) => completedBatchKeys.has(text(key).toLowerCase()));
+      return { ...branchBatch, testType: nextItem?.testType || null, studentCount, hasCompletedStudents, reportSent, nextTestNumber: nextItem?.sequence || null, academicTestItemId: nextItem?.id || null, questionPaperId: paper?.id || null, questionPaperStatus: paper?.status || (needsPaper ? "NOT_PREPARED" : null), projectId: project?.id || null, projectStatus: project?.status || (needsProject ? "NOT_PREPARED" : null), currentCourseProgress, requiredProgress, eligible, available, blocker, schedules: batchSchedules };
     }),
   })).filter((course) => course.batches.length);
   return { tomorrow: tomorrowDate(), courses };
@@ -989,8 +1018,13 @@ export async function getAcademicTestProgressForStudent(student) {
   if (!batch) return empty;
   const courseId = student.courseId || batch.branchCourseId;
   if (!courseId || (batch.branchCourseId && batch.branchCourseId !== courseId)) return empty;
-  const activeBatchCycle = await prisma.batchCycle.findFirst({ where: { batchId: batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" }, select: { id: true } });
-  const cycleScope = activeBatchCycle ? { cycle: { batchCycleId: activeBatchCycle.id } } : {};
+  // Existing enrollments may belong to a completed cycle while the batch has
+  // already opened a newer active cycle. Use the enrollment cycle when given.
+  const requestedBatchCycleId = student.batchCycleId || student.enrollmentBatchCycleId || null;
+  const batchCycle = requestedBatchCycleId
+    ? await prisma.batchCycle.findFirst({ where: { id: requestedBatchCycleId, batchId: batch.id }, select: { id: true } })
+    : await prisma.batchCycle.findFirst({ where: { batchId: batch.id, status: "ACTIVE" }, orderBy: { cycleNumber: "desc" }, select: { id: true } });
+  const cycleScope = batchCycle ? { cycle: { batchCycleId: batchCycle.id } } : {};
 
   const configuredRows = await prisma.academicTest.findMany({
     where: { branchCourseId: courseId, batches: { some: { branchBatchId: batch.id } } },
@@ -1140,7 +1174,7 @@ export async function listAcademicReportBatches(actor) {
   const reportBatches = await Promise.all(batches.map(async (batch) => {
     const [schedules, students] = await Promise.all([
       prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }] }),
-      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true } }),
+      prisma.branchStudent.findMany({ where: { recordStatus: "ACTIVE", discontinuationRequests: { none: { status: "APPROVED" } }, OR: [{ batchId: batch.id }, { batchId: batch.batchId }, { courseEnrollments: { some: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } } } }] }, select: { id: true, courseProgress: true, batchId: true, courseId: true, courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true } } } }),
     ]);
     const configuredItems = await reportItemsForSchedules(batch, schedules);
     if (!schedules.length || !students.length) return null;
@@ -1187,19 +1221,44 @@ export async function listAcademicReportBatches(actor) {
     // A report may contain pending students; those students remain visible as
     // Not Attended/Pending in the sent snapshot. Retests do not increase the
     // configured evaluation count.
-    const sentShare = await prisma.facultyReportShare.findFirst({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { id: true } });
-    if (!completedEvaluationCount && !hasReportableEvaluation && !sentShare) return null;
+    const sentShares = await prisma.facultyReportShare.findMany({
+      where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" },
+      select: { academicTestIds: true },
+    });
+    const sentReportIds = new Set(sentShares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean));
+    const reportableTestIds = configuredItems
+      .map(({ item }) => schedules.find((schedule) => !schedule.isRetest && schedule.academicTestItemId === item.id)?.id)
+      .filter(Boolean);
+    const allAcademicReportsSent = reportableTestIds.length > 0
+      && reportableTestIds.every((scheduleId) => sentReportIds.has(scheduleId));
+    const allStudentsCompleted = students.length > 0 && (await Promise.all(students.map(async (student) => {
+      const enrollment = student.courseEnrollments?.[0];
+      const courseProgress = enrollment?.courseProgress ?? student.courseProgress;
+      const progress = await getAcademicTestProgressForStudent({ ...student, batchId: enrollment?.batchId || student.batchId || batch.id, courseId: enrollment?.courseId || student.courseId || batch.courseId, courseProgress });
+      return Number(courseProgress || 0) >= 100
+        && progress.academicComplete === true
+        && Number(progress.pendingTests || 0) === 0
+        && Number(progress.pendingProjects || 0) === 0;
+    }))).every(Boolean);
+    // Once every student is complete and every Academic Report ID is sent to
+    // Branch Admin, this batch must disappear from the Report tab as well.
+    if (allStudentsCompleted && allAcademicReportsSent) return null;
+    if (!completedEvaluationCount && !hasReportableEvaluation && !sentShares.length) return null;
     const totalEvaluationCount = configuredItems.length;
-    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: completedEvaluationCount, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)) };
+    return { ...batch, course: { id: batch.courseId, name: batch.courseName, courseCode: batch.branchCourseId }, totalTests: totalEvaluationCount, completedTestCount: completedEvaluationCount, hasProject: configuredItems.some(({ item }) => ["PROJECT", "TEST_AND_PROJECT"].includes(item.testType)), reportSent: allAcademicReportsSent };
   }));
   return reportBatches.filter(Boolean);
 }
 
 export async function getAcademicBatchReport(actor, batchId) {
   const batch = await reportBatchForFaculty(actor, batchId);
-  const sentShare = await prisma.facultyReportShare.findFirst({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" }, select: { id: true, sentAt: true, academicTestIds: true } });
+  const sentShares = await prisma.facultyReportShare.findMany({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, orderBy: { sentAt: "desc" }, select: { id: true, sentAt: true, academicTestIds: true } });
   const report = await buildAcademicReport(actor, batch, null, null, true, false);
-  const sentTestIds = sentShare && Array.isArray(sentShare.academicTestIds) ? sentShare.academicTestIds : [];
+  const sentTestIds = [...new Set(sentShares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean))];
+  const reportableSchedules = await prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, orderBy: [{ testNumber: "asc" }, { createdAt: "asc" }], select: { id: true, academicTestItemId: true } });
+  const reportableItems = await reportItemsForSchedules(batch, reportableSchedules);
+  const reportableTestIds = reportableItems.map(({ item }) => reportableSchedules.find((schedule) => schedule.academicTestItemId === item.id)?.id).filter(Boolean);
+  const sentShare = sentShares[0] || null;
   const testProgress = report.tests.map((test) => {
     const pendingStudents = report.students.filter((row) => {
       const current = row.tests?.find((item) => Number(item.testNumber) === Number(test.testNumber));
@@ -1211,7 +1270,7 @@ export async function getAcademicBatchReport(actor, batchId) {
     });
     return { testNumber: test.testNumber, scheduleId: test.scheduleId, totalStudents: report.students.length, completedCount: report.students.length - pendingStudents.length, pendingCount: pendingStudents.length, allStudentsCompleted: pendingStudents.length === 0 };
   }).filter((item) => !sentTestIds.length || sentTestIds.includes(item.scheduleId));
-  return { ...report, testProgress, sentReport: sentShare ? { id: sentShare.id, sentAt: sentShare.sentAt, academicTestIds: sentTestIds } : null };
+  return { ...report, testProgress, reportableTestIds, sentReport: sentShare ? { id: sentShare.id, sentAt: sentShare.sentAt, academicTestIds: sentTestIds } : null };
 }
 
 export async function getMyAcademicReport(actor, courseId = "") {

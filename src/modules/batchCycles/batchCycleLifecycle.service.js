@@ -1,7 +1,7 @@
 import prisma from "../../config/prisma.js";
 import { getAcademicTestProgressForStudent } from "../academicTests/academicTests.service.js";
 
-const FREEZE_MS = 15 * 60 * 1000;
+const FREEZE_MS = 30 * 60 * 1000;
 const SWEEP_INTERVAL_MS = 60 * 1000;
 
 function eligibleEnrollment(enrollment) {
