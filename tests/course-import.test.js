@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import http from "node:http";
 import ExcelJS from "exceljs";
 import { distributeBasisPoints, distributePercentages, buildCourseInstallments } from "../src/modules/branchCourses/courseCalculations.js";
-import { courseFieldErrors, normalizeCourseCode } from "../src/modules/branchCourses/courseValidation.js";
+import { courseFieldErrors, normalizeCourseCode, validateImportCourseCode } from "../src/modules/branchCourses/courseValidation.js";
 
 const databaseUrl = process.env.COURSE_TEST_DATABASE_URL;
 if (databaseUrl) {
@@ -19,7 +19,7 @@ const template = { id: "master-three", branchId: profile.id, branchCourseId: nul
 function stub({ existing = [], templates = [template] } = {}) {
   return { branchCourse: { findMany: async () => existing }, branchInstallmentTemplate: { findMany: async () => templates, findFirst: async ({ where }) => templates.find((plan) => plan.id === where.id && plan.branchId === where.branchId && plan.status === where.status) || null } };
 }
-async function workbook(codes = ["CIS-001"], change = () => {}) {
+async function workbook(codes = ["CISSAICOU001"], change = () => {}) {
   const book = new ExcelJS.Workbook();
   for (const [name, headers] of Object.entries(COURSE_SHEETS)) book.addWorksheet(name).addRow(headers);
   for (const [courseIndex, code] of codes.entries()) {
@@ -56,6 +56,17 @@ test("course-code aliases normalize to one branch-specific code", () => {
   for (const value of ["cis-001", " CIS001 ", "COU001", "CISSAICOU0001"]) assert.equal(normalizeCourseCode(value, profile.branchId), "CISSAICOU001");
   for (const value of ["CIS-000", "CISSAICOUABC"]) assert.throws(() => normalizeCourseCode(value, profile.branchId));
 });
+test("course upload requires the branch-specific three-digit course ID format", () => {
+  assert.equal(validateImportCourseCode("CISSAICOU003", profile.branchId), "CISSAICOU003");
+  for (const value of ["CIS-003", "COU003", "CISSAICOU3", "CISSAICOU000", "cisSAICOU003"]) {
+    assert.throws(() => validateImportCourseCode(value, profile.branchId), /must match the format/);
+  }
+});
+test("course workbook rejects IDs outside the exact branch-specific format", async () => {
+  const result = await validateCourseWorkbook(await workbook(["CIS-001"]), profile, stub());
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((error) => error.sheet === "Courses" && error.column === "Course Code" && /must match the format/.test(error.message)));
+});
 test("shared field validation rejects zero academic tests and invalid modes", () => {
   const errors = courseFieldErrors({ academicTestCount: 0, duration: 0, mode: "Invalid", discount: 500, actualFees: 100, registrationFees: 0 }, { partial: true });
   for (const field of ["academicTestCount", "duration", "mode", "discount"]) assert.ok(errors.some((error) => error.field === field));
@@ -70,7 +81,7 @@ test("template has exactly four sheets and the required two payment columns", as
   assert.ok(book.getWorksheet("Payment Plans").getCell("B1").note.includes("3 Installments"));
 });
 test("preview groups identical module names by course and exposes final codes, plans and weights", async () => {
-  const result = await validateCourseWorkbook(await workbook(["cis-001", " CIS-002 "]), profile, stub());
+  const result = await validateCourseWorkbook(await workbook(["CISSAICOU001", " CISSAICOU002 "]), profile, stub());
   assert.equal(result.valid, true, JSON.stringify(result.errors));
   assert.deepEqual(result.totals, { courses: 2, modules: 6, submodules: 18, paymentPlans: 2, errors: 0 });
   assert.equal(result.courses[0].courseCode, "CISSAICOU001");
@@ -79,7 +90,7 @@ test("preview groups identical module names by course and exposes final codes, p
   assert.deepEqual(result.courses[0].paymentPlans[0].installments, [16000, 16000, 15000]);
 });
 test("same normalized course code invalidates both workbook rows even when course names differ", async () => {
-  const result = await validateCourseWorkbook(await workbook(["CIS-003", "COU003"], (book) => {
+  const result = await validateCourseWorkbook(await workbook(["CISSAICOU003", "CISSAICOU003"], (book) => {
     book.getWorksheet("Courses").getCell("C3").value = "Python vs Java";
   }), profile, stub());
   assert.equal(result.valid, false);
@@ -93,15 +104,15 @@ for (const [name, change, expected] of [
   ["extra sheet", (book) => book.addWorksheet("Notes"), /exactly/],
   ["incorrect header", (book) => { book.getWorksheet("Courses").getCell("A1").value = "Code"; }, /Expected header/],
   ["extra payment column", (book) => { book.getWorksheet("Payment Plans").getCell("C1").value = "Count"; }, /Extra columns/],
-  ["normalized duplicate codes", (book) => { book.getWorksheet("Courses").addRow(["COU001", "Technical", "Another", "Online", 6, 500, 50000, 2000, 0, 1, "Active"]); }, /Duplicate course code/],
+  ["normalized duplicate codes", (book) => { book.getWorksheet("Courses").addRow(["CISSAICOU001", "Technical", "Another", "Online", 6, 500, 50000, 2000, 0, 1, "Active"]); }, /Duplicate course code/],
   ["invalid numbers", (book) => { book.getWorksheet("Courses").getCell("F2").value = "wrong"; }, /whole number/],
   ["invalid status", (book) => { book.getWorksheet("Courses").getCell("K2").value = "Pending"; }, /Status must be/],
-  ["invalid course reference", (book) => { book.getWorksheet("Course Modules").getCell("A2").value = "CIS-999"; }, /must be listed/],
+  ["invalid course reference", (book) => { book.getWorksheet("Course Modules").getCell("A2").value = "CISSAICOU999"; }, /must be listed/],
   ["invalid module reference", (book) => { book.getWorksheet("Course Submodules").getCell("B2").value = "Unrelated"; }, /does not belong/],
-  ["duplicate module", (book) => book.getWorksheet("Course Modules").addRow(["CIS-001", " basics "]), /Duplicate module/],
-  ["duplicate submodule", (book) => book.getWorksheet("Course Submodules").addRow(["CIS-001", "Basics", " introduction "]), /Duplicate submodule/],
+  ["duplicate module", (book) => book.getWorksheet("Course Modules").addRow(["CISSAICOU001", " basics "]), /Duplicate module/],
+  ["duplicate submodule", (book) => book.getWorksheet("Course Submodules").addRow(["CISSAICOU001", "Basics", " introduction "]), /Duplicate submodule/],
   ["unknown payment plan", (book) => { book.getWorksheet("Payment Plans").getCell("B2").value = "Custom"; }, /No active branch/],
-  ["duplicate payment plan", (book) => book.getWorksheet("Payment Plans").addRow(["CIS-001", "3 Installments"]), /Duplicate payment plan/],
+  ["duplicate payment plan", (book) => book.getWorksheet("Payment Plans").addRow(["CISSAICOU001", "3 Installments"]), /Duplicate payment plan/],
   ["formula cell", (book) => { book.getWorksheet("Courses").getCell("G2").value = { formula: "1+1", result: 2 }; }, /plain text/],
   ["empty submodule list", (book) => { const sheet = book.getWorksheet("Course Submodules"); sheet.eachRow((row, i) => { if (i > 1) row.values = []; }); }, /at least one submodule/],
 ]) {

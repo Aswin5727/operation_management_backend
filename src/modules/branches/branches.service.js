@@ -477,7 +477,7 @@ export async function createBranch(payload, actor) {
       },
     });
 
-    return tx.branch.create({
+    const branch = await tx.branch.create({
       data: {
         ...parsed,
         adminUserId: user.id,
@@ -485,6 +485,23 @@ export async function createBranch(payload, actor) {
         updatedBy: actorId,
       },
     });
+
+    await tx.branchInstallmentTemplate.create({
+      data: {
+        branchId: branch.id,
+        templateName: "Full Payment Plan",
+        planType: "FULL_PAYMENT",
+        installmentCount: 1,
+        installments: [],
+        dueRule: "Admission",
+        allowCustomization: true,
+        status: "ACTIVE",
+        createdBy: actorId,
+        updatedBy: actorId,
+      },
+    });
+
+    return branch;
   });
 
   void sendBranchCredentialsEmail({
