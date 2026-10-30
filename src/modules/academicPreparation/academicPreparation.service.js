@@ -115,7 +115,7 @@ export async function startNewCycle(actor, payload = {}) {
     if (currentBatchCycle) await tx.batchCycle.update({ where: { id: currentBatchCycle.id }, data: { status: "COMPLETED", endDate: new Date().toISOString().slice(0, 10) } });
     const latestBatchCycle = await tx.batchCycle.findFirst({ where: { batchId: context.batch.id }, orderBy: { cycleNumber: "desc" }, select: { cycleNumber: true, status: true, freezeUntil: true } });
     if (!currentBatchCycle && latestBatchCycle?.status === "COMPLETED" && latestBatchCycle.freezeUntil && latestBatchCycle.freezeUntil > new Date()) {
-      throw new AppError("This batch is frozen for 15 minutes after completion. Please try again after the freeze ends.", 409);
+      throw new AppError("This batch is frozen for 30 minutes after completion. Please try again after the freeze ends.", 409);
     }
     const nextBatchCycle = await tx.batchCycle.create({ data: { batchId: context.batch.id, cycleNumber: Number(latestBatchCycle?.cycleNumber || 0) + 1, cycleName: `Cycle ${Number(latestBatchCycle?.cycleNumber || 0) + 1}`, status: "ACTIVE", startDate: new Date().toISOString().slice(0, 10) } });
     let selectedCycle = null;
