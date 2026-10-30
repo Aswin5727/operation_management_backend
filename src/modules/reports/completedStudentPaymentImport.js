@@ -13,6 +13,10 @@ function fields(data, number) {
   return { paid: paid.value, pending: pending.value, paymentDate: paymentDate.value, mode: (missing(data[`${prefix}modeofcollection`]) ? "" : clean(data[`${prefix}modeofcollection`])) || (missing(data[`${prefix}mode`]) ? "" : clean(data[`${prefix}mode`])), receipt: (missing(data[`${prefix}receiptnumber`]) ? "" : clean(data[`${prefix}receiptnumber`])) || (missing(data[`${prefix}receiptno`]) ? "" : clean(data[`${prefix}receiptno`])), invalidPaid: paid.invalid, invalidPending: pending.invalid, invalidPaymentDate: paymentDate.invalid };
 }
 
+function isBlankInstallment(value) {
+  return (value.paid === null || value.paid === 0) && (value.pending === null || value.pending === 0) && !value.paymentDate && !value.mode && !value.receipt;
+}
+
 function courseScope(student, courseId) {
   if (!student) return null;
   const scope = courseId ? [{ courseId }] : [{ courseId: null }];
@@ -39,7 +43,7 @@ export async function validatePaymentImportValues(prisma, student, data, errors,
     if (value.invalidPending) errors.push("Installment " + installmentNumber + " Pending Amount must be a valid number.");
     if (value.invalidPaymentDate) errors.push("Installment " + installmentNumber + " Payment Date is invalid.");
     if (value.invalidPaid || value.invalidPending || value.invalidPaymentDate) continue;
-    if ([value.paid, value.pending, value.paymentDate, value.mode, value.receipt].every((item) => item === null || item === "")) continue;
+    if (isBlankInstallment(value)) continue;
     hasAnyInstallment = true;
     const existingInstallment = student
       ? (lookup ? existingInstallmentFromLookup(lookup, student, courseId, installmentNumber) : await prisma.branchStudentInstallment.findFirst({ where: { ...courseScope(student, courseId), installmentNumber }, orderBy: { updatedAt: "desc" } }))
@@ -65,7 +69,7 @@ export async function applyPaymentImportValues(tx, student, branchId, courseId, 
   const scope = courseScope(student, courseId);
   for (let installmentNumber = 1; installmentNumber <= 10; installmentNumber += 1) {
     const value = fields(data, installmentNumber);
-    if ([value.paid, value.pending, value.paymentDate, value.mode, value.receipt].every((item) => item === null || item === "")) continue;
+    if (isBlankInstallment(value)) continue;
     const existingInstallment = lookup
       ? existingInstallmentFromLookup(lookup, student, courseId, installmentNumber)
       : await tx.branchStudentInstallment.findFirst({ where: { ...scope, installmentNumber }, orderBy: { updatedAt: "desc" } });
