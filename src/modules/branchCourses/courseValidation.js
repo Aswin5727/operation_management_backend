@@ -35,3 +35,13 @@ export function normalizeCourseCode(value, branchId) {
   }
   return prefix + String(Number(suffix)).padStart(3, "0");
 }
+
+export function validateImportCourseCode(value, branchId) {
+  const code = String(value ?? "").trim();
+  const prefix = getBranchPublicPrefix(branchId) + "COU";
+  const expectedFormat = `${prefix}001`;
+  if (!new RegExp(`^${prefix}[0-9]{3}$`).test(code) || Number(code.slice(prefix.length)) <= 0) {
+    throw new AppError(`Course Code must match the format ${expectedFormat} (for example ${prefix}003)`, 400);
+  }
+  return code;
+}
