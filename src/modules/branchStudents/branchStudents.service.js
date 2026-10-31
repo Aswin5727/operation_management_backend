@@ -2281,6 +2281,18 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
 
 async function getBranchContext(actor) {
   const role = normalizeString(actor?.role).toUpperCase();
+  const impersonatedBranchId = normalizeString(actor?.impersonatedBranchId);
+
+  // Super Admin branch-dashboard views carry a validated impersonation context
+  // through authentication. Treat that context as the active branch scope so
+  // lifecycle and student queries never fall back to all branches.
+  if (role === "SUPER_ADMIN" && impersonatedBranchId) {
+    const branchProfile = await getCurrentBranchProfile(actor);
+    if (!branchProfile?.id) {
+      throw new AppError("Branch profile not found", 404);
+    }
+    return branchProfile;
+  }
 
   if (role !== "BRANCH_ADMIN") {
     return null;
@@ -3068,7 +3080,9 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       const request = student.discontinuationRequests.find((item) => item.courseId === enrollment.courseId)
         || student.discontinuationRequests.find((item) => !item.courseId)
         || (student.discontinuationRequests.length && enrollments.length === 1 ? student.discontinuationRequests[0] : null)
-      const isDiscontinued = Boolean(request) || String(enrollment.importedLifecycleStatus || "").toUpperCase() === "DISCONTINUED"
+      const importedLifecycleStatus = String(enrollment.importedLifecycleStatus || "").toUpperCase()
+      const isImportedCompleted = importedLifecycleStatus === "COMPLETED"
+      const isDiscontinued = Boolean(request) || importedLifecycleStatus === "DISCONTINUED"
       if (lifecycle === "DISCONTINUED" && !isDiscontinued) continue
       const paidProgress = calculateCoursePaidProgress(student, enrollment.courseId)
       const studentKeyValues = new Set([student.id, student.studentId].map((value) => String(value || "").trim().toLowerCase()).filter(Boolean))
@@ -3109,12 +3123,12 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         Number(enrollment.courseProgress) || 0,
         ...facultyProgressValues,
       ))
-      if (lifecycle === "COMPLETED" && (isDiscontinued || effectiveCourseProgress < 100)) continue
-      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt
+      if (lifecycle === "COMPLETED" && (isDiscontinued || (!isImportedCompleted && effectiveCourseProgress < 100))) continue
+      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt && !isImportedCompleted
         ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
         : null
       const completionStatus = lifecycle === "COMPLETED"
-        ? (enrollment.courseCompletedAt
+        ? (isImportedCompleted || enrollment.courseCompletedAt
           ? "COMPLETED"
           : courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress))
         : "DISCONTINUED"
