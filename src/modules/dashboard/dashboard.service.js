@@ -970,6 +970,12 @@ function money(value) {
 
 function monthKey(year, month) { return `${year}-${String(month).padStart(2, "0")}`; }
 
+function paymentDateKey(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(date);
+}
+
 function previousMonth(year, month) {
   return month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
 }
@@ -998,7 +1004,7 @@ function buildSuperAdminPaymentBuckets(today, payments, students) {
     return { key: `${today.slice(0, 7)}-${start}`, label: `Week ${index}`, expected: 0, actual: 0, start: `${today.slice(0, 7)}-${String(start).padStart(2, "0")}`, end: `${today.slice(0, 7)}-${String(end).padStart(2, "0")}` };
   });
   payments.forEach((payment) => {
-    const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate));
+    const date = paymentDateKey(payment.paymentDate);
     const amount = money(payment.amount);
     const day = daily.find((item) => item.key === date); if (day) day.actual += amount;
     const week = weekly.find((item) => date >= item.start && date <= item.end); if (week) week.actual += amount;
@@ -1050,7 +1056,7 @@ function buildAccuratePaymentOverview(today, payments, students) {
     const end = key + "-" + String(new Date(Date.UTC(year, month, 0)).getUTCDate()).padStart(2, "0");
     return { key, label: paymentOverviewDate(start, { month: "short" }), fullLabel: paymentOverviewDate(start, { month: "long", year: "numeric" }), expected: 0, actual: 0, start, end };
   });
-  const paymentDate = (payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate));
+  const paymentDate = (payment) => paymentDateKey(payment.paymentDate);
   payments.forEach((payment) => {
     const date = paymentDate(payment);
     const amount = money(payment.amount);
@@ -1154,7 +1160,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     branchName: item.branchStudent?.branch?.branchName || item.branchStudent?.branch?.branchId || 'Branch',
     amount: money(item.finalOutstandingAmount ?? item.outstandingAmount),
   })).filter((item) => item.amount > 0);
-  const summary = { totalBranches: branches.length, totalStudents: registeredStudentCount, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, discontinuedOutstandingDetails, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
+  const summary = { totalBranches: branches.length, totalStudents: registeredStudentCount, thisMonthAdmissions: admissionsByMonth.at(-1).value, totalPayment: payments.reduce((sum, payment) => sum + money(payment.amount), 0), thisMonthPayment: payments.filter((payment) => paymentDateKey(payment.paymentDate).startsWith(currentMonth)).reduce((sum, payment) => sum + money(payment.amount), 0), totalOutstanding: 0, discontinuedOutstandingDetails, thisMonthDue: 0, todayDue: 0, yesterdayDue: 0, overdueAmount: 0, dueStudents: new Set(), todayCollection: 0, yesterdayCollection: 0 };
   const yesterday = addDays(today, -1);
   students.forEach((student) => {
     if (approvedDiscontinuationStudentIds.has(String(student.id || "").trim())) return;
@@ -1178,7 +1184,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     });
   });
   summary.totalOutstanding = Math.max(summary.totalOutstanding, 0);
-  payments.forEach((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
+  payments.forEach((payment) => { const date = paymentDateKey(payment.paymentDate); if (date === today) summary.todayCollection += money(payment.amount); if (date === yesterday) summary.yesterdayCollection += money(payment.amount); });
   const courseCounts = new Map();
   students.forEach((student) => {
     if (!dateIsInMonth(student, todayParts.year, todayParts.month, approvedDiscontinuationStudentIds)) return;
@@ -1217,7 +1223,7 @@ async function getSuperAdminOverview(branchId = null, performanceOptions = {}) {
     }, 0), 0);
     const present = branchAttendance.filter((record) => record.status === "PRESENT").length;
     const recorded = branchAttendance.filter((record) => record.status === "PRESENT" || record.status === "ABSENT").length;
-    const collection = branchPayments.filter((payment) => { const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Calcutta" }).format(new Date(payment.paymentDate)); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).reduce((total, payment) => total + money(payment.amount), 0);
+    const collection = branchPayments.filter((payment) => { const date = paymentDateKey(payment.paymentDate); return date >= performanceRange.startDate && date <= performanceRange.endDate; }).reduce((total, payment) => total + money(payment.amount), 0);
     const admissions = branchStudents.filter((student) => isAdmissionInRange(student, performanceRange.startDate, performanceRange.endDate, approvedDiscontinuationStudentIds)).length;
     return { branchId: branchRecord.branchId, branchName: branchRecord.branchName, totalStudents: branchStudents.length, thisMonthAdmissions: admissions, collection, due, outstanding, attendance: recorded ? Math.round((present / recorded) * 1000) / 10 : null, hasPeriodData: Boolean(admissions || collection || due || branchAttendance.length), courses: [...new Set(branchStudents.map((student) => String(student.courseName || "").trim()).filter(Boolean))] };
   });
