@@ -923,10 +923,6 @@ export async function listBranchSalesAdminAdmissions(user) {
     throw new AppError('You do not have permission to view branch admissions.', 403);
   }
 
-  if (role === 'BRANCH_ADMIN' && user?.roleAccess !== BRANCH_ROLE_ACCESS.BRANCH_ADMIN_SALES_ADMIN) {
-    throw new AppError('Sales CRM admission access is required.', 403);
-  }
-
   const branch = await getCurrentBranchProfile(user);
   if (!branch?.id) throw new AppError('Branch profile not found.', 404);
 

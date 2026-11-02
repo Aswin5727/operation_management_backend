@@ -10,6 +10,7 @@ import {
   generateBranchStudentAttendanceReport,
 } from "./branchAttendanceReports.service.js";
 import { generateBranchMonthlyReport } from "./branchMonthlyReportPresentation.service.js";
+import { findBranchReportOptions, listReportBranches, resolveBranchId } from "./branchAttendanceReports.repository.js";
 
 function sendExcelResponse(res, report) {
   res.setHeader("Content-Type", report.contentType);
@@ -52,3 +53,14 @@ export const getBranchBatchAttendanceReportHandler = asyncHandler(async (req, re
 export const getBranchMonthlyReportHandler = asyncHandler(async (req, res) => { const report = await generateBranchMonthlyReport(req.query, req.user); return sendExcelResponse(res, report); });
 
 
+
+export const getReportBranchesHandler = asyncHandler(async (req, res) => {
+  const branches = await listReportBranches();
+  return res.status(200).json({ data: branches });
+});
+
+export const getBranchReportOptionsHandler = asyncHandler(async (req, res) => {
+  const branchId = await resolveBranchId(req.user, req.query?.branchId);
+  const options = await findBranchReportOptions({ branchId });
+  return res.status(200).json({ data: { branchId, ...options } });
+});

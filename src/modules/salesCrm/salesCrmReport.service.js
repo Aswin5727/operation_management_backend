@@ -116,7 +116,7 @@ async function allowedBranches(actor) {
       select: { branchId: true },
     })).map((row) => row.branchId);
   }
-  if (role === "BRANCHADMIN" && actor.branchId) return [actor.branchId];
+  if (role === "BRANCHADMIN") return null;
   throw new AppError("You do not have permission to view Sales CRM reports", 403);
 }
 
@@ -166,7 +166,7 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
   const actorRole = normalizeRole(actor?.role);
   const isCombinedBranchAdmin = actorRole === "BRANCHADMIN";
   if (actorRole === "SALESADMIN") where.assignedToId = actor.userId;
-  if (isCombinedBranchAdmin) where.AND = [{ OR: [{ assignedToId: actor.userId }, { assignedToId: null }] }];
+
   const generatedAt = new Date();
 
   const leads = await prisma.lead.findMany({

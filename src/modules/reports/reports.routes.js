@@ -10,12 +10,16 @@ import {
   getStudentAttendanceReportHandler,
   getBranchBatchAttendanceReportHandler,
   getBranchStudentAttendanceReportHandler,
-  getBranchMonthlyReportHandler
+  getBranchMonthlyReportHandler,
+  getReportBranchesHandler,
+  getBranchReportOptionsHandler
 } from "./reports.controller.js";
 
 const router = express.Router();
 router.use(authenticate);
 router.use("/completed-student-import", completedStudentImportRoutes);
+router.get("/branch-options", authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), getReportBranchesHandler);
+router.get("/branch-report-options", authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), getBranchReportOptionsHandler);
 router.get("/branch-student-attendance", authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), getBranchStudentAttendanceReportHandler);
 router.get("/branch-batch-attendance", authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), getBranchBatchAttendanceReportHandler);
 router.get("/branch-monthly-students", authorize("BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"), getBranchMonthlyReportHandler);
