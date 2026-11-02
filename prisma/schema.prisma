@@ -1111,7 +1111,7 @@ model BranchStudentAttendance {
   branchStudent   BranchStudent    @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
   facultyUser     User?            @relation(fields: [facultyUserId], references: [id])
 
-  @@unique([branchStudentId, attendanceDate, courseId])
+  @@unique([branchStudentId, attendanceDate, courseId, batchId])
   @@index([branchStudentId, attendanceDate])
   @@index([batchId, attendanceDate])
 }

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { buildBranchEntityId } from "../../common/utils/branchIdentifiers.js";
-import { courseFieldErrors, courseNameKey, textKey, normalizeCourseCode } from "./courseValidation.js";
+import { courseFieldErrors, courseNameKey, textKey, normalizeCourseCode, validateImportCourseCode } from "./courseValidation.js";
 import { distributePercentages } from "./courseCalculations.js";
 import { prepareBranchCourse, createBranchCourseInTransaction, lockCourseBranch } from "./branchCourses.service.js";
 
@@ -266,7 +266,7 @@ export async function validateCourseWorkbook(buffer, profile, db = prisma, edits
   const codeFor = (value, sheet, row) => {
     try {
       if (!String(value).trim()) throw new Error("Course Code is required");
-      return normalizeCourseCode(String(value), profile.branchId);
+      return validateImportCourseCode(String(value), profile.branchId);
     } catch (error) { errorAt(errors, sheet, row, "Course Code", error.message); return null; }
   };
   for (const { row, values } of rows.Courses) {

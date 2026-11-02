@@ -1,4 +1,5 @@
 ﻿import { assertAttendanceAllowed, attendanceExclusions } from "../instituteLeave/instituteLeave.service.js";
+import crypto from "node:crypto";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { createNotification } from "../notifications/notifications.service.js";
@@ -538,34 +539,31 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     await assertAttendanceAllowed(tx, students, date, batch.branchId);
     for (const entry of submittedStudents) {
       const student = studentByIdentifier.get(entry.studentId);
-      await tx.branchStudentAttendance.upsert({
-        where: { branchStudentId_attendanceDate_courseId: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId } },
-        create: {
-          branchStudentId: student.id,
-          facultyUserId: normalizeString(user?.id) || null,
-          courseId: batch.courseId,
-          batchId: batch.batchId,
-          moduleId: normalizeString(payload.moduleId) || null,
-          moduleName: normalizeString(payload.moduleName) || null,
-          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
-          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
-          attendanceDate: date,
-          status: entry.status,
-          notes: entry.notes || null,
-        },
-        update: {
-          facultyUserId: normalizeString(user?.id) || null,
-          courseId: batch.courseId,
-          batchId: batch.batchId,
-          moduleId: normalizeString(payload.moduleId) || null,
-          moduleName: normalizeString(payload.moduleName) || null,
-          submoduleId: normalizeString(payload.submoduleId || firstSubmodule?.id) || null,
-          submoduleName: normalizeString(payload.submoduleName || firstSubmodule?.name) || null,
-          status: entry.status,
-          notes: entry.notes || null,
-          markedAt: new Date(),
-        },
-      });
+      const facultyUserId = normalizeString(user?.id) || null;
+      const moduleId = normalizeString(payload.moduleId) || null;
+      const moduleName = normalizeString(payload.moduleName) || null;
+      const submoduleId = normalizeString(payload.submoduleId || firstSubmodule?.id) || null;
+      const submoduleName = normalizeString(payload.submoduleName || firstSubmodule?.name) || null;
+      const notes = entry.notes || null;
+      // Keep parallel course/batch attendance rows independent.
+      await tx.$executeRaw`
+        INSERT INTO "BranchStudentAttendance"
+          ("id", "branchStudentId", "facultyUserId", "courseId", "batchId", "moduleId", "moduleName", "submoduleId", "submoduleName", "attendanceDate", "status", "notes", "markedAt", "createdAt", "updatedAt")
+        VALUES
+          (${crypto.randomUUID()}, ${student.id}, ${facultyUserId}, ${batch.courseId}, ${batch.batchId}, ${moduleId}, ${moduleName}, ${submoduleId}, ${submoduleName}, ${date}, ${entry.status}::"AttendanceStatus", ${notes}, NOW(), NOW(), NOW())
+        ON CONFLICT ("branchStudentId", "attendanceDate", "courseId", "batchId") DO UPDATE SET
+          "facultyUserId" = EXCLUDED."facultyUserId",
+          "courseId" = EXCLUDED."courseId",
+          "batchId" = EXCLUDED."batchId",
+          "moduleId" = EXCLUDED."moduleId",
+          "moduleName" = EXCLUDED."moduleName",
+          "submoduleId" = EXCLUDED."submoduleId",
+          "submoduleName" = EXCLUDED."submoduleName",
+          "status" = EXCLUDED."status",
+          "notes" = EXCLUDED."notes",
+          "markedAt" = NOW(),
+          "updatedAt" = NOW()
+      `;
     }
   });
 
@@ -650,10 +648,10 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
       });
     }
   }
-  return getCurrentFacultyAttendanceOverview(user, date, "");
+  return getCurrentFacultyAttendanceOverview(user, date, "", { courseId: batch.courseId, batchId: batch.batchId });
 }
 
-async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
+async function getBranchFacultyAttendanceOverview(user, date, facultyId = "", options = {}) {
   const candidates = await resolveBranchFacultyCandidates(user, facultyId);
   const email = normalizeString(user?.email).toLowerCase();
   const facultyOr = [
@@ -662,8 +660,19 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
   ];
   if (!facultyOr.length) return null;
 
+  const selectedCourseId = normalizeString(options?.courseId);
+  const selectedBatchId = normalizeString(options?.batchId);
   const branchBatches = await prisma.branchBatch.findMany({
-    where: { status: "ACTIVE", OR: facultyOr },
+    where: {
+      status: "ACTIVE",
+      OR: facultyOr,
+      ...(selectedCourseId || selectedBatchId ? {
+        AND: [{
+          ...(selectedCourseId ? { courseId: selectedCourseId } : {}),
+          ...(selectedBatchId ? { OR: [{ batchId: selectedBatchId }, { id: selectedBatchId }] } : {}),
+        }],
+      } : {}),
+    },
     orderBy: { sequenceNo: "asc" },
     select: { id: true, branchId: true, courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, sequenceNo: true, weekType: true, weeklyOffDay: true, courseStartDate: true, courseEndDate: true },
   });
@@ -694,7 +703,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "") {
       .filter((student) => student.branchId === batch.branchId && ((student.courseId === batch.courseId && student.batchId === batch.batchId) || (student.courseEnrollments || []).some((enrollment) => enrollment.courseId === batch.courseId && enrollment.batchId === batch.batchId)))
       .map((student) => {
         const enrollment = (student.courseEnrollments || []).find((item) => item.courseId === batch.courseId && item.batchId === batch.batchId);
-        const attendance = todayMap.get(`${student.id}|${batch.courseId}|${batch.batchId}`) || todayMap.get(`${student.id}||`);
+        const attendance = todayMap.get(`${student.id}|${batch.courseId}|${batch.batchId}`) || null;
         const effectiveStudent = { ...student, courseId: batch.courseId, batchId: batch.batchId, classSchedule: enrollment?.scheduleType || student.classSchedule, courseStartDate: enrollment?.startDate || student.courseStartDate, courseEndDate: enrollment?.endDate || student.courseEndDate };
         return { ...mapBranchAttendanceStudent(effectiveStudent, instituteExclusions.has(student.id) ? { status: "NOT_APPLICABLE" } : attendance), courseId: batch.courseId, courseName: enrollment?.courseName || batch.courseName, batchId: batch.batchId, batchName: enrollment?.batchName || batch.batchName, batchTiming: enrollment?.batchTiming || batch.batchTiming, classSchedule: batch.weekType || enrollment?.scheduleType || student.classSchedule, weeklyOffDay: batch.weeklyOffDay || student.weeklyOffDay, courseStartDate: enrollment?.startDate || batch.courseStartDate || student.courseStartDate, courseEndDate: enrollment?.endDate || batch.courseEndDate || student.courseEndDate, records: attendanceRecords.filter((record) => record.branchStudentId === student.id && record.courseId === batch.courseId && record.batchId === batch.batchId).map(({ branchStudentId, ...record }) => record) };
       });
@@ -935,9 +944,9 @@ export async function recordFacultyAttendanceLogout(user, payload = {}) {
   return getCurrentFacultyAttendanceOverview(user, date, facultyId);
 }
 
-export async function getCurrentFacultyAttendanceOverview(user, dateValue, facultyId = "") {
+export async function getCurrentFacultyAttendanceOverview(user, dateValue, facultyId = "", options = {}) {
   const date = parseDateString(dateValue);
-  const branchOverview = await getBranchFacultyAttendanceOverview(user, date, facultyId);
+  const branchOverview = await getBranchFacultyAttendanceOverview(user, date, facultyId, options);
   if (branchOverview) return branchOverview;
 
   const { profile, facultyUserId } = await resolveFacultyAttendanceContext(user, facultyId);

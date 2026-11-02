@@ -19,6 +19,10 @@ function currentMinutes() {
   const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
   return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
 }
+function minutesAt(value) {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date(value));
+  return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
+}
 function approvedWindow(record) {
   const isHalfDay = text(record.durationType).toUpperCase() === "HALF_DAY";
   const start = minutes(isHalfDay ? record.halfDayStart : record.permissionStart);
@@ -43,16 +47,19 @@ function latestEndedNeedsLogin(rows, records, nowValue) {
   const ended = records.some(({ window }) => nowValue >= window.end && new Date(latest.loginAt).getTime() < Date.now() && window.end <= nowValue);
   if (!ended) return false;
   const lastEnd = Math.max(...records.filter(({ window }) => nowValue >= window.end).map(({ window }) => window.end));
-  const loginDate = new Date(latest.loginAt);
-  const loginMinute = Number(new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(loginDate).replace(":", "."));
+  const loginMinute = minutesAt(latest.loginAt);
   return loginMinute < lastEnd;
 }
 function dateTimeForMinutes(date, value) { const [year, month, day] = date.split("-").map(Number); const hour = Math.floor(value / 60); const minute = value % 60; return new Date(Date.UTC(year, month - 1, day, hour - 5, minute - 30)); }
 function workingSeconds(rows, records) {
   const now = Date.now();
   return rows.reduce((total, row) => {
-    const start = new Date(row.loginAt).getTime(); const end = row.logoutAt ? new Date(row.logoutAt).getTime() : now;
+    const start = new Date(row.loginAt).getTime(); let end = row.logoutAt ? new Date(row.logoutAt).getTime() : now;
     if (!Number.isFinite(start) || !Number.isFinite(end)) return total;
+    records.forEach(({ window }) => {
+      const pauseEnd = dateTimeForMinutes(row.attendanceDate, window.end).getTime();
+      if (!row.logoutAt && now >= pauseEnd && start < pauseEnd) end = Math.min(end, pauseEnd);
+    });
     let value = Math.max(0, end - start);
     records.forEach(({ window }) => {
       const pauseStart = dateTimeForMinutes(row.attendanceDate, window.start).getTime(); const pauseEnd = dateTimeForMinutes(row.attendanceDate, window.end).getTime();
@@ -130,12 +137,129 @@ export async function getBranchFacultyAttendanceStatus(actor, facultyReference) 
 
   return buildFacultyAttendanceStatus(facultyUser, false);
 }
+
+function validAttendanceDate(value, fallback) {
+  const candidate = text(value);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate)) return fallback;
+  const parsed = new Date(candidate + "T00:00:00Z");
+  return Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== candidate ? fallback : candidate;
+}
+
+function firstDayOfMonth(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE, year: "numeric", month: "2-digit" }).formatToParts(date);
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  return year + "-" + month + "-01";
+}
+
+function dateDistanceInDays(from, to) {
+  const start = new Date(from + "T00:00:00Z").getTime();
+  const end = new Date(to + "T00:00:00Z").getTime();
+  return Number.isFinite(start) && Number.isFinite(end) ? Math.floor((end - start) / 86400000) : 0;
+}
+
+function serializeHistorySession(row, batchNames = new Map()) {
+  return {
+    id: row.id,
+    attendanceDate: row.attendanceDate,
+    loginAt: row.loginAt,
+    logoutAt: row.logoutAt,
+    logoutType: row.logoutType,
+    logoutReason: row.logoutReason,
+    workReport: row.workReport,
+    workCompleted: row.workCompleted,
+    workingSeconds: workingSeconds([row], []),
+    batchWork: (row.batchWork || []).map((item) => ({
+      id: item.id,
+      batchId: item.batchId,
+      batchName: batchNames.get(item.batchId) || item.batchId,
+      workSummary: item.workSummary,
+      attendanceDate: item.attendanceDate,
+    })),
+  };
+}
+
+export async function getBranchFacultyAttendanceHistory(actor, facultyReference, query = {}) {
+  const branch = await getCurrentBranchProfile(actor);
+  if (!branch?.id) throw new AppError("Branch profile not found.", 404);
+
+  const reference = text(facultyReference);
+  if (!reference) throw new AppError("Faculty reference is required.", 400);
+  const branchFaculty = await prisma.branchFaculty.findFirst({
+    where: { branchId: branch.id, OR: [{ id: reference }, { facultyId: reference }] },
+    select: { facultyId: true, email: true, name: true },
+  });
+  if (!branchFaculty) throw new AppError("Faculty not found in this branch.", 404);
+
+  const facultyUser = await prisma.user.findFirst({
+    where: { role: "FACULTY", OR: [{ userCode: branchFaculty.facultyId }, { email: { equals: branchFaculty.email, mode: "insensitive" } }] },
+    select: { id: true, userCode: true, fullName: true, email: true },
+  });
+  const todayDate = today();
+  let fromDate = validAttendanceDate(query?.from || query?.startDate, firstDayOfMonth());
+  let toDate = validAttendanceDate(query?.to || query?.endDate, todayDate);
+  if (fromDate > toDate) [fromDate, toDate] = [toDate, fromDate];
+  if (dateDistanceInDays(fromDate, toDate) > 366) throw new AppError("Attendance history range cannot exceed 12 months.", 400);
+
+  const base = {
+    faculty: { id: facultyUser?.id || null, facultyId: branchFaculty.facultyId, name: facultyUser?.fullName || branchFaculty.name, email: facultyUser?.email || branchFaculty.email },
+    branch: { id: branch.id, branchId: branch.branchId, branchName: branch.branchName },
+    range: { fromDate, toDate },
+  };
+  if (!facultyUser) return { ...base, summary: { totalDays: 0, presentDays: 0, loggedOutDays: 0, notLoggedInDays: 0, permissionDays: 0, totalSessions: 0, totalWorkingSeconds: 0, averageWorkingSeconds: 0 }, days: [] };
+
+  const [sessionsRows, dayRows] = await Promise.all([
+    prisma.facultyAttendanceSession.findMany({
+      where: { facultyUserId: facultyUser.id, attendanceDate: { gte: fromDate, lte: toDate }, sessionSource: "ATTENDANCE" },
+      orderBy: [{ attendanceDate: "desc" }, { loginAt: "asc" }, { createdAt: "asc" }],
+      include: { batchWork: { orderBy: { createdAt: "asc" }, select: { id: true, batchId: true, attendanceDate: true, workSummary: true } } },
+    }),
+    prisma.facultyAttendanceDay.findMany({ where: { facultyUserId: facultyUser.id, attendanceDate: { gte: fromDate, lte: toDate } }, orderBy: { attendanceDate: "desc" } }),
+  ]);
+  const batchIds = [...new Set(sessionsRows.flatMap((row) => (row.batchWork || []).map((item) => item.batchId)).filter(Boolean))];
+  const batchRows = batchIds.length ? await prisma.branchBatch.findMany({ where: { branchId: branch.id, OR: [{ id: { in: batchIds } }, { batchId: { in: batchIds } }] }, select: { id: true, batchId: true, batchName: true } }) : [];
+  const batchNames = new Map(batchRows.flatMap((item) => [[item.id, item.batchName], [item.batchId, item.batchName]]));
+  const grouped = new Map();
+  sessionsRows.forEach((row) => {
+    const item = grouped.get(row.attendanceDate) || { attendanceDate: row.attendanceDate, status: "LOGGED_OUT", firstLoginAt: null, finalLogoutAt: null, totalWorkingSeconds: 0, sessions: [], batchWork: [] };
+    const session = serializeHistorySession(row, batchNames);
+    item.sessions.push(session); item.firstLoginAt = item.firstLoginAt || row.loginAt; if (row.logoutAt) item.finalLogoutAt = row.logoutAt;
+    item.totalWorkingSeconds += session.workingSeconds; item.batchWork.push(...session.batchWork); if (!row.logoutAt) item.status = "LOGGED_IN"; grouped.set(row.attendanceDate, item);
+  });
+  dayRows.forEach((row) => {
+    const item = grouped.get(row.attendanceDate) || { attendanceDate: row.attendanceDate, status: row.status, firstLoginAt: row.firstLoginAt, finalLogoutAt: row.finalLogoutAt, totalWorkingSeconds: 0, sessions: [], batchWork: [] };
+    item.status = row.status || item.status; item.firstLoginAt = item.firstLoginAt || row.firstLoginAt; item.finalLogoutAt = item.finalLogoutAt || row.finalLogoutAt; grouped.set(row.attendanceDate, item);
+  });
+  const days = [...grouped.values()].sort((left, right) => right.attendanceDate.localeCompare(left.attendanceDate));
+  const totalWorkingSeconds = days.reduce((total, day) => total + day.totalWorkingSeconds, 0);
+  const loggedOutDays = days.filter((day) => day.status === "LOGGED_OUT").length;
+  const permissionDays = days.filter((day) => ["ON_PERMISSION", "HALF_DAY", "LOGIN_REQUIRED"].includes(day.status)).length;
+  return {
+    ...base,
+    summary: { totalDays: days.length, presentDays: days.filter((day) => ["LOGGED_IN", "LOGGED_OUT"].includes(day.status)).length, loggedOutDays, notLoggedInDays: days.filter((day) => day.status === "NOT_LOGGED_IN").length, permissionDays, totalSessions: sessionsRows.length, totalWorkingSeconds, averageWorkingSeconds: days.length ? Math.floor(totalWorkingSeconds / days.length) : 0 },
+    days,
+  };
+}
+
 export async function facultyAttendanceLogin(user) {
   const state = await getFacultyAttendanceStatus(user);
   if (!state.canLogin) throw new AppError(state.status === "LOGGED_OUT" ? "Attendance day is already closed" : state.status === "ON_PERMISSION" ? "Cannot login during an active interruption" : "Faculty attendance is already logged in", 409);
   const date = today();
+  const existingRows = await sessions(user.id, date);
+  const open = activeSession(existingRows);
+  if (open && state.status === "LOGIN_REQUIRED") {
+    const records = await findApprovedInterruptions(user.id, date);
+    const loginAt = new Date(open.loginAt).getTime();
+    const endedWindows = records
+      .filter(({ window }) => currentMinutes() >= window.end && dateTimeForMinutes(date, window.end).getTime() > loginAt)
+      .sort((left, right) => right.window.end - left.window.end);
+    const pauseEnd = endedWindows[0] ? dateTimeForMinutes(date, endedWindows[0].window.end) : null;
+    if (pauseEnd) {
+      await prisma.facultyAttendanceSession.update({ where: { id: open.id }, data: { logoutAt: pauseEnd, logoutType: "permission_pause", logoutReason: "Permission or half-day completed" } });
+    }
+  }
   const created = await prisma.facultyAttendanceSession.create({ data: { facultyUserId: user.id, attendanceDate: date, loginAt: new Date(), sessionSource: "ATTENDANCE" } });
-  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status: "LOGGED_IN", firstLoginAt: created.loginAt }, update: { status: "LOGGED_IN", firstLoginAt: { set: created.loginAt } } });
+  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status: "LOGGED_IN", firstLoginAt: created.loginAt }, update: { status: "LOGGED_IN" } });
   return getFacultyAttendanceStatus(user, created);
 }
 export async function facultyAttendanceBatches(user) {
