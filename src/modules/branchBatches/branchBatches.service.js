@@ -117,6 +117,7 @@ function toBatch(record = {}) {
     currentCycleId: record.currentCycleId || null,
     currentCycleNumber: Number(record.currentCycleNumber || 0) || null,
     currentCycleName: record.currentCycleName || null,
+    currentCycleStartDate: record.currentCycleStartDate || null,
     currentCycleStatus: text(record.currentCycleStatus || "ACTIVE").toUpperCase(),
     completedAt: record.completedAt || null,
     freezeUntil: record.freezeUntil || null,
@@ -138,7 +139,7 @@ async function addBatchCompletionMetadata(records = []) {
     if (current) return;
     const activeStudentCount = cycle.enrollments.length;
     const completedStudentCount = cycle.enrollments.filter((enrollment) => Number(enrollment.courseProgress || 0) >= 100).length;
-    byBatch.set(cycle.batchId, { currentCycleId: cycle.id, currentCycleNumber: cycle.cycleNumber, currentCycleName: cycle.cycleName, currentCycleStatus: cycle.status, completedAt: cycle.completedAt, freezeUntil: cycle.freezeUntil, activeStudentCount, completedStudentCount, completionStatus: cycle.status === "COMPLETED" ? "COMPLETED" : "AVAILABLE" });
+    byBatch.set(cycle.batchId, { currentCycleId: cycle.id, currentCycleNumber: cycle.cycleNumber, currentCycleName: cycle.cycleName, currentCycleStartDate: cycle.startDate, currentCycleStatus: cycle.status, completedAt: cycle.completedAt, freezeUntil: cycle.freezeUntil, activeStudentCount, completedStudentCount, completionStatus: cycle.status === "COMPLETED" ? "COMPLETED" : "AVAILABLE" });
   });
 
   return records.map((record) => {

@@ -724,6 +724,34 @@ export function courseCompletionFromProgressAndTests(courseProgress, academicTes
     ? "COMPLETED"
     : "IN_PROGRESS";
 }
+
+async function academicReportsFullySentForBatch(batchId, batchCycleId = null, cache = new Map()) {
+  const key = `${normalizeString(batchId).toLowerCase()}:${normalizeString(batchCycleId).toLowerCase()}`;
+  if (!key) return false;
+  if (cache.has(key)) return cache.get(key);
+  const promise = (async () => {
+    const batch = await prisma.branchBatch.findFirst({
+      where: { OR: [{ id: batchId }, { batchId }] },
+      select: { id: true },
+    });
+    if (!batch) return false;
+    const [schedules, shares] = await Promise.all([
+      prisma.academicScheduledTest.findMany({
+        where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" }, ...(batchCycleId ? { cycle: { batchCycleId } } : {}) },
+        select: { id: true },
+      }),
+      prisma.facultyReportShare.findMany({
+        where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT", ...(batchCycleId ? { OR: [{ batchCycleId }, { batchCycleId: null }] } : {}) },
+        select: { academicTestIds: true },
+      }),
+    ]);
+    const sentIds = new Set(shares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean));
+    return schedules.length > 0 && schedules.every((schedule) => sentIds.has(schedule.id));
+  })().catch(() => false);
+  cache.set(key, promise);
+  return promise;
+}
+
 function addCourseLifecycleFilter(where, value) {
   const lifecycle = normalizeString(value).toUpperCase();
   if (!lifecycle) return;
@@ -2253,6 +2281,18 @@ async function syncBranchStudentCourseEnrollments(tx, student, payload = {}, exi
 
 async function getBranchContext(actor) {
   const role = normalizeString(actor?.role).toUpperCase();
+  const impersonatedBranchId = normalizeString(actor?.impersonatedBranchId);
+
+  // Super Admin branch-dashboard views carry a validated impersonation context
+  // through authentication. Treat that context as the active branch scope so
+  // lifecycle and student queries never fall back to all branches.
+  if (role === "SUPER_ADMIN" && impersonatedBranchId) {
+    const branchProfile = await getCurrentBranchProfile(actor);
+    if (!branchProfile?.id) {
+      throw new AppError("Branch profile not found", 404);
+    }
+    return branchProfile;
+  }
 
   if (role !== "BRANCH_ADMIN") {
     return null;
@@ -2717,6 +2757,7 @@ export async function listBranchStudents(query = {}, actor = null) {
 
   let completionByStudentId = new Map();
   if (includeAcademicProgress) {
+    const reportSentByBatch = new Map();
     completionByStudentId = new Map(await Promise.all(rows.map(async (student) => {
     try {
       const enrollments = Array.isArray(student.courseEnrollments) && student.courseEnrollments.length
@@ -2731,24 +2772,28 @@ export async function listBranchStudents(query = {}, actor = null) {
           ...student,
           courseId: entry.courseId,
           batchId: entry.batchId || student.batchId,
+          batchCycleId: entry.batchCycleId,
           courseProgress: entry.courseProgress,
         });
         const paidProgress = calculateCoursePaidProgress(student, entry.courseId);
+        const reportSent = await academicReportsFullySentForBatch(entry.batchId || student.batchId, entry.batchCycleId, reportSentByBatch);
         return [entry.courseId, {
           academicTestProgress: progress,
           paidProgress,
           // Do not trust a stale courseCompletedAt from a previous batch cycle.
           // The current enrollment is complete only when its own course progress
           // and academic-test/project progress are complete.
-          status: courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress),
+          status: reportSent ? courseCompletionFromProgressAndTests(entry.courseProgress, progress, paidProgress) : "IN_PROGRESS",
         }];
       }));
       const byCourse = Object.fromEntries(entries);
       const primaryPaidProgress = calculateCoursePaidProgress(student, student.courseId);
+      const primaryEntry = enrollments.find((entry) => entry?.courseId === student.courseId) || enrollments[0];
+      const primaryReportSent = await academicReportsFullySentForBatch(student.batchId, primaryEntry?.batchCycleId, reportSentByBatch);
       const primary = byCourse[student.courseId] || {
         academicTestProgress: { totalTests: 0, completedTests: 0, pendingTests: 0, percentage: 0 },
         paidProgress: primaryPaidProgress,
-        status: courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress),
+        status: primaryReportSent ? courseCompletionFromProgressAndTests(student.courseProgress, null, primaryPaidProgress) : "IN_PROGRESS",
       };
       return [student.id, { ...primary, byCourse }];
     } catch (error) {
@@ -3035,7 +3080,9 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       const request = student.discontinuationRequests.find((item) => item.courseId === enrollment.courseId)
         || student.discontinuationRequests.find((item) => !item.courseId)
         || (student.discontinuationRequests.length && enrollments.length === 1 ? student.discontinuationRequests[0] : null)
-      const isDiscontinued = Boolean(request) || String(enrollment.importedLifecycleStatus || "").toUpperCase() === "DISCONTINUED"
+      const importedLifecycleStatus = String(enrollment.importedLifecycleStatus || "").toUpperCase()
+      const isImportedCompleted = importedLifecycleStatus === "COMPLETED"
+      const isDiscontinued = Boolean(request) || importedLifecycleStatus === "DISCONTINUED"
       if (lifecycle === "DISCONTINUED" && !isDiscontinued) continue
       const paidProgress = calculateCoursePaidProgress(student, enrollment.courseId)
       const studentKeyValues = new Set([student.id, student.studentId].map((value) => String(value || "").trim().toLowerCase()).filter(Boolean))
@@ -3076,12 +3123,12 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         Number(enrollment.courseProgress) || 0,
         ...facultyProgressValues,
       ))
-      if (lifecycle === "COMPLETED" && (isDiscontinued || effectiveCourseProgress < 100)) continue
-      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt
+      if (lifecycle === "COMPLETED" && (isDiscontinued || (!isImportedCompleted && effectiveCourseProgress < 100))) continue
+      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt && !isImportedCompleted
         ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
         : null
       const completionStatus = lifecycle === "COMPLETED"
-        ? (enrollment.courseCompletedAt
+        ? (isImportedCompleted || enrollment.courseCompletedAt
           ? "COMPLETED"
           : courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress))
         : "DISCONTINUED"

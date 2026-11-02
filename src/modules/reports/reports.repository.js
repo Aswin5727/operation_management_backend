@@ -278,11 +278,28 @@ async function getFacultyProfileOrThrow(facultyId) {
     select: facultyProfileReportSelect,
   });
 
-  if (!facultyProfile) {
-    throw new AppError("Invalid facultyId", 404);
-  }
+  if (facultyProfile) return facultyProfile;
 
-  return facultyProfile;
+  // Branch Faculty View sends the BranchFaculty record id, while the legacy
+  // report screen sends FacultyProfile id. Support both identifiers.
+  const branchFaculty = await prisma.branchFaculty.findUnique({
+    where: { id: facultyId },
+    include: {
+      course: { select: { id: true, name: true } },
+      courseAssignments: { include: { branchCourse: { select: { id: true, name: true } } } },
+    },
+  });
+  if (!branchFaculty) throw new AppError("Invalid facultyId", 404);
+
+  return {
+    id: branchFaculty.id,
+    facultyName: branchFaculty.name,
+    facultyEmail: branchFaculty.email,
+    facultyPhone: branchFaculty.phone,
+    course: branchFaculty.course,
+    courseAssignments: branchFaculty.courseAssignments.map((assignment) => ({ course: assignment.branchCourse })),
+    batchEntries: [],
+  };
 }
 
 async function getFacultyReportAccessProfile(actorUser) {
@@ -543,7 +560,29 @@ async function findFacultyAttendanceReportData({ facultyId, fromDate, toDate }) 
     orderBy: [{ attendanceDate: "asc" }, { loginAt: "asc" }, { createdAt: "asc" }],
   });
 
-  if (!sessions.length) {
+  const leaveRequests = await prisma.facultyLeaveRequest.findMany({
+    where: {
+      facultyUserId: facultyUser.id,
+      status: "APPROVED",
+      fromDate: { lte: toDate },
+      toDate: { gte: fromDate },
+    },
+    orderBy: [{ fromDate: "asc" }, { createdAt: "asc" }],
+    select: {
+      fromDate: true,
+      toDate: true,
+      leaveType: true,
+      durationType: true,
+      halfDayStart: true,
+      halfDayEnd: true,
+      permissionStart: true,
+      permissionEnd: true,
+      permissionHours: true,
+      reason: true,
+    },
+  });
+
+  if (!sessions.length && !leaveRequests.length) {
     throw new AppError("No records found for the selected faculty and date range", 404);
   }
 
@@ -551,6 +590,7 @@ async function findFacultyAttendanceReportData({ facultyId, fromDate, toDate }) 
     facultyProfile,
     facultyUser,
     sessions,
+    leaveRequests,
   };
 }
 

@@ -27,7 +27,10 @@ function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
 }
 
 export const getFacultyAttendanceOverviewHandler = asyncHandler(async (req, res) => {
-  const overview = await getCurrentFacultyAttendanceOverview(req.user, req.query?.date, req.query?.facultyId);
+  const overview = await getCurrentFacultyAttendanceOverview(req.user, req.query?.date, req.query?.facultyId, {
+    courseId: req.query?.courseId,
+    batchId: req.query?.batchId,
+  });
   return sendSuccess(res, "Faculty attendance fetched successfully", overview);
 });
 
