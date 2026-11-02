@@ -3,8 +3,26 @@ import AppError from "../../common/errors/AppError.js";
 const clean = (value) => value === null || value === undefined ? "" : String(value).trim();
 const missing = (value) => !clean(value) || ["-", "N/A"].includes(clean(value).toUpperCase());
 const moneyInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/[\u20B9,]/g, "")); return { value: Number.isFinite(parsed) ? Number(parsed.toFixed(2)) : null, invalid: !Number.isFinite(parsed) }; };
-const dateInfo = (value) => { const raw = clean(value); if (missing(raw)) return { value: "", invalid: false }; const match = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/); const year = Number(match ? (match[3].length === 2 ? `20${match[3]}` : match[3]) : 0); const parsed = match ? new Date(Date.UTC(year, Number(match[2]) - 1, Number(match[1]))) : new Date(raw); if (Number.isNaN(parsed.getTime())) return { value: "", invalid: true }; if (match && (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== Number(match[2]) - 1 || parsed.getUTCDate() !== Number(match[1]))) return { value: "", invalid: true }; return { value: parsed.toISOString().slice(0, 10), invalid: false }; };
-
+const DATE_FORMAT_HINT = "Use DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD.";
+const dateInfo = (value) => {
+  if (missing(value)) return { value: "", invalid: false };
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime())
+      ? { value: "", invalid: true }
+      : { value: value.toISOString().slice(0, 10), invalid: false };
+  }
+  // Reject arbitrary strings/numbers; JavaScript accepts ambiguous values such as 2.4.74537.
+  const raw = clean(value);
+  const isoMatch = raw.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})$/);
+  const dmyMatch = raw.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+  if (!isoMatch && !dmyMatch) return { value: "", invalid: true };
+  const year = Number(isoMatch ? isoMatch[1] : dmyMatch[3]);
+  const month = Number(isoMatch ? isoMatch[2] : dmyMatch[2]);
+  const day = Number(isoMatch ? isoMatch[3] : dmyMatch[1]);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (Number.isNaN(parsed.getTime()) || parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return { value: "", invalid: true };
+  return { value: parsed.toISOString().slice(0, 10), invalid: false };
+};
 function fields(data, number) {
   const prefix = `installment${number}`;
   const paid = moneyInfo(data[`${prefix}paidamount`]);
@@ -41,7 +59,7 @@ export async function validatePaymentImportValues(prisma, student, data, errors,
     const value = fields(data, installmentNumber);
     if (value.invalidPaid) errors.push("Installment " + installmentNumber + " Paid Amount must be a valid number.");
     if (value.invalidPending) errors.push("Installment " + installmentNumber + " Pending Amount must be a valid number.");
-    if (value.invalidPaymentDate) errors.push("Installment " + installmentNumber + " Payment Date is invalid.");
+    if (value.invalidPaymentDate) errors.push("Installment " + installmentNumber + " Payment Date is invalid. " + DATE_FORMAT_HINT);
     if (value.invalidPaid || value.invalidPending || value.invalidPaymentDate) continue;
     if (isBlankInstallment(value)) continue;
     hasAnyInstallment = true;

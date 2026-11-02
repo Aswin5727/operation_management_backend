@@ -14,7 +14,26 @@ const key = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]/g, "");
 const courseKey = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/).filter(Boolean).sort().join(" ");
 const missing = (value) => !clean(value) || ["-", "N/A"].includes(clean(value).toUpperCase());
 const number = (value) => { if (missing(value)) return null; const parsed = Number(clean(value).replace(/[\u20B9,]/g, "")); return Number.isFinite(parsed) ? parsed : null; };
-const dateInfo = (value) => { const raw = clean(value); if (missing(raw)) return { value: "", invalid: false }; const match = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/); const year = Number(match ? (match[3].length === 2 ? `20${match[3]}` : match[3]) : 0); const parsed = match ? new Date(Date.UTC(year, Number(match[2]) - 1, Number(match[1]))) : new Date(raw); if (Number.isNaN(parsed.getTime())) return { value: "", invalid: true }; if (match && (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== Number(match[2]) - 1 || parsed.getUTCDate() !== Number(match[1]))) return { value: "", invalid: true }; return { value: parsed.toISOString().slice(0, 10), invalid: false }; };
+const DATE_FORMAT_HINT = "Use DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD.";
+const dateInfo = (value) => {
+  if (missing(value)) return { value: "", invalid: false };
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime())
+      ? { value: "", invalid: true }
+      : { value: value.toISOString().slice(0, 10), invalid: false };
+  }
+  // Reject arbitrary strings/numbers; JavaScript accepts ambiguous values such as 2.4.74537.
+  const raw = clean(value);
+  const isoMatch = raw.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})$/);
+  const dmyMatch = raw.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+  if (!isoMatch && !dmyMatch) return { value: "", invalid: true };
+  const year = Number(isoMatch ? isoMatch[1] : dmyMatch[3]);
+  const month = Number(isoMatch ? isoMatch[2] : dmyMatch[2]);
+  const day = Number(isoMatch ? isoMatch[3] : dmyMatch[1]);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (Number.isNaN(parsed.getTime()) || parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return { value: "", invalid: true };
+  return { value: parsed.toISOString().slice(0, 10), invalid: false };
+};
 const date = (value) => dateInfo(value).value;
 const numberInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/[\u20B9,]/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
 const percentageInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/%/g, "").replace(/,/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
@@ -40,7 +59,7 @@ function readRows(workbook) {
 }
 function templateColumns() { const columns = FIELDS.map(([, label]) => label).concat(["Assessment-01 Percentage", "Assessment-02 Percentage", "Assessment-03 Percentage"]); for (let index = 1; index <= 3; index += 1) columns.push(`Installment ${index} - Paid Amount`, `Installment ${index} - Pending Amount`, `Installment ${index} - Payment Date`, `Installment ${index} - Mode of Collection`, `Installment ${index} - Receipt Number`); return columns; }
 
-export async function completedStudentTemplate() { const workbook = new ExcelJS.Workbook(); const sheet = workbook.addWorksheet("Completed Student Upload"); const columns = templateColumns(); sheet.addRow(["Completed Student Import Template"]); sheet.addRow(["Use one row per student-course record. Keep header names unchanged; use - only for optional unavailable values."]); sheet.addRow(columns); sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length); sheet.getRow(1).font = { bold: true, size: 16, color: { argb: "FF17345F" } }; sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }; sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF24527A" } }; cell.alignment = { wrapText: true, vertical: "middle" }; }); columns.forEach((column, index) => { sheet.getColumn(index + 1).width = Math.min(28, Math.max(16, column.length + 3)); }); sheet.views = [{ state: "frozen", ySplit: 3 }]; const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-upload-template.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }; }
+export async function completedStudentTemplate() { const workbook = new ExcelJS.Workbook(); const sheet = workbook.addWorksheet("Completed Student Upload"); const columns = templateColumns(); sheet.addRow(["Completed Student Import Template"]); sheet.addRow(["Use one row per student-course record. Keep header names unchanged; use - only for optional unavailable values. Date columns: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD."]); sheet.addRow(columns); sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length); sheet.getRow(1).font = { bold: true, size: 16, color: { argb: "FF17345F" } }; sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }; sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF24527A" } }; cell.alignment = { wrapText: true, vertical: "middle" }; }); columns.forEach((column, index) => { sheet.getColumn(index + 1).width = Math.min(28, Math.max(16, column.length + 3)); }); sheet.views = [{ state: "frozen", ySplit: 3 }]; const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-upload-template.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }; }
 
 async function buildImportLookup(rows, branchId) {
   const dataRows = rows.map((row) => row?.data || row).filter(Boolean);
@@ -98,12 +117,12 @@ async function validate(raw, branchId, seen, { allowMissingContact = false, look
   const startInfo = dateInfo(data.courseStartingDate);
   const endInfo = dateInfo(data.courseEndingDate);
   const admissionDateInfo = dateInfo(data.admissionDate);
-  if (admissionDateInfo.invalid) errors.push("Admission Date is invalid.");
-  if (startInfo.invalid) errors.push("Course Starting Date is invalid.");
-  if (endInfo.invalid) errors.push("Course Ending Date is invalid.");
+  if (admissionDateInfo.invalid) errors.push(`Admission Date is invalid. ${DATE_FORMAT_HINT}`);
+  if (startInfo.invalid) errors.push(`Course Starting Date is invalid. ${DATE_FORMAT_HINT}`);
+  if (endInfo.invalid) errors.push(`Course Ending Date is invalid. ${DATE_FORMAT_HINT}`);
   if (startInfo.value && endInfo.value && startInfo.value > endInfo.value) errors.push("Course Ending Date cannot be before Course Starting Date.");
   const certificateDateInfo = dateInfo(data.certificateIssuedDate);
-  if (certificateDateInfo.invalid) errors.push("Certificate Issued Date is invalid.");
+  if (certificateDateInfo.invalid) errors.push(`Certificate Issued Date is invalid. ${DATE_FORMAT_HINT}`);
   const numericRules = [
     ["attendance", 0, 100, "Attendance"],
     ["courseFees", 0, null, "Course Fees"],
