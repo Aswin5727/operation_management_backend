@@ -747,7 +747,6 @@ export async function submitAssessment(user, assessmentId, payload = {}, files =
   if (isAssessmentCancelled(item)) throw new AppError("This assessment has been cancelled and cannot be submitted.", 403);
   if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
   if (!text(payload.response)) throw new AppError("Assessment response is required.", 422);
-  if (!files?.length) throw new AppError("Attached screenshot is required.", 422);
   const existing = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } });
   if (existing?.submittedAt) throw new AppError("Duplicate submission is not allowed.", 409);
   await fs.mkdir(assessmentUploadRoot, { recursive: true });
@@ -759,7 +758,7 @@ export async function submitAssessment(user, assessmentId, payload = {}, files =
     attachments.push({ url: `/exams/student/assessments/submissions/${fileName}/screenshot`, fileName: file.originalname, mimeType: file.mimetype });
   }
   const first = attachments[0];
-  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
+  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: first?.url || null, screenshotFileName: attachments.length ? JSON.stringify(attachments) : null, screenshotMimeType: attachments.length ? "application/json" : null, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: first?.url || null, screenshotFileName: attachments.length ? JSON.stringify(attachments) : null, screenshotMimeType: attachments.length ? "application/json" : null, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
 }
 export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, screenshotUrls: submissionAttachments(row), percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
 

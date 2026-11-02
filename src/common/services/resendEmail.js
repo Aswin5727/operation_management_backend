@@ -853,17 +853,17 @@ export async function sendFacultyBatchAssignmentEmail({
   batches = [],
 }) {
   const loginLink = buildLoginLink();
-  const safeName = escapeHtml(fullName || "Faculty");
-  const safeFacultyId = escapeHtml(facultyId || "");
-  const safeCourseName = escapeHtml(courseName || "");
-  const safeBatchId = escapeHtml(batchId || "");
+  const safeName = fullName || "Faculty";
+  const safeFacultyId = facultyId || "";
+  const safeCourseName = courseName || "";
+  const safeBatchId = batchId || "";
   const normalizedBatches = Array.isArray(batches) ? batches : [];
 
   const batchSummaryLines = normalizedBatches.map((batch, index) => {
-    const label = escapeHtml(batch?.batchName || `Batch ${index + 1}`);
-    const timing = escapeHtml(batch?.batchTiming || "-");
-    const seats = escapeHtml(String(batch?.totalSeats ?? "-"));
-    const status = escapeHtml(String(batch?.status || "ACTIVE"));
+    const label = batch?.batchName || `Batch ${index + 1}`;
+    const timing = batch?.batchTiming || "-";
+    const seats = String(batch?.totalSeats ?? "-");
+    const status = String(batch?.status || "ACTIVE");
     return `${label} | ${timing} | Seats: ${seats} | ${status}`;
   });
 
