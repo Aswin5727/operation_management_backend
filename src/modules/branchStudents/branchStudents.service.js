@@ -1826,6 +1826,20 @@ async function notifyProgressAlignment(studentRecord, branchProfile, actor) {
     return;
   }
 
+  // Completed-student Excel imports are historical records. Their 100% course
+  // progress and imported payment data must not create live payment-progress
+  // notifications when the record is edited or a payment is added later.
+  const hasImportedCompletedCourse = Array.isArray(studentRecord.courseEnrollments)
+    && studentRecord.courseEnrollments.some((enrollment) => (
+      ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase())
+    ));
+  const hasImportedAcademicRecord = studentRecord.importedAcademicResults
+    && typeof studentRecord.importedAcademicResults === "object"
+    && !Array.isArray(studentRecord.importedAcademicResults);
+  if (hasImportedCompletedCourse || hasImportedAcademicRecord) {
+    return;
+  }
+
   const courseProgress = Number(studentRecord.courseProgress);
   if (!Number.isFinite(courseProgress)) {
     return;
@@ -2391,7 +2405,8 @@ function buildBranchStudentOrderBy(sortBy, sortOrder) {
 function toBranchStudentSummary(record) {
   const isDiscontinued = Array.isArray(record.discontinuationRequests) && record.discontinuationRequests.some((request) => request?.status === "APPROVED");
   const isCompletedStudentImport = Array.isArray(record.courseEnrollments)
-    && record.courseEnrollments.some((enrollment) => ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()));
+    && record.courseEnrollments.some((enrollment) => ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()))
+    || Boolean(record.importedAcademicResults && typeof record.importedAcademicResults === "object" && !Array.isArray(record.importedAcademicResults));
   return {
     id: record.id,
     branchId: record.branchId,
@@ -2436,6 +2451,7 @@ function toBranchStudentSummary(record) {
     courseCompletionByCourse: record.courseCompletionByCourse || {},
     courseCompletedAt: record.courseCompletedAt || null,
     isCompletedStudentImport,
+    importedAcademicResults: record.importedAcademicResults || null,
     courseId: record.courseId,
     enrollmentType: record.enrollmentType || 'SINGLE',
     arrangementType: record.arrangementType || record.enrollmentType || 'SINGLE',
@@ -2701,6 +2717,7 @@ export async function listBranchStudents(query = {}, actor = null) {
           courseId: true,
           courseName: true,
           courseProgress: true,
+          importedAcademicResults: true,
           courseAmount: true,
           arrangementType: true,
           enrollmentType: true,
@@ -4179,6 +4196,9 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
               },
             },
           },
+        },
+        courseEnrollments: {
+          select: { importedLifecycleStatus: true },
         },
       },
     });
