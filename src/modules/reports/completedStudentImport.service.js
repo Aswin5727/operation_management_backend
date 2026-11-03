@@ -1,4 +1,5 @@
 import ExcelJS from "exceljs";
+import JSZip from "jszip";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { resolveBranchId } from "./branchAttendanceReports.repository.js";
@@ -7,6 +8,36 @@ import { applyPaymentImportValues, validatePaymentImportValues } from "./complet
 import { COMPLETED_STUDENT_COLUMNS } from "./completedStudentReportColumns.js";
 const MAX_ROWS = 100;
 const CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+async function loadCompletedStudentWorkbook(buffer) {
+  const workbook = new ExcelJS.Workbook();
+  try {
+    await workbook.xlsx.load(buffer);
+    return workbook;
+  } catch (parseError) {
+    try {
+      const zip = await JSZip.loadAsync(buffer);
+      let repaired = false;
+      const relationshipFiles = Object.keys(zip.files).filter((name) => /^xl\/worksheets\/_rels\/sheet\d+\.xml\.rels$/i.test(name));
+      for (const fileName of relationshipFiles) {
+        const file = zip.file(fileName);
+        if (!file) continue;
+        const xml = await file.async("string");
+        const normalizedXml = xml.replace(/Target=(['"])\/xl\/tables\/([^'"]+)\1/g, "Target=$1../tables/$2$1");
+        if (normalizedXml !== xml) {
+          zip.file(fileName, normalizedXml);
+          repaired = true;
+        }
+      }
+      if (!repaired) throw parseError;
+      const repairedBuffer = await zip.generateAsync({ type: "nodebuffer" });
+      const repairedWorkbook = new ExcelJS.Workbook();
+      await repairedWorkbook.xlsx.load(repairedBuffer);
+      return repairedWorkbook;
+    } catch {
+      throw new AppError("Unable to read this Excel file. Please save it as a valid .xlsx workbook and try again.", 400);
+    }
+  }
+}
 const FIELDS = [...COMPLETED_STUDENT_COLUMNS, ["admissionDate", "Admission Date"]];
 const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", parentspousenumber: "parentSpouseNumber", parentspouseno: "parentSpouseNumber", source: "databaseSource", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus", dateofadmission: "admissionDate" };
 const clean = (value) => value === null || value === undefined ? "" : String(value instanceof Date ? value.toISOString().slice(0, 10) : value).trim();
@@ -171,7 +202,7 @@ async function validate(raw, branchId, seen, { allowMissingContact = false, look
   // Historical imports use only row-level validation. Existing branch records\n  // must not make an old completed row invalid.
   return { rowNumber, data: { ...data, admissionDate: admissionDateInfo.value, courseStartingDate: startInfo.value, courseEndingDate: endInfo.value, certificateIssuedDate: certificateDateInfo.value }, valid: errors.length === 0, errors, warnings, studentId: clean(data.studentId), courseName: course?.name || clean(data.course) };
 }
-export async function previewCompletedStudentImport({ buffer, user }) { if (!buffer?.length) throw new AppError("Please choose an .xlsx file.", 400); const workbook = new ExcelJS.Workbook(); await workbook.xlsx.load(buffer); const rows = readRows(workbook); if (!rows.length) throw new AppError("The workbook has no data rows.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); const lookup = await buildImportLookup(rows, branchId); const seen = new Map(); const validated = []; for (const row of rows) validated.push(await validate(row, branchId, seen, { lookup })); return { maxRows: MAX_ROWS, totalRows: validated.length, validRows: validated.filter((row) => row.valid).length, invalidRows: validated.filter((row) => !row.valid).length, warningRows: validated.filter((row) => row.warnings?.length).length, rows: validated }; }
+export async function previewCompletedStudentImport({ buffer, user }) { if (!buffer?.length) throw new AppError("Please choose an .xlsx file.", 400); const workbook = await loadCompletedStudentWorkbook(buffer); const rows = readRows(workbook); if (!rows.length) throw new AppError("The workbook has no data rows.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); const lookup = await buildImportLookup(rows, branchId); const seen = new Map(); const validated = []; for (const row of rows) validated.push(await validate(row, branchId, seen, { lookup })); return { maxRows: MAX_ROWS, totalRows: validated.length, validRows: validated.filter((row) => row.valid).length, invalidRows: validated.filter((row) => !row.valid).length, warningRows: validated.filter((row) => row.warnings?.length).length, rows: validated }; }
 function optional(data, field, current) { return missing(data[field]) ? current : clean(data[field]); }
 async function apply(tx, row, branchId, user, lookup = null) {
   const data = row.data;
