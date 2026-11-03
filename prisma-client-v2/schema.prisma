@@ -2398,3 +2398,50 @@ model BranchCourseImportReceipt {
 
   @@unique([branchId, uploadHash])
 }
+
+model CompletedStudentImportJob {
+  id                  String                      @id @default(cuid())
+  uploadId            String                      @unique
+  branchId            String
+  createdBy           String?
+  fileName            String?
+  fileHash            String?
+  status              String                      @default("PENDING")
+  totalRows           Int                         @default(0)
+  readyRows           Int                         @default(0)
+  processedRows       Int                         @default(0)
+  importedRows        Int                         @default(0)
+  failedRows          Int                         @default(0)
+  skippedRows         Int                         @default(0)
+  batchSize           Int                         @default(50)
+  allowMissingContact Boolean                     @default(false)
+  errorMessage        String?
+  startedAt           DateTime?
+  completedAt         DateTime?
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @updatedAt
+  rows                CompletedStudentImportRow[]
+
+  @@unique([branchId, fileHash], map: "CompletedStudentImportJob_branch_fileHash_key")
+  @@index([branchId, status])
+  @@index([status, updatedAt])
+}
+
+model CompletedStudentImportRow {
+  id          String                    @id @default(cuid())
+  jobId       String
+  rowNumber   Int
+  data        Json
+  status      String                    @default("PENDING")
+  errors      Json?
+  warnings    Json?
+  attempts    Int                       @default(0)
+  importedId  String?
+  processedAt DateTime?
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+  job         CompletedStudentImportJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, rowNumber])
+  @@index([jobId, status])
+}

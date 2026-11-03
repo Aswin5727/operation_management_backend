@@ -13,6 +13,7 @@ import { startStudentMotivationScheduler } from "./src/modules/studentMotivation
 import { startDiscontinuationFollowUpScheduler } from "./src/modules/studentDiscontinuation/studentDiscontinuation.scheduler.js";
 import { startBatchCycleLifecycleScheduler } from "./src/modules/batchCycles/batchCycleLifecycle.service.js";
 import { startLeadFollowUpReminderScheduler } from "./src/modules/leads/followUpReminder.service.js";
+import { startCompletedStudentImportWorker } from "./src/modules/reports/completedStudentImport.job.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -87,6 +88,7 @@ async function startServer() {
   const discontinuationFollowUpTimer = startDiscontinuationFollowUpScheduler();
   const leadFollowUpReminderTimer = startLeadFollowUpReminderScheduler();
   const batchCycleLifecycleTimer = await startBatchCycleLifecycleScheduler();
+  const completedStudentImportTimer = startCompletedStudentImportWorker();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
@@ -122,6 +124,10 @@ async function startServer() {
 
     if (batchCycleLifecycleTimer) {
       clearInterval(batchCycleLifecycleTimer);
+    }
+
+    if (completedStudentImportTimer) {
+      clearInterval(completedStudentImportTimer);
     }
 
     void prisma.$disconnect().catch((error) => {

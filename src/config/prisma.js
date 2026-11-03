@@ -25,7 +25,17 @@ function createPrismaClient() {
     prismaAdapter = new PrismaPg({ connectionString: runtimeDatabaseUrl });
   }
 
-  prismaClient = new PrismaClient({ adapter: prismaAdapter });
+  // Imports and other multi-write workflows can legitimately take longer than
+  // Prisma's 5 second interactive transaction default. Keep the default
+  // explicit for the adapter as well as for individual transaction callers so
+  // a code path that omits options does not unexpectedly expire at commit.
+  prismaClient = new PrismaClient({
+    adapter: prismaAdapter,
+    transactionOptions: {
+      maxWait: 30000,
+      timeout: 120000,
+    },
+  });
 
   if (process.env.NODE_ENV !== "production") {
     global.prisma = prismaClient;
