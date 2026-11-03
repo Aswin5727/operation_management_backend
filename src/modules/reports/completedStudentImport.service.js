@@ -230,7 +230,14 @@ async function apply(tx, row, branchId, user, lookup = null) {
     educationStatus: optional(data, 'educationStatus', student?.educationStatus),
     linkedInUrl: optional(data, 'linkedInUrl', student?.linkedInUrl),
     source: optional(data, 'databaseSource', optional(data, 'source', student?.source)),
-    importedAcademicResults: Object.fromEntries(Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value)).map(([field, value]) => [field, percentageInfo(value).value])),
+    // Historical uploads may reference a course that is no longer present in
+    // the branch catalog. Keep the lifecycle marker on the student record so
+    // those rows can still be shown in the correct lifecycle tab even when no
+    // BranchStudentCourse row can be created.
+    importedAcademicResults: {
+      ...Object.fromEntries(Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value)).map(([field, value]) => [field, percentageInfo(value).value])),
+      __importedLifecycleStatus: isDiscontinued ? "DISCONTINUED" : "COMPLETED",
+    },
     remarks: optional(data, 'remarks', student?.remarks),
     updatedBy: user?.id || null,
   };
