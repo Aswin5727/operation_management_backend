@@ -438,6 +438,16 @@ export type BranchStudentLedgerEntry = $Result.DefaultSelection<Prisma.$BranchSt
  * 
  */
 export type BranchCourseImportReceipt = $Result.DefaultSelection<Prisma.$BranchCourseImportReceiptPayload>
+/**
+ * Model CompletedStudentImportJob
+ * 
+ */
+export type CompletedStudentImportJob = $Result.DefaultSelection<Prisma.$CompletedStudentImportJobPayload>
+/**
+ * Model CompletedStudentImportRow
+ * 
+ */
+export type CompletedStudentImportRow = $Result.DefaultSelection<Prisma.$CompletedStudentImportRowPayload>
 
 /**
  * Enums
@@ -1696,6 +1706,26 @@ export class PrismaClient<
     * ```
     */
   get branchCourseImportReceipt(): Prisma.BranchCourseImportReceiptDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.completedStudentImportJob`: Exposes CRUD operations for the **CompletedStudentImportJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompletedStudentImportJobs
+    * const completedStudentImportJobs = await prisma.completedStudentImportJob.findMany()
+    * ```
+    */
+  get completedStudentImportJob(): Prisma.CompletedStudentImportJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.completedStudentImportRow`: Exposes CRUD operations for the **CompletedStudentImportRow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompletedStudentImportRows
+    * const completedStudentImportRows = await prisma.completedStudentImportRow.findMany()
+    * ```
+    */
+  get completedStudentImportRow(): Prisma.CompletedStudentImportRowDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -2214,7 +2244,9 @@ export namespace Prisma {
     AcademicTestReportSubmission: 'AcademicTestReportSubmission',
     BranchStudentPayment: 'BranchStudentPayment',
     BranchStudentLedgerEntry: 'BranchStudentLedgerEntry',
-    BranchCourseImportReceipt: 'BranchCourseImportReceipt'
+    BranchCourseImportReceipt: 'BranchCourseImportReceipt',
+    CompletedStudentImportJob: 'CompletedStudentImportJob',
+    CompletedStudentImportRow: 'CompletedStudentImportRow'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -2230,7 +2262,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadIdSequence" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadIdSequence" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt" | "completedStudentImportJob" | "completedStudentImportRow"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -8524,6 +8556,154 @@ export namespace Prisma {
           }
         }
       }
+      CompletedStudentImportJob: {
+        payload: Prisma.$CompletedStudentImportJobPayload<ExtArgs>
+        fields: Prisma.CompletedStudentImportJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompletedStudentImportJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompletedStudentImportJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          findFirst: {
+            args: Prisma.CompletedStudentImportJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompletedStudentImportJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          findMany: {
+            args: Prisma.CompletedStudentImportJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>[]
+          }
+          create: {
+            args: Prisma.CompletedStudentImportJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          createMany: {
+            args: Prisma.CompletedStudentImportJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompletedStudentImportJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>[]
+          }
+          delete: {
+            args: Prisma.CompletedStudentImportJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          update: {
+            args: Prisma.CompletedStudentImportJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompletedStudentImportJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompletedStudentImportJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompletedStudentImportJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompletedStudentImportJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportJobPayload>
+          }
+          aggregate: {
+            args: Prisma.CompletedStudentImportJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompletedStudentImportJob>
+          }
+          groupBy: {
+            args: Prisma.CompletedStudentImportJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompletedStudentImportJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompletedStudentImportJobCountArgs<ExtArgs>
+            result: $Utils.Optional<CompletedStudentImportJobCountAggregateOutputType> | number
+          }
+        }
+      }
+      CompletedStudentImportRow: {
+        payload: Prisma.$CompletedStudentImportRowPayload<ExtArgs>
+        fields: Prisma.CompletedStudentImportRowFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompletedStudentImportRowFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompletedStudentImportRowFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          findFirst: {
+            args: Prisma.CompletedStudentImportRowFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompletedStudentImportRowFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          findMany: {
+            args: Prisma.CompletedStudentImportRowFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>[]
+          }
+          create: {
+            args: Prisma.CompletedStudentImportRowCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          createMany: {
+            args: Prisma.CompletedStudentImportRowCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompletedStudentImportRowCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>[]
+          }
+          delete: {
+            args: Prisma.CompletedStudentImportRowDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          update: {
+            args: Prisma.CompletedStudentImportRowUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompletedStudentImportRowDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompletedStudentImportRowUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompletedStudentImportRowUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompletedStudentImportRowUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompletedStudentImportRowPayload>
+          }
+          aggregate: {
+            args: Prisma.CompletedStudentImportRowAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompletedStudentImportRow>
+          }
+          groupBy: {
+            args: Prisma.CompletedStudentImportRowGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompletedStudentImportRowGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompletedStudentImportRowCountArgs<ExtArgs>
+            result: $Utils.Optional<CompletedStudentImportRowCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -8717,6 +8897,8 @@ export namespace Prisma {
     branchStudentPayment?: BranchStudentPaymentOmit
     branchStudentLedgerEntry?: BranchStudentLedgerEntryOmit
     branchCourseImportReceipt?: BranchCourseImportReceiptOmit
+    completedStudentImportJob?: CompletedStudentImportJobOmit
+    completedStudentImportRow?: CompletedStudentImportRowOmit
   }
 
   /* Types for Logging */
@@ -10829,6 +11011,37 @@ export namespace Prisma {
    */
   export type AcademicTestReportHistoryCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AcademicTestReportSubmissionWhereInput
+  }
+
+
+  /**
+   * Count Type CompletedStudentImportJobCountOutputType
+   */
+
+  export type CompletedStudentImportJobCountOutputType = {
+    rows: number
+  }
+
+  export type CompletedStudentImportJobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rows?: boolean | CompletedStudentImportJobCountOutputTypeCountRowsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CompletedStudentImportJobCountOutputType without action
+   */
+  export type CompletedStudentImportJobCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJobCountOutputType
+     */
+    select?: CompletedStudentImportJobCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompletedStudentImportJobCountOutputType without action
+   */
+  export type CompletedStudentImportJobCountOutputTypeCountRowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompletedStudentImportRowWhereInput
   }
 
 
@@ -119191,6 +119404,2514 @@ export namespace Prisma {
 
 
   /**
+   * Model CompletedStudentImportJob
+   */
+
+  export type AggregateCompletedStudentImportJob = {
+    _count: CompletedStudentImportJobCountAggregateOutputType | null
+    _avg: CompletedStudentImportJobAvgAggregateOutputType | null
+    _sum: CompletedStudentImportJobSumAggregateOutputType | null
+    _min: CompletedStudentImportJobMinAggregateOutputType | null
+    _max: CompletedStudentImportJobMaxAggregateOutputType | null
+  }
+
+  export type CompletedStudentImportJobAvgAggregateOutputType = {
+    totalRows: number | null
+    readyRows: number | null
+    processedRows: number | null
+    importedRows: number | null
+    failedRows: number | null
+    skippedRows: number | null
+    batchSize: number | null
+  }
+
+  export type CompletedStudentImportJobSumAggregateOutputType = {
+    totalRows: number | null
+    readyRows: number | null
+    processedRows: number | null
+    importedRows: number | null
+    failedRows: number | null
+    skippedRows: number | null
+    batchSize: number | null
+  }
+
+  export type CompletedStudentImportJobMinAggregateOutputType = {
+    id: string | null
+    uploadId: string | null
+    branchId: string | null
+    createdBy: string | null
+    fileName: string | null
+    fileHash: string | null
+    status: string | null
+    totalRows: number | null
+    readyRows: number | null
+    processedRows: number | null
+    importedRows: number | null
+    failedRows: number | null
+    skippedRows: number | null
+    batchSize: number | null
+    allowMissingContact: boolean | null
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompletedStudentImportJobMaxAggregateOutputType = {
+    id: string | null
+    uploadId: string | null
+    branchId: string | null
+    createdBy: string | null
+    fileName: string | null
+    fileHash: string | null
+    status: string | null
+    totalRows: number | null
+    readyRows: number | null
+    processedRows: number | null
+    importedRows: number | null
+    failedRows: number | null
+    skippedRows: number | null
+    batchSize: number | null
+    allowMissingContact: boolean | null
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompletedStudentImportJobCountAggregateOutputType = {
+    id: number
+    uploadId: number
+    branchId: number
+    createdBy: number
+    fileName: number
+    fileHash: number
+    status: number
+    totalRows: number
+    readyRows: number
+    processedRows: number
+    importedRows: number
+    failedRows: number
+    skippedRows: number
+    batchSize: number
+    allowMissingContact: number
+    errorMessage: number
+    startedAt: number
+    completedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompletedStudentImportJobAvgAggregateInputType = {
+    totalRows?: true
+    readyRows?: true
+    processedRows?: true
+    importedRows?: true
+    failedRows?: true
+    skippedRows?: true
+    batchSize?: true
+  }
+
+  export type CompletedStudentImportJobSumAggregateInputType = {
+    totalRows?: true
+    readyRows?: true
+    processedRows?: true
+    importedRows?: true
+    failedRows?: true
+    skippedRows?: true
+    batchSize?: true
+  }
+
+  export type CompletedStudentImportJobMinAggregateInputType = {
+    id?: true
+    uploadId?: true
+    branchId?: true
+    createdBy?: true
+    fileName?: true
+    fileHash?: true
+    status?: true
+    totalRows?: true
+    readyRows?: true
+    processedRows?: true
+    importedRows?: true
+    failedRows?: true
+    skippedRows?: true
+    batchSize?: true
+    allowMissingContact?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompletedStudentImportJobMaxAggregateInputType = {
+    id?: true
+    uploadId?: true
+    branchId?: true
+    createdBy?: true
+    fileName?: true
+    fileHash?: true
+    status?: true
+    totalRows?: true
+    readyRows?: true
+    processedRows?: true
+    importedRows?: true
+    failedRows?: true
+    skippedRows?: true
+    batchSize?: true
+    allowMissingContact?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompletedStudentImportJobCountAggregateInputType = {
+    id?: true
+    uploadId?: true
+    branchId?: true
+    createdBy?: true
+    fileName?: true
+    fileHash?: true
+    status?: true
+    totalRows?: true
+    readyRows?: true
+    processedRows?: true
+    importedRows?: true
+    failedRows?: true
+    skippedRows?: true
+    batchSize?: true
+    allowMissingContact?: true
+    errorMessage?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompletedStudentImportJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompletedStudentImportJob to aggregate.
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportJobs to fetch.
+     */
+    orderBy?: CompletedStudentImportJobOrderByWithRelationInput | CompletedStudentImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompletedStudentImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompletedStudentImportJobs
+    **/
+    _count?: true | CompletedStudentImportJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompletedStudentImportJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompletedStudentImportJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompletedStudentImportJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompletedStudentImportJobMaxAggregateInputType
+  }
+
+  export type GetCompletedStudentImportJobAggregateType<T extends CompletedStudentImportJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompletedStudentImportJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompletedStudentImportJob[P]>
+      : GetScalarType<T[P], AggregateCompletedStudentImportJob[P]>
+  }
+
+
+
+
+  export type CompletedStudentImportJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompletedStudentImportJobWhereInput
+    orderBy?: CompletedStudentImportJobOrderByWithAggregationInput | CompletedStudentImportJobOrderByWithAggregationInput[]
+    by: CompletedStudentImportJobScalarFieldEnum[] | CompletedStudentImportJobScalarFieldEnum
+    having?: CompletedStudentImportJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompletedStudentImportJobCountAggregateInputType | true
+    _avg?: CompletedStudentImportJobAvgAggregateInputType
+    _sum?: CompletedStudentImportJobSumAggregateInputType
+    _min?: CompletedStudentImportJobMinAggregateInputType
+    _max?: CompletedStudentImportJobMaxAggregateInputType
+  }
+
+  export type CompletedStudentImportJobGroupByOutputType = {
+    id: string
+    uploadId: string
+    branchId: string
+    createdBy: string | null
+    fileName: string | null
+    fileHash: string | null
+    status: string
+    totalRows: number
+    readyRows: number
+    processedRows: number
+    importedRows: number
+    failedRows: number
+    skippedRows: number
+    batchSize: number
+    allowMissingContact: boolean
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CompletedStudentImportJobCountAggregateOutputType | null
+    _avg: CompletedStudentImportJobAvgAggregateOutputType | null
+    _sum: CompletedStudentImportJobSumAggregateOutputType | null
+    _min: CompletedStudentImportJobMinAggregateOutputType | null
+    _max: CompletedStudentImportJobMaxAggregateOutputType | null
+  }
+
+  type GetCompletedStudentImportJobGroupByPayload<T extends CompletedStudentImportJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompletedStudentImportJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompletedStudentImportJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompletedStudentImportJobGroupByOutputType[P]>
+            : GetScalarType<T[P], CompletedStudentImportJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompletedStudentImportJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uploadId?: boolean
+    branchId?: boolean
+    createdBy?: boolean
+    fileName?: boolean
+    fileHash?: boolean
+    status?: boolean
+    totalRows?: boolean
+    readyRows?: boolean
+    processedRows?: boolean
+    importedRows?: boolean
+    failedRows?: boolean
+    skippedRows?: boolean
+    batchSize?: boolean
+    allowMissingContact?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    rows?: boolean | CompletedStudentImportJob$rowsArgs<ExtArgs>
+    _count?: boolean | CompletedStudentImportJobCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["completedStudentImportJob"]>
+
+  export type CompletedStudentImportJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uploadId?: boolean
+    branchId?: boolean
+    createdBy?: boolean
+    fileName?: boolean
+    fileHash?: boolean
+    status?: boolean
+    totalRows?: boolean
+    readyRows?: boolean
+    processedRows?: boolean
+    importedRows?: boolean
+    failedRows?: boolean
+    skippedRows?: boolean
+    batchSize?: boolean
+    allowMissingContact?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["completedStudentImportJob"]>
+
+  export type CompletedStudentImportJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    uploadId?: boolean
+    branchId?: boolean
+    createdBy?: boolean
+    fileName?: boolean
+    fileHash?: boolean
+    status?: boolean
+    totalRows?: boolean
+    readyRows?: boolean
+    processedRows?: boolean
+    importedRows?: boolean
+    failedRows?: boolean
+    skippedRows?: boolean
+    batchSize?: boolean
+    allowMissingContact?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["completedStudentImportJob"]>
+
+  export type CompletedStudentImportJobSelectScalar = {
+    id?: boolean
+    uploadId?: boolean
+    branchId?: boolean
+    createdBy?: boolean
+    fileName?: boolean
+    fileHash?: boolean
+    status?: boolean
+    totalRows?: boolean
+    readyRows?: boolean
+    processedRows?: boolean
+    importedRows?: boolean
+    failedRows?: boolean
+    skippedRows?: boolean
+    batchSize?: boolean
+    allowMissingContact?: boolean
+    errorMessage?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompletedStudentImportJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uploadId" | "branchId" | "createdBy" | "fileName" | "fileHash" | "status" | "totalRows" | "readyRows" | "processedRows" | "importedRows" | "failedRows" | "skippedRows" | "batchSize" | "allowMissingContact" | "errorMessage" | "startedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["completedStudentImportJob"]>
+  export type CompletedStudentImportJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rows?: boolean | CompletedStudentImportJob$rowsArgs<ExtArgs>
+    _count?: boolean | CompletedStudentImportJobCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CompletedStudentImportJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CompletedStudentImportJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CompletedStudentImportJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompletedStudentImportJob"
+    objects: {
+      rows: Prisma.$CompletedStudentImportRowPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      uploadId: string
+      branchId: string
+      createdBy: string | null
+      fileName: string | null
+      fileHash: string | null
+      status: string
+      totalRows: number
+      readyRows: number
+      processedRows: number
+      importedRows: number
+      failedRows: number
+      skippedRows: number
+      batchSize: number
+      allowMissingContact: boolean
+      errorMessage: string | null
+      startedAt: Date | null
+      completedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["completedStudentImportJob"]>
+    composites: {}
+  }
+
+  type CompletedStudentImportJobGetPayload<S extends boolean | null | undefined | CompletedStudentImportJobDefaultArgs> = $Result.GetResult<Prisma.$CompletedStudentImportJobPayload, S>
+
+  type CompletedStudentImportJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompletedStudentImportJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompletedStudentImportJobCountAggregateInputType | true
+    }
+
+  export interface CompletedStudentImportJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompletedStudentImportJob'], meta: { name: 'CompletedStudentImportJob' } }
+    /**
+     * Find zero or one CompletedStudentImportJob that matches the filter.
+     * @param {CompletedStudentImportJobFindUniqueArgs} args - Arguments to find a CompletedStudentImportJob
+     * @example
+     * // Get one CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompletedStudentImportJobFindUniqueArgs>(args: SelectSubset<T, CompletedStudentImportJobFindUniqueArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompletedStudentImportJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompletedStudentImportJobFindUniqueOrThrowArgs} args - Arguments to find a CompletedStudentImportJob
+     * @example
+     * // Get one CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompletedStudentImportJobFindUniqueOrThrowArgs>(args: SelectSubset<T, CompletedStudentImportJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompletedStudentImportJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobFindFirstArgs} args - Arguments to find a CompletedStudentImportJob
+     * @example
+     * // Get one CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompletedStudentImportJobFindFirstArgs>(args?: SelectSubset<T, CompletedStudentImportJobFindFirstArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompletedStudentImportJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobFindFirstOrThrowArgs} args - Arguments to find a CompletedStudentImportJob
+     * @example
+     * // Get one CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompletedStudentImportJobFindFirstOrThrowArgs>(args?: SelectSubset<T, CompletedStudentImportJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompletedStudentImportJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompletedStudentImportJobs
+     * const completedStudentImportJobs = await prisma.completedStudentImportJob.findMany()
+     * 
+     * // Get first 10 CompletedStudentImportJobs
+     * const completedStudentImportJobs = await prisma.completedStudentImportJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const completedStudentImportJobWithIdOnly = await prisma.completedStudentImportJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompletedStudentImportJobFindManyArgs>(args?: SelectSubset<T, CompletedStudentImportJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompletedStudentImportJob.
+     * @param {CompletedStudentImportJobCreateArgs} args - Arguments to create a CompletedStudentImportJob.
+     * @example
+     * // Create one CompletedStudentImportJob
+     * const CompletedStudentImportJob = await prisma.completedStudentImportJob.create({
+     *   data: {
+     *     // ... data to create a CompletedStudentImportJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompletedStudentImportJobCreateArgs>(args: SelectSubset<T, CompletedStudentImportJobCreateArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompletedStudentImportJobs.
+     * @param {CompletedStudentImportJobCreateManyArgs} args - Arguments to create many CompletedStudentImportJobs.
+     * @example
+     * // Create many CompletedStudentImportJobs
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompletedStudentImportJobCreateManyArgs>(args?: SelectSubset<T, CompletedStudentImportJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompletedStudentImportJobs and returns the data saved in the database.
+     * @param {CompletedStudentImportJobCreateManyAndReturnArgs} args - Arguments to create many CompletedStudentImportJobs.
+     * @example
+     * // Create many CompletedStudentImportJobs
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompletedStudentImportJobs and only return the `id`
+     * const completedStudentImportJobWithIdOnly = await prisma.completedStudentImportJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompletedStudentImportJobCreateManyAndReturnArgs>(args?: SelectSubset<T, CompletedStudentImportJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompletedStudentImportJob.
+     * @param {CompletedStudentImportJobDeleteArgs} args - Arguments to delete one CompletedStudentImportJob.
+     * @example
+     * // Delete one CompletedStudentImportJob
+     * const CompletedStudentImportJob = await prisma.completedStudentImportJob.delete({
+     *   where: {
+     *     // ... filter to delete one CompletedStudentImportJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompletedStudentImportJobDeleteArgs>(args: SelectSubset<T, CompletedStudentImportJobDeleteArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompletedStudentImportJob.
+     * @param {CompletedStudentImportJobUpdateArgs} args - Arguments to update one CompletedStudentImportJob.
+     * @example
+     * // Update one CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompletedStudentImportJobUpdateArgs>(args: SelectSubset<T, CompletedStudentImportJobUpdateArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompletedStudentImportJobs.
+     * @param {CompletedStudentImportJobDeleteManyArgs} args - Arguments to filter CompletedStudentImportJobs to delete.
+     * @example
+     * // Delete a few CompletedStudentImportJobs
+     * const { count } = await prisma.completedStudentImportJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompletedStudentImportJobDeleteManyArgs>(args?: SelectSubset<T, CompletedStudentImportJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompletedStudentImportJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompletedStudentImportJobs
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompletedStudentImportJobUpdateManyArgs>(args: SelectSubset<T, CompletedStudentImportJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompletedStudentImportJobs and returns the data updated in the database.
+     * @param {CompletedStudentImportJobUpdateManyAndReturnArgs} args - Arguments to update many CompletedStudentImportJobs.
+     * @example
+     * // Update many CompletedStudentImportJobs
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompletedStudentImportJobs and only return the `id`
+     * const completedStudentImportJobWithIdOnly = await prisma.completedStudentImportJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompletedStudentImportJobUpdateManyAndReturnArgs>(args: SelectSubset<T, CompletedStudentImportJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompletedStudentImportJob.
+     * @param {CompletedStudentImportJobUpsertArgs} args - Arguments to update or create a CompletedStudentImportJob.
+     * @example
+     * // Update or create a CompletedStudentImportJob
+     * const completedStudentImportJob = await prisma.completedStudentImportJob.upsert({
+     *   create: {
+     *     // ... data to create a CompletedStudentImportJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompletedStudentImportJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompletedStudentImportJobUpsertArgs>(args: SelectSubset<T, CompletedStudentImportJobUpsertArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompletedStudentImportJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobCountArgs} args - Arguments to filter CompletedStudentImportJobs to count.
+     * @example
+     * // Count the number of CompletedStudentImportJobs
+     * const count = await prisma.completedStudentImportJob.count({
+     *   where: {
+     *     // ... the filter for the CompletedStudentImportJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompletedStudentImportJobCountArgs>(
+      args?: Subset<T, CompletedStudentImportJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompletedStudentImportJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompletedStudentImportJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompletedStudentImportJobAggregateArgs>(args: Subset<T, CompletedStudentImportJobAggregateArgs>): Prisma.PrismaPromise<GetCompletedStudentImportJobAggregateType<T>>
+
+    /**
+     * Group by CompletedStudentImportJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompletedStudentImportJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompletedStudentImportJobGroupByArgs['orderBy'] }
+        : { orderBy?: CompletedStudentImportJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompletedStudentImportJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompletedStudentImportJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompletedStudentImportJob model
+   */
+  readonly fields: CompletedStudentImportJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompletedStudentImportJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompletedStudentImportJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    rows<T extends CompletedStudentImportJob$rowsArgs<ExtArgs> = {}>(args?: Subset<T, CompletedStudentImportJob$rowsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompletedStudentImportJob model
+   */
+  interface CompletedStudentImportJobFieldRefs {
+    readonly id: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly uploadId: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly branchId: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly createdBy: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly fileName: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly fileHash: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly status: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly totalRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly readyRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly processedRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly importedRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly failedRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly skippedRows: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly batchSize: FieldRef<"CompletedStudentImportJob", 'Int'>
+    readonly allowMissingContact: FieldRef<"CompletedStudentImportJob", 'Boolean'>
+    readonly errorMessage: FieldRef<"CompletedStudentImportJob", 'String'>
+    readonly startedAt: FieldRef<"CompletedStudentImportJob", 'DateTime'>
+    readonly completedAt: FieldRef<"CompletedStudentImportJob", 'DateTime'>
+    readonly createdAt: FieldRef<"CompletedStudentImportJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"CompletedStudentImportJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompletedStudentImportJob findUnique
+   */
+  export type CompletedStudentImportJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportJob to fetch.
+     */
+    where: CompletedStudentImportJobWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportJob findUniqueOrThrow
+   */
+  export type CompletedStudentImportJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportJob to fetch.
+     */
+    where: CompletedStudentImportJobWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportJob findFirst
+   */
+  export type CompletedStudentImportJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportJob to fetch.
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportJobs to fetch.
+     */
+    orderBy?: CompletedStudentImportJobOrderByWithRelationInput | CompletedStudentImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompletedStudentImportJobs.
+     */
+    cursor?: CompletedStudentImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportJobs.
+     */
+    distinct?: CompletedStudentImportJobScalarFieldEnum | CompletedStudentImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportJob findFirstOrThrow
+   */
+  export type CompletedStudentImportJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportJob to fetch.
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportJobs to fetch.
+     */
+    orderBy?: CompletedStudentImportJobOrderByWithRelationInput | CompletedStudentImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompletedStudentImportJobs.
+     */
+    cursor?: CompletedStudentImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportJobs.
+     */
+    distinct?: CompletedStudentImportJobScalarFieldEnum | CompletedStudentImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportJob findMany
+   */
+  export type CompletedStudentImportJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportJobs to fetch.
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportJobs to fetch.
+     */
+    orderBy?: CompletedStudentImportJobOrderByWithRelationInput | CompletedStudentImportJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompletedStudentImportJobs.
+     */
+    cursor?: CompletedStudentImportJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportJobs.
+     */
+    distinct?: CompletedStudentImportJobScalarFieldEnum | CompletedStudentImportJobScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportJob create
+   */
+  export type CompletedStudentImportJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CompletedStudentImportJob.
+     */
+    data: XOR<CompletedStudentImportJobCreateInput, CompletedStudentImportJobUncheckedCreateInput>
+  }
+
+  /**
+   * CompletedStudentImportJob createMany
+   */
+  export type CompletedStudentImportJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompletedStudentImportJobs.
+     */
+    data: CompletedStudentImportJobCreateManyInput | CompletedStudentImportJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompletedStudentImportJob createManyAndReturn
+   */
+  export type CompletedStudentImportJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompletedStudentImportJobs.
+     */
+    data: CompletedStudentImportJobCreateManyInput | CompletedStudentImportJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompletedStudentImportJob update
+   */
+  export type CompletedStudentImportJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CompletedStudentImportJob.
+     */
+    data: XOR<CompletedStudentImportJobUpdateInput, CompletedStudentImportJobUncheckedUpdateInput>
+    /**
+     * Choose, which CompletedStudentImportJob to update.
+     */
+    where: CompletedStudentImportJobWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportJob updateMany
+   */
+  export type CompletedStudentImportJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompletedStudentImportJobs.
+     */
+    data: XOR<CompletedStudentImportJobUpdateManyMutationInput, CompletedStudentImportJobUncheckedUpdateManyInput>
+    /**
+     * Filter which CompletedStudentImportJobs to update
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * Limit how many CompletedStudentImportJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompletedStudentImportJob updateManyAndReturn
+   */
+  export type CompletedStudentImportJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * The data used to update CompletedStudentImportJobs.
+     */
+    data: XOR<CompletedStudentImportJobUpdateManyMutationInput, CompletedStudentImportJobUncheckedUpdateManyInput>
+    /**
+     * Filter which CompletedStudentImportJobs to update
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * Limit how many CompletedStudentImportJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompletedStudentImportJob upsert
+   */
+  export type CompletedStudentImportJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CompletedStudentImportJob to update in case it exists.
+     */
+    where: CompletedStudentImportJobWhereUniqueInput
+    /**
+     * In case the CompletedStudentImportJob found by the `where` argument doesn't exist, create a new CompletedStudentImportJob with this data.
+     */
+    create: XOR<CompletedStudentImportJobCreateInput, CompletedStudentImportJobUncheckedCreateInput>
+    /**
+     * In case the CompletedStudentImportJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompletedStudentImportJobUpdateInput, CompletedStudentImportJobUncheckedUpdateInput>
+  }
+
+  /**
+   * CompletedStudentImportJob delete
+   */
+  export type CompletedStudentImportJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+    /**
+     * Filter which CompletedStudentImportJob to delete.
+     */
+    where: CompletedStudentImportJobWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportJob deleteMany
+   */
+  export type CompletedStudentImportJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompletedStudentImportJobs to delete
+     */
+    where?: CompletedStudentImportJobWhereInput
+    /**
+     * Limit how many CompletedStudentImportJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompletedStudentImportJob.rows
+   */
+  export type CompletedStudentImportJob$rowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    where?: CompletedStudentImportRowWhereInput
+    orderBy?: CompletedStudentImportRowOrderByWithRelationInput | CompletedStudentImportRowOrderByWithRelationInput[]
+    cursor?: CompletedStudentImportRowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompletedStudentImportRowScalarFieldEnum | CompletedStudentImportRowScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportJob without action
+   */
+  export type CompletedStudentImportJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportJob
+     */
+    select?: CompletedStudentImportJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportJob
+     */
+    omit?: CompletedStudentImportJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportJobInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CompletedStudentImportRow
+   */
+
+  export type AggregateCompletedStudentImportRow = {
+    _count: CompletedStudentImportRowCountAggregateOutputType | null
+    _avg: CompletedStudentImportRowAvgAggregateOutputType | null
+    _sum: CompletedStudentImportRowSumAggregateOutputType | null
+    _min: CompletedStudentImportRowMinAggregateOutputType | null
+    _max: CompletedStudentImportRowMaxAggregateOutputType | null
+  }
+
+  export type CompletedStudentImportRowAvgAggregateOutputType = {
+    rowNumber: number | null
+    attempts: number | null
+  }
+
+  export type CompletedStudentImportRowSumAggregateOutputType = {
+    rowNumber: number | null
+    attempts: number | null
+  }
+
+  export type CompletedStudentImportRowMinAggregateOutputType = {
+    id: string | null
+    jobId: string | null
+    rowNumber: number | null
+    status: string | null
+    attempts: number | null
+    importedId: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompletedStudentImportRowMaxAggregateOutputType = {
+    id: string | null
+    jobId: string | null
+    rowNumber: number | null
+    status: string | null
+    attempts: number | null
+    importedId: string | null
+    processedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompletedStudentImportRowCountAggregateOutputType = {
+    id: number
+    jobId: number
+    rowNumber: number
+    data: number
+    status: number
+    errors: number
+    warnings: number
+    attempts: number
+    importedId: number
+    processedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompletedStudentImportRowAvgAggregateInputType = {
+    rowNumber?: true
+    attempts?: true
+  }
+
+  export type CompletedStudentImportRowSumAggregateInputType = {
+    rowNumber?: true
+    attempts?: true
+  }
+
+  export type CompletedStudentImportRowMinAggregateInputType = {
+    id?: true
+    jobId?: true
+    rowNumber?: true
+    status?: true
+    attempts?: true
+    importedId?: true
+    processedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompletedStudentImportRowMaxAggregateInputType = {
+    id?: true
+    jobId?: true
+    rowNumber?: true
+    status?: true
+    attempts?: true
+    importedId?: true
+    processedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompletedStudentImportRowCountAggregateInputType = {
+    id?: true
+    jobId?: true
+    rowNumber?: true
+    data?: true
+    status?: true
+    errors?: true
+    warnings?: true
+    attempts?: true
+    importedId?: true
+    processedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompletedStudentImportRowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompletedStudentImportRow to aggregate.
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportRows to fetch.
+     */
+    orderBy?: CompletedStudentImportRowOrderByWithRelationInput | CompletedStudentImportRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompletedStudentImportRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompletedStudentImportRows
+    **/
+    _count?: true | CompletedStudentImportRowCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompletedStudentImportRowAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompletedStudentImportRowSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompletedStudentImportRowMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompletedStudentImportRowMaxAggregateInputType
+  }
+
+  export type GetCompletedStudentImportRowAggregateType<T extends CompletedStudentImportRowAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompletedStudentImportRow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompletedStudentImportRow[P]>
+      : GetScalarType<T[P], AggregateCompletedStudentImportRow[P]>
+  }
+
+
+
+
+  export type CompletedStudentImportRowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompletedStudentImportRowWhereInput
+    orderBy?: CompletedStudentImportRowOrderByWithAggregationInput | CompletedStudentImportRowOrderByWithAggregationInput[]
+    by: CompletedStudentImportRowScalarFieldEnum[] | CompletedStudentImportRowScalarFieldEnum
+    having?: CompletedStudentImportRowScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompletedStudentImportRowCountAggregateInputType | true
+    _avg?: CompletedStudentImportRowAvgAggregateInputType
+    _sum?: CompletedStudentImportRowSumAggregateInputType
+    _min?: CompletedStudentImportRowMinAggregateInputType
+    _max?: CompletedStudentImportRowMaxAggregateInputType
+  }
+
+  export type CompletedStudentImportRowGroupByOutputType = {
+    id: string
+    jobId: string
+    rowNumber: number
+    data: JsonValue
+    status: string
+    errors: JsonValue | null
+    warnings: JsonValue | null
+    attempts: number
+    importedId: string | null
+    processedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CompletedStudentImportRowCountAggregateOutputType | null
+    _avg: CompletedStudentImportRowAvgAggregateOutputType | null
+    _sum: CompletedStudentImportRowSumAggregateOutputType | null
+    _min: CompletedStudentImportRowMinAggregateOutputType | null
+    _max: CompletedStudentImportRowMaxAggregateOutputType | null
+  }
+
+  type GetCompletedStudentImportRowGroupByPayload<T extends CompletedStudentImportRowGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompletedStudentImportRowGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompletedStudentImportRowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompletedStudentImportRowGroupByOutputType[P]>
+            : GetScalarType<T[P], CompletedStudentImportRowGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompletedStudentImportRowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    rowNumber?: boolean
+    data?: boolean
+    status?: boolean
+    errors?: boolean
+    warnings?: boolean
+    attempts?: boolean
+    importedId?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["completedStudentImportRow"]>
+
+  export type CompletedStudentImportRowSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    rowNumber?: boolean
+    data?: boolean
+    status?: boolean
+    errors?: boolean
+    warnings?: boolean
+    attempts?: boolean
+    importedId?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["completedStudentImportRow"]>
+
+  export type CompletedStudentImportRowSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    jobId?: boolean
+    rowNumber?: boolean
+    data?: boolean
+    status?: boolean
+    errors?: boolean
+    warnings?: boolean
+    attempts?: boolean
+    importedId?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["completedStudentImportRow"]>
+
+  export type CompletedStudentImportRowSelectScalar = {
+    id?: boolean
+    jobId?: boolean
+    rowNumber?: boolean
+    data?: boolean
+    status?: boolean
+    errors?: boolean
+    warnings?: boolean
+    attempts?: boolean
+    importedId?: boolean
+    processedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompletedStudentImportRowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "jobId" | "rowNumber" | "data" | "status" | "errors" | "warnings" | "attempts" | "importedId" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["completedStudentImportRow"]>
+  export type CompletedStudentImportRowInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }
+  export type CompletedStudentImportRowIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }
+  export type CompletedStudentImportRowIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    job?: boolean | CompletedStudentImportJobDefaultArgs<ExtArgs>
+  }
+
+  export type $CompletedStudentImportRowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompletedStudentImportRow"
+    objects: {
+      job: Prisma.$CompletedStudentImportJobPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      jobId: string
+      rowNumber: number
+      data: Prisma.JsonValue
+      status: string
+      errors: Prisma.JsonValue | null
+      warnings: Prisma.JsonValue | null
+      attempts: number
+      importedId: string | null
+      processedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["completedStudentImportRow"]>
+    composites: {}
+  }
+
+  type CompletedStudentImportRowGetPayload<S extends boolean | null | undefined | CompletedStudentImportRowDefaultArgs> = $Result.GetResult<Prisma.$CompletedStudentImportRowPayload, S>
+
+  type CompletedStudentImportRowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompletedStudentImportRowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompletedStudentImportRowCountAggregateInputType | true
+    }
+
+  export interface CompletedStudentImportRowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompletedStudentImportRow'], meta: { name: 'CompletedStudentImportRow' } }
+    /**
+     * Find zero or one CompletedStudentImportRow that matches the filter.
+     * @param {CompletedStudentImportRowFindUniqueArgs} args - Arguments to find a CompletedStudentImportRow
+     * @example
+     * // Get one CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompletedStudentImportRowFindUniqueArgs>(args: SelectSubset<T, CompletedStudentImportRowFindUniqueArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompletedStudentImportRow that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompletedStudentImportRowFindUniqueOrThrowArgs} args - Arguments to find a CompletedStudentImportRow
+     * @example
+     * // Get one CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompletedStudentImportRowFindUniqueOrThrowArgs>(args: SelectSubset<T, CompletedStudentImportRowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompletedStudentImportRow that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowFindFirstArgs} args - Arguments to find a CompletedStudentImportRow
+     * @example
+     * // Get one CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompletedStudentImportRowFindFirstArgs>(args?: SelectSubset<T, CompletedStudentImportRowFindFirstArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompletedStudentImportRow that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowFindFirstOrThrowArgs} args - Arguments to find a CompletedStudentImportRow
+     * @example
+     * // Get one CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompletedStudentImportRowFindFirstOrThrowArgs>(args?: SelectSubset<T, CompletedStudentImportRowFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompletedStudentImportRows that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompletedStudentImportRows
+     * const completedStudentImportRows = await prisma.completedStudentImportRow.findMany()
+     * 
+     * // Get first 10 CompletedStudentImportRows
+     * const completedStudentImportRows = await prisma.completedStudentImportRow.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const completedStudentImportRowWithIdOnly = await prisma.completedStudentImportRow.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompletedStudentImportRowFindManyArgs>(args?: SelectSubset<T, CompletedStudentImportRowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompletedStudentImportRow.
+     * @param {CompletedStudentImportRowCreateArgs} args - Arguments to create a CompletedStudentImportRow.
+     * @example
+     * // Create one CompletedStudentImportRow
+     * const CompletedStudentImportRow = await prisma.completedStudentImportRow.create({
+     *   data: {
+     *     // ... data to create a CompletedStudentImportRow
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompletedStudentImportRowCreateArgs>(args: SelectSubset<T, CompletedStudentImportRowCreateArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompletedStudentImportRows.
+     * @param {CompletedStudentImportRowCreateManyArgs} args - Arguments to create many CompletedStudentImportRows.
+     * @example
+     * // Create many CompletedStudentImportRows
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompletedStudentImportRowCreateManyArgs>(args?: SelectSubset<T, CompletedStudentImportRowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompletedStudentImportRows and returns the data saved in the database.
+     * @param {CompletedStudentImportRowCreateManyAndReturnArgs} args - Arguments to create many CompletedStudentImportRows.
+     * @example
+     * // Create many CompletedStudentImportRows
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompletedStudentImportRows and only return the `id`
+     * const completedStudentImportRowWithIdOnly = await prisma.completedStudentImportRow.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompletedStudentImportRowCreateManyAndReturnArgs>(args?: SelectSubset<T, CompletedStudentImportRowCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompletedStudentImportRow.
+     * @param {CompletedStudentImportRowDeleteArgs} args - Arguments to delete one CompletedStudentImportRow.
+     * @example
+     * // Delete one CompletedStudentImportRow
+     * const CompletedStudentImportRow = await prisma.completedStudentImportRow.delete({
+     *   where: {
+     *     // ... filter to delete one CompletedStudentImportRow
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompletedStudentImportRowDeleteArgs>(args: SelectSubset<T, CompletedStudentImportRowDeleteArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompletedStudentImportRow.
+     * @param {CompletedStudentImportRowUpdateArgs} args - Arguments to update one CompletedStudentImportRow.
+     * @example
+     * // Update one CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompletedStudentImportRowUpdateArgs>(args: SelectSubset<T, CompletedStudentImportRowUpdateArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompletedStudentImportRows.
+     * @param {CompletedStudentImportRowDeleteManyArgs} args - Arguments to filter CompletedStudentImportRows to delete.
+     * @example
+     * // Delete a few CompletedStudentImportRows
+     * const { count } = await prisma.completedStudentImportRow.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompletedStudentImportRowDeleteManyArgs>(args?: SelectSubset<T, CompletedStudentImportRowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompletedStudentImportRows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompletedStudentImportRows
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompletedStudentImportRowUpdateManyArgs>(args: SelectSubset<T, CompletedStudentImportRowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompletedStudentImportRows and returns the data updated in the database.
+     * @param {CompletedStudentImportRowUpdateManyAndReturnArgs} args - Arguments to update many CompletedStudentImportRows.
+     * @example
+     * // Update many CompletedStudentImportRows
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompletedStudentImportRows and only return the `id`
+     * const completedStudentImportRowWithIdOnly = await prisma.completedStudentImportRow.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompletedStudentImportRowUpdateManyAndReturnArgs>(args: SelectSubset<T, CompletedStudentImportRowUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompletedStudentImportRow.
+     * @param {CompletedStudentImportRowUpsertArgs} args - Arguments to update or create a CompletedStudentImportRow.
+     * @example
+     * // Update or create a CompletedStudentImportRow
+     * const completedStudentImportRow = await prisma.completedStudentImportRow.upsert({
+     *   create: {
+     *     // ... data to create a CompletedStudentImportRow
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompletedStudentImportRow we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompletedStudentImportRowUpsertArgs>(args: SelectSubset<T, CompletedStudentImportRowUpsertArgs<ExtArgs>>): Prisma__CompletedStudentImportRowClient<$Result.GetResult<Prisma.$CompletedStudentImportRowPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompletedStudentImportRows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowCountArgs} args - Arguments to filter CompletedStudentImportRows to count.
+     * @example
+     * // Count the number of CompletedStudentImportRows
+     * const count = await prisma.completedStudentImportRow.count({
+     *   where: {
+     *     // ... the filter for the CompletedStudentImportRows we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompletedStudentImportRowCountArgs>(
+      args?: Subset<T, CompletedStudentImportRowCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompletedStudentImportRowCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompletedStudentImportRow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompletedStudentImportRowAggregateArgs>(args: Subset<T, CompletedStudentImportRowAggregateArgs>): Prisma.PrismaPromise<GetCompletedStudentImportRowAggregateType<T>>
+
+    /**
+     * Group by CompletedStudentImportRow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompletedStudentImportRowGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompletedStudentImportRowGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompletedStudentImportRowGroupByArgs['orderBy'] }
+        : { orderBy?: CompletedStudentImportRowGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompletedStudentImportRowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompletedStudentImportRowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompletedStudentImportRow model
+   */
+  readonly fields: CompletedStudentImportRowFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompletedStudentImportRow.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompletedStudentImportRowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    job<T extends CompletedStudentImportJobDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompletedStudentImportJobDefaultArgs<ExtArgs>>): Prisma__CompletedStudentImportJobClient<$Result.GetResult<Prisma.$CompletedStudentImportJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompletedStudentImportRow model
+   */
+  interface CompletedStudentImportRowFieldRefs {
+    readonly id: FieldRef<"CompletedStudentImportRow", 'String'>
+    readonly jobId: FieldRef<"CompletedStudentImportRow", 'String'>
+    readonly rowNumber: FieldRef<"CompletedStudentImportRow", 'Int'>
+    readonly data: FieldRef<"CompletedStudentImportRow", 'Json'>
+    readonly status: FieldRef<"CompletedStudentImportRow", 'String'>
+    readonly errors: FieldRef<"CompletedStudentImportRow", 'Json'>
+    readonly warnings: FieldRef<"CompletedStudentImportRow", 'Json'>
+    readonly attempts: FieldRef<"CompletedStudentImportRow", 'Int'>
+    readonly importedId: FieldRef<"CompletedStudentImportRow", 'String'>
+    readonly processedAt: FieldRef<"CompletedStudentImportRow", 'DateTime'>
+    readonly createdAt: FieldRef<"CompletedStudentImportRow", 'DateTime'>
+    readonly updatedAt: FieldRef<"CompletedStudentImportRow", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompletedStudentImportRow findUnique
+   */
+  export type CompletedStudentImportRowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportRow to fetch.
+     */
+    where: CompletedStudentImportRowWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportRow findUniqueOrThrow
+   */
+  export type CompletedStudentImportRowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportRow to fetch.
+     */
+    where: CompletedStudentImportRowWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportRow findFirst
+   */
+  export type CompletedStudentImportRowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportRow to fetch.
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportRows to fetch.
+     */
+    orderBy?: CompletedStudentImportRowOrderByWithRelationInput | CompletedStudentImportRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompletedStudentImportRows.
+     */
+    cursor?: CompletedStudentImportRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportRows.
+     */
+    distinct?: CompletedStudentImportRowScalarFieldEnum | CompletedStudentImportRowScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportRow findFirstOrThrow
+   */
+  export type CompletedStudentImportRowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportRow to fetch.
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportRows to fetch.
+     */
+    orderBy?: CompletedStudentImportRowOrderByWithRelationInput | CompletedStudentImportRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompletedStudentImportRows.
+     */
+    cursor?: CompletedStudentImportRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportRows.
+     */
+    distinct?: CompletedStudentImportRowScalarFieldEnum | CompletedStudentImportRowScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportRow findMany
+   */
+  export type CompletedStudentImportRowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter, which CompletedStudentImportRows to fetch.
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompletedStudentImportRows to fetch.
+     */
+    orderBy?: CompletedStudentImportRowOrderByWithRelationInput | CompletedStudentImportRowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompletedStudentImportRows.
+     */
+    cursor?: CompletedStudentImportRowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompletedStudentImportRows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompletedStudentImportRows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompletedStudentImportRows.
+     */
+    distinct?: CompletedStudentImportRowScalarFieldEnum | CompletedStudentImportRowScalarFieldEnum[]
+  }
+
+  /**
+   * CompletedStudentImportRow create
+   */
+  export type CompletedStudentImportRowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CompletedStudentImportRow.
+     */
+    data: XOR<CompletedStudentImportRowCreateInput, CompletedStudentImportRowUncheckedCreateInput>
+  }
+
+  /**
+   * CompletedStudentImportRow createMany
+   */
+  export type CompletedStudentImportRowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompletedStudentImportRows.
+     */
+    data: CompletedStudentImportRowCreateManyInput | CompletedStudentImportRowCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompletedStudentImportRow createManyAndReturn
+   */
+  export type CompletedStudentImportRowCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompletedStudentImportRows.
+     */
+    data: CompletedStudentImportRowCreateManyInput | CompletedStudentImportRowCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompletedStudentImportRow update
+   */
+  export type CompletedStudentImportRowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CompletedStudentImportRow.
+     */
+    data: XOR<CompletedStudentImportRowUpdateInput, CompletedStudentImportRowUncheckedUpdateInput>
+    /**
+     * Choose, which CompletedStudentImportRow to update.
+     */
+    where: CompletedStudentImportRowWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportRow updateMany
+   */
+  export type CompletedStudentImportRowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompletedStudentImportRows.
+     */
+    data: XOR<CompletedStudentImportRowUpdateManyMutationInput, CompletedStudentImportRowUncheckedUpdateManyInput>
+    /**
+     * Filter which CompletedStudentImportRows to update
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * Limit how many CompletedStudentImportRows to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompletedStudentImportRow updateManyAndReturn
+   */
+  export type CompletedStudentImportRowUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * The data used to update CompletedStudentImportRows.
+     */
+    data: XOR<CompletedStudentImportRowUpdateManyMutationInput, CompletedStudentImportRowUncheckedUpdateManyInput>
+    /**
+     * Filter which CompletedStudentImportRows to update
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * Limit how many CompletedStudentImportRows to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompletedStudentImportRow upsert
+   */
+  export type CompletedStudentImportRowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CompletedStudentImportRow to update in case it exists.
+     */
+    where: CompletedStudentImportRowWhereUniqueInput
+    /**
+     * In case the CompletedStudentImportRow found by the `where` argument doesn't exist, create a new CompletedStudentImportRow with this data.
+     */
+    create: XOR<CompletedStudentImportRowCreateInput, CompletedStudentImportRowUncheckedCreateInput>
+    /**
+     * In case the CompletedStudentImportRow was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompletedStudentImportRowUpdateInput, CompletedStudentImportRowUncheckedUpdateInput>
+  }
+
+  /**
+   * CompletedStudentImportRow delete
+   */
+  export type CompletedStudentImportRowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+    /**
+     * Filter which CompletedStudentImportRow to delete.
+     */
+    where: CompletedStudentImportRowWhereUniqueInput
+  }
+
+  /**
+   * CompletedStudentImportRow deleteMany
+   */
+  export type CompletedStudentImportRowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompletedStudentImportRows to delete
+     */
+    where?: CompletedStudentImportRowWhereInput
+    /**
+     * Limit how many CompletedStudentImportRows to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompletedStudentImportRow without action
+   */
+  export type CompletedStudentImportRowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompletedStudentImportRow
+     */
+    select?: CompletedStudentImportRowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompletedStudentImportRow
+     */
+    omit?: CompletedStudentImportRowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompletedStudentImportRowInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -121016,6 +123737,50 @@ export namespace Prisma {
   };
 
   export type BranchCourseImportReceiptScalarFieldEnum = (typeof BranchCourseImportReceiptScalarFieldEnum)[keyof typeof BranchCourseImportReceiptScalarFieldEnum]
+
+
+  export const CompletedStudentImportJobScalarFieldEnum: {
+    id: 'id',
+    uploadId: 'uploadId',
+    branchId: 'branchId',
+    createdBy: 'createdBy',
+    fileName: 'fileName',
+    fileHash: 'fileHash',
+    status: 'status',
+    totalRows: 'totalRows',
+    readyRows: 'readyRows',
+    processedRows: 'processedRows',
+    importedRows: 'importedRows',
+    failedRows: 'failedRows',
+    skippedRows: 'skippedRows',
+    batchSize: 'batchSize',
+    allowMissingContact: 'allowMissingContact',
+    errorMessage: 'errorMessage',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompletedStudentImportJobScalarFieldEnum = (typeof CompletedStudentImportJobScalarFieldEnum)[keyof typeof CompletedStudentImportJobScalarFieldEnum]
+
+
+  export const CompletedStudentImportRowScalarFieldEnum: {
+    id: 'id',
+    jobId: 'jobId',
+    rowNumber: 'rowNumber',
+    data: 'data',
+    status: 'status',
+    errors: 'errors',
+    warnings: 'warnings',
+    attempts: 'attempts',
+    importedId: 'importedId',
+    processedAt: 'processedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompletedStudentImportRowScalarFieldEnum = (typeof CompletedStudentImportRowScalarFieldEnum)[keyof typeof CompletedStudentImportRowScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -131251,6 +134016,232 @@ export namespace Prisma {
     summary?: JsonWithAggregatesFilter<"BranchCourseImportReceipt">
     createdBy?: StringNullableWithAggregatesFilter<"BranchCourseImportReceipt"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BranchCourseImportReceipt"> | Date | string
+  }
+
+  export type CompletedStudentImportJobWhereInput = {
+    AND?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
+    OR?: CompletedStudentImportJobWhereInput[]
+    NOT?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
+    id?: StringFilter<"CompletedStudentImportJob"> | string
+    uploadId?: StringFilter<"CompletedStudentImportJob"> | string
+    branchId?: StringFilter<"CompletedStudentImportJob"> | string
+    createdBy?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    fileName?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    fileHash?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    status?: StringFilter<"CompletedStudentImportJob"> | string
+    totalRows?: IntFilter<"CompletedStudentImportJob"> | number
+    readyRows?: IntFilter<"CompletedStudentImportJob"> | number
+    processedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    importedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    failedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    skippedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    batchSize?: IntFilter<"CompletedStudentImportJob"> | number
+    allowMissingContact?: BoolFilter<"CompletedStudentImportJob"> | boolean
+    errorMessage?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    startedAt?: DateTimeNullableFilter<"CompletedStudentImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"CompletedStudentImportJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
+    updatedAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
+    rows?: CompletedStudentImportRowListRelationFilter
+  }
+
+  export type CompletedStudentImportJobOrderByWithRelationInput = {
+    id?: SortOrder
+    uploadId?: SortOrder
+    branchId?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    fileHash?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+    allowMissingContact?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    rows?: CompletedStudentImportRowOrderByRelationAggregateInput
+  }
+
+  export type CompletedStudentImportJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    uploadId?: string
+    branchId_fileHash?: CompletedStudentImportJobBranchIdFileHashCompoundUniqueInput
+    AND?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
+    OR?: CompletedStudentImportJobWhereInput[]
+    NOT?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
+    branchId?: StringFilter<"CompletedStudentImportJob"> | string
+    createdBy?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    fileName?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    fileHash?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    status?: StringFilter<"CompletedStudentImportJob"> | string
+    totalRows?: IntFilter<"CompletedStudentImportJob"> | number
+    readyRows?: IntFilter<"CompletedStudentImportJob"> | number
+    processedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    importedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    failedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    skippedRows?: IntFilter<"CompletedStudentImportJob"> | number
+    batchSize?: IntFilter<"CompletedStudentImportJob"> | number
+    allowMissingContact?: BoolFilter<"CompletedStudentImportJob"> | boolean
+    errorMessage?: StringNullableFilter<"CompletedStudentImportJob"> | string | null
+    startedAt?: DateTimeNullableFilter<"CompletedStudentImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"CompletedStudentImportJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
+    updatedAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
+    rows?: CompletedStudentImportRowListRelationFilter
+  }, "id" | "uploadId" | "branchId_fileHash">
+
+  export type CompletedStudentImportJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    uploadId?: SortOrder
+    branchId?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    fileName?: SortOrderInput | SortOrder
+    fileHash?: SortOrderInput | SortOrder
+    status?: SortOrder
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+    allowMissingContact?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompletedStudentImportJobCountOrderByAggregateInput
+    _avg?: CompletedStudentImportJobAvgOrderByAggregateInput
+    _max?: CompletedStudentImportJobMaxOrderByAggregateInput
+    _min?: CompletedStudentImportJobMinOrderByAggregateInput
+    _sum?: CompletedStudentImportJobSumOrderByAggregateInput
+  }
+
+  export type CompletedStudentImportJobScalarWhereWithAggregatesInput = {
+    AND?: CompletedStudentImportJobScalarWhereWithAggregatesInput | CompletedStudentImportJobScalarWhereWithAggregatesInput[]
+    OR?: CompletedStudentImportJobScalarWhereWithAggregatesInput[]
+    NOT?: CompletedStudentImportJobScalarWhereWithAggregatesInput | CompletedStudentImportJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompletedStudentImportJob"> | string
+    uploadId?: StringWithAggregatesFilter<"CompletedStudentImportJob"> | string
+    branchId?: StringWithAggregatesFilter<"CompletedStudentImportJob"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"CompletedStudentImportJob"> | string | null
+    fileName?: StringNullableWithAggregatesFilter<"CompletedStudentImportJob"> | string | null
+    fileHash?: StringNullableWithAggregatesFilter<"CompletedStudentImportJob"> | string | null
+    status?: StringWithAggregatesFilter<"CompletedStudentImportJob"> | string
+    totalRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    readyRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    processedRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    importedRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    failedRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    skippedRows?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    batchSize?: IntWithAggregatesFilter<"CompletedStudentImportJob"> | number
+    allowMissingContact?: BoolWithAggregatesFilter<"CompletedStudentImportJob"> | boolean
+    errorMessage?: StringNullableWithAggregatesFilter<"CompletedStudentImportJob"> | string | null
+    startedAt?: DateTimeNullableWithAggregatesFilter<"CompletedStudentImportJob"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"CompletedStudentImportJob"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CompletedStudentImportJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CompletedStudentImportJob"> | Date | string
+  }
+
+  export type CompletedStudentImportRowWhereInput = {
+    AND?: CompletedStudentImportRowWhereInput | CompletedStudentImportRowWhereInput[]
+    OR?: CompletedStudentImportRowWhereInput[]
+    NOT?: CompletedStudentImportRowWhereInput | CompletedStudentImportRowWhereInput[]
+    id?: StringFilter<"CompletedStudentImportRow"> | string
+    jobId?: StringFilter<"CompletedStudentImportRow"> | string
+    rowNumber?: IntFilter<"CompletedStudentImportRow"> | number
+    data?: JsonFilter<"CompletedStudentImportRow">
+    status?: StringFilter<"CompletedStudentImportRow"> | string
+    errors?: JsonNullableFilter<"CompletedStudentImportRow">
+    warnings?: JsonNullableFilter<"CompletedStudentImportRow">
+    attempts?: IntFilter<"CompletedStudentImportRow"> | number
+    importedId?: StringNullableFilter<"CompletedStudentImportRow"> | string | null
+    processedAt?: DateTimeNullableFilter<"CompletedStudentImportRow"> | Date | string | null
+    createdAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+    updatedAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+    job?: XOR<CompletedStudentImportJobScalarRelationFilter, CompletedStudentImportJobWhereInput>
+  }
+
+  export type CompletedStudentImportRowOrderByWithRelationInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    rowNumber?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    errors?: SortOrderInput | SortOrder
+    warnings?: SortOrderInput | SortOrder
+    attempts?: SortOrder
+    importedId?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    job?: CompletedStudentImportJobOrderByWithRelationInput
+  }
+
+  export type CompletedStudentImportRowWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    jobId_rowNumber?: CompletedStudentImportRowJobIdRowNumberCompoundUniqueInput
+    AND?: CompletedStudentImportRowWhereInput | CompletedStudentImportRowWhereInput[]
+    OR?: CompletedStudentImportRowWhereInput[]
+    NOT?: CompletedStudentImportRowWhereInput | CompletedStudentImportRowWhereInput[]
+    jobId?: StringFilter<"CompletedStudentImportRow"> | string
+    rowNumber?: IntFilter<"CompletedStudentImportRow"> | number
+    data?: JsonFilter<"CompletedStudentImportRow">
+    status?: StringFilter<"CompletedStudentImportRow"> | string
+    errors?: JsonNullableFilter<"CompletedStudentImportRow">
+    warnings?: JsonNullableFilter<"CompletedStudentImportRow">
+    attempts?: IntFilter<"CompletedStudentImportRow"> | number
+    importedId?: StringNullableFilter<"CompletedStudentImportRow"> | string | null
+    processedAt?: DateTimeNullableFilter<"CompletedStudentImportRow"> | Date | string | null
+    createdAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+    updatedAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+    job?: XOR<CompletedStudentImportJobScalarRelationFilter, CompletedStudentImportJobWhereInput>
+  }, "id" | "jobId_rowNumber">
+
+  export type CompletedStudentImportRowOrderByWithAggregationInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    rowNumber?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    errors?: SortOrderInput | SortOrder
+    warnings?: SortOrderInput | SortOrder
+    attempts?: SortOrder
+    importedId?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompletedStudentImportRowCountOrderByAggregateInput
+    _avg?: CompletedStudentImportRowAvgOrderByAggregateInput
+    _max?: CompletedStudentImportRowMaxOrderByAggregateInput
+    _min?: CompletedStudentImportRowMinOrderByAggregateInput
+    _sum?: CompletedStudentImportRowSumOrderByAggregateInput
+  }
+
+  export type CompletedStudentImportRowScalarWhereWithAggregatesInput = {
+    AND?: CompletedStudentImportRowScalarWhereWithAggregatesInput | CompletedStudentImportRowScalarWhereWithAggregatesInput[]
+    OR?: CompletedStudentImportRowScalarWhereWithAggregatesInput[]
+    NOT?: CompletedStudentImportRowScalarWhereWithAggregatesInput | CompletedStudentImportRowScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompletedStudentImportRow"> | string
+    jobId?: StringWithAggregatesFilter<"CompletedStudentImportRow"> | string
+    rowNumber?: IntWithAggregatesFilter<"CompletedStudentImportRow"> | number
+    data?: JsonWithAggregatesFilter<"CompletedStudentImportRow">
+    status?: StringWithAggregatesFilter<"CompletedStudentImportRow"> | string
+    errors?: JsonNullableWithAggregatesFilter<"CompletedStudentImportRow">
+    warnings?: JsonNullableWithAggregatesFilter<"CompletedStudentImportRow">
+    attempts?: IntWithAggregatesFilter<"CompletedStudentImportRow"> | number
+    importedId?: StringNullableWithAggregatesFilter<"CompletedStudentImportRow"> | string | null
+    processedAt?: DateTimeNullableWithAggregatesFilter<"CompletedStudentImportRow"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CompletedStudentImportRow"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CompletedStudentImportRow"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -142616,6 +145607,275 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompletedStudentImportJobCreateInput = {
+    id?: string
+    uploadId: string
+    branchId: string
+    createdBy?: string | null
+    fileName?: string | null
+    fileHash?: string | null
+    status?: string
+    totalRows?: number
+    readyRows?: number
+    processedRows?: number
+    importedRows?: number
+    failedRows?: number
+    skippedRows?: number
+    batchSize?: number
+    allowMissingContact?: boolean
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: CompletedStudentImportRowCreateNestedManyWithoutJobInput
+  }
+
+  export type CompletedStudentImportJobUncheckedCreateInput = {
+    id?: string
+    uploadId: string
+    branchId: string
+    createdBy?: string | null
+    fileName?: string | null
+    fileHash?: string | null
+    status?: string
+    totalRows?: number
+    readyRows?: number
+    processedRows?: number
+    importedRows?: number
+    failedRows?: number
+    skippedRows?: number
+    batchSize?: number
+    allowMissingContact?: boolean
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rows?: CompletedStudentImportRowUncheckedCreateNestedManyWithoutJobInput
+  }
+
+  export type CompletedStudentImportJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: CompletedStudentImportRowUpdateManyWithoutJobNestedInput
+  }
+
+  export type CompletedStudentImportJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rows?: CompletedStudentImportRowUncheckedUpdateManyWithoutJobNestedInput
+  }
+
+  export type CompletedStudentImportJobCreateManyInput = {
+    id?: string
+    uploadId: string
+    branchId: string
+    createdBy?: string | null
+    fileName?: string | null
+    fileHash?: string | null
+    status?: string
+    totalRows?: number
+    readyRows?: number
+    processedRows?: number
+    importedRows?: number
+    failedRows?: number
+    skippedRows?: number
+    batchSize?: number
+    allowMissingContact?: boolean
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowCreateInput = {
+    id?: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    job: CompletedStudentImportJobCreateNestedOneWithoutRowsInput
+  }
+
+  export type CompletedStudentImportRowUncheckedCreateInput = {
+    id?: string
+    jobId: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportRowUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    job?: CompletedStudentImportJobUpdateOneRequiredWithoutRowsNestedInput
+  }
+
+  export type CompletedStudentImportRowUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowCreateManyInput = {
+    id?: string
+    jobId: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportRowUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -149670,6 +152930,169 @@ export namespace Prisma {
     uploadHash?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type CompletedStudentImportRowListRelationFilter = {
+    every?: CompletedStudentImportRowWhereInput
+    some?: CompletedStudentImportRowWhereInput
+    none?: CompletedStudentImportRowWhereInput
+  }
+
+  export type CompletedStudentImportRowOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompletedStudentImportJobBranchIdFileHashCompoundUniqueInput = {
+    branchId: string
+    fileHash: string
+  }
+
+  export type CompletedStudentImportJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    uploadId?: SortOrder
+    branchId?: SortOrder
+    createdBy?: SortOrder
+    fileName?: SortOrder
+    fileHash?: SortOrder
+    status?: SortOrder
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+    allowMissingContact?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportJobAvgOrderByAggregateInput = {
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+  }
+
+  export type CompletedStudentImportJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    uploadId?: SortOrder
+    branchId?: SortOrder
+    createdBy?: SortOrder
+    fileName?: SortOrder
+    fileHash?: SortOrder
+    status?: SortOrder
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+    allowMissingContact?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    uploadId?: SortOrder
+    branchId?: SortOrder
+    createdBy?: SortOrder
+    fileName?: SortOrder
+    fileHash?: SortOrder
+    status?: SortOrder
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+    allowMissingContact?: SortOrder
+    errorMessage?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportJobSumOrderByAggregateInput = {
+    totalRows?: SortOrder
+    readyRows?: SortOrder
+    processedRows?: SortOrder
+    importedRows?: SortOrder
+    failedRows?: SortOrder
+    skippedRows?: SortOrder
+    batchSize?: SortOrder
+  }
+
+  export type CompletedStudentImportJobScalarRelationFilter = {
+    is?: CompletedStudentImportJobWhereInput
+    isNot?: CompletedStudentImportJobWhereInput
+  }
+
+  export type CompletedStudentImportRowJobIdRowNumberCompoundUniqueInput = {
+    jobId: string
+    rowNumber: number
+  }
+
+  export type CompletedStudentImportRowCountOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    rowNumber?: SortOrder
+    data?: SortOrder
+    status?: SortOrder
+    errors?: SortOrder
+    warnings?: SortOrder
+    attempts?: SortOrder
+    importedId?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportRowAvgOrderByAggregateInput = {
+    rowNumber?: SortOrder
+    attempts?: SortOrder
+  }
+
+  export type CompletedStudentImportRowMaxOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    rowNumber?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    importedId?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportRowMinOrderByAggregateInput = {
+    id?: SortOrder
+    jobId?: SortOrder
+    rowNumber?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    importedId?: SortOrder
+    processedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompletedStudentImportRowSumOrderByAggregateInput = {
+    rowNumber?: SortOrder
+    attempts?: SortOrder
   }
 
   export type BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput = {
@@ -158247,6 +161670,62 @@ export namespace Prisma {
     upsert?: BranchStudentUpsertWithoutLedgerEntriesInput
     connect?: BranchStudentWhereUniqueInput
     update?: XOR<XOR<BranchStudentUpdateToOneWithWhereWithoutLedgerEntriesInput, BranchStudentUpdateWithoutLedgerEntriesInput>, BranchStudentUncheckedUpdateWithoutLedgerEntriesInput>
+  }
+
+  export type CompletedStudentImportRowCreateNestedManyWithoutJobInput = {
+    create?: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput> | CompletedStudentImportRowCreateWithoutJobInput[] | CompletedStudentImportRowUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: CompletedStudentImportRowCreateOrConnectWithoutJobInput | CompletedStudentImportRowCreateOrConnectWithoutJobInput[]
+    createMany?: CompletedStudentImportRowCreateManyJobInputEnvelope
+    connect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+  }
+
+  export type CompletedStudentImportRowUncheckedCreateNestedManyWithoutJobInput = {
+    create?: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput> | CompletedStudentImportRowCreateWithoutJobInput[] | CompletedStudentImportRowUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: CompletedStudentImportRowCreateOrConnectWithoutJobInput | CompletedStudentImportRowCreateOrConnectWithoutJobInput[]
+    createMany?: CompletedStudentImportRowCreateManyJobInputEnvelope
+    connect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+  }
+
+  export type CompletedStudentImportRowUpdateManyWithoutJobNestedInput = {
+    create?: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput> | CompletedStudentImportRowCreateWithoutJobInput[] | CompletedStudentImportRowUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: CompletedStudentImportRowCreateOrConnectWithoutJobInput | CompletedStudentImportRowCreateOrConnectWithoutJobInput[]
+    upsert?: CompletedStudentImportRowUpsertWithWhereUniqueWithoutJobInput | CompletedStudentImportRowUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: CompletedStudentImportRowCreateManyJobInputEnvelope
+    set?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    disconnect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    delete?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    connect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    update?: CompletedStudentImportRowUpdateWithWhereUniqueWithoutJobInput | CompletedStudentImportRowUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: CompletedStudentImportRowUpdateManyWithWhereWithoutJobInput | CompletedStudentImportRowUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: CompletedStudentImportRowScalarWhereInput | CompletedStudentImportRowScalarWhereInput[]
+  }
+
+  export type CompletedStudentImportRowUncheckedUpdateManyWithoutJobNestedInput = {
+    create?: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput> | CompletedStudentImportRowCreateWithoutJobInput[] | CompletedStudentImportRowUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: CompletedStudentImportRowCreateOrConnectWithoutJobInput | CompletedStudentImportRowCreateOrConnectWithoutJobInput[]
+    upsert?: CompletedStudentImportRowUpsertWithWhereUniqueWithoutJobInput | CompletedStudentImportRowUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: CompletedStudentImportRowCreateManyJobInputEnvelope
+    set?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    disconnect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    delete?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    connect?: CompletedStudentImportRowWhereUniqueInput | CompletedStudentImportRowWhereUniqueInput[]
+    update?: CompletedStudentImportRowUpdateWithWhereUniqueWithoutJobInput | CompletedStudentImportRowUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: CompletedStudentImportRowUpdateManyWithWhereWithoutJobInput | CompletedStudentImportRowUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: CompletedStudentImportRowScalarWhereInput | CompletedStudentImportRowScalarWhereInput[]
+  }
+
+  export type CompletedStudentImportJobCreateNestedOneWithoutRowsInput = {
+    create?: XOR<CompletedStudentImportJobCreateWithoutRowsInput, CompletedStudentImportJobUncheckedCreateWithoutRowsInput>
+    connectOrCreate?: CompletedStudentImportJobCreateOrConnectWithoutRowsInput
+    connect?: CompletedStudentImportJobWhereUniqueInput
+  }
+
+  export type CompletedStudentImportJobUpdateOneRequiredWithoutRowsNestedInput = {
+    create?: XOR<CompletedStudentImportJobCreateWithoutRowsInput, CompletedStudentImportJobUncheckedCreateWithoutRowsInput>
+    connectOrCreate?: CompletedStudentImportJobCreateOrConnectWithoutRowsInput
+    upsert?: CompletedStudentImportJobUpsertWithoutRowsInput
+    connect?: CompletedStudentImportJobWhereUniqueInput
+    update?: XOR<XOR<CompletedStudentImportJobUpdateToOneWithWhereWithoutRowsInput, CompletedStudentImportJobUpdateWithoutRowsInput>, CompletedStudentImportJobUncheckedUpdateWithoutRowsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -197585,6 +201064,186 @@ export namespace Prisma {
     discontinuationRequests?: StudentDiscontinuationRequestUncheckedUpdateManyWithoutBranchStudentNestedInput
   }
 
+  export type CompletedStudentImportRowCreateWithoutJobInput = {
+    id?: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportRowUncheckedCreateWithoutJobInput = {
+    id?: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportRowCreateOrConnectWithoutJobInput = {
+    where: CompletedStudentImportRowWhereUniqueInput
+    create: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput>
+  }
+
+  export type CompletedStudentImportRowCreateManyJobInputEnvelope = {
+    data: CompletedStudentImportRowCreateManyJobInput | CompletedStudentImportRowCreateManyJobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CompletedStudentImportRowUpsertWithWhereUniqueWithoutJobInput = {
+    where: CompletedStudentImportRowWhereUniqueInput
+    update: XOR<CompletedStudentImportRowUpdateWithoutJobInput, CompletedStudentImportRowUncheckedUpdateWithoutJobInput>
+    create: XOR<CompletedStudentImportRowCreateWithoutJobInput, CompletedStudentImportRowUncheckedCreateWithoutJobInput>
+  }
+
+  export type CompletedStudentImportRowUpdateWithWhereUniqueWithoutJobInput = {
+    where: CompletedStudentImportRowWhereUniqueInput
+    data: XOR<CompletedStudentImportRowUpdateWithoutJobInput, CompletedStudentImportRowUncheckedUpdateWithoutJobInput>
+  }
+
+  export type CompletedStudentImportRowUpdateManyWithWhereWithoutJobInput = {
+    where: CompletedStudentImportRowScalarWhereInput
+    data: XOR<CompletedStudentImportRowUpdateManyMutationInput, CompletedStudentImportRowUncheckedUpdateManyWithoutJobInput>
+  }
+
+  export type CompletedStudentImportRowScalarWhereInput = {
+    AND?: CompletedStudentImportRowScalarWhereInput | CompletedStudentImportRowScalarWhereInput[]
+    OR?: CompletedStudentImportRowScalarWhereInput[]
+    NOT?: CompletedStudentImportRowScalarWhereInput | CompletedStudentImportRowScalarWhereInput[]
+    id?: StringFilter<"CompletedStudentImportRow"> | string
+    jobId?: StringFilter<"CompletedStudentImportRow"> | string
+    rowNumber?: IntFilter<"CompletedStudentImportRow"> | number
+    data?: JsonFilter<"CompletedStudentImportRow">
+    status?: StringFilter<"CompletedStudentImportRow"> | string
+    errors?: JsonNullableFilter<"CompletedStudentImportRow">
+    warnings?: JsonNullableFilter<"CompletedStudentImportRow">
+    attempts?: IntFilter<"CompletedStudentImportRow"> | number
+    importedId?: StringNullableFilter<"CompletedStudentImportRow"> | string | null
+    processedAt?: DateTimeNullableFilter<"CompletedStudentImportRow"> | Date | string | null
+    createdAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+    updatedAt?: DateTimeFilter<"CompletedStudentImportRow"> | Date | string
+  }
+
+  export type CompletedStudentImportJobCreateWithoutRowsInput = {
+    id?: string
+    uploadId: string
+    branchId: string
+    createdBy?: string | null
+    fileName?: string | null
+    fileHash?: string | null
+    status?: string
+    totalRows?: number
+    readyRows?: number
+    processedRows?: number
+    importedRows?: number
+    failedRows?: number
+    skippedRows?: number
+    batchSize?: number
+    allowMissingContact?: boolean
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportJobUncheckedCreateWithoutRowsInput = {
+    id?: string
+    uploadId: string
+    branchId: string
+    createdBy?: string | null
+    fileName?: string | null
+    fileHash?: string | null
+    status?: string
+    totalRows?: number
+    readyRows?: number
+    processedRows?: number
+    importedRows?: number
+    failedRows?: number
+    skippedRows?: number
+    batchSize?: number
+    allowMissingContact?: boolean
+    errorMessage?: string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportJobCreateOrConnectWithoutRowsInput = {
+    where: CompletedStudentImportJobWhereUniqueInput
+    create: XOR<CompletedStudentImportJobCreateWithoutRowsInput, CompletedStudentImportJobUncheckedCreateWithoutRowsInput>
+  }
+
+  export type CompletedStudentImportJobUpsertWithoutRowsInput = {
+    update: XOR<CompletedStudentImportJobUpdateWithoutRowsInput, CompletedStudentImportJobUncheckedUpdateWithoutRowsInput>
+    create: XOR<CompletedStudentImportJobCreateWithoutRowsInput, CompletedStudentImportJobUncheckedCreateWithoutRowsInput>
+    where?: CompletedStudentImportJobWhereInput
+  }
+
+  export type CompletedStudentImportJobUpdateToOneWithWhereWithoutRowsInput = {
+    where?: CompletedStudentImportJobWhereInput
+    data: XOR<CompletedStudentImportJobUpdateWithoutRowsInput, CompletedStudentImportJobUncheckedUpdateWithoutRowsInput>
+  }
+
+  export type CompletedStudentImportJobUpdateWithoutRowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportJobUncheckedUpdateWithoutRowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uploadId?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    fileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileHash?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalRows?: IntFieldUpdateOperationsInput | number
+    readyRows?: IntFieldUpdateOperationsInput | number
+    processedRows?: IntFieldUpdateOperationsInput | number
+    importedRows?: IntFieldUpdateOperationsInput | number
+    failedRows?: IntFieldUpdateOperationsInput | number
+    skippedRows?: IntFieldUpdateOperationsInput | number
+    batchSize?: IntFieldUpdateOperationsInput | number
+    allowMissingContact?: BoolFieldUpdateOperationsInput | boolean
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BatchFacultyAssignmentCreateManyFacultyInput = {
     id?: string
     batchId: string
@@ -208707,6 +212366,62 @@ export namespace Prisma {
     scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
     reportData?: JsonNullValueInput | InputJsonValue
     submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowCreateManyJobInput = {
+    id?: string
+    rowNumber: number
+    data: JsonNullValueInput | InputJsonValue
+    status?: string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: number
+    importedId?: string | null
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompletedStudentImportRowUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowUncheckedUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompletedStudentImportRowUncheckedUpdateManyWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowNumber?: IntFieldUpdateOperationsInput | number
+    data?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    errors?: NullableJsonNullValueInput | InputJsonValue
+    warnings?: NullableJsonNullValueInput | InputJsonValue
+    attempts?: IntFieldUpdateOperationsInput | number
+    importedId?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

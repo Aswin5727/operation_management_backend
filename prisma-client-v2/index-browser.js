@@ -1679,6 +1679,44 @@ exports.Prisma.BranchCourseImportReceiptScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CompletedStudentImportJobScalarFieldEnum = {
+  id: 'id',
+  uploadId: 'uploadId',
+  branchId: 'branchId',
+  createdBy: 'createdBy',
+  fileName: 'fileName',
+  fileHash: 'fileHash',
+  status: 'status',
+  totalRows: 'totalRows',
+  readyRows: 'readyRows',
+  processedRows: 'processedRows',
+  importedRows: 'importedRows',
+  failedRows: 'failedRows',
+  skippedRows: 'skippedRows',
+  batchSize: 'batchSize',
+  allowMissingContact: 'allowMissingContact',
+  errorMessage: 'errorMessage',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompletedStudentImportRowScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  rowNumber: 'rowNumber',
+  data: 'data',
+  status: 'status',
+  errors: 'errors',
+  warnings: 'warnings',
+  attempts: 'attempts',
+  importedId: 'importedId',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1963,7 +2001,9 @@ exports.Prisma.ModelName = {
   AcademicTestReportSubmission: 'AcademicTestReportSubmission',
   BranchStudentPayment: 'BranchStudentPayment',
   BranchStudentLedgerEntry: 'BranchStudentLedgerEntry',
-  BranchCourseImportReceipt: 'BranchCourseImportReceipt'
+  BranchCourseImportReceipt: 'BranchCourseImportReceipt',
+  CompletedStudentImportJob: 'CompletedStudentImportJob',
+  CompletedStudentImportRow: 'CompletedStudentImportRow'
 };
 
 /**
