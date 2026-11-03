@@ -134072,6 +134072,7 @@ export namespace Prisma {
   export type CompletedStudentImportJobWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     uploadId?: string
+    branchId_fileHash?: CompletedStudentImportJobBranchIdFileHashCompoundUniqueInput
     AND?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
     OR?: CompletedStudentImportJobWhereInput[]
     NOT?: CompletedStudentImportJobWhereInput | CompletedStudentImportJobWhereInput[]
@@ -134094,7 +134095,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
     updatedAt?: DateTimeFilter<"CompletedStudentImportJob"> | Date | string
     rows?: CompletedStudentImportRowListRelationFilter
-  }, "id" | "uploadId">
+  }, "id" | "uploadId" | "branchId_fileHash">
 
   export type CompletedStudentImportJobOrderByWithAggregationInput = {
     id?: SortOrder
@@ -152939,6 +152940,11 @@ export namespace Prisma {
 
   export type CompletedStudentImportRowOrderByRelationAggregateInput = {
     _count?: SortOrder
+  }
+
+  export type CompletedStudentImportJobBranchIdFileHashCompoundUniqueInput = {
+    branchId: string
+    fileHash: string
   }
 
   export type CompletedStudentImportJobCountOrderByAggregateInput = {

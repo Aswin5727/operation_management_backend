@@ -1826,6 +1826,20 @@ async function notifyProgressAlignment(studentRecord, branchProfile, actor) {
     return;
   }
 
+  // Completed-student Excel imports are historical records. Their 100% course
+  // progress and imported payment data must not create live payment-progress
+  // notifications when the record is edited or a payment is added later.
+  const hasImportedCompletedCourse = Array.isArray(studentRecord.courseEnrollments)
+    && studentRecord.courseEnrollments.some((enrollment) => (
+      ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase())
+    ));
+  const hasImportedAcademicRecord = studentRecord.importedAcademicResults
+    && typeof studentRecord.importedAcademicResults === "object"
+    && !Array.isArray(studentRecord.importedAcademicResults);
+  if (hasImportedCompletedCourse || hasImportedAcademicRecord) {
+    return;
+  }
+
   const courseProgress = Number(studentRecord.courseProgress);
   if (!Number.isFinite(courseProgress)) {
     return;
@@ -2391,7 +2405,8 @@ function buildBranchStudentOrderBy(sortBy, sortOrder) {
 function toBranchStudentSummary(record) {
   const isDiscontinued = Array.isArray(record.discontinuationRequests) && record.discontinuationRequests.some((request) => request?.status === "APPROVED");
   const isCompletedStudentImport = Array.isArray(record.courseEnrollments)
-    && record.courseEnrollments.some((enrollment) => ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()));
+    && record.courseEnrollments.some((enrollment) => ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()))
+    || Boolean(record.importedAcademicResults && typeof record.importedAcademicResults === "object" && !Array.isArray(record.importedAcademicResults));
   return {
     id: record.id,
     branchId: record.branchId,
@@ -2436,6 +2451,7 @@ function toBranchStudentSummary(record) {
     courseCompletionByCourse: record.courseCompletionByCourse || {},
     courseCompletedAt: record.courseCompletedAt || null,
     isCompletedStudentImport,
+    importedAcademicResults: record.importedAcademicResults || null,
     courseId: record.courseId,
     enrollmentType: record.enrollmentType || 'SINGLE',
     arrangementType: record.arrangementType || record.enrollmentType || 'SINGLE',
@@ -2673,7 +2689,10 @@ export async function listBranchStudents(query = {}, actor = null) {
   ];
   const currentMonth = getCurrentMonthDateRange();
 
-  const [total, rows] = await prisma.$transaction([
+  // These are independent read-only queries. Running them in an interactive
+  // transaction makes large student pages hit Prisma's default 5s transaction
+  // timeout and return P2028 under production-sized data.
+  const [total, rows] = await Promise.all([
     prisma.branchStudent.count({ where }),
     prisma.branchStudent.findMany({
       where,
@@ -2701,6 +2720,7 @@ export async function listBranchStudents(query = {}, actor = null) {
           courseId: true,
           courseName: true,
           courseProgress: true,
+          importedAcademicResults: true,
           courseAmount: true,
           arrangementType: true,
           enrollmentType: true,
@@ -2996,7 +3016,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
   const lifecycleWhere = {
     ...(branchId ? { branchId } : {}),
     ...(lifecycle === "DISCONTINUED"
-      ? { OR: [{ discontinuationRequests: { some: { status: "APPROVED" } } }, { courseEnrollments: { some: { importedLifecycleStatus: "DISCONTINUED" } } }] }
+      ? { OR: [{ discontinuationRequests: { some: { status: "APPROVED" } } }, { courseEnrollments: { some: { importedLifecycleStatus: "DISCONTINUED" } } }, { importedAcademicResults: { path: ["__importedLifecycleStatus"], equals: "DISCONTINUED" } }] }
       : {}),
     ...(requestedStudentId ? { AND: [{ OR: [{ studentId: requestedStudentId }, { id: requestedStudentId }] }] } : {}),
   }
@@ -3033,7 +3053,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
     const enrollments = student.courseEnrollments.length ? student.courseEnrollments : [{
       id: null, courseId: student.courseId, courseName: student.courseName, facultyName: student.facultyName, batchId: student.batchId, batchName: student.batchName,
       batchTiming: student.batchTiming, scheduleType: student.classSchedule, mode: student.courseMode, startDate: student.courseStartDate, endDate: student.courseEndDate,
-      courseProgress: student.courseProgress, courseCompletedAt: student.courseCompletedAt, importedAcademicResults: student.importedAcademicResults, totalCourseAmount: student.courseAmount, finalCourseAmount: student.courseAmount, status: student.recordStatus, course: student.course,
+      courseProgress: student.courseProgress, courseCompletedAt: student.courseCompletedAt, importedAcademicResults: student.importedAcademicResults, importedLifecycleStatus: student.importedAcademicResults?.__importedLifecycleStatus || null, totalCourseAmount: student.courseAmount, finalCourseAmount: student.courseAmount, status: student.recordStatus, course: student.course,
     }]
     const courseAmounts = enrollments.map((item) => Math.max(Number(item.finalCourseAmount ?? item.totalCourseAmount ?? item.courseAmount ?? item.course?.afterDiscount ?? student.courseAmount ?? 0), 0))
     const paidByCourse = courseAmounts.map(() => 0)
@@ -3124,13 +3144,16 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         ...facultyProgressValues,
       ))
       if (lifecycle === "COMPLETED" && (isDiscontinued || (!isImportedCompleted && effectiveCourseProgress < 100))) continue
-      const academicProgress = lifecycle === "COMPLETED" && !enrollment.courseCompletedAt && !isImportedCompleted
+      // A persisted courseCompletedAt is only a timestamp; it must not by
+      // itself move a student into the Completed Students view. Normal
+      // enrollments must pass the same academic completion rules used by the
+      // active students listing. Historical imported completed rows remain
+      // explicitly completed through importedLifecycleStatus.
+      const academicProgress = lifecycle === "COMPLETED" && !isImportedCompleted
         ? await getAcademicTestProgressForStudent({ ...student, courseId: enrollment.courseId, batchId: enrollment.batchId || student.batchId, courseProgress: effectiveCourseProgress })
         : null
       const completionStatus = lifecycle === "COMPLETED"
-        ? (isImportedCompleted || enrollment.courseCompletedAt
-          ? "COMPLETED"
-          : courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress))
+        ? (isImportedCompleted ? "COMPLETED" : courseCompletionFromProgressAndTests(effectiveCourseProgress, academicProgress))
         : "DISCONTINUED"
       if (lifecycle === "COMPLETED" && completionStatus !== "COMPLETED") continue
       const attendance = student.calendarAttendanceRecords.filter((item) => !item.courseId || item.courseId === enrollment.courseId)
@@ -3155,7 +3178,7 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
         paidAmount, pendingAmount: Math.max(totalFees - paidAmount, 0), paymentMode: student.payments.length === 1 ? student.payments[0].paymentMode : student.payments.length > 1 ? "Multiple" : null, receiptNumber: student.payments.length === 1 ? student.payments[0].receiptNumber : null,
         studentStatus: isDiscontinued ? "Discontinued" : completionStatus, lifecycleStatus: isDiscontinued ? "DISCONTINUED" : completionStatus, courseProgress: effectiveCourseProgress, courseCompletedAt: enrollment.courseCompletedAt || null, remarks: request?.reason || student.remarks || null,
         paidInstallments: (student.installments || []).map((installment) => { const number = Number(installment.installmentNumber || 0); const payment = (student.payments || []).find((item) => new RegExp(`installment\\s*${number}\\b`, "i").test(String(item.payAgainst || ""))); return { number, amount: installment.amount, paymentMode: payment?.paymentMode || installment.paymentMethod || "N/A", receiptNumber: payment?.receiptNumber || "N/A" }; }),
-        academicTests: [...academicTests, ...Object.entries(enrollment.importedAcademicResults || student.importedAcademicResults || {}).filter(([, value]) => value !== null && value !== undefined && value !== "").map(([field, value]) => ({ label: field === "academicProject" ? "Academic Project" : `Assessment-${String(field.replace("assessment", "")).padStart(2, "0")}`, value: `${value}%` }))], academicTestProgress: academicProgress, discontinuationRequestId: request?.id || null,
+        academicTests: [...academicTests, ...Object.entries(enrollment.importedAcademicResults || student.importedAcademicResults || {}).filter(([field, value]) => !field.startsWith("__") && value !== null && value !== undefined && value !== "").map(([field, value]) => ({ label: field === "academicProject" ? "Academic Project" : `Assessment-${String(field.replace("assessment", "")).padStart(2, "0")}`, value: `${value}%` }))], academicTestProgress: academicProgress, discontinuationRequestId: request?.id || null,
       })
     }
     return studentRecords
@@ -4179,6 +4202,9 @@ export async function createBranchStudentPayment(studentId, payload, actor = nul
               },
             },
           },
+        },
+        courseEnrollments: {
+          select: { importedLifecycleStatus: true },
         },
       },
     });
