@@ -126142,7 +126142,7 @@ export namespace Prisma {
 
   export type BranchStudentAttendanceWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    branchStudentId_attendanceDate_courseId?: BranchStudentAttendanceBranchStudentIdAttendanceDateCourseIdCompoundUniqueInput
+    branchStudentId_attendanceDate_courseId_batchId?: BranchStudentAttendanceBranchStudentIdAttendanceDateCourseIdBatchIdCompoundUniqueInput
     AND?: BranchStudentAttendanceWhereInput | BranchStudentAttendanceWhereInput[]
     OR?: BranchStudentAttendanceWhereInput[]
     NOT?: BranchStudentAttendanceWhereInput | BranchStudentAttendanceWhereInput[]
@@ -126163,7 +126163,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BranchStudentAttendance"> | Date | string
     branchStudent?: XOR<BranchStudentScalarRelationFilter, BranchStudentWhereInput>
     facultyUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }, "id" | "branchStudentId_attendanceDate_courseId">
+  }, "id" | "branchStudentId_attendanceDate_courseId_batchId">
 
   export type BranchStudentAttendanceOrderByWithAggregationInput = {
     id?: SortOrder
@@ -146549,10 +146549,11 @@ export namespace Prisma {
     not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
   }
 
-  export type BranchStudentAttendanceBranchStudentIdAttendanceDateCourseIdCompoundUniqueInput = {
+  export type BranchStudentAttendanceBranchStudentIdAttendanceDateCourseIdBatchIdCompoundUniqueInput = {
     branchStudentId: string
     attendanceDate: string
     courseId: string
+    batchId: string
   }
 
   export type BranchStudentAttendanceCountOrderByAggregateInput = {
