@@ -2689,7 +2689,10 @@ export async function listBranchStudents(query = {}, actor = null) {
   ];
   const currentMonth = getCurrentMonthDateRange();
 
-  const [total, rows] = await prisma.$transaction([
+  // These are independent read-only queries. Running them in an interactive
+  // transaction makes large student pages hit Prisma's default 5s transaction
+  // timeout and return P2028 under production-sized data.
+  const [total, rows] = await Promise.all([
     prisma.branchStudent.count({ where }),
     prisma.branchStudent.findMany({
       where,
