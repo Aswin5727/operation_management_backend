@@ -3067,6 +3067,22 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
     },
   })
 
+  // Completed-student uploads are row-based historical reports. A row whose
+  // course is not present in the branch catalog cannot create a
+  // BranchStudentCourse enrollment, so relying only on persisted enrollments
+  // silently collapses multiple uploaded rows into one student. Keep the
+  // imported rows available as the source of truth for the lifecycle view.
+  const importedRows = await prisma.completedStudentImportRow.findMany({
+    where: {
+      status: "IMPORTED",
+      job: {
+        branchId,
+      },
+    },
+    orderBy: [{ job: { createdAt: "desc" } }, { rowNumber: "asc" }],
+    select: { id: true, rowNumber: true, data: true, importedId: true, job: { select: { createdAt: true } } },
+  })
+
   const records = (await mapWithConcurrency(students, 3, async (student) => {
     const studentRecords = []
     const enrollments = student.courseEnrollments.length ? student.courseEnrollments : [{
@@ -3216,9 +3232,66 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
     }
     return studentRecords
   })).flat()
+  const importedLifecycleRecords = importedRows.flatMap((row) => {
+    const data = row.data && typeof row.data === "object" && !Array.isArray(row.data) ? row.data : {}
+    const status = String(data.studentStatus || "").trim().toLowerCase().replace(/[\s_-]+/g, "")
+    const rowLifecycle = status.includes("discontinued") ? "DISCONTINUED" : "COMPLETED"
+    if (rowLifecycle !== lifecycle) return []
+    const student = students.find((item) => String(item.studentId || "").trim() === String(data.studentId || row.importedId || "").trim())
+    const courseName = String(data.course || student?.courseName || "").trim()
+    if (!courseName) return []
+    return [{
+      recordId: `import:${row.id}`,
+      createdAt: row.job?.createdAt || student?.createdAt || null,
+      updatedAt: row.job?.createdAt || student?.updatedAt || null,
+      branchId: student?.branchId || branchId,
+      branchName: student?.branch?.branchName,
+      branchAdminName: student?.branch?.branchAdminName,
+      studentId: String(data.studentId || row.importedId || student?.studentId || "").trim(),
+      studentName: data.studentName || student?.studentName,
+      parentName: data.parentGuardian || student?.parentName,
+      parentSpouseNumber: data.parentSpouseNumber || student?.parentSpouseNumber,
+      mobileNumber: data.contactNumber || student?.mobileNumber,
+      emailAddress: data.emailId || student?.emailAddress,
+      qualification: data.qualification || student?.qualification,
+      educationLevel: data.educationLevel || student?.educationLevel,
+      educationStatus: data.educationStatus || student?.educationStatus,
+      passedOutYear: data.passedOutYear || student?.passedOutYear,
+      designation: data.designation || student?.designation,
+      companyName: data.companyName || student?.companyName,
+      source: data.databaseSource || data.source || student?.source || null,
+      courseId: null,
+      courseName,
+      courseStartDate: data.courseStartingDate || student?.courseStartDate || null,
+      courseEndDate: data.courseEndingDate || student?.courseEndDate || null,
+      batchName: data.batchName || student?.batchName,
+      facultyName: data.facultyName || student?.facultyName,
+      attendancePercentage: data.attendance ?? null,
+      courseFees: data.courseFees || data.totalFees || student?.courseAmount || null,
+      totalFees: data.totalFees || data.courseFees || student?.courseAmount || 0,
+      paidAmount: 0,
+      pendingAmount: Number(data.totalFees || data.courseFees || student?.courseAmount || 0),
+      studentStatus: rowLifecycle === "DISCONTINUED" ? "Discontinued" : "COMPLETED",
+      lifecycleStatus: rowLifecycle,
+      courseProgress: 100,
+      courseCompletedAt: data.courseEndingDate || null,
+      remarks: data.remarks || student?.remarks || null,
+      importedAcademicResults: data,
+      isCompletedStudentImport: true,
+    }]
+  })
+  const existingLifecycleKeys = new Set(records.map((row) => `${String(row.studentId || "").trim().toLowerCase()}::${String(row.courseName || "").trim().toLowerCase()}`))
+  const mergedLifecycleRecords = [...records]
+  importedLifecycleRecords.forEach((row) => {
+    const key = `${String(row.studentId || "").trim().toLowerCase()}::${String(row.courseName || "").trim().toLowerCase()}`
+    if (!existingLifecycleKeys.has(key)) {
+      existingLifecycleKeys.add(key)
+      mergedLifecycleRecords.push(row)
+    }
+  })
   const courseFilteredRecords = requestedCourseId
-    ? records.filter((row) => String(row.courseId || '').trim() === requestedCourseId)
-    : records
+    ? mergedLifecycleRecords.filter((row) => String(row.courseId || '').trim() === requestedCourseId)
+    : mergedLifecycleRecords
   const filtered = courseFilteredRecords.filter((row) => lifecycleSearchMatch(row, query.search))
   const sortBy = ['createdAt', 'studentName', 'courseName', 'courseStartDate', 'courseEndDate'].includes(normalizeString(query.sortBy)) ? normalizeString(query.sortBy) : 'createdAt'
   const sortOrder = normalizeString(query.sortOrder).toLowerCase() === 'asc' ? 1 : -1
