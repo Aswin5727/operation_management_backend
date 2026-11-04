@@ -2419,7 +2419,7 @@ model CompletedStudentImportJob {
   updatedAt            DateTime                     @updatedAt
   rows                 CompletedStudentImportRow[]
 
-  @@unique([branchId, fileHash], map: "CompletedStudentImportJob_branch_fileHash_key")
+  @@index([branchId, fileHash])
   @@index([branchId, status])
   @@index([status, updatedAt])
 }

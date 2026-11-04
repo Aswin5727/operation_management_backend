@@ -32,6 +32,7 @@ export async function cancelCompletedStudentImportJob({ jobId, user }) {
     where: { id: job.id, branchId, status: { in: ["PENDING", "RUNNING"] } },
     data: {
       status: "CANCELLED",
+      startedAt: null,
       completedAt: new Date(),
       errorMessage: "Import cancelled by the branch admin.",
     },

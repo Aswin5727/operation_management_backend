@@ -3119,7 +3119,21 @@ export async function listBranchStudentLifecycle(query = {}, actor = null) {
       const request = student.discontinuationRequests.find((item) => item.courseId === enrollment.courseId)
         || student.discontinuationRequests.find((item) => !item.courseId)
         || (student.discontinuationRequests.length && enrollments.length === 1 ? student.discontinuationRequests[0] : null)
-      const importedLifecycleStatus = String(enrollment.importedLifecycleStatus || "").toUpperCase()
+      const importedAcademicResults = enrollment.importedAcademicResults || student.importedAcademicResults
+      const explicitImportedLifecycleStatus = String(enrollment.importedLifecycleStatus || importedAcademicResults?.__importedLifecycleStatus || "").trim().toUpperCase()
+      // Older completed-student imports were persisted with their academic
+      // snapshot and 100% completion fields, but before the lifecycle marker
+      // was added. Treat that shape as an imported completed record so it is
+      // visible in the same branch's Completed Students view. Normal student
+      // records do not populate importedAcademicResults, so this fallback does
+      // not change the regular academic-completion rules.
+      const hasLegacyImportedCompletion = !explicitImportedLifecycleStatus
+        && importedAcademicResults
+        && typeof importedAcademicResults === "object"
+        && !Array.isArray(importedAcademicResults)
+        && Number(enrollment.courseProgress ?? student.courseProgress) >= 100
+        && Boolean(enrollment.courseCompletedAt || student.courseCompletedAt || enrollment.endDate || student.courseEndDate)
+      const importedLifecycleStatus = explicitImportedLifecycleStatus || (hasLegacyImportedCompletion ? "COMPLETED" : "")
       const isImportedCompleted = importedLifecycleStatus === "COMPLETED"
       const isDiscontinued = Boolean(request) || importedLifecycleStatus === "DISCONTINUED"
       if (lifecycle === "DISCONTINUED" && !isDiscontinued) continue
