@@ -119,6 +119,11 @@ const config = {
   seedDefaultPassword: process.env.SEED_DEFAULT_PASSWORD || "ChangeMe123!",
   motivationMailThresholds: parseMotivationMailThresholds(process.env.MOTIVATION_MAIL_THRESHOLDS),
   motivationMailSweepIntervalMs: toNumber(process.env.MOTIVATION_MAIL_SWEEP_INTERVAL_MS, 24 * 60 * 60 * 1000),
+  // Admission creation includes enrollment, fee allocation, ledger, and
+  // notification writes in one atomic transaction. Keep this configurable so
+  // a busier database does not expire the admission halfway through.
+  admissionTransactionTimeoutMs: toNumber(process.env.ADMISSION_TRANSACTION_TIMEOUT_MS, 120000),
+  admissionTransactionMaxWaitMs: toNumber(process.env.ADMISSION_TRANSACTION_MAX_WAIT_MS, 30000),
 };
 
 export default config;

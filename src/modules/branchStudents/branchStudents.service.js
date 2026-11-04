@@ -3687,7 +3687,10 @@ export async function createBranchStudent(payload, actor) {
         }
 
         return createdStudent;
-      }, { maxWait: 10000, timeout: 20000 });
+      }, {
+        maxWait: config.admissionTransactionMaxWaitMs,
+        timeout: config.admissionTransactionTimeoutMs,
+      });
       break;
     } catch (error) {
       const isStudentCodeConflict =
