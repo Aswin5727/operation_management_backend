@@ -54,6 +54,32 @@ function matchPaymentPlanTemplates(templates, value) {
     ? String(plan.planType || "").toUpperCase() === alias.planType
     : Number(plan.installmentCount) === alias.installmentCount);
 }
+
+// Course imports should expose every active, branch-level payment template to
+// the imported course. The workbook may still contain explicit plan rows; those
+// rows win, while the remaining active templates are appended below. Keep the
+// merge stable and deduplicate by both template id and display name so the
+// student payment-plan dropdown never shows the same plan twice.
+function mergeActiveBranchPaymentPlans(course, templates) {
+  const plans = Array.isArray(course?.data?.paymentPlans) ? course.data.paymentPlans : [];
+  const merged = [];
+  const seenIds = new Set();
+  const seenNames = new Set();
+
+  const add = (plan) => {
+    const templateId = textKey(plan?.templateId || plan?.id);
+    const templateName = textKey(plan?.templateName || plan?.planName);
+    if (!templateId && !templateName) return;
+    if ((templateId && seenIds.has(templateId)) || (templateName && seenNames.has(templateName))) return;
+    if (templateId) seenIds.add(templateId);
+    if (templateName) seenNames.add(templateName);
+    merged.push({ ...plan, templateId: plan.templateId || plan.id, type: "template" });
+  };
+
+  plans.forEach(add);
+  (Array.isArray(templates) ? templates : []).forEach(add);
+  course.data.paymentPlans = merged;
+}
 export const workbookHash = (buffer) => createHash("sha256").update(buffer).digest("hex");
 const EDIT_COLUMNS = Object.fromEntries(Object.entries(COURSE_SHEETS).map(([sheet, headers]) => [sheet, new Map(headers.map((header, index) => [header, index + 1]))]));
 function normalizeCourseEdits(input = {}) {
@@ -341,6 +367,7 @@ export async function validateCourseWorkbook(buffer, profile, db = prisma, edits
   const preview = [];
   for (const course of courses) {
     const { data, row } = course;
+    mergeActiveBranchPaymentPlans(course, templates);
     if (!data.modules.length) errorAt(errors, "Course Modules", 0, "Module Name", "Add at least one module for course " + data.courseCode);
     for (const module of data.modules) if (!module.submodules.length) errorAt(errors, "Course Submodules", 0, "Submodule Name", "Add at least one submodule for module \"" + module.name + "\" in course " + data.courseCode);
     if (!data.paymentPlans.length) errorAt(errors, "Payment Plans", 0, "Payment Plan Name", "Add a valid active payment plan for course " + data.courseCode);
