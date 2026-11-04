@@ -2404,6 +2404,20 @@ function buildBranchStudentOrderBy(sortBy, sortOrder) {
 
 function toBranchStudentSummary(record) {
   const isDiscontinued = Array.isArray(record.discontinuationRequests) && record.discontinuationRequests.some((request) => request?.status === "APPROVED");
+  const primaryEnrollment = Array.isArray(record.courseEnrollments)
+    ? record.courseEnrollments.find((enrollment) => String(enrollment?.courseId || "") === String(record.courseId || ""))
+      || record.courseEnrollments[0]
+    : null;
+  const importedLifecycleStatus = String(
+    primaryEnrollment?.importedLifecycleStatus
+      || record.importedAcademicResults?.__importedLifecycleStatus
+      || "",
+  ).trim().toUpperCase();
+  const importedCourseCompletion = importedLifecycleStatus === "DISCONTINUED"
+    ? "Discontinued"
+    : importedLifecycleStatus === "COMPLETED"
+      ? "Completed"
+      : null;
   const isCompletedStudentImport = Array.isArray(record.courseEnrollments)
     && record.courseEnrollments.some((enrollment) => ["COMPLETED", "DISCONTINUED"].includes(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()))
     || Boolean(record.importedAcademicResults && typeof record.importedAcademicResults === "object" && !Array.isArray(record.importedAcademicResults));
@@ -2444,8 +2458,13 @@ function toBranchStudentSummary(record) {
     courseProgress: record.courseProgress,
     courseStatus: courseStatusFromProgress(record.courseProgress),
     paidProgress: record.paidProgress || calculateCoursePaidProgress(record, record.courseId),
-    courseCompletion: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
-    courseCompletionStatus: record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
+    courseCompletion: importedCourseCompletion || record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
+    courseCompletionStatus: importedCourseCompletion || record.courseCompletion || courseCompletionFromProgressAndTests(record.courseProgress, record.academicTestProgress, record.paidProgress || calculateCoursePaidProgress(record, record.courseId)),
+    // Completed-student Excel imports carry their lifecycle explicitly. Keep
+    // that value available to Student Management instead of making the UI
+    // infer it from course progress or academic-test completion.
+    studentStatus: importedCourseCompletion || (isDiscontinued ? "Discontinued" : null),
+    lifecycleStatus: importedLifecycleStatus || (isDiscontinued ? "DISCONTINUED" : null),
     academicTestProgress: record.academicTestProgress || null,
     academicTestProgressByCourse: record.academicTestProgressByCourse || {},
     courseCompletionByCourse: record.courseCompletionByCourse || {},
