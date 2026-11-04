@@ -62,18 +62,40 @@ async function cycleCompletionState(cycle) {
   const reportState = await cycleReportsComplete(cycle);
   if (!reportState.complete) return { eligibleCount: eligible.length, completedCount: 0, complete: false, ...reportState };
   let completedCount = 0;
+  let incompleteStudentCount = 0;
   for (const enrollment of eligible) {
     const student = enrollment.branchStudent;
     const progress = Number(enrollment.courseProgress ?? student.courseProgress ?? 0);
     const academic = await getAcademicTestProgressForStudent({ ...student, batchId: enrollment.batchId || student.batchId, courseId: enrollment.courseId, courseProgress: progress });
-    if (progress >= 100 && Boolean(academic.academicComplete) && Number(academic.pendingTests || 0) === 0 && Number(academic.pendingProjects || 0) === 0 && Number(academic.pendingEvaluations || 0) === 0) completedCount += 1;
+    const studentComplete = progress >= 100
+      && Boolean(academic.academicComplete)
+      && Number(academic.pendingTests || 0) === 0
+      && Number(academic.pendingProjects || 0) === 0
+      && Number(academic.pendingEvaluations || 0) === 0;
+    if (studentComplete) completedCount += 1;
+    else incompleteStudentCount += 1;
   }
-  return { eligibleCount: eligible.length, completedCount, complete: completedCount === eligible.length, ...reportState };
+  // Never complete an intake while even one active student is incomplete.
+  // This explicit guard also prevents a new batch with an incomplete student
+  // from being frozen by the lifecycle scheduler.
+  return {
+    eligibleCount: eligible.length,
+    completedCount,
+    incompleteStudentCount,
+    complete: eligible.length > 0 && incompleteStudentCount === 0 && completedCount === eligible.length,
+    ...reportState,
+  };
 }
 
 async function completeCycle(cycle) {
   const state = await cycleCompletionState(cycle);
-  if (!state.complete || cycle.status !== "ACTIVE") return { cycle, ...state, changed: false };
+  if (
+    !state.complete
+    || state.eligibleCount <= 0
+    || state.incompleteStudentCount > 0
+    || state.completedCount !== state.eligibleCount
+    || cycle.status !== "ACTIVE"
+  ) return { cycle, ...state, changed: false };
   const completedAt = new Date();
   const freezeUntil = new Date(completedAt.getTime() + FREEZE_MS);
   const updated = await prisma.$transaction(async (tx) => {
