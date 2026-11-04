@@ -2,8 +2,27 @@ const COMPLETED_IMPORT_STATUSES = new Set(["COMPLETED", "DISCONTINUED"]);
 
 export function isCompletedStudentImportRecord(student = {}) {
   if (student.isCompletedStudentImport === true || student.completedStudentImport === true) return true;
-  return (Array.isArray(student.courseEnrollments) ? student.courseEnrollments : [])
-    .some((enrollment) => COMPLETED_IMPORT_STATUSES.has(String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase()));
+  const rootLifecycle = student.importedAcademicResults?.__importedLifecycleStatus;
+  if (COMPLETED_IMPORT_STATUSES.has(String(rootLifecycle || "").trim().toUpperCase())) return true;
+  const rootAcademicResults = student.importedAcademicResults;
+  const hasLegacyImportedCompletion = !rootLifecycle
+    && rootAcademicResults
+    && typeof rootAcademicResults === "object"
+    && !Array.isArray(rootAcademicResults)
+    && Number(student.courseProgress) >= 100
+    && Boolean(student.courseCompletedAt || student.courseEndDate);
+  if (hasLegacyImportedCompletion) return true;
+  return (Array.isArray(student.courseEnrollments) ? student.courseEnrollments : []).some((enrollment) => {
+    const lifecycle = String(enrollment?.importedLifecycleStatus || "").trim().toUpperCase();
+    if (COMPLETED_IMPORT_STATUSES.has(lifecycle)) return true;
+    const academicResults = enrollment?.importedAcademicResults || rootAcademicResults;
+    return !lifecycle
+      && academicResults
+      && typeof academicResults === "object"
+      && !Array.isArray(academicResults)
+      && Number(enrollment?.courseProgress ?? student.courseProgress) >= 100
+      && Boolean(enrollment?.courseCompletedAt || student.courseCompletedAt || enrollment?.endDate || student.courseEndDate);
+  });
 }
 
 function isoDate(value) {
