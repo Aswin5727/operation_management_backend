@@ -2,6 +2,9 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
+const BRANCH_ATTENDANCE_OVERVIEW_CACHE_TTL_MS = 15000;
+const branchAttendanceOverviewCache = new Map();
+
 export async function getBranchAttendanceOverview(user, query = {}) {
   const requestedBranchId = String(query.branchId || '').trim();
   let branch;
@@ -24,6 +27,10 @@ export async function getBranchAttendanceOverview(user, query = {}) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date || date > today) {
     throw new AppError("Select a valid date on or before today", 400);
   }
+  const cacheKey = `${branch.id}:${date}`;
+  const cached = branchAttendanceOverviewCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+  if (cached) branchAttendanceOverviewCache.delete(cacheKey);
   const monday = new Date(parsed);
   monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
   const weekStart = monday.toISOString().slice(0, 10);
@@ -52,7 +59,7 @@ export async function getBranchAttendanceOverview(user, query = {}) {
     prisma.branchCalendarLeave.findMany({ where: { status: "ACTIVE", isInstitute: false, branchId: branch.id, leaveDate: { gte: from, lte: date } }, select: { leaveDate: true, batchId: true } }),
   ]);
   const holidayDates = new Set(holidays.map((item) => item.holidayDate));
-  return {
+  const result = {
     branchId: branch.id, date, weekStart, monthStart,
     exclusions: { holidays: [...holidayDates], leaves },
     students: students.map(({ calendarAttendanceRecords, ...student }) => ({
@@ -60,4 +67,9 @@ export async function getBranchAttendanceOverview(user, query = {}) {
       records: calendarAttendanceRecords.filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId))),
     })),
   };
+  branchAttendanceOverviewCache.set(cacheKey, {
+    value: result,
+    expiresAt: Date.now() + BRANCH_ATTENDANCE_OVERVIEW_CACHE_TTL_MS,
+  });
+  return result;
 }
