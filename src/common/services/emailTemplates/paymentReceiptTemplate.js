@@ -7,6 +7,8 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+
+
 function formatAmount(value) {
   const amount = Number(value || 0);
   return Number.isFinite(amount)
