@@ -1,0 +1,1 @@
+ALTER TABLE "FacultySkillTopic" ADD COLUMN IF NOT EXISTS "studyHours" DECIMAL(6,2);

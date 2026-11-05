@@ -1,0 +1,1 @@
+ALTER TABLE "BranchStudent" ADD COLUMN IF NOT EXISTS "courseCompletedAt" TIMESTAMP(3);

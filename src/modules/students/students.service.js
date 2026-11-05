@@ -1,0 +1,1165 @@
+import crypto from "node:crypto";
+
+import prismaClientPackage from "../../../prisma-client-v2/index.js";
+
+const { Prisma } = prismaClientPackage;
+
+import prisma from "../../config/prisma.js";
+import config from "../../config/env.js";
+import AppError from "../../common/errors/AppError.js";
+import { hashPassword } from "../../common/utils/password.js";
+import {
+  sendStudentCredentialsEmail,
+} from "../../common/services/resendEmail.js";
+import { invalidateRevenueSummaryCache } from "../dashboard/dashboard.service.js";
+
+const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
+const CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom", "Student", "Others"]);
+const FORM_CURRENT_STATUSES = new Set(["House Holder", "College Student", "Fresher", "School", "Business", "Employee", "Other", "Custom"]);
+const PURPOSES = new Set(["Project", "Internship", "Learning", "Job / Placement", "Up Skilling", "Career Change", "Certification", "Custom"]);
+const PAYMENT_STATUSES = new Set(["Paid", "Pending"]);
+
+function normalizeString(value) {
+  return String(value ?? "").trim();
+}
+
+function normalizeKey(value) {
+  return normalizeString(value).toLowerCase().replace(/\s+/g, " ");
+}
+
+function capitalize(value) {
+  const text = normalizeString(value);
+  if (!text) return "";
+  return `${text.charAt(0).toUpperCase()}${text.slice(1).toLowerCase()}`;
+}
+
+function displayStatus(value) {
+  switch (value) {
+    case "ACTIVE":
+      return "Active";
+    case "INACTIVE":
+      return "Inactive";
+    default:
+      return value;
+  }
+}
+
+function parsePositiveInt(value, fieldName, { allowZero = false } = {}) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const parsed = Number(value);
+
+  if (!Number.isInteger(parsed)) {
+    throw new AppError(`${fieldName} must be an integer`, 400);
+  }
+
+  if (allowZero) {
+    if (parsed < 0) {
+      throw new AppError(`${fieldName} must be zero or greater`, 400);
+    }
+    return parsed;
+  }
+
+  if (parsed <= 0) {
+    throw new AppError(`${fieldName} must be greater than zero`, 400);
+  }
+
+  return parsed;
+}
+
+function parseOptionalInstallment(value, fieldName) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  return parsePositiveInt(value, fieldName, { allowZero: true });
+}
+
+function parseRequiredText(value, fieldName) {
+  const text = normalizeString(value);
+
+  if (!text) {
+    throw new AppError(`${fieldName} is required`, 400);
+  }
+
+  return text;
+}
+
+function parseOptionalText(value) {
+  const text = normalizeString(value);
+  return text ? text : null;
+}
+
+function parseDateString(value, fieldName) {
+  const text = parseRequiredText(value, fieldName);
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    throw new AppError(`${fieldName} must be in YYYY-MM-DD format`, 400);
+  }
+
+  return text;
+}
+
+function parseCurrentStatus(value) {
+  const text = capitalize(value);
+
+  if (!CURRENT_STATUSES.has(text)) {
+    throw new AppError("Invalid current status", 400);
+  }
+
+  return text;
+}
+
+function parsePaymentStatus(value, fieldName) {
+  const text = capitalize(value);
+
+  if (!PAYMENT_STATUSES.has(text)) {
+    throw new AppError(`Invalid ${fieldName}`, 400);
+  }
+
+  return text;
+}
+
+function parsePage(value) {
+  const parsed = Number(value ?? 1);
+  if (!Number.isInteger(parsed) || parsed < 1) return 1;
+  return parsed;
+}
+
+function parseLimit(value) {
+  const parsed = Number(value ?? 10);
+  if (!Number.isInteger(parsed) || parsed < 1) return 10;
+  return Math.min(parsed, 100);
+}
+
+function parseSortOrder(value, defaultOrder = "desc") {
+  const order = normalizeString(value).toLowerCase();
+
+  if (order === "asc" || order === "desc") {
+    return order;
+  }
+
+  return defaultOrder;
+}
+
+function buildPagination({ page, limit }) {
+  const safePage = parsePage(page);
+  const safeLimit = parseLimit(limit);
+
+  return {
+    page: safePage,
+    limit: safeLimit,
+    skip: (safePage - 1) * safeLimit,
+    take: safeLimit,
+  };
+}
+
+function buildPaginationMeta(total, page, limit) {
+  return {
+    page,
+    limit,
+    total,
+    totalPages: Math.max(1, Math.ceil(total / limit)),
+  };
+}
+
+function getTodayValue() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Calcutta",
+  }).format(new Date());
+}
+
+function addOneMonth(value) {
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const dueDate = new Date(date);
+  dueDate.setMonth(dueDate.getMonth() + 1);
+
+  return dueDate.toISOString().slice(0, 10);
+}
+
+function toStudentSummary(student) {
+  return {
+    id: student.id,
+    studentCode: student.studentCode,
+    studentName: student.studentName,
+    mobileNumber: student.mobileNumber,
+    emailAddress: student.emailAddress,
+    parentSpouseNumber: student.parentSpouseNumber,
+    location: student.location,
+    courseId: student.courseId,
+    courseInterested: student.courseInterested,
+    facultyId: student.facultyId,
+    facultyName: student.facultyName,
+    batchId: student.batchId,
+    batchEntryId: student.batchId,
+    batchName: student.batchName,
+    qualification: student.qualification,
+    passedOutYear: student.passedOutYear,
+    currentStatus: student.currentStatus,
+    customCurrentStatus: student.customCurrentStatus,
+    purpose: student.purpose,
+    customPurpose: student.customPurpose,
+    educationLevel: student.educationLevel,
+    educationStatus: student.educationStatus,
+    designation: student.designation,
+    companyName: student.companyName,
+    source: student.source,
+    actualFees: student.actualFees,
+    registrationFees: student.registrationFees,
+    discount: student.discount,
+    afterDiscount: student.afterDiscount,
+    installment1: student.installment1,
+    installment2: student.installment2,
+    installment3: student.installment3,
+    installment4: student.installment4,
+    totalAmount: student.totalAmount,
+    admissionDate: student.admissionDate,
+    firstInstallmentAmount: student.firstInstallmentAmount,
+    firstInstallmentDate: student.firstInstallmentDate,
+    firstInstallmentStatus: student.firstInstallmentStatus,
+    firstInstallmentPaidAt: student.firstInstallmentPaidAt,
+    secondInstallmentAmount: student.secondInstallmentAmount,
+    secondDueDate: student.secondDueDate,
+    secondInstallmentStatus: student.secondInstallmentStatus,
+    secondInstallmentPaidAt: student.secondInstallmentPaidAt,
+    remarks: student.remarks,
+    status: displayStatus(student.recordStatus),
+    createdBy: student.createdBy,
+    updatedBy: student.updatedBy,
+    createdAt: student.createdAt,
+    updatedAt: student.updatedAt,
+    course: student.course
+      ? {
+          id: student.course.id,
+          name: student.course.name,
+          courseCode: student.course.courseCode,
+          duration: student.course.duration,
+          status: student.course.status,
+          mode: student.course.mode,
+        }
+      : null,
+  };
+}
+
+function toStudentDetail(student) {
+  return toStudentSummary(student);
+}
+
+function buildFacultyReferenceIndex(facultyRecords = []) {
+  const facultyById = new Map()
+  const facultyByName = new Map()
+  const batchById = new Map()
+
+  facultyRecords.forEach((faculty) => {
+    if (!faculty) return
+
+    const facultyId = normalizeString(faculty.id)
+    const facultyName = normalizeKey(faculty.facultyName)
+
+    const batchEntries = Array.isArray(faculty.batchEntries) ? faculty.batchEntries : []
+    const normalizedFaculty = {
+      id: facultyId,
+      facultyName: normalizeString(faculty.facultyName),
+      courseId: normalizeString(faculty.courseId),
+      batchEntries: batchEntries.map((entry) => ({
+        id: normalizeString(entry.id),
+        facultyId: normalizeString(entry.facultyId || facultyId),
+        courseId: normalizeString(entry.courseId || faculty.courseId),
+        batchName: normalizeString(entry.batchName),
+        batchTiming: normalizeString(entry.batchTiming),
+        sequenceNo: Number(entry.sequenceNo || 0) || 0,
+      })),
+    }
+
+    if (facultyId) {
+      facultyById.set(facultyId, normalizedFaculty)
+    }
+
+    if (facultyName) {
+      facultyByName.set(facultyName, normalizedFaculty)
+    }
+
+    normalizedFaculty.batchEntries.forEach((entry) => {
+      if (!entry.id) return
+      batchById.set(entry.id, {
+        ...entry,
+        facultyId: entry.facultyId || facultyId,
+        facultyName: normalizedFaculty.facultyName,
+      })
+    })
+  })
+
+  return {
+    facultyById,
+    facultyByName,
+    batchById,
+  }
+}
+
+function enrichStudentWithFacultyReferences(student, facultyIndex = null) {
+  if (!student || !facultyIndex) return student
+
+  const nextStudent = { ...student }
+  const normalizedFacultyId = normalizeString(nextStudent.facultyId)
+  const normalizedFacultyName = normalizeKey(nextStudent.facultyName)
+  const normalizedBatchId = normalizeString(nextStudent.batchId || nextStudent.batchEntryId)
+  const normalizedBatchName = normalizeString(nextStudent.batchName || nextStudent.batch)
+  const normalizedCourseId = normalizeString(nextStudent.courseId)
+
+  let facultyRecord = null
+
+  if (normalizedFacultyId) {
+    facultyRecord = facultyIndex.facultyById.get(normalizedFacultyId) || null
+  }
+
+  if (!facultyRecord && normalizedFacultyName) {
+    facultyRecord = facultyIndex.facultyByName.get(normalizedFacultyName) || null
+  }
+
+  if (!facultyRecord && normalizedBatchId) {
+    const batchRecord = facultyIndex.batchById.get(normalizedBatchId) || null
+    if (batchRecord?.facultyId) {
+      facultyRecord = facultyIndex.facultyById.get(batchRecord.facultyId) || facultyRecord
+    }
+  }
+
+  if (!facultyRecord && normalizedBatchName && normalizedCourseId) {
+    facultyRecord = Array.from(facultyIndex.facultyById.values()).find((faculty) =>
+      faculty.batchEntries.some((entry) =>
+        normalizeKey(entry.batchName) === normalizeKey(normalizedBatchName) &&
+        normalizeString(entry.courseId) === normalizedCourseId,
+      ),
+    ) || null
+  }
+
+  if (!facultyRecord) return student
+
+  if (!nextStudent.facultyId) {
+    nextStudent.facultyId = facultyRecord.id
+  }
+
+  if (!nextStudent.facultyName) {
+    nextStudent.facultyName = facultyRecord.facultyName
+  }
+
+  const batchRecord =
+    (normalizedBatchId && facultyIndex.batchById.get(normalizedBatchId)) ||
+    facultyRecord.batchEntries.find((entry) => entry.id === normalizedBatchId) ||
+    facultyRecord.batchEntries.find(
+      (entry) =>
+        normalizeKey(entry.batchName) === normalizeKey(normalizedBatchName) &&
+        (!normalizedCourseId || normalizeString(entry.courseId) === normalizedCourseId),
+    ) ||
+    null
+
+  if (batchRecord) {
+    if (!nextStudent.batchId) {
+      nextStudent.batchId = batchRecord.id
+    }
+
+    if (!nextStudent.batchEntryId) {
+      nextStudent.batchEntryId = batchRecord.id
+    }
+
+    if (!nextStudent.batchName) {
+      nextStudent.batchName = batchRecord.batchName
+    }
+
+    if (!nextStudent.batch) {
+      nextStudent.batch = batchRecord.batchName
+    }
+  }
+
+  return nextStudent
+}
+
+async function loadFacultyReferenceIndex() {
+  const facultyRecords = await prisma.facultyProfile.findMany({
+    select: {
+      id: true,
+      facultyName: true,
+      courseId: true,
+      batchEntries: {
+        select: {
+          id: true,
+          facultyId: true,
+          courseId: true,
+          batchName: true,
+          batchTiming: true,
+          sequenceNo: true,
+        },
+      },
+    },
+  })
+
+  return buildFacultyReferenceIndex(facultyRecords)
+}
+
+function buildStudentWhere(query) {
+  const where = {};
+  const search = normalizeString(query.search);
+
+  if (query.status) {
+    const normalized = normalizeString(query.status).toUpperCase();
+    if (!RECORD_STATUSES.has(normalized)) {
+      throw new AppError("Invalid status", 400);
+    }
+    where.recordStatus = normalized;
+  } else {
+    where.recordStatus = "ACTIVE";
+  }
+
+  if (query.courseId) {
+    where.courseId = normalizeString(query.courseId);
+  }
+
+  if (query.facultyId) {
+    where.facultyId = normalizeString(query.facultyId);
+  }
+
+  if (query.batchId) {
+    where.batchId = normalizeString(query.batchId);
+  }
+
+  if (query.currentStatus) {
+    where.currentStatus = parseCurrentStatus(query.currentStatus);
+  }
+
+  if (search) {
+    const conditions = [
+      { studentCode: { contains: search, mode: "insensitive" } },
+      { studentName: { contains: search, mode: "insensitive" } },
+      { mobileNumber: { contains: search, mode: "insensitive" } },
+      { emailAddress: { contains: search, mode: "insensitive" } },
+      { parentSpouseNumber: { contains: search, mode: "insensitive" } },
+      { location: { contains: search, mode: "insensitive" } },
+      { courseInterested: { contains: search, mode: "insensitive" } },
+      { facultyName: { contains: search, mode: "insensitive" } },
+      { batchName: { contains: search, mode: "insensitive" } },
+      { qualification: { contains: search, mode: "insensitive" } },
+      { currentStatus: { contains: search, mode: "insensitive" } },
+      { designation: { contains: search, mode: "insensitive" } },
+      { source: { contains: search, mode: "insensitive" } },
+      { remarks: { contains: search, mode: "insensitive" } },
+    ];
+
+    const numeric = Number(search);
+    if (Number.isInteger(numeric)) {
+      conditions.push(
+        { passedOutYear: numeric },
+        { actualFees: numeric },
+        { registrationFees: numeric },
+        { discount: numeric },
+        { afterDiscount: numeric },
+        { installment1: numeric },
+        { installment2: numeric },
+        { installment3: numeric },
+        { totalAmount: numeric },
+      );
+    }
+
+    where.OR = conditions;
+  }
+
+  return where;
+}
+
+async function buildFacultyScopeWhere(actor) {
+  if (!actor || String(actor.role || "").trim().toUpperCase() !== "FACULTY") {
+    return null;
+  }
+
+  const normalizedEmail = normalizeString(actor.email).toLowerCase();
+  const normalizedName = normalizeString(actor.fullName).toLowerCase();
+
+  if (!normalizedEmail && !normalizedName) {
+    return { id: { in: [] } };
+  }
+
+  const facultyRecord = await prisma.facultyProfile.findFirst({
+    where: {
+      OR: [
+        ...(normalizedEmail ? [{ facultyEmail: { equals: normalizedEmail, mode: "insensitive" } }] : []),
+        ...(normalizedName ? [{ facultyName: { equals: actor.fullName, mode: "insensitive" } }] : []),
+      ],
+    },
+    select: {
+      id: true,
+      facultyName: true,
+      courseId: true,
+      courseAssignments: {
+        select: {
+          courseId: true,
+        },
+      },
+      batchEntries: {
+        select: {
+          id: true,
+          courseId: true,
+          batchName: true,
+        },
+      },
+    },
+  });
+
+  if (!facultyRecord) {
+    return { id: { in: [] } };
+  }
+
+  const courseIds = Array.from(
+    new Set(
+      [
+        facultyRecord.courseId,
+        ...(Array.isArray(facultyRecord.courseAssignments) ? facultyRecord.courseAssignments.map((entry) => entry.courseId) : []),
+        ...(Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries.map((entry) => entry.courseId) : []),
+      ]
+        .map((value) => normalizeString(value))
+        .filter(Boolean),
+    ),
+  );
+
+  const batchIds = Array.from(
+    new Set(
+      (Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries : [])
+        .map((entry) => normalizeString(entry.id))
+        .filter(Boolean),
+    ),
+  );
+
+  const batchNames = Array.from(
+    new Set(
+      (Array.isArray(facultyRecord.batchEntries) ? facultyRecord.batchEntries : [])
+        .map((entry) => normalizeString(entry.batchName))
+        .filter(Boolean),
+    ),
+  );
+
+  const facultyName = normalizeString(facultyRecord.facultyName);
+  const orConditions = [];
+
+  if (facultyRecord.id) {
+    orConditions.push({ facultyId: facultyRecord.id });
+  }
+
+  if (facultyName) {
+    orConditions.push({ facultyName });
+  }
+
+  if (courseIds.length) {
+    orConditions.push({ courseId: { in: courseIds } });
+  }
+
+  if (batchIds.length) {
+    orConditions.push({ batchId: { in: batchIds } });
+  }
+
+  if (batchNames.length) {
+    orConditions.push({ batchName: { in: batchNames } });
+  }
+
+  if (!orConditions.length) {
+    return { id: { in: [] } };
+  }
+
+  return { OR: orConditions };
+}
+
+function normalizeStudentCode() {
+  return `STU-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+}
+
+async function ensureUniqueStudentIdentity({ emailAddress, mobileNumber }, excludeId = null) {
+  const existing = await prisma.studentProfile.findFirst({
+    where: {
+      OR: [{ emailAddress }, { mobileNumber }],
+      ...(excludeId ? { id: { not: excludeId } } : {}),
+    },
+    select: { id: true, emailAddress: true, mobileNumber: true },
+  });
+
+  if (existing) {
+    if (existing.emailAddress === emailAddress) {
+      throw new AppError("Student email already exists", 409);
+    }
+
+    if (existing.mobileNumber === mobileNumber) {
+      throw new AppError("Student mobile number already exists", 409);
+    }
+
+    throw new AppError("Student already exists", 409);
+  }
+}
+
+async function ensureUniqueStudentLogin({ emailAddress, mobileNumber, studentCode = null }) {
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [{ email: emailAddress }, { phone: mobileNumber }, ...(studentCode ? [{ userCode: studentCode }] : [])],
+      ...(studentCode ? { userCode: { not: studentCode } } : {}),
+    },
+    select: {
+      id: true,
+      email: true,
+      phone: true,
+      userCode: true,
+    },
+  });
+
+  if (!user) {
+    return;
+  }
+
+  if (user.email === emailAddress) {
+    throw new AppError("Student email already exists", 409);
+  }
+
+  if (user.phone === mobileNumber) {
+    throw new AppError("Student mobile number already exists", 409);
+  }
+
+  throw new AppError("Duplicate student login account", 409);
+}
+
+function generateTemporaryPassword() {
+  return crypto.randomBytes(9).toString("base64url");
+}
+
+async function findStudentLoginUser(existingStudent) {
+  return prisma.user.findFirst({
+    where: {
+      OR: [
+        { userCode: existingStudent.studentCode },
+        { email: existingStudent.emailAddress },
+      ],
+    },
+  });
+}
+
+async function ensureCourse(courseId, { requireActive = true } = {}) {
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+  });
+
+  if (!course) {
+    throw new AppError("Course not found", 404);
+  }
+
+  if (requireActive && course.status !== "ACTIVE") {
+    throw new AppError("Course is inactive", 409);
+  }
+
+  return course;
+}
+
+function buildStudentPayload(payload, existingStudent = null, course = null) {
+  const candidate = existingStudent ? { ...existingStudent, ...payload } : payload;
+  const studentName = parseRequiredText(candidate.studentName, "Student name");
+  const mobileNumber = parseRequiredText(candidate.mobileNumber, "Mobile number");
+  const emailAddress = parseRequiredText(candidate.emailAddress, "Email address").toLowerCase();
+  const parentSpouseNumber = parseOptionalText(candidate.parentSpouseNumber);
+  const location = parseOptionalText(candidate.location);
+  const facultyName = parseRequiredText(candidate.facultyName, "Faculty name");
+  const facultyId = parseOptionalText(candidate.facultyId);
+  const batchName = parseRequiredText(candidate.batchName || candidate.batch, "Batch");
+  const batchId = parseOptionalText(candidate.batchId || candidate.batchEntryId);
+  const qualification = parseRequiredText(candidate.qualification, "Qualification");
+  const currentStatus = normalizeString(candidate.currentStatus);
+  if (!FORM_CURRENT_STATUSES.has(currentStatus) && !(existingStudent && ["Student", "Others"].includes(currentStatus))) throw new AppError("Invalid current status", 400);
+  const isCollegeStudent = currentStatus === "College Student";
+  const isEmployee = currentStatus === "Employee";
+  const educationLevel = isCollegeStudent ? parseRequiredText(candidate.educationLevel, "Education level") : null;
+  const educationStatus = isCollegeStudent ? parseRequiredText(candidate.educationStatus, "Education status") : null;
+  if (isCollegeStudent && !["UG", "PG"].includes(educationLevel)) throw new AppError("Education level must be UG or PG", 400);
+  if (isCollegeStudent && !["Currently Pursuing", "Passed Out"].includes(educationStatus)) throw new AppError("Education status is invalid", 400);
+  const requiresPassedOutYear = currentStatus === "Fresher" || (isCollegeStudent && educationStatus === "Passed Out");
+  const passedOutYear = candidate.passedOutYear === undefined || candidate.passedOutYear === null || candidate.passedOutYear === ""
+    ? null
+    : parsePositiveInt(candidate.passedOutYear, "Passed out year");
+  if (requiresPassedOutYear && !passedOutYear) throw new AppError("Passed out year is required", 400);
+  const customCurrentStatus = currentStatus === "Custom" ? parseRequiredText(candidate.customCurrentStatus, "Custom current status") : null;
+  const purpose = parseOptionalText(candidate.purpose);
+  if (purpose && !PURPOSES.has(purpose)) throw new AppError("Invalid purpose", 400);
+  const customPurpose = purpose === "Custom" ? parseRequiredText(candidate.customPurpose, "Custom purpose") : null;
+  const designation = isEmployee ? parseRequiredText(candidate.designation, "Designation") : null;
+  const companyName = isEmployee ? parseRequiredText(candidate.companyName, "Company name") : null;
+  const source = parseRequiredText(candidate.source, "Source");
+  const admissionDate = parseDateString(candidate.admissionDate, "Admission date");
+  const remarks = parseOptionalText(candidate.remarks);
+
+  if (!/^\d{10}$/.test(mobileNumber)) {
+    throw new AppError("Mobile number must be a 10-digit number", 400);
+  }
+
+  if (!/^\d{10}$/.test(parentSpouseNumber || "")) {
+    throw new AppError("Parent / spouse number must be a 10-digit number", 400);
+  }
+
+  if (remarks && remarks.length < 5) {
+    throw new AppError("Remarks must be at least 5 characters long", 400);
+  }
+
+  const resolvedCourseId = normalizeString(candidate.courseId || existingStudent?.courseId);
+  if (!resolvedCourseId) {
+    throw new AppError("Course is required", 400);
+  }
+
+  const resolvedCourse = course || null;
+  const hasStudentDiscount = Object.prototype.hasOwnProperty.call(payload || {}, "discount");
+  const hasStudentAfterDiscount = Object.prototype.hasOwnProperty.call(payload || {}, "afterDiscount");
+  const hasStudentInstallmentSchedule = Object.prototype.hasOwnProperty.call(payload || {}, "installmentSchedule")
+    && Array.isArray(payload?.installmentSchedule)
+    && payload.installmentSchedule.length > 0;
+  const actualFees = Number.isInteger(Number(resolvedCourse?.actualFees))
+    ? Number(resolvedCourse.actualFees)
+    : parsePositiveInt(candidate.actualFees, "Actual fees", { allowZero: true });
+  const registrationFees = Number.isInteger(Number(resolvedCourse?.registrationFees))
+    ? Number(resolvedCourse.registrationFees)
+    : parsePositiveInt(candidate.registrationFees, "Registration fees", { allowZero: true });
+  const discount = hasStudentDiscount
+    ? parsePositiveInt(candidate.discount, "Discount", { allowZero: true })
+    : Number.isInteger(Number(resolvedCourse?.discount))
+    ? Number(resolvedCourse.discount)
+    : parsePositiveInt(candidate.discount, "Discount", { allowZero: true });
+  const afterDiscount = hasStudentAfterDiscount
+    ? parsePositiveInt(candidate.afterDiscount, "After discount", { allowZero: true })
+    : Number.isInteger(Number(resolvedCourse?.afterDiscount))
+    ? Number(resolvedCourse.afterDiscount)
+    : parsePositiveInt(candidate.afterDiscount, "After discount", { allowZero: true });
+  const resolvedInstallments = hasStudentInstallmentSchedule
+    ? payload.installmentSchedule.map((installment, index) =>
+        parsePositiveInt(installment?.amount, `Installment ${index + 1}`, { allowZero: true }),
+      )
+    : Array.isArray(resolvedCourse?.installments) && resolvedCourse.installments.length
+    ? resolvedCourse.installments.map((value, index) =>
+        parsePositiveInt(value, `Installment ${index + 1}`, { allowZero: true }),
+      )
+    : [candidate.installment1, candidate.installment2, candidate.installment3, candidate.installment4]
+        .map((value, index) => parseOptionalInstallment(value, `Installment ${index + 1}`))
+        .filter((value) => value !== null);
+
+  const resolvedAfterDiscount = Number.isInteger(afterDiscount) ? afterDiscount : actualFees - discount;
+
+  if (discount > actualFees) {
+    throw new AppError("Discount cannot be greater than actual fees", 400);
+  }
+
+  if (!resolvedInstallments.length) {
+    throw new AppError("At least one installment is required", 400);
+  }
+
+  if (resolvedInstallments.reduce((total, amount) => total + amount, 0) !== resolvedAfterDiscount) {
+    throw new AppError("Installment totals must match the discounted fee", 400);
+  }
+
+  const firstInstallmentStatus = parsePaymentStatus(candidate.firstInstallmentStatus || "Paid", "first installment status");
+  const secondInstallmentStatus = parsePaymentStatus(
+    candidate.secondInstallmentStatus || "Pending",
+    "second installment status",
+  );
+
+  return {
+    studentName,
+    mobileNumber,
+    emailAddress,
+    parentSpouseNumber,
+    location,
+    courseId: resolvedCourseId,
+    courseInterested: resolvedCourse?.name || candidate.courseInterested || "",
+    facultyId,
+    facultyName,
+    batchId,
+    batchName,
+    qualification,
+    passedOutYear,
+    currentStatus,
+    customCurrentStatus,
+    purpose,
+    customPurpose,
+    educationLevel,
+    educationStatus,
+    designation,
+    companyName,
+    source,
+    actualFees,
+    registrationFees,
+    discount,
+    afterDiscount: resolvedAfterDiscount,
+    installment1: resolvedInstallments[0] ?? null,
+    installment2: resolvedInstallments[1] ?? null,
+    installment3: resolvedInstallments[2] ?? null,
+    installment4: resolvedInstallments[3] ?? null,
+    totalAmount: resolvedAfterDiscount,
+    admissionDate,
+    firstInstallmentAmount: resolvedInstallments[0] ?? null,
+    firstInstallmentDate: admissionDate,
+    firstInstallmentStatus,
+    firstInstallmentPaidAt: firstInstallmentStatus === "Paid" ? candidate.firstInstallmentPaidAt || admissionDate : null,
+    secondInstallmentAmount: resolvedInstallments[1] ?? null,
+    secondDueDate: candidate.secondDueDate || addOneMonth(admissionDate),
+    secondInstallmentStatus,
+    secondInstallmentPaidAt: secondInstallmentStatus === "Paid" ? candidate.secondInstallmentPaidAt || getTodayValue() : null,
+    remarks,
+  };
+}
+
+async function handleKnownPrismaError(error) {
+  if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+    const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : "unique field";
+
+    if (target.includes("emailAddress") || target.includes("email")) {
+      throw new AppError("Student email already exists", 409);
+    }
+
+    if (target.includes("mobileNumber") || target.includes("phone")) {
+      throw new AppError("Student mobile number already exists", 409);
+    }
+
+    if (target.includes("studentCode") || target.includes("userCode")) {
+      throw new AppError("Student code collision, please retry", 409);
+    }
+
+    throw new AppError("Duplicate student record", 409);
+  }
+
+  throw error;
+}
+
+export async function listStudents(query, actor = null) {
+  const { page, limit, skip, take } = buildPagination(query);
+  const where = buildStudentWhere(query);
+  const sortBy = normalizeString(query.sortBy).toLowerCase() || "createdat";
+  const sortOrder = parseSortOrder(query.sortOrder);
+  const facultyScopeWhere = await buildFacultyScopeWhere(actor);
+  const finalWhere = facultyScopeWhere ? { AND: [where, facultyScopeWhere] } : where;
+
+  const orderBy = (() => {
+    switch (sortBy) {
+      case "studentname":
+        return { studentName: sortOrder };
+      case "emailaddress":
+        return { emailAddress: sortOrder };
+      case "mobilenumber":
+        return { mobileNumber: sortOrder };
+      case "course":
+      case "courseinterested":
+        return { courseInterested: sortOrder };
+      case "batch":
+      case "batchname":
+        return { batchName: sortOrder };
+      case "currentstatus":
+        return { currentStatus: sortOrder };
+      case "admissiondate":
+        return { admissionDate: sortOrder };
+      case "updatedat":
+        return { updatedAt: sortOrder };
+      default:
+        return { createdAt: sortOrder };
+    }
+  })();
+
+  const [total, rows] = await prisma.$transaction([
+    prisma.studentProfile.count({ where: finalWhere }),
+    prisma.studentProfile.findMany({
+      where: finalWhere,
+      orderBy,
+      skip,
+      take,
+      include: {
+        course: {
+          select: {
+            id: true,
+            name: true,
+            courseCode: true,
+            duration: true,
+            status: true,
+            mode: true,
+          },
+        },
+      },
+    }),
+  ]);
+  const facultyIndex = await loadFacultyReferenceIndex();
+
+  return {
+    data: rows.map((row) => toStudentSummary(enrichStudentWithFacultyReferences(row, facultyIndex))),
+    meta: buildPaginationMeta(total, page, limit),
+  };
+}
+
+export async function getCurrentStudentProfile(user) {
+  const normalizedEmail = normalizeString(user?.email).toLowerCase();
+  const normalizedUserCode = normalizeString(user?.userCode);
+
+  if (!normalizedEmail && !normalizedUserCode) {
+    throw new AppError("Student profile not found", 404);
+  }
+
+  const student = await prisma.studentProfile.findFirst({
+    where: {
+      OR: [
+        ...(normalizedEmail ? [{ emailAddress: normalizedEmail }] : []),
+        ...(normalizedUserCode ? [{ studentCode: normalizedUserCode }] : []),
+      ],
+    },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          courseCode: true,
+          duration: true,
+          status: true,
+          mode: true,
+        },
+      },
+    },
+  });
+  const facultyIndex = await loadFacultyReferenceIndex();
+
+  if (!student) {
+    throw new AppError("Student profile not found", 404);
+  }
+
+  return toStudentDetail(enrichStudentWithFacultyReferences(student, facultyIndex));
+}
+
+export async function createStudent(payload, actor) {
+  const resolvedCourseId = normalizeString(payload.courseId);
+  const course = await ensureCourse(resolvedCourseId, { requireActive: true });
+  const parsed = buildStudentPayload(payload, null, course);
+  const actorId = actor?.id ?? null;
+  const studentCode = normalizeStudentCode();
+  const temporaryPassword = generateTemporaryPassword();
+  const passwordHash = await hashPassword(temporaryPassword);
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+  // Credential links remain valid until the recipient uses the link to set a password.
+  const expiresAt = new Date("9999-12-31T23:59:59.999Z");
+
+  await ensureUniqueStudentIdentity(parsed);
+  await ensureUniqueStudentLogin({
+    emailAddress: parsed.emailAddress,
+    mobileNumber: parsed.mobileNumber,
+    studentCode,
+  });
+
+  let createdRecord;
+
+  try {
+    const facultyIndex = await loadFacultyReferenceIndex();
+    const created = await prisma.$transaction(async (tx) => {
+      const student = await tx.studentProfile.create({
+        data: {
+          ...parsed,
+          studentCode,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+        include: {
+          course: {
+            select: {
+              id: true,
+              name: true,
+              status: true,
+              mode: true,
+            },
+          },
+        },
+      });
+
+      const user = await tx.user.create({
+        data: {
+          userCode: studentCode,
+          fullName: parsed.studentName,
+          email: parsed.emailAddress,
+          phone: parsed.mobileNumber,
+          role: "STUDENT",
+          active: true,
+          passwordHash,
+          createdBy: actorId,
+          updatedBy: actorId,
+        },
+      });
+
+      const resetTokenRecord = await tx.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          tokenHash,
+          expiresAt,
+          createdBy: "CREDENTIAL_EMAIL",
+        },
+      });
+
+      return {
+        student,
+        userId: user.id,
+        resetTokenId: resetTokenRecord.id,
+      };
+    });
+
+    createdRecord = created.student;
+
+    if (createdRecord) {
+      createdRecord = enrichStudentWithFacultyReferences(createdRecord, facultyIndex)
+    }
+  } catch (error) {
+    await handleKnownPrismaError(error);
+  }
+
+  if (!createdRecord) {
+    return null;
+  }
+
+  void sendStudentCredentialsEmail({
+    to: parsed.emailAddress,
+    fullName: parsed.studentName,
+    studentCode,
+    temporaryPassword,
+    resetToken,
+    courseName: parsed.courseInterested,
+    facultyName: parsed.facultyName,
+    batchName: parsed.batchName,
+  }).catch((error) => {
+    console.warn("Student credentials email failed to send", error);
+  });
+
+  invalidateRevenueSummaryCache();
+
+  return toStudentDetail(createdRecord);
+}
+
+export async function getStudent(studentId) {
+  const student = await prisma.studentProfile.findUnique({
+    where: { id: studentId },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          status: true,
+          mode: true,
+        },
+      },
+    },
+  });
+  const facultyIndex = await loadFacultyReferenceIndex();
+
+  if (!student) {
+    throw new AppError("Student not found", 404);
+  }
+
+  return toStudentDetail(enrichStudentWithFacultyReferences(student, facultyIndex));
+}
+
+export async function updateStudent(studentId, payload, actor) {
+  const existingStudent = await prisma.studentProfile.findUnique({
+    where: { id: studentId },
+    include: {
+      course: true,
+    },
+  });
+
+  if (!existingStudent) {
+    throw new AppError("Student not found", 404);
+  }
+
+  const nextCourseId = normalizeString(payload.courseId || existingStudent.courseId);
+  const shouldRequireActiveCourse = !existingStudent.courseId || normalizeString(payload.courseId || "") !== existingStudent.courseId;
+  const course = nextCourseId ? await ensureCourse(nextCourseId, { requireActive: shouldRequireActiveCourse }) : null;
+  const parsed = buildStudentPayload(payload, existingStudent, course);
+  const existingLoginUser = await findStudentLoginUser(existingStudent);
+  const facultyIndex = await loadFacultyReferenceIndex();
+
+  if (parsed.emailAddress !== existingStudent.emailAddress || parsed.mobileNumber !== existingStudent.mobileNumber) {
+    await ensureUniqueStudentIdentity(parsed, studentId);
+    await ensureUniqueStudentLogin({
+      emailAddress: parsed.emailAddress,
+      mobileNumber: parsed.mobileNumber,
+      studentCode: existingStudent.studentCode,
+    });
+  }
+
+  const actorId = actor?.id ?? null;
+
+  try {
+    const updated = await prisma.studentProfile.update({
+      where: { id: studentId },
+      data: {
+        ...parsed,
+        updatedBy: actorId,
+      },
+      include: {
+        course: {
+          select: {
+            id: true,
+            name: true,
+            status: true,
+            mode: true,
+          },
+        },
+      },
+    });
+
+    if (existingLoginUser) {
+      await prisma.user.update({
+        where: { id: existingLoginUser.id },
+        data: {
+          fullName: parsed.studentName,
+          email: parsed.emailAddress,
+          phone: parsed.mobileNumber,
+          updatedBy: actorId,
+        },
+      });
+    }
+
+    invalidateRevenueSummaryCache();
+
+    return toStudentDetail(enrichStudentWithFacultyReferences(updated, facultyIndex));
+  } catch (error) {
+    await handleKnownPrismaError(error);
+  }
+}
+
+export async function deleteStudent(studentId, actor) {
+  const existingStudent = await prisma.studentProfile.findUnique({
+    where: { id: studentId },
+    include: {
+      course: {
+        select: {
+          id: true,
+          name: true,
+          status: true,
+          mode: true,
+        },
+      },
+    },
+  });
+
+  if (!existingStudent) {
+    throw new AppError("Student not found", 404);
+  }
+
+  const existingLoginUser = await findStudentLoginUser(existingStudent);
+
+  const deleted = await prisma.$transaction(async (tx) => {
+    await tx.studentProfile.delete({
+      where: { id: studentId },
+    });
+
+    if (existingLoginUser) {
+      await tx.user.deleteMany({
+        where: { id: existingLoginUser.id },
+      });
+    }
+
+    return existingStudent;
+  });
+  const facultyIndex = await loadFacultyReferenceIndex();
+
+  invalidateRevenueSummaryCache();
+
+  return toStudentDetail(enrichStudentWithFacultyReferences(deleted, facultyIndex));
+}

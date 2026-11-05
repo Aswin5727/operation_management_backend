@@ -1,0 +1,1 @@
+ALTER TYPE "public"."NotificationKind" ADD VALUE IF NOT EXISTS 'EXAM_SCHEDULED';

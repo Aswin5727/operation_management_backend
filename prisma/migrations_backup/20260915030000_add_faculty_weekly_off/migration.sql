@@ -1,0 +1,3 @@
+ALTER TABLE "BranchFaculty" ADD COLUMN IF NOT EXISTS "weeklyOffDay" TEXT;
+ALTER TABLE "BranchBatch" ADD COLUMN IF NOT EXISTS "weeklyOffDay" TEXT;
+ALTER TABLE "BranchStudent" ADD COLUMN IF NOT EXISTS "weeklyOffDay" TEXT;

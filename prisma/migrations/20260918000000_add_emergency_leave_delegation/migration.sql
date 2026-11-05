@@ -1,0 +1,2 @@
+ALTER TABLE "FacultyLeaveRequest"
+  ADD COLUMN IF NOT EXISTS "isDelegated" BOOLEAN NOT NULL DEFAULT false;

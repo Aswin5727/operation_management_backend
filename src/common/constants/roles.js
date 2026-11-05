@@ -1,0 +1,25 @@
+const roles = {
+  USER_ROLES: {
+    SUPER_ADMIN: "SUPER_ADMIN",
+    BUSINESS_OWNER: "BUSINESS_OWNER",
+    OPERATION_MANAGER: "OPERATION_MANAGER",
+    HR: "HR",
+    FACULTY: "FACULTY",
+    STUDENT: "STUDENT",
+    BRANCH_ADMIN: "BRANCH_ADMIN",
+    SALES_ADMIN: "SALES_ADMIN",
+  },
+  ALL_USER_ROLES: [
+    "SUPER_ADMIN",
+    "BUSINESS_OWNER",
+    "OPERATION_MANAGER",
+    "HR",
+    "FACULTY",
+    "STUDENT",
+    "BRANCH_ADMIN",
+    "SALES_ADMIN",
+  ],
+};
+
+export const { USER_ROLES, ALL_USER_ROLES } = roles;
+export default roles;

@@ -1,0 +1,57 @@
+{
+  "name": "cispro_operation_management_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "db:migrate": "npm run prisma:deploy",
+    "dev": "nodemon server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:push": "prisma db push",
+    "backfill:faculty-courses": "node prisma/backfill-faculty-course-assignments.js",
+    "seed": "node prisma/seed.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Javixtech/cispro_operation_management_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Javixtech/cispro_operation_management_backend/issues"
+  },
+  "homepage": "https://github.com/Javixtech/cispro_operation_management_backend#readme",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "jszip": "^3.10.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.13.0",
+    "morgan": "^1.11.0",
+    "multer": "^2.4.0",
+    "nodemailer": "^9.0.3",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.22.0",
+    "resend": "^6.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.8.0"
+  }
+}

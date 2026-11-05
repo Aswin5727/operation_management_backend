@@ -1,0 +1,109 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Operation Management Platform - Phase 0 Auth API",
+    "version": "1.0.0",
+    "description": "Phase 0 backend contract for authentication and role-based access."
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service is running"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login with assigned account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["identifier", "password"],
+                "properties": {
+                  "identifier": {
+                    "type": "string",
+                    "example": "business.owner@cispro.local"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "ChangeMe123!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh session",
+        "responses": {
+          "200": {
+            "description": "Session refreshed"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout current session",
+        "responses": {
+          "200": {
+            "description": "Logged out successfully"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "summary": "Request password reset token",
+        "responses": {
+          "200": {
+            "description": "Reset token generated"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "summary": "Reset password using token",
+        "responses": {
+          "200": {
+            "description": "Password reset successfully"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Get current user profile",
+        "responses": {
+          "200": {
+            "description": "Current user"
+          }
+        }
+      }
+    }
+  }
+}

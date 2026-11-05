@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS "FacultySkillAssignment_branchFacultyId_skillName_startDate_key";

@@ -1,0 +1,2 @@
+ALTER TABLE "BranchStudent"
+ADD COLUMN IF NOT EXISTS "parentName" TEXT;

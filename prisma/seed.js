@@ -1,0 +1,82 @@
+import prisma from "../src/config/prisma.js";
+import { hashPassword } from "../src/common/utils/password.js";
+import { USER_ROLES } from "../src/common/constants/roles.js";
+import config from "../src/config/env.js";
+
+const seedUsers = [
+  {
+    userCode: "SA-001",
+    fullName: "Super Admin",
+    email: "opsmgrSA@cisprotraining.com",
+    role: USER_ROLES.SUPER_ADMIN,
+    password: "superAdmin@cispro123",
+  },
+  {
+    userCode: "BO-001",
+    fullName: "Business Owner",
+    email: "business.owner@cispro.com",
+    role: USER_ROLES.BUSINESS_OWNER,
+  },
+  {
+    userCode: "OM-001",
+    fullName: "Operation Manager",
+    email: "operation.manager@cispro.com",
+    role: USER_ROLES.OPERATION_MANAGER,
+  },
+  {
+    userCode: "HR-001",
+    fullName: "HR Manager",
+    email: "hr@cispro.local",
+    role: USER_ROLES.HR,
+  },
+  {
+    userCode: "FAC-001",
+    fullName: "Faculty User",
+    email: "faculty@cispro.local",
+    role: USER_ROLES.FACULTY,
+  },
+  {
+    userCode: "STU-001",
+    fullName: "Student User",
+    email: "student@cispro.local",
+    role: USER_ROLES.STUDENT,
+  },
+];
+
+async function main() {
+  for (const user of seedUsers) {
+    const passwordHash = await hashPassword(user.password || config.seedDefaultPassword);
+
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: {
+        fullName: user.fullName,
+        userCode: user.userCode,
+        role: user.role,
+        active: true,
+        passwordHash,
+        updatedBy: "seed",
+      },
+      create: {
+        userCode: user.userCode,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        passwordHash,
+        createdBy: "seed",
+        updatedBy: "seed",
+      },
+    });
+  }
+
+  console.log("Phase 0 seed users created or updated.");
+}
+
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

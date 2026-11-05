@@ -1,0 +1,2 @@
+ALTER TABLE "BranchStudent"
+ALTER COLUMN "feeScheduleMode" SET DEFAULT 'BEFORE_70_PERCENT';

@@ -1,0 +1,45 @@
+import express from "express";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import { authorize } from "../../common/middlewares/authorize.js";
+import { USER_ROLES } from "../../common/constants/roles.js";
+import * as controller from "./academicTests.controller.js";
+import { academicProjectUpload } from "../../common/middlewares/academicProjectUpload.js";
+
+const router = express.Router();
+router.use(authenticate);
+router.get("/", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY), controller.list);
+router.get("/create-options", authorize(USER_ROLES.FACULTY), controller.createOptions);
+router.post("/scheduled", authorize(USER_ROLES.FACULTY), controller.createScheduled);
+router.get("/faculty/scheduled", authorize(USER_ROLES.FACULTY), controller.facultyScheduled);
+router.get("/reports/batches", authorize(USER_ROLES.FACULTY), controller.reportBatches);
+router.get("/reports/batches/:batchId/students", authorize(USER_ROLES.FACULTY), controller.batchReport);
+router.get("/reports/faculty/batches/:batchId/completed-tests", authorize(USER_ROLES.FACULTY), controller.facultyReportTests);
+router.post("/reports/send", authorize(USER_ROLES.FACULTY), controller.sendAcademicReport);
+router.get("/reports/branch-admin", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReports);
+router.get("/reports/branch-admin/history/:historyId", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportHistory);
+router.get("/reports/branch-admin/students/:studentId", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY, USER_ROLES.SUPER_ADMIN), controller.branchStudentReports);
+router.get("/reports/branch-admin/:reportId/students", authorize(USER_ROLES.BRANCH_ADMIN), controller.branchReportStudents);
+router.get("/reports/my-report", authorize(USER_ROLES.STUDENT), controller.myReport);
+router.get("/faculty/scheduled/:id/results", authorize(USER_ROLES.FACULTY), controller.facultyResults);
+router.get("/faculty/scheduled/:id/assessment/:studentId", authorize(USER_ROLES.FACULTY), controller.facultyAssessment);
+router.post("/faculty/scheduled/:id/assessment/:studentId/evaluate", authorize(USER_ROLES.FACULTY), controller.evaluateFacultyAssessment);
+router.post("/faculty/scheduled/:id/retest", authorize(USER_ROLES.FACULTY), controller.scheduleRetest);
+router.put("/faculty/scheduled/:id", authorize(USER_ROLES.FACULTY), controller.updateFacultyScheduled);
+router.post("/faculty/scheduled/:id/cancel", authorize(USER_ROLES.FACULTY), controller.cancelFacultyScheduled);
+router.get("/student/scheduled", authorize(USER_ROLES.STUDENT), controller.studentScheduled);
+router.get("/student/scheduled/:id", authorize(USER_ROLES.STUDENT), controller.studentGet);
+router.post("/student/scheduled/:id/start", authorize(USER_ROLES.STUDENT), controller.studentStart);
+router.post("/student/scheduled/:id/submit", authorize(USER_ROLES.STUDENT), controller.studentSubmit);
+router.post("/student/scheduled/:id/submit-project", authorize(USER_ROLES.STUDENT), academicProjectUpload.single("projectFile"), controller.studentProjectSubmit);
+router.get("/faculty/scheduled/:id/project-submissions/:studentId/file", authorize(USER_ROLES.FACULTY), controller.facultyProjectFile);
+router.get("/faculty/scheduled/:id/project-submissions/:studentId/preview", authorize(USER_ROLES.FACULTY), controller.facultyProjectPreview);
+router.put("/faculty/scheduled/:id/project-submissions/:studentId", authorize(USER_ROLES.FACULTY), controller.gradeFacultyProject);
+router.get("/student/scheduled/:id/result", authorize(USER_ROLES.STUDENT), controller.studentResult);
+router.get("/:id", authorize(USER_ROLES.BRANCH_ADMIN, USER_ROLES.FACULTY), controller.getById);
+router.post("/", authorize(USER_ROLES.BRANCH_ADMIN), controller.create);
+router.put("/:id", authorize(USER_ROLES.BRANCH_ADMIN), controller.update);
+router.delete("/:id", authorize(USER_ROLES.BRANCH_ADMIN), controller.remove);
+
+ 
+export default router;
+
