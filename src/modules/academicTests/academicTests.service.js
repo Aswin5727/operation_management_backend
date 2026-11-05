@@ -556,6 +556,23 @@ async function academicPublicSchedule(schedule, includeQuestions = false) {
   return { ...schedule, testType: item?.testType || "TEST", projectTitle: project?.projectTitle || "", projectDescription: project?.projectDescription || "", projectRequirements: project?.projectRequirements || "", projectMarks, project: project ? { title: project.projectTitle || "Project", projectMarks, status: project.status || "NOT_PREPARED" } : null, projectStatus: project?.status || "NOT_PREPARED", status: academicScheduleStatus(schedule), testName: schedule.isRetest ? `Test ${schedule.testNumber} - Retest` : `Test ${schedule.testNumber}`, course: item?.academicTest?.branchCourse, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0, passMark: paper?.passMark || 0, marksPerQuestion: paper?.marksPerQuestion || 0, hasAssessment: questions.some((question) => question.questionType === "ASSESSMENT"), questions: includeQuestions ? questions.map(({ correctAnswer, ...question }) => question) : undefined };
 }
 
+async function academicQuestionPaperForStudent(schedule, includeQuestions = false) {
+  const questionPaperId = text(schedule?.questionPaperId);
+  if (!questionPaperId) {
+    throw new AppError("This Academic Test is not ready for submission because its question paper is missing.", 409);
+  }
+  const paper = await prisma.academicQuestionPaper.findUnique({
+    where: { id: questionPaperId },
+    ...(includeQuestions ? { include: { questions: { orderBy: { questionNumber: "asc" } } } } : { select: { totalQuestions: true, totalMarks: true } }),
+  });
+  if (!paper) {
+    throw new AppError("This Academic Test is not ready for submission because its question paper could not be found.", 409);
+  }
+  if (includeQuestions && (!Array.isArray(paper.questions) || paper.questions.length === 0)) {
+    throw new AppError("This Academic Test is not ready for submission because no questions have been prepared.", 409);
+  }
+  return paper;
+}
 async function academicPassMarkForSchedule(schedule, fallback = 0) {
   if (Number(fallback || 0) > 0) return Number(fallback);
   const paper = schedule.questionPaperId ? await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, select: { passMark: true } }) : null;
@@ -666,14 +683,14 @@ export async function getStudentAcademicTest(actor, id) {
 export async function startStudentAcademicTest(actor, id) {
   const { student, schedule } = await academicScheduleForStudent(actor, id);
   if (academicScheduleStatus(schedule) !== "AVAILABLE") throw new AppError("This Academic Test is not currently available.", 403);
-  const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, select: { totalQuestions: true, totalMarks: true } });
+  const paper = await academicQuestionPaperForStudent(schedule);
   return prisma.academicTestSubmission.upsert({ where: { academicTestId_branchStudentId: { academicTestId: schedule.id, branchStudentId: student.id } }, update: {}, create: { academicTestId: schedule.id, branchStudentId: student.id, totalQuestions: paper?.totalQuestions || 0, totalMarks: paper?.totalMarks || 0 } });
 }
 
 export async function submitStudentAcademicTest(actor, id, payload = {}) {
   const { student, schedule } = await academicScheduleForStudent(actor, id);
   if (!["AVAILABLE"].includes(academicScheduleStatus(schedule))) throw new AppError("This Academic Test is no longer accepting submissions.", 403);
-  const paper = await prisma.academicQuestionPaper.findUnique({ where: { id: schedule.questionPaperId }, include: { questions: { orderBy: { questionNumber: "asc" } } } });
+  const paper = await academicQuestionPaperForStudent(schedule, true);
   const existing = await prisma.academicTestSubmission.findUnique({ where: { academicTestId_branchStudentId: { academicTestId: schedule.id, branchStudentId: student.id } } });
   if (!existing || existing.status === "SUBMITTED") throw new AppError("Start the test before submitting it, or it was already submitted.", 409);
   const selected = payload.answers && typeof payload.answers === "object" ? payload.answers : {};
