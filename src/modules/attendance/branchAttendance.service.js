@@ -49,22 +49,35 @@ export async function getBranchAttendanceOverview(user, query = {}) {
         id: true, studentId: true, studentName: true, courseId: true, courseName: true,
         batchId: true, batchName: true, recordStatus: true, classSchedule: true,
         courseStartDate: true, courseEndDate: true, weeklyOffDay: true,
-        calendarAttendanceRecords: {
-          where: { attendanceDate: { gte: from, lte: date } },
-          select: { attendanceDate: true, status: true, batchId: true, courseId: true },
-        },
       },
     }),
     prisma.branchCalendarHoliday.findMany({ where: { status: "ACTIVE", OR: [{ branchId: branch.id }, { branchId: null }], holidayDate: { gte: from, lte: date } }, select: { holidayDate: true } }),
     prisma.branchCalendarLeave.findMany({ where: { status: "ACTIVE", isInstitute: false, branchId: branch.id, leaveDate: { gte: from, lte: date } }, select: { leaveDate: true, batchId: true } }),
   ]);
+  const attendanceRecords = students.length
+    ? await prisma.branchStudentAttendance.findMany({
+        where: {
+          branchStudentId: { in: students.map((student) => student.id) },
+          attendanceDate: { gte: from, lte: date },
+        },
+        select: { branchStudentId: true, attendanceDate: true, status: true, batchId: true, courseId: true },
+      })
+    : [];
+  const attendanceByStudentId = new Map();
+  attendanceRecords.forEach((record) => {
+    const records = attendanceByStudentId.get(record.branchStudentId) || [];
+    records.push(record);
+    attendanceByStudentId.set(record.branchStudentId, records);
+  });
   const holidayDates = new Set(holidays.map((item) => item.holidayDate));
   const result = {
     branchId: branch.id, date, weekStart, monthStart,
     exclusions: { holidays: [...holidayDates], leaves },
-    students: students.map(({ calendarAttendanceRecords, ...student }) => ({
+    students: students.map((student) => ({
       ...student,
-      records: calendarAttendanceRecords.filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId))),
+      records: (attendanceByStudentId.get(student.id) || [])
+        .filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId)))
+        .map(({ branchStudentId, ...record }) => record),
     })),
   };
   branchAttendanceOverviewCache.set(cacheKey, {
