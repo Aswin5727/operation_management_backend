@@ -34,6 +34,7 @@ import leadsRoutes from "../modules/leads/leads.routes.js";
 import salesCrmReportRoutes from "../modules/salesCrm/salesCrmReport.routes.js";
 import salesCrmReportSubmissionRoutes from "../modules/salesCrm/salesCrmReportSubmission.routes.js";
 import leadRecordingShareRoutes from "../modules/leads/leadRecordingShare.routes.js";
+import userRoleManagementRoutes from "../modules/userRoleManagement/userRoleManagement.routes.js";
 const router = express.Router();
 router.use("/branch-holidays", branchHolidaysRoutes);
 router.use("/institute-leaves", instituteLeaveRoutes);
@@ -72,11 +73,10 @@ router.use("/academic-test-preparation", academicPreparationRoutes);
 router.use("/faculty-skills", facultySkillsRoutes);
 router.use("/student-discontinuation", studentDiscontinuationRoutes);
 router.use("/sales-admins", salesAdminRoutes);
+router.use("/user-role-accounts", userRoleManagementRoutes);
 router.use("/sales-crm-report-submissions", salesCrmReportSubmissionRoutes);
 router.use("/lead-recording-shares", leadRecordingShareRoutes);
 router.use("/leads", leadsRoutes);
 router.use("/sales-crm/reports", salesCrmReportRoutes);
 
 export default router;
-
-

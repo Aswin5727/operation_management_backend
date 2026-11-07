@@ -156,6 +156,7 @@ function toBranchSummary(record, options = {}) {
     // relation count represents the current number of students in this branch.
     studentCount: record?._count?.branchStudents ?? 0,
     branchAdminName: record.branchAdminName,
+    adminUserId: record.adminUserId || record.adminUser?.id || null,
     branchEmail: record.branchEmail,
     branchPhone: record.branchPhone,
     branchCountryCode: record.branchCountryCode || "",
