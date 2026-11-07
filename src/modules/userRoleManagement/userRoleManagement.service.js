@@ -124,13 +124,23 @@ export async function createUserRoleAccount(payload = {}, actor = {}) {
 }
 
 
-export async function listBranchAccessUsers() {
+export async function listBranchAccessUsers(accountType = "") {
+  const normalizedAccountType = text(accountType).toUpperCase();
+  if (normalizedAccountType && !["BRANCH_ADMIN", "SALES_ADMIN"].includes(normalizedAccountType)) {
+    throw new AppError("Invalid account type filter", 400);
+  }
   const users = await prisma.user.findMany({
     where: { role: { in: ["BRANCH_ADMIN", "SALES_ADMIN"] }, active: true },
     orderBy: { fullName: "asc" },
-    select: { id: true, userCode: true, fullName: true, email: true, phone: true, role: true, managedBranch: { select: { id: true, branchId: true, branchName: true, roleAccess: true } }, salesAdminBranches: { select: { branchId: true } } },
+    select: { id: true, userCode: true, fullName: true, email: true, phone: true, role: true, managedBranch: { select: { id: true, branchId: true, branchName: true, roleAccess: true } }, salesAdminBranches: { select: { branchId: true, branch: { select: { id: true, branchId: true, branchName: true } } } } },
   });
-  return users.map((user) => ({ id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, role: user.role, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId) }));
+  return users
+    .map((user) => {
+      const isCombinedBranchAdmin = user.role === "BRANCH_ADMIN" && user.managedBranch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN";
+      const resolvedAccountType = isCombinedBranchAdmin ? "BRANCH_ADMIN_SALES_ADMIN" : user.role;
+      return { id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, role: user.role, accountType: resolvedAccountType, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId), assignedBranches: user.salesAdminBranches.map((item) => item.branch) };
+    })
+    .filter((user) => !normalizedAccountType || (normalizedAccountType === "BRANCH_ADMIN" ? ["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN"].includes(user.accountType) : user.accountType === "SALES_ADMIN"));
 }
 
 export async function assignBranchAccess(branchRecordId, payload = {}, actor = {}) {
