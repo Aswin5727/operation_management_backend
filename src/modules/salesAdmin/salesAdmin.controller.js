@@ -1,6 +1,6 @@
 ﻿import asyncHandler from "../../common/utils/asyncHandler.js";
 import { createSalesAdmin, deleteSalesAdmin, getDashboard, getSalesAdminProfile, updateOwnSalesAdminProfile, listSalesAdmins, resetSalesAdminPassword, updateSalesAdmin, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead } from "./salesAdmin.service.js";
-import { createSalesAdminBatchRequest, listSalesAdminBatchRequests } from "./batchRequests.service.js";
+import { createSalesAdminBatchRequest, listSalesAdminBatchRequests, resendSalesAdminBatchRequest } from "./batchRequests.service.js";
 const createSalesAdminHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Sales Admin created and invitation sent", data: await createSalesAdmin(req.body || {}, req.auth || {}) }));
 const listSalesAdminsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdmins(Boolean(req.query?.includeCombinedBranchAdmins), req.query?.startDate, req.query?.endDate)));
 const resetPasswordHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Password reset email sent", data: await resetSalesAdminPassword(req.params.id, req.auth || {}) }));
@@ -18,6 +18,7 @@ const startAdmissionHandler = asyncHandler(async (req, res) => res.status(200).j
 const convertAdmissionHandler = asyncHandler(async (req, res) => res.status(201).json({ data: await convertSalesAdminLead(req.auth, req.params.leadId, req.body || {}) }));
 const createBatchRequestHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Batch request sent to the branch", data: await createSalesAdminBatchRequest(req.auth, req.params.leadId) }));
 const listBatchRequestsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminBatchRequests(req.auth)));
-export { createSalesAdminHandler, listSalesAdminsHandler, resetPasswordHandler, updateSalesAdminHandler, deleteSalesAdminHandler, profileHandler, updateProfileHandler, dashboardHandler, admissionsHandler, studentFeeDetailsHandler, pendingAdmissionReminderHandler, admissionLeadHandler, availableBatchesHandler, startAdmissionHandler, convertAdmissionHandler, createBatchRequestHandler, listBatchRequestsHandler };
+const resendBatchRequestHandler = asyncHandler(async (req, res) => res.status(200).json({ message: "Batch request notification resent to the branch", data: await resendSalesAdminBatchRequest(req.auth, req.params.requestId) }));
+export { createSalesAdminHandler, listSalesAdminsHandler, resetPasswordHandler, updateSalesAdminHandler, deleteSalesAdminHandler, profileHandler, updateProfileHandler, dashboardHandler, admissionsHandler, studentFeeDetailsHandler, pendingAdmissionReminderHandler, admissionLeadHandler, availableBatchesHandler, startAdmissionHandler, convertAdmissionHandler, createBatchRequestHandler, listBatchRequestsHandler, resendBatchRequestHandler };
 
 

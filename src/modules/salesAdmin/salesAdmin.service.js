@@ -446,6 +446,16 @@ function salesAdminReminderDate(now = new Date()) {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
+function isSalesAdminReminderTime(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(now).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  return parts.hour === "09" && parts.minute === "00";
+}
+
 async function checkPendingHotAdmissionReminderOnce(actorOrUserId) {
   const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
   const userId = actor.userId;
@@ -509,6 +519,9 @@ async function checkPendingHotAdmissionReminderOnce(actorOrUserId) {
 }
 
 async function checkPendingHotAdmissionReminder(actorOrUserId) {
+  if (!isSalesAdminReminderTime()) {
+    return { count: 0, students: [], notificationCreated: false, notificationUpdated: false, notificationRemoved: false, notification: null, scheduledFor: "09:00 Asia/Kolkata" };
+  }
   return withDatabaseRetry(() => checkPendingHotAdmissionReminderOnce(actorOrUserId));
 }
 
@@ -877,5 +890,5 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   );
 }
 
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, updateOwnSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, updateOwnSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, checkPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
 

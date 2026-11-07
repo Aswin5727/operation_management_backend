@@ -111,6 +111,15 @@ function normalizeString(value) {
   return String(value ?? "").trim();
 }
 
+function normalizeNotificationKind(value) {
+  const raw = normalizeString(value);
+  if (!raw) return "";
+  const enumKind = raw.toUpperCase();
+  if (Object.prototype.hasOwnProperty.call(NOTIFICATION_KIND_MAP, enumKind)) return enumKind;
+  const slugKind = raw.toLowerCase();
+  return Object.entries(NOTIFICATION_KIND_MAP).find(([, slug]) => slug === slugKind)?.[0] || enumKind;
+}
+
 function normalizeEmail(value) {
   return String(value ?? "").trim().toLowerCase();
 }
@@ -344,7 +353,7 @@ export function buildNotificationWhere({
 } = {}) {
   const role = normalizeString(user?.role).toUpperCase();
   const isFaculty = ["FACULTY", "STUDENT"].includes(role);
-  const normalizedKind = normalizeString(kind).toUpperCase();
+  const normalizedKind = normalizeNotificationKind(kind);
   const isSuperAdmin = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN";
   const superAdminDiscontinuationScope = isSuperAdmin
     ? {
@@ -1399,7 +1408,7 @@ export async function listNotifications(query = {}, user = {}) {
   const page = Number.isFinite(requestedPage) ? Math.max(1, requestedPage) : 1;
   const limit = Number.isFinite(requestedLimit) ? Math.min(100, Math.max(1, requestedLimit)) : 10;
   const unreadOnly = String(query.unreadOnly || "").trim().toLowerCase() === "true";
-  const kind = normalizeString(query.kind).toUpperCase();
+  const kind = normalizeNotificationKind(query.kind);
   const status = normalizeString(query.status).toLowerCase();
   if (status && !["all", "unread", "read"].includes(status)) throw new AppError("Notification status filter is invalid", 400);
   const statusWhere = status === "unread" ? { read: false } : status === "read" ? { read: true } : null;
