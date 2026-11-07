@@ -2,6 +2,9 @@ import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
+const BRANCH_ATTENDANCE_OVERVIEW_CACHE_TTL_MS = 15000;
+const branchAttendanceOverviewCache = new Map();
+
 export async function getBranchAttendanceOverview(user, query = {}) {
   const requestedBranchId = String(query.branchId || '').trim();
   let branch;
@@ -24,6 +27,10 @@ export async function getBranchAttendanceOverview(user, query = {}) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date || date > today) {
     throw new AppError("Select a valid date on or before today", 400);
   }
+  const cacheKey = `${branch.id}:${date}`;
+  const cached = branchAttendanceOverviewCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+  if (cached) branchAttendanceOverviewCache.delete(cacheKey);
   const monday = new Date(parsed);
   monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
   const weekStart = monday.toISOString().slice(0, 10);
@@ -42,22 +49,40 @@ export async function getBranchAttendanceOverview(user, query = {}) {
         id: true, studentId: true, studentName: true, courseId: true, courseName: true,
         batchId: true, batchName: true, recordStatus: true, classSchedule: true,
         courseStartDate: true, courseEndDate: true, weeklyOffDay: true,
-        calendarAttendanceRecords: {
-          where: { attendanceDate: { gte: from, lte: date } },
-          select: { attendanceDate: true, status: true, batchId: true, courseId: true },
-        },
       },
     }),
     prisma.branchCalendarHoliday.findMany({ where: { status: "ACTIVE", OR: [{ branchId: branch.id }, { branchId: null }], holidayDate: { gte: from, lte: date } }, select: { holidayDate: true } }),
     prisma.branchCalendarLeave.findMany({ where: { status: "ACTIVE", isInstitute: false, branchId: branch.id, leaveDate: { gte: from, lte: date } }, select: { leaveDate: true, batchId: true } }),
   ]);
+  const attendanceRecords = students.length
+    ? await prisma.branchStudentAttendance.findMany({
+        where: {
+          branchStudentId: { in: students.map((student) => student.id) },
+          attendanceDate: { gte: from, lte: date },
+        },
+        select: { branchStudentId: true, attendanceDate: true, status: true, batchId: true, courseId: true },
+      })
+    : [];
+  const attendanceByStudentId = new Map();
+  attendanceRecords.forEach((record) => {
+    const records = attendanceByStudentId.get(record.branchStudentId) || [];
+    records.push(record);
+    attendanceByStudentId.set(record.branchStudentId, records);
+  });
   const holidayDates = new Set(holidays.map((item) => item.holidayDate));
-  return {
+  const result = {
     branchId: branch.id, date, weekStart, monthStart,
     exclusions: { holidays: [...holidayDates], leaves },
-    students: students.map(({ calendarAttendanceRecords, ...student }) => ({
+    students: students.map((student) => ({
       ...student,
-      records: calendarAttendanceRecords.filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId))),
+      records: (attendanceByStudentId.get(student.id) || [])
+        .filter((record) => !holidayDates.has(record.attendanceDate) && !leaves.some((leave) => leave.leaveDate === record.attendanceDate && (!leave.batchId || leave.batchId === record.batchId)))
+        .map(({ branchStudentId, ...record }) => record),
     })),
   };
+  branchAttendanceOverviewCache.set(cacheKey, {
+    value: result,
+    expiresAt: Date.now() + BRANCH_ATTENDANCE_OVERVIEW_CACHE_TTL_MS,
+  });
+  return result;
 }

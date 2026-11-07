@@ -19,6 +19,10 @@ function currentMinutes() {
   const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
   return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
 }
+function minutesAt(value) {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date(value));
+  return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
+}
 function approvedWindow(record) {
   const isHalfDay = text(record.durationType).toUpperCase() === "HALF_DAY";
   const start = minutes(isHalfDay ? record.halfDayStart : record.permissionStart);
@@ -43,16 +47,19 @@ function latestEndedNeedsLogin(rows, records, nowValue) {
   const ended = records.some(({ window }) => nowValue >= window.end && new Date(latest.loginAt).getTime() < Date.now() && window.end <= nowValue);
   if (!ended) return false;
   const lastEnd = Math.max(...records.filter(({ window }) => nowValue >= window.end).map(({ window }) => window.end));
-  const loginDate = new Date(latest.loginAt);
-  const loginMinute = Number(new Intl.DateTimeFormat("en-GB", { timeZone: TIME_ZONE, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(loginDate).replace(":", "."));
+  const loginMinute = minutesAt(latest.loginAt);
   return loginMinute < lastEnd;
 }
 function dateTimeForMinutes(date, value) { const [year, month, day] = date.split("-").map(Number); const hour = Math.floor(value / 60); const minute = value % 60; return new Date(Date.UTC(year, month - 1, day, hour - 5, minute - 30)); }
 function workingSeconds(rows, records) {
   const now = Date.now();
   return rows.reduce((total, row) => {
-    const start = new Date(row.loginAt).getTime(); const end = row.logoutAt ? new Date(row.logoutAt).getTime() : now;
+    const start = new Date(row.loginAt).getTime(); let end = row.logoutAt ? new Date(row.logoutAt).getTime() : now;
     if (!Number.isFinite(start) || !Number.isFinite(end)) return total;
+    records.forEach(({ window }) => {
+      const pauseEnd = dateTimeForMinutes(row.attendanceDate, window.end).getTime();
+      if (!row.logoutAt && now >= pauseEnd && start < pauseEnd) end = Math.min(end, pauseEnd);
+    });
     let value = Math.max(0, end - start);
     records.forEach(({ window }) => {
       const pauseStart = dateTimeForMinutes(row.attendanceDate, window.start).getTime(); const pauseEnd = dateTimeForMinutes(row.attendanceDate, window.end).getTime();
@@ -238,8 +245,21 @@ export async function facultyAttendanceLogin(user) {
   const state = await getFacultyAttendanceStatus(user);
   if (!state.canLogin) throw new AppError(state.status === "LOGGED_OUT" ? "Attendance day is already closed" : state.status === "ON_PERMISSION" ? "Cannot login during an active interruption" : "Faculty attendance is already logged in", 409);
   const date = today();
+  const existingRows = await sessions(user.id, date);
+  const open = activeSession(existingRows);
+  if (open && state.status === "LOGIN_REQUIRED") {
+    const records = await findApprovedInterruptions(user.id, date);
+    const loginAt = new Date(open.loginAt).getTime();
+    const endedWindows = records
+      .filter(({ window }) => currentMinutes() >= window.end && dateTimeForMinutes(date, window.end).getTime() > loginAt)
+      .sort((left, right) => right.window.end - left.window.end);
+    const pauseEnd = endedWindows[0] ? dateTimeForMinutes(date, endedWindows[0].window.end) : null;
+    if (pauseEnd) {
+      await prisma.facultyAttendanceSession.update({ where: { id: open.id }, data: { logoutAt: pauseEnd, logoutType: "permission_pause", logoutReason: "Permission or half-day completed" } });
+    }
+  }
   const created = await prisma.facultyAttendanceSession.create({ data: { facultyUserId: user.id, attendanceDate: date, loginAt: new Date(), sessionSource: "ATTENDANCE" } });
-  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status: "LOGGED_IN", firstLoginAt: created.loginAt }, update: { status: "LOGGED_IN", firstLoginAt: { set: created.loginAt } } });
+  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status: "LOGGED_IN", firstLoginAt: created.loginAt }, update: { status: "LOGGED_IN" } });
   return getFacultyAttendanceStatus(user, created);
 }
 export async function facultyAttendanceBatches(user) {

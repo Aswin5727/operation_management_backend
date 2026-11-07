@@ -1,0 +1,422 @@
+{
+  "source": "E:\\completed-student-upload-template (1).xlsx",
+  "count": 52,
+  "students": [
+    {
+      "id": "cmw0qlauj00381sgko1izvmdz",
+      "studentId": "CSU20261001",
+      "studentName": "Swathi Chandra",
+      "emailAddress": "student1001@example.com",
+      "mobileNumber": "9850347339",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlbxy003e1sgklnu3u0zl",
+      "studentId": "CSU20261002",
+      "studentName": "Deepika Pillai",
+      "emailAddress": "student1002@example.com",
+      "mobileNumber": "9843599617",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qld6l003l1sgk8ab13pa3",
+      "studentId": "CSU20261003",
+      "studentName": "Aishwarya Reddy",
+      "emailAddress": "student1003@example.com",
+      "mobileNumber": "9688704587",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qle9v003r1sgkz3cm383h",
+      "studentId": "CSU20261004",
+      "studentName": "Rohan Das",
+      "emailAddress": "student1004@example.com",
+      "mobileNumber": "9395580809",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlfd3003x1sgkcyv1q6fv",
+      "studentId": "CSU20261005",
+      "studentName": "Pranav Krishnan",
+      "emailAddress": "student1005@example.com",
+      "mobileNumber": "9594810240",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlgl800441sgklihnjpbv",
+      "studentId": "CSU20261006",
+      "studentName": "Dinesh Shetty",
+      "emailAddress": "student1006@example.com",
+      "mobileNumber": "9500076229",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlhoi004a1sgk4cq7lr3p",
+      "studentId": "CSU20261007",
+      "studentName": "Bharath Iyer",
+      "emailAddress": "student1007@example.com",
+      "mobileNumber": "9327994289",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlixa004h1sgkgxz6r2mh",
+      "studentId": "CSU20261008",
+      "studentName": "Surya Patel",
+      "emailAddress": "student1008@example.com",
+      "mobileNumber": "9475913414",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlkft004o1sgkmq37gh2b",
+      "studentId": "CSU20261009",
+      "studentName": "Madhumitha Das",
+      "emailAddress": "student1009@example.com",
+      "mobileNumber": "9544552837",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qllo9004v1sgk1zm73pbb",
+      "studentId": "CSU20261010",
+      "studentName": "Sneha Das",
+      "emailAddress": "student1010@example.com",
+      "mobileNumber": "9671724398",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlp0000511sgksp1s4iuz",
+      "studentId": "CSU20261011",
+      "studentName": "Manoj Rao",
+      "emailAddress": "student1011@example.com",
+      "mobileNumber": "9342530463",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlq3100571sgkviavys2f",
+      "studentId": "CSU20261012",
+      "studentName": "Nithya Sharma",
+      "emailAddress": "student1012@example.com",
+      "mobileNumber": "9999078081",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlr1d005c1sgki1npd1hp",
+      "studentId": "CSU20261013",
+      "studentName": "Yazhini Krishnan",
+      "emailAddress": "student1013@example.com",
+      "mobileNumber": "9712270604",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qls98005j1sgk2d4yl03h",
+      "studentId": "CSU20261014",
+      "studentName": "Bharath Mohan",
+      "emailAddress": "student1014@example.com",
+      "mobileNumber": "9286261486",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qltm0005q1sgkrpxvfhan",
+      "studentId": "CSU20261015",
+      "studentName": "Sanjay Rao",
+      "emailAddress": "student1015@example.com",
+      "mobileNumber": "9832070952",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlup1005w1sgkxrsva95i",
+      "studentId": "CSU20261016",
+      "studentName": "Ajay Pillai",
+      "emailAddress": "student1016@example.com",
+      "mobileNumber": "9577174085",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlvs200621sgkvj33l02t",
+      "studentId": "CSU20261017",
+      "studentName": "Ashwin Gupta",
+      "emailAddress": "student1017@example.com",
+      "mobileNumber": "9245912067",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlx0000691sgk5flj3ck0",
+      "studentId": "CSU20261018",
+      "studentName": "Lavanya Das",
+      "emailAddress": "student1018@example.com",
+      "mobileNumber": "9719378512",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qly7x006g1sgkunwpi366",
+      "studentId": "CSU20261019",
+      "studentName": "Ashwin Bose",
+      "emailAddress": "student1019@example.com",
+      "mobileNumber": "9157883470",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qlzgc006n1sgklkiyhorw",
+      "studentId": "CSU20261020",
+      "studentName": "Varun Chandra",
+      "emailAddress": "student1020@example.com",
+      "mobileNumber": "9106706342",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm30f006t1sgkkm6l6t2q",
+      "studentId": "CSU20261021",
+      "studentName": "Varun Sharma",
+      "emailAddress": "student1021@example.com",
+      "mobileNumber": "9315938633",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm3yr006y1sgks73ok7vn",
+      "studentId": "CSU20261022",
+      "studentName": "Yazhini Raj",
+      "emailAddress": "student1022@example.com",
+      "mobileNumber": "9961134179",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm56x00751sgkzwpon5jn",
+      "studentId": "CSU20261023",
+      "studentName": "Arjun Bose",
+      "emailAddress": "student1023@example.com",
+      "mobileNumber": "9512444404",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm6a5007b1sgkge756lfh",
+      "studentId": "CSU20261024",
+      "studentName": "Divya Das",
+      "emailAddress": "student1024@example.com",
+      "mobileNumber": "9675415962",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm7dp007h1sgkoh08kwso",
+      "studentId": "CSU20261025",
+      "studentName": "Divya Patel",
+      "emailAddress": "student1025@example.com",
+      "mobileNumber": "9228608673",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm8lv007o1sgk6rzvxk8x",
+      "studentId": "CSU20261026",
+      "studentName": "Nithya Pillai",
+      "emailAddress": "student1026@example.com",
+      "mobileNumber": "9733551786",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qm9lj007t1sgkqbl9503g",
+      "studentId": "CSU20261027",
+      "studentName": "Rahul Patel",
+      "emailAddress": "student1027@example.com",
+      "mobileNumber": "9199955012",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmars007z1sgkhnncewc8",
+      "studentId": "CSU20261028",
+      "studentName": "Manoj Raj",
+      "emailAddress": "student1028@example.com",
+      "mobileNumber": "9912798548",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmbq900841sgkqnmexzuz",
+      "studentId": "CSU20261029",
+      "studentName": "Lavanya Chandra",
+      "emailAddress": "student1029@example.com",
+      "mobileNumber": "9247869002",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmcu9008a1sgk6v1ot0vf",
+      "studentId": "CSU20261030",
+      "studentName": "Aditya Krishnan",
+      "emailAddress": "student1030@example.com",
+      "mobileNumber": "9915735034",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qme850003k4uq20d6hh7h",
+      "studentId": "CSU20261031",
+      "studentName": "Surya Raj",
+      "emailAddress": "student1031@example.com",
+      "mobileNumber": "9660385391",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmexg000ak4uqaxwq6h8x",
+      "studentId": "CSU20261032",
+      "studentName": "Rohan Raj",
+      "emailAddress": "student1032@example.com",
+      "mobileNumber": "9117989763",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmfj6000gk4uqm5n86uex",
+      "studentId": "CSU20261033",
+      "studentName": "Vikram Chandra",
+      "emailAddress": "student1033@example.com",
+      "mobileNumber": "9518686650",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmg6e000nk4uqgofk7y7l",
+      "studentId": "CSU20261034",
+      "studentName": "Pooja Menon",
+      "emailAddress": "student1034@example.com",
+      "mobileNumber": "9334792070",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmhik000tk4uqwka2vj3q",
+      "studentId": "CSU20261035",
+      "studentName": "Aditya Prasad",
+      "emailAddress": "student1035@example.com",
+      "mobileNumber": "9990224531",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmi5m000zk4uqrcsf0dd3",
+      "studentId": "CSU20261036",
+      "studentName": "Priya Das",
+      "emailAddress": "student1036@example.com",
+      "mobileNumber": "9758095881",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmirx0015k4uql9fwmz2e",
+      "studentId": "CSU20261037",
+      "studentName": "Bharath Reddy",
+      "emailAddress": "student1037@example.com",
+      "mobileNumber": "9263751281",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmjbg001ak4uq4gwxu872",
+      "studentId": "CSU20261038",
+      "studentName": "Rithik Patel",
+      "emailAddress": "student1038@example.com",
+      "mobileNumber": "9573727905",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmjxx001gk4uqai2z9ugl",
+      "studentId": "CSU20261039",
+      "studentName": "Sanjay Prasad",
+      "emailAddress": "student1039@example.com",
+      "mobileNumber": "9840429027",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmkh3001lk4uqsufb1gor",
+      "studentId": "CSU20261040",
+      "studentName": "Arjun Mohan",
+      "emailAddress": "student1040@example.com",
+      "mobileNumber": "9885893028",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qml5n001sk4uqiiwr67nh",
+      "studentId": "CSU20261041",
+      "studentName": "Janani Krishnan",
+      "emailAddress": "student1041@example.com",
+      "mobileNumber": "9621821483",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmlxa001yk4uqewvpgo6n",
+      "studentId": "CSU20261042",
+      "studentName": "Vikram Nair",
+      "emailAddress": "student1042@example.com",
+      "mobileNumber": "9186565999",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmml40025k4uq3hz496p9",
+      "studentId": "CSU20261043",
+      "studentName": "Ananya Verma",
+      "emailAddress": "student1043@example.com",
+      "mobileNumber": "9976098590",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmn4j002ak4uqghuwzrbc",
+      "studentId": "CSU20261044",
+      "studentName": "Sanjana Kumar",
+      "emailAddress": "student1044@example.com",
+      "mobileNumber": "9339976858",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmp7j002hk4uqo8p61yks",
+      "studentId": "CSU20261045",
+      "studentName": "Bharath Verma",
+      "emailAddress": "student1045@example.com",
+      "mobileNumber": "9910362209",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmptq002mk4uqm60qgp2h",
+      "studentId": "CSU20261046",
+      "studentName": "Rithik Reddy",
+      "emailAddress": "student1046@example.com",
+      "mobileNumber": "9721969842",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmqi5002sk4uqg6x0p6hw",
+      "studentId": "CSU20261047",
+      "studentName": "Manoj Pillai",
+      "emailAddress": "student1047@example.com",
+      "mobileNumber": "9964786928",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmr8s002zk4uqz2npzrsz",
+      "studentId": "CSU20261048",
+      "studentName": "Vikram Singh",
+      "emailAddress": "student1048@example.com",
+      "mobileNumber": "9538174010",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmrw50035k4uqbhhmg6z1",
+      "studentId": "CSU20261049",
+      "studentName": "Varun Gupta",
+      "emailAddress": "student1049@example.com",
+      "mobileNumber": "9972094352",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmsjw003bk4uqo561a3nk",
+      "studentId": "CSU20261050",
+      "studentName": "Arjun Singh",
+      "emailAddress": "student1050@example.com",
+      "mobileNumber": "9380372359",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmtec003ik4uqbynkbz90",
+      "studentId": "CSU20261051",
+      "studentName": "Swathi Singh",
+      "emailAddress": "student1051@example.com",
+      "mobileNumber": "9358064370",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    },
+    {
+      "id": "cmw0qmu50003pk4uqarz5vvu9",
+      "studentId": "CSU20261052",
+      "studentName": "Aishwarya Reddy",
+      "emailAddress": "student1052@example.com",
+      "mobileNumber": "9352232943",
+      "branchId": "cmvujlacq000p1rafn4xrp9mn"
+    }
+  ]
+}

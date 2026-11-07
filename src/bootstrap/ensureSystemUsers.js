@@ -7,7 +7,7 @@ const SYSTEM_USERS = [
   {
     userCode: "SA-001",
     fullName: "Super Admin",
-    email: "superadmin.manager@cispro.com",
+    email: "opsmgrSA@cisprotraining.com",
     role: USER_ROLES.SUPER_ADMIN,
     password: "superAdmin@cispro123",
   },

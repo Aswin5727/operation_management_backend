@@ -40,4 +40,6 @@ router.post("/", authorize(USER_ROLES.BRANCH_ADMIN), controller.create);
 router.put("/:id", authorize(USER_ROLES.BRANCH_ADMIN), controller.update);
 router.delete("/:id", authorize(USER_ROLES.BRANCH_ADMIN), controller.remove);
 
+ 
 export default router;
+

@@ -476,21 +476,23 @@ export async function sendSalesAdminCredentialsEmail({ to, fullName, salesAdminI
 }
 
 export async function sendStudentCredentialsEmail({ to, fullName, studentCode, temporaryPassword, resetToken, courseName, facultyName, batchName, batchTiming, courses = [] }) {
-  const safeName = escapeHtml(fullName || "Student");
-  const safeCode = escapeHtml(studentCode || "-");
+  // studentTemplate escapes values before inserting them into HTML. Pass raw
+  // values here so ampersands are not double-escaped as &amp;amp;.
+  const safeName = fullName || "Student";
+  const safeCode = studentCode || "-";
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword);
-  const safeEmail = escapeHtml(to || "");
-  const safePassword = escapeHtml(temporaryPassword || "");
+  const safeEmail = to || "";
+  const safePassword = temporaryPassword || "";
 
   const html = studentTemplate({
     fullName: safeName,
     email: safeEmail,
     studentCode: safeCode,
-    courseName: escapeHtml(courseName || ""),
-    facultyName: escapeHtml(facultyName || ""),
-    batchName: escapeHtml(batchName || ""),
-    batchTiming: escapeHtml(batchTiming || ""),
+    courseName: courseName || "",
+    facultyName: facultyName || "",
+    batchName: batchName || "",
+    batchTiming: batchTiming || "",
     courses,
     temporaryPassword: safePassword,
     loginLink,
@@ -853,17 +855,17 @@ export async function sendFacultyBatchAssignmentEmail({
   batches = [],
 }) {
   const loginLink = buildLoginLink();
-  const safeName = escapeHtml(fullName || "Faculty");
-  const safeFacultyId = escapeHtml(facultyId || "");
-  const safeCourseName = escapeHtml(courseName || "");
-  const safeBatchId = escapeHtml(batchId || "");
+  const safeName = fullName || "Faculty";
+  const safeFacultyId = facultyId || "";
+  const safeCourseName = courseName || "";
+  const safeBatchId = batchId || "";
   const normalizedBatches = Array.isArray(batches) ? batches : [];
 
   const batchSummaryLines = normalizedBatches.map((batch, index) => {
-    const label = escapeHtml(batch?.batchName || `Batch ${index + 1}`);
-    const timing = escapeHtml(batch?.batchTiming || "-");
-    const seats = escapeHtml(String(batch?.totalSeats ?? "-"));
-    const status = escapeHtml(String(batch?.status || "ACTIVE"));
+    const label = batch?.batchName || `Batch ${index + 1}`;
+    const timing = batch?.batchTiming || "-";
+    const seats = String(batch?.totalSeats ?? "-");
+    const status = String(batch?.status || "ACTIVE");
     return `${label} | ${timing} | Seats: ${seats} | ${status}`;
   });
 

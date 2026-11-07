@@ -1,12 +1,56 @@
 import ExcelJS from "exceljs";
+import JSZip from "jszip";
 import prisma from "../../config/prisma.js";
 import AppError from "../../common/errors/AppError.js";
 import { resolveBranchId } from "./branchAttendanceReports.repository.js";
 import { applyAcademicImportValues, validateAcademicImportValues } from "./completedStudentAcademicImport.js";
 import { applyPaymentImportValues, validatePaymentImportValues } from "./completedStudentPaymentImport.js";
 import { COMPLETED_STUDENT_COLUMNS } from "./completedStudentReportColumns.js";
-const MAX_ROWS = 100;
+export const MAX_ROWS = 4000;
 const CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+const ACTIVE_IMPORT_STATUSES = ["PENDING", "RUNNING"];
+const ACTIVE_IMPORT_ERROR_MESSAGE = "Another completed-student file is already processing for this branch. Wait until it finishes before uploading another file.";
+
+export async function assertNoActiveCompletedStudentImport(branchId) {
+  if (!branchId) return null;
+  const activeJob = await prisma.completedStudentImportJob.findFirst({
+    where: { branchId, status: { in: ACTIVE_IMPORT_STATUSES } },
+    select: { id: true, status: true, fileName: true, totalRows: true, processedRows: true },
+    orderBy: { createdAt: "asc" },
+  });
+  if (activeJob) throw new AppError(ACTIVE_IMPORT_ERROR_MESSAGE, 409);
+  return null;
+}
+async function loadCompletedStudentWorkbook(buffer) {
+  const workbook = new ExcelJS.Workbook();
+  try {
+    await workbook.xlsx.load(buffer);
+    return workbook;
+  } catch (parseError) {
+    try {
+      const zip = await JSZip.loadAsync(buffer);
+      let repaired = false;
+      const relationshipFiles = Object.keys(zip.files).filter((name) => /^xl\/worksheets\/_rels\/sheet\d+\.xml\.rels$/i.test(name));
+      for (const fileName of relationshipFiles) {
+        const file = zip.file(fileName);
+        if (!file) continue;
+        const xml = await file.async("string");
+        const normalizedXml = xml.replace(/Target=(['"])\/xl\/tables\/([^'"]+)\1/g, "Target=$1../tables/$2$1");
+        if (normalizedXml !== xml) {
+          zip.file(fileName, normalizedXml);
+          repaired = true;
+        }
+      }
+      if (!repaired) throw parseError;
+      const repairedBuffer = await zip.generateAsync({ type: "nodebuffer" });
+      const repairedWorkbook = new ExcelJS.Workbook();
+      await repairedWorkbook.xlsx.load(repairedBuffer);
+      return repairedWorkbook;
+    } catch {
+      throw new AppError("Unable to read this Excel file. Please save it as a valid .xlsx workbook and try again.", 400);
+    }
+  }
+}
 const FIELDS = [...COMPLETED_STUDENT_COLUMNS, ["admissionDate", "Admission Date"]];
 const ALIASES = { admissionfees: "registrationFees", registrationfees: "registrationFees", registrationfee: "registrationFees", contact: "contactNumber", mobilenumber: "contactNumber", email: "emailId", parentname: "parentGuardian", parentguardian: "parentGuardian", parentspousenumber: "parentSpouseNumber", parentspouseno: "parentSpouseNumber", source: "databaseSource", project: "academicProject", academicproject: "academicProject", studentstatus: "studentStatus", dateofadmission: "admissionDate" };
 const clean = (value) => value === null || value === undefined ? "" : String(value instanceof Date ? value.toISOString().slice(0, 10) : value).trim();
@@ -14,7 +58,26 @@ const key = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]/g, "");
 const courseKey = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/).filter(Boolean).sort().join(" ");
 const missing = (value) => !clean(value) || ["-", "N/A"].includes(clean(value).toUpperCase());
 const number = (value) => { if (missing(value)) return null; const parsed = Number(clean(value).replace(/[\u20B9,]/g, "")); return Number.isFinite(parsed) ? parsed : null; };
-const dateInfo = (value) => { const raw = clean(value); if (missing(raw)) return { value: "", invalid: false }; const match = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/); const year = Number(match ? (match[3].length === 2 ? `20${match[3]}` : match[3]) : 0); const parsed = match ? new Date(Date.UTC(year, Number(match[2]) - 1, Number(match[1]))) : new Date(raw); if (Number.isNaN(parsed.getTime())) return { value: "", invalid: true }; if (match && (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== Number(match[2]) - 1 || parsed.getUTCDate() !== Number(match[1]))) return { value: "", invalid: true }; return { value: parsed.toISOString().slice(0, 10), invalid: false }; };
+const DATE_FORMAT_HINT = "Use DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD.";
+const dateInfo = (value) => {
+  if (missing(value)) return { value: "", invalid: false };
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime())
+      ? { value: "", invalid: true }
+      : { value: value.toISOString().slice(0, 10), invalid: false };
+  }
+  // Reject arbitrary strings/numbers; JavaScript accepts ambiguous values such as 2.4.74537.
+  const raw = clean(value);
+  const isoMatch = raw.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})$/);
+  const dmyMatch = raw.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+  if (!isoMatch && !dmyMatch) return { value: "", invalid: true };
+  const year = Number(isoMatch ? isoMatch[1] : dmyMatch[3]);
+  const month = Number(isoMatch ? isoMatch[2] : dmyMatch[2]);
+  const day = Number(isoMatch ? isoMatch[3] : dmyMatch[1]);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (Number.isNaN(parsed.getTime()) || parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return { value: "", invalid: true };
+  return { value: parsed.toISOString().slice(0, 10), invalid: false };
+};
 const date = (value) => dateInfo(value).value;
 const numberInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/[\u20B9,]/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
 const percentageInfo = (value) => { if (missing(value)) return { value: null, invalid: false }; const parsed = Number(clean(value).replace(/%/g, "").replace(/,/g, "")); return { value: Number.isFinite(parsed) ? parsed : null, invalid: !Number.isFinite(parsed) }; };
@@ -40,9 +103,9 @@ function readRows(workbook) {
 }
 function templateColumns() { const columns = FIELDS.map(([, label]) => label).concat(["Assessment-01 Percentage", "Assessment-02 Percentage", "Assessment-03 Percentage"]); for (let index = 1; index <= 3; index += 1) columns.push(`Installment ${index} - Paid Amount`, `Installment ${index} - Pending Amount`, `Installment ${index} - Payment Date`, `Installment ${index} - Mode of Collection`, `Installment ${index} - Receipt Number`); return columns; }
 
-export async function completedStudentTemplate() { const workbook = new ExcelJS.Workbook(); const sheet = workbook.addWorksheet("Completed Student Upload"); const columns = templateColumns(); sheet.addRow(["Completed Student Import Template"]); sheet.addRow(["Use one row per student-course record. Keep header names unchanged; use - only for optional unavailable values."]); sheet.addRow(columns); sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length); sheet.getRow(1).font = { bold: true, size: 16, color: { argb: "FF17345F" } }; sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }; sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF24527A" } }; cell.alignment = { wrapText: true, vertical: "middle" }; }); columns.forEach((column, index) => { sheet.getColumn(index + 1).width = Math.min(28, Math.max(16, column.length + 3)); }); sheet.views = [{ state: "frozen", ySplit: 3 }]; const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-upload-template.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }; }
+export async function completedStudentTemplate() { const workbook = new ExcelJS.Workbook(); const sheet = workbook.addWorksheet("Completed Student Upload"); const columns = templateColumns(); sheet.addRow(["Completed Student Import Template"]); sheet.addRow(["Use one row per student-course record. Keep header names unchanged; use - only for optional unavailable values. Date columns: DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY, or YYYY-MM-DD."]); sheet.addRow(columns); sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length); sheet.getRow(1).font = { bold: true, size: 16, color: { argb: "FF17345F" } }; sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }; sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF24527A" } }; cell.alignment = { wrapText: true, vertical: "middle" }; }); columns.forEach((column, index) => { sheet.getColumn(index + 1).width = Math.min(28, Math.max(16, column.length + 3)); }); sheet.views = [{ state: "frozen", ySplit: 3 }]; const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-upload-template.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }; }
 
-async function buildImportLookup(rows, branchId) {
+export async function buildImportLookup(rows, branchId) {
   const dataRows = rows.map((row) => row?.data || row).filter(Boolean);
   const studentIds = [...new Set(dataRows.map((row) => clean(row.studentId)).filter(Boolean))];
   const courseKeys = [...new Set(dataRows.map((row) => courseKey(row.course)).filter(Boolean))];
@@ -81,7 +144,7 @@ async function context(row, branchId, lookup = null) {
 }
 function columnLabelForError(field) { const match = field.match(/^assessment(\d+)$/); return match ? `Assessment-${String(Number(match[1])).padStart(2, "0")} Percentage` : field; }
 function conditional(data, errors) { const status = key(data.currentStatus); if (status === "collegestudent") { if (missing(data.educationLevel)) errors.push("Education Level is required for College Student."); if (missing(data.educationStatus)) errors.push("Education Status is required for College Student."); if (key(data.educationStatus) === "passedout" && missing(data.passedOutYear)) errors.push("Passed Out Year is required when Education Status is Passed Out."); } if (status === "fresher" && missing(data.passedOutYear)) errors.push("Passed Out Year is required for Fresher."); if (status === "employee" && missing(data.designation)) errors.push("Designation is required for Employee."); if (status === "employee" && missing(data.companyName)) errors.push("Company Name is required for Employee."); }
-async function validate(raw, branchId, seen, { allowMissingContact = false, lookup = null } = {}) {
+export async function validate(raw, branchId, seen, { allowMissingContact = false, lookup = null } = {}) {
   const data = { ...raw };
   const rowNumber = data.__rowNumber;
   delete data.__rowNumber;
@@ -98,12 +161,12 @@ async function validate(raw, branchId, seen, { allowMissingContact = false, look
   const startInfo = dateInfo(data.courseStartingDate);
   const endInfo = dateInfo(data.courseEndingDate);
   const admissionDateInfo = dateInfo(data.admissionDate);
-  if (admissionDateInfo.invalid) errors.push("Admission Date is invalid.");
-  if (startInfo.invalid) errors.push("Course Starting Date is invalid.");
-  if (endInfo.invalid) errors.push("Course Ending Date is invalid.");
+  if (admissionDateInfo.invalid) errors.push(`Admission Date is invalid. ${DATE_FORMAT_HINT}`);
+  if (startInfo.invalid) errors.push(`Course Starting Date is invalid. ${DATE_FORMAT_HINT}`);
+  if (endInfo.invalid) errors.push(`Course Ending Date is invalid. ${DATE_FORMAT_HINT}`);
   if (startInfo.value && endInfo.value && startInfo.value > endInfo.value) errors.push("Course Ending Date cannot be before Course Starting Date.");
   const certificateDateInfo = dateInfo(data.certificateIssuedDate);
-  if (certificateDateInfo.invalid) errors.push("Certificate Issued Date is invalid.");
+  if (certificateDateInfo.invalid) errors.push(`Certificate Issued Date is invalid. ${DATE_FORMAT_HINT}`);
   const numericRules = [
     ["attendance", 0, 100, "Attendance"],
     ["courseFees", 0, null, "Course Fees"],
@@ -138,23 +201,33 @@ async function validate(raw, branchId, seen, { allowMissingContact = false, look
     }
   }
   await validatePaymentImportValues(prisma, student, data, errors, course?.id, lookup);
-  // Allow re-uploading historical rows that were previously stored only on
-  // the student record without a catalog course. This refreshes missing
-  // source, batch, installment and academic values instead of blocking them
-  // as duplicates. Catalog-linked duplicate courses remain protected.
-  const sameCourseAlreadyExists = Boolean(student && ((course && (student.courseId === course.id || student.courseEnrollments.some((item) => item.courseId === course.id))) || (!course && student.courseId && courseKey(student.courseName) === courseKey(data.course))));
+  // A completed import is keyed by student and course. Historical rows may not
+  // have a catalog course ID, so compare the persisted course name as well as
+  // catalog/enrollment IDs to block exact student-course re-uploads.
+  const requestedCourseKey = courseKey(course?.name || data.course);
+  const existingCourseMatches = Boolean(student && requestedCourseKey && (
+    course
+      ? student.courseId === course.id
+        || student.courseEnrollments.some((item) => item.courseId === course.id)
+        || courseKey(student.courseName) === requestedCourseKey
+        || student.courseEnrollments.some((item) => courseKey(item.courseName) === requestedCourseKey)
+      : courseKey(student.courseName) === requestedCourseKey
+        || student.courseEnrollments.some((item) => courseKey(item.courseName) === requestedCourseKey)
+  ));
+  const sameCourseAlreadyExists = Boolean(student && existingCourseMatches);
   if (sameCourseAlreadyExists) errors.push("Duplicate completed student-course record already exists.");
   if (allowMissingContact) {
     for (let index = errors.length - 1; index >= 0; index -= 1) {
       if (/^(Contact Number|Email ID) is missing\./i.test(errors[index])) errors.splice(index, 1);
     }
   }
-  // Historical imports use only row-level validation. Existing branch records\n  // must not make an old completed row invalid.
+  // Historical imports use row-level validation. Existing student-course rows
+  // are intentionally rejected so the same completed data cannot be imported twice.
   return { rowNumber, data: { ...data, admissionDate: admissionDateInfo.value, courseStartingDate: startInfo.value, courseEndingDate: endInfo.value, certificateIssuedDate: certificateDateInfo.value }, valid: errors.length === 0, errors, warnings, studentId: clean(data.studentId), courseName: course?.name || clean(data.course) };
 }
-export async function previewCompletedStudentImport({ buffer, user }) { if (!buffer?.length) throw new AppError("Please choose an .xlsx file.", 400); const workbook = new ExcelJS.Workbook(); await workbook.xlsx.load(buffer); const rows = readRows(workbook); if (!rows.length) throw new AppError("The workbook has no data rows.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); const lookup = await buildImportLookup(rows, branchId); const seen = new Map(); const validated = []; for (const row of rows) validated.push(await validate(row, branchId, seen, { lookup })); return { maxRows: MAX_ROWS, totalRows: validated.length, validRows: validated.filter((row) => row.valid).length, invalidRows: validated.filter((row) => !row.valid).length, warningRows: validated.filter((row) => row.warnings?.length).length, rows: validated }; }
+export async function previewCompletedStudentImport({ buffer, user }) { if (!buffer?.length) throw new AppError("Please choose an .xlsx file.", 400); const workbook = await loadCompletedStudentWorkbook(buffer); const rows = readRows(workbook); if (!rows.length) throw new AppError("The workbook has no data rows.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); await assertNoActiveCompletedStudentImport(branchId); const lookup = await buildImportLookup(rows, branchId); const seen = new Map(); const validated = []; for (const row of rows) validated.push(await validate(row, branchId, seen, { lookup })); return { maxRows: MAX_ROWS, totalRows: validated.length, validRows: validated.filter((row) => row.valid).length, invalidRows: validated.filter((row) => !row.valid).length, warningRows: validated.filter((row) => row.warnings?.length).length, rows: validated }; }
 function optional(data, field, current) { return missing(data[field]) ? current : clean(data[field]); }
-async function apply(tx, row, branchId, user, lookup = null) {
+export async function apply(tx, row, branchId, user, lookup = null) {
   const data = row.data;
   const isDiscontinued = ["discontinued", "discontinuedstudent", "discontinuedstudents"].includes(key(data.studentStatus));
   let student = lookup ? lookup.studentsByStudentId.get(clean(data.studentId)) || null : await tx.branchStudent.findFirst({ where: { branchId, studentId: clean(data.studentId) }, include: { courseEnrollments: true } });
@@ -180,7 +253,13 @@ async function apply(tx, row, branchId, user, lookup = null) {
     educationStatus: optional(data, 'educationStatus', student?.educationStatus),
     linkedInUrl: optional(data, 'linkedInUrl', student?.linkedInUrl),
     source: optional(data, 'databaseSource', optional(data, 'source', student?.source)),
-    importedAcademicResults: Object.fromEntries(Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value)).map(([field, value]) => [field, percentageInfo(value).value])),
+    importedAcademicResults: {
+      ...Object.fromEntries(Object.entries(data).filter(([field, value]) => (/^assessment\d+$/.test(field) || field === "academicProject") && !missing(value)).map(([field, value]) => [field, percentageInfo(value).value])),
+      // Preserve the lifecycle explicitly for historical uploads that do not
+      // resolve to a catalog course/enrollment. The lifecycle endpoint uses
+      // this marker to show these rows in Completed/Discontinued Students.
+      __importedLifecycleStatus: isDiscontinued ? "DISCONTINUED" : "COMPLETED",
+    },
     remarks: optional(data, 'remarks', student?.remarks),
     updatedBy: user?.id || null,
   };
@@ -244,23 +323,90 @@ async function apply(tx, row, branchId, user, lookup = null) {
   await applyPaymentImportValues(tx, student, branchId, course?.id, data, lookup);
   return { studentId: student.studentId, course: course?.name || clean(data.course), primaryCourse: isPrimaryCourse };
 }
-export async function importCompletedStudents({ rows, user, dryRun = false, allowMissingContact = false }) { if (!Array.isArray(rows) || !rows.length) throw new AppError("No rows were selected for import.", 400); if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400); const branchId = await resolveBranchId(user); const lookup = await buildImportLookup(rows, branchId); const seen = new Map(); const checked = []; for (const row of rows) checked.push(await validate({ ...(row.data || row), __rowNumber: row.rowNumber }, branchId, seen, { allowMissingContact, lookup })); const invalid = checked.filter((row) => !row.valid); if (invalid.length) return { importedRows: 0, validRows: checked.length - invalid.length, invalidRows: invalid.length, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, message: "Import stopped. Fix all validation errors and revalidate before importing." }; if (dryRun) return { importedRows: 0, validRows: checked.length, invalidRows: 0, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, message: "Validation passed." }; const imported = await prisma.$transaction(async (tx) => { const result = []; for (const row of checked) result.push(await apply(tx, row, branchId, user, lookup)); return result; }, { maxWait: 15000, timeout: 120000 }); return { importedRows: imported.length, invalidRows: 0, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, imported }; }
+const LEGACY_IMPORT_BATCH_SIZE = 10;
+const IMPORT_TRANSACTION_OPTIONS = { maxWait: 30000, timeout: 120000 };
+
+export async function importCompletedStudents({ rows, user, dryRun = false, allowMissingContact = false }) {
+  if (!Array.isArray(rows) || !rows.length) throw new AppError("No rows were selected for import.", 400);
+  if (rows.length > MAX_ROWS) throw new AppError(`Only ${MAX_ROWS} records can be imported at a time.`, 400);
+  const branchId = await resolveBranchId(user);
+  await assertNoActiveCompletedStudentImport(branchId);
+  const lookup = await buildImportLookup(rows, branchId);
+  const seen = new Map();
+  const checked = [];
+  for (const row of rows) checked.push(await validate({ ...(row.data || row), __rowNumber: row.rowNumber }, branchId, seen, { allowMissingContact, lookup }));
+  const invalid = checked.filter((row) => !row.valid);
+  if (invalid.length) return { importedRows: 0, validRows: checked.length - invalid.length, invalidRows: invalid.length, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, message: "Import stopped. Fix all validation errors and revalidate before importing." };
+  if (dryRun) return { importedRows: 0, validRows: checked.length, invalidRows: 0, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, message: "Validation passed." };
+
+  // Keep the legacy endpoint safe for older clients that still call /import.
+  // It uses the same bounded batches as the background job instead of holding
+  // all rows in one interactive transaction.
+  const imported = [];
+  const failed = [];
+  for (let offset = 0; offset < checked.length; offset += LEGACY_IMPORT_BATCH_SIZE) {
+    const batch = checked.slice(offset, offset + LEGACY_IMPORT_BATCH_SIZE);
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        const values = [];
+        for (const row of batch) values.push(await apply(tx, row, branchId, user, lookup));
+        return values;
+      }, IMPORT_TRANSACTION_OPTIONS);
+      imported.push(...result);
+    } catch (batchError) {
+      // Preserve partial success and isolate a bad/slow row so one record does
+      // not roll back the other valid rows in the same upload.
+      for (const row of batch) {
+        try {
+          const value = await prisma.$transaction((tx) => apply(tx, row, branchId, user, null), IMPORT_TRANSACTION_OPTIONS);
+          imported.push(value);
+        } catch (rowError) {
+          failed.push({ rowNumber: row.rowNumber, errors: [String(rowError?.message || batchError?.message || "Unable to save this row.").slice(0, 500)] });
+        }
+      }
+    }
+  }
+  return { importedRows: imported.length, failedRows: failed.length, invalidRows: failed.length, warningRows: checked.filter((row) => row.warnings?.length).length, rows: checked, failed, imported, message: failed.length ? "Import completed with errors. Download the failed rows and retry them." : "Import completed." };
+}
+function importFieldLabel(field) {
+  const known = FIELDS.find(([name]) => name === field)?.[1]
+  if (known) return known
+  const assessment = field.match(/^assessment(\d+)$/)
+  if (assessment) return `Assessment-${String(Number(assessment[1])).padStart(2, "0")} Percentage`
+  const installment = field.match(/^installment(\d+)(.+)$/)
+  if (installment) {
+    const labels = { paidamount: "Paid Amount", pendingamount: "Pending Amount", paymentdate: "Payment Date", modeofcollection: "Mode of Collection", mode: "Mode of Collection", receiptnumber: "Receipt Number", receiptno: "Receipt Number" }
+    return `Installment ${installment[1]} - ${labels[installment[2].toLowerCase()] || installment[2]}`
+  }
+  return field
+}
 
 export async function completedStudentFailedRowsReport({ rows = [] }) {
-  const failedRows = rows.filter((row) => !row?.valid || row?.errors?.length);
-  if (!failedRows.length) throw new AppError("There are no invalid rows to download.", 400);
-  const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet("Import Errors");
-  const columns = ["Row Number", "Student ID", "Student Name", "Course", "Validation Status", "Error Reason"];
-  sheet.addRow(["Completed Student Import - Failed Rows"]);
-  sheet.addRow(["Fix these rows and upload the corrected records again."]);
-  sheet.addRow(columns);
-  sheet.mergeCells(1, 1, 1, columns.length); sheet.mergeCells(2, 1, 2, columns.length);
-  sheet.getRow(1).font = { bold: true, size: 15, color: { argb: "FF17345F" } };
-  sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } };
-  sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFB42318" } }; cell.alignment = { wrapText: true }; });
-  failedRows.forEach((row) => sheet.addRow([row.rowNumber, row.data?.studentId || row.studentId || "-", row.data?.studentName || "-", row.data?.course || row.courseName || "-", "Invalid", (row.errors || ["Validation failed"]).join(" | ")]));
-  sheet.eachRow((row, rowNumber) => { if (rowNumber >= 4) row.eachCell((cell) => { cell.alignment = { vertical: "top", wrapText: true }; cell.border = { top: { style: "thin", color: { argb: "FFD0D5DD" } }, bottom: { style: "thin", color: { argb: "FFD0D5DD" } }, left: { style: "thin", color: { argb: "FFD0D5DD" } }, right: { style: "thin", color: { argb: "FFD0D5DD" } } }; }); });
-  [12, 22, 25, 22, 18, 80].forEach((width, index) => { sheet.getColumn(index + 1).width = width; }); sheet.views = [{ state: "frozen", ySplit: 3 }];
-  const buffer = await workbook.xlsx.writeBuffer(); return { fileName: "completed-student-import-errors.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) };
+  const failedRows = rows.filter((row) => !row?.valid || row?.errors?.length)
+  if (!failedRows.length) throw new AppError("There are no invalid rows to download.", 400)
+  const workbook = new ExcelJS.Workbook()
+  const sheet = workbook.addWorksheet("Import Errors")
+  const baseFields = FIELDS.map(([name]) => name)
+  const assessmentFields = ["assessment01", "assessment02", "assessment03"]
+  const installmentFields = Array.from({ length: 10 }, (_, index) => {
+    const number = index + 1
+    return ["paidamount", "pendingamount", "paymentdate", "modeofcollection", "receiptnumber"].map((suffix) => `installment${number}${suffix}`)
+  }).flat()
+  const extraFields = [...new Set(failedRows.flatMap((row) => Object.keys(row.data || {})).filter((field) => field && field !== "__rowNumber"))]
+  const fields = [...new Set([...baseFields, ...assessmentFields, ...installmentFields, ...extraFields])]
+  const columns = ["Row Number", ...fields.map(importFieldLabel), "Validation Status", "Error Reason"]
+  sheet.addRow(["Completed Student Import - Failed Rows"])
+  sheet.addRow(["The original row data is preserved. Fix the error reason column and upload the corrected rows again."])
+  sheet.addRow(columns)
+  sheet.mergeCells(1, 1, 1, columns.length)
+  sheet.mergeCells(2, 1, 2, columns.length)
+  sheet.getRow(1).font = { bold: true, size: 15, color: { argb: "FF17345F" } }
+  sheet.getRow(2).font = { italic: true, color: { argb: "FF64748B" } }
+  sheet.getRow(3).eachCell((cell) => { cell.font = { bold: true, color: { argb: "FFFFFFFF" } }; cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFB42318" } }; cell.alignment = { wrapText: true, vertical: "middle" } })
+  failedRows.forEach((row) => sheet.addRow([row.rowNumber, ...fields.map((field) => row.data?.[field] ?? ""), "Invalid", (row.errors || ["Validation failed"]).join(" | ")]))
+  sheet.eachRow((row, rowNumber) => { if (rowNumber >= 4) row.eachCell((cell) => { cell.alignment = { vertical: "top", wrapText: true }; cell.border = { top: { style: "thin", color: { argb: "FFD0D5DD" } }, bottom: { style: "thin", color: { argb: "FFD0D5DD" } }, left: { style: "thin", color: { argb: "FFD0D5DD" } }, right: { style: "thin", color: { argb: "FFD0D5DD" } } } }) })
+  columns.forEach((column, index) => { sheet.getColumn(index + 1).width = index === columns.length - 1 ? 80 : Math.min(30, Math.max(14, String(column).length + 2)) })
+  sheet.views = [{ state: "frozen", ySplit: 3 }]
+  const buffer = await workbook.xlsx.writeBuffer()
+  return { fileName: "completed-student-import-errors.xlsx", contentType: CONTENT_TYPE, buffer: Buffer.from(buffer) }
 }

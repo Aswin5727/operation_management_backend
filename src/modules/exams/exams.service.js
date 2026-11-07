@@ -35,13 +35,23 @@ async function batchCourseAndAcademicCompletion(batchId, cache = new Map()) {
       select: { id: true, branchId: true, batchId: true, courseId: true, courseProgress: true, courseEnrollments: { where: { status: "ACTIVE", batchId: { in: [batch.id, batch.batchId] } }, select: { batchId: true, courseId: true, courseProgress: true } } },
     });
     if (!students.length) return false;
-    const [reportSchedules, sentReportShares] = await Promise.all([
+    const [reportSchedules, sentReportShares, academicItems, syllabusExams, syllabusAssessments] = await Promise.all([
       prisma.academicScheduledTest.findMany({ where: { branchBatchId: batch.id, isRetest: false, status: { not: "CANCELLED" } }, select: { id: true, academicTestItemId: true, questionPaperId: true } }),
-      prisma.facultyReportShare.findMany({ where: { batchId: batch.id, reportType: "ACADEMIC_TEST", status: "SENT" }, select: { academicTestIds: true } }),
+      prisma.facultyReportShare.findMany({ where: { batchId: batch.id, status: "SENT", OR: [{ batchCycleId: cycle.id }, { batchCycleId: null }] }, select: { academicTestIds: true, testModuleIds: true, assessmentModuleIds: true } }),
+      prisma.academicTestItem.findMany({ where: { academicTest: { branchCourseId: batch.branchCourseId, batches: { some: { branchBatchId: batch.id } } } }, select: { id: true, testType: true } }),
+      prisma.exam.findMany({ where: { schedules: { some: { branchBatchId: batch.id, batchCycleId: cycle.id } }, status: { not: "CANCELLED" } }, select: { moduleId: true } }),
+      prisma.assessment.findMany({ where: { branchBatchId: batch.id, batchCycleId: cycle.id }, select: { moduleId: true } }),
     ]);
     const sentReportIds = new Set(sentReportShares.flatMap((share) => Array.isArray(share.academicTestIds) ? share.academicTestIds : []).filter(Boolean));
-    const allAcademicReportsSent = reportSchedules.length > 0 && reportSchedules.every((schedule) => sentReportIds.has(schedule.id));
+    const scheduledItemIds = new Set(reportSchedules.map((schedule) => schedule.academicTestItemId));
+    const allAcademicItemsScheduled = academicItems.every((item) => scheduledItemIds.has(item.id));
+    const allAcademicReportsSent = allAcademicItemsScheduled && reportSchedules.every((schedule) => sentReportIds.has(schedule.id));
     if (!allAcademicReportsSent) return false;
+    const sentTestModules = new Set(sentReportShares.flatMap((share) => Array.isArray(share.testModuleIds) ? share.testModuleIds : []).filter(Boolean));
+    const sentAssessmentModules = new Set(sentReportShares.flatMap((share) => Array.isArray(share.assessmentModuleIds) ? share.assessmentModuleIds : []).filter(Boolean));
+    const allSyllabusReportsSent = [...new Set(syllabusExams.map((exam) => exam.moduleId).filter(Boolean))].every((moduleId) => sentTestModules.has(moduleId))
+      && [...new Set(syllabusAssessments.map((assessment) => assessment.moduleId).filter(Boolean))].every((moduleId) => sentAssessmentModules.has(moduleId));
+    if (!allSyllabusReportsSent) return false;
     const allSchedules = await prisma.academicScheduledTest.findMany({
       where: { branchBatchId: batch.id, status: { not: "CANCELLED" } },
       select: { id: true, academicTestItemId: true, questionPaperId: true, isRetest: true, originalScheduleId: true, parentScheduleId: true },
@@ -747,7 +757,6 @@ export async function submitAssessment(user, assessmentId, payload = {}, files =
   if (isAssessmentCancelled(item)) throw new AppError("This assessment has been cancelled and cannot be submitted.", 403);
   if (assessmentStatus(item) !== "ACTIVE") throw new AppError("This assessment is outside its submission window.", 403);
   if (!text(payload.response)) throw new AppError("Assessment response is required.", 422);
-  if (!files?.length) throw new AppError("Attached screenshot is required.", 422);
   const existing = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } });
   if (existing?.submittedAt) throw new AppError("Duplicate submission is not allowed.", 409);
   await fs.mkdir(assessmentUploadRoot, { recursive: true });
@@ -759,7 +768,7 @@ export async function submitAssessment(user, assessmentId, payload = {}, files =
     attachments.push({ url: `/exams/student/assessments/submissions/${fileName}/screenshot`, fileName: file.originalname, mimeType: file.mimetype });
   }
   const first = attachments[0];
-  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: first.url, screenshotFileName: JSON.stringify(attachments), screenshotMimeType: "application/json", submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
+  return prisma.assessmentSubmission.upsert({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } }, create: { assessmentId, branchStudentId: student.id, response: text(payload.response), screenshotUrl: first?.url || null, screenshotFileName: attachments.length ? JSON.stringify(attachments) : null, screenshotMimeType: attachments.length ? "application/json" : null, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" }, update: { response: text(payload.response), screenshotUrl: first?.url || null, screenshotFileName: attachments.length ? JSON.stringify(attachments) : null, screenshotMimeType: attachments.length ? "application/json" : null, submittedAt: new Date(), status: "SUBMITTED", evaluationStatus: "Pending" } });
 }
 export async function getStudentAssessmentSubmission(user, assessmentId) { const { student, item } = await studentAssessment(user, assessmentId); const row = await prisma.assessmentSubmission.findUnique({ where: { assessmentId_branchStudentId: { assessmentId, branchStudentId: student.id } } }); return row ? { ...row, screenshotUrls: submissionAttachments(row), percentage: row.marksObtained != null ? (row.marksObtained / item.totalMarks) * 100 : null } : null; }
 
