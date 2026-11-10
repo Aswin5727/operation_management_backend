@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { assignBranchAccess, createUserRoleAccount, listAdminChangeHistory, listBranchAccessUsers, replaceBranchAdmin, requestEmailChange, verifyEmailChange } from "./userRoleManagement.service.js";
+import { assignBranchAccess, createUserRoleAccount, listAdminChangeHistory, listBranchAccessUsers, listUserChangeHistory, replaceBranchAdmin, requestEmailChange, verifyEmailChange } from "./userRoleManagement.service.js";
 
 const createUserRoleAccountHandler = asyncHandler(async (req, res) => {
   const data = await createUserRoleAccount(req.body || {}, req.auth || {});
@@ -32,4 +32,7 @@ const verifyEmailChangeHandler = asyncHandler(async (req, res) => {
 const listAdminChangeHistoryHandler = asyncHandler(async (req, res) => {
   res.status(200).json({ data: await listAdminChangeHistory(req.params.branchId) });
 });
-export { assignBranchAccessHandler, createUserRoleAccountHandler, listAdminChangeHistoryHandler, listBranchAccessUsersHandler, replaceBranchAdminHandler, requestEmailChangeHandler, verifyEmailChangeHandler };
+const listUserChangeHistoryHandler = asyncHandler(async (req, res) => {
+  res.status(200).json({ data: await listUserChangeHistory(req.params.userId) });
+});
+export { assignBranchAccessHandler, createUserRoleAccountHandler, listAdminChangeHistoryHandler, listBranchAccessUsersHandler, listUserChangeHistoryHandler, replaceBranchAdminHandler, requestEmailChangeHandler, verifyEmailChangeHandler };

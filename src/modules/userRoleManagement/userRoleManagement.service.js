@@ -307,13 +307,17 @@ export async function verifyEmailChange(token) {
     const duplicate = await tx.user.findFirst({ where: { id: { not: request.userId }, email: { equals: request.newEmail, mode: "insensitive" } }, select: { id: true } });
     if (duplicate) throw new AppError("Email address is already in use", 409);
     const branch = await tx.branch.findUnique({ where: { adminUserId: request.userId }, select: { id: true, branchEmail: true, branchName: true } });
+    const assignedBranches = request.user.role === "SALES_ADMIN"
+      ? await tx.salesAdminBranch.findMany({ where: { salesAdminId: request.userId }, select: { branch: { select: { id: true, branchName: true } } } })
+      : [];
     const user = await tx.user.update({ where: { id: request.userId }, data: { email: request.newEmail, ...(request.temporaryPasswordHash ? { passwordHash: request.temporaryPasswordHash, passwordChangedAt: null } : {}), refreshTokenVersion: { increment: 1 }, updatedBy: request.userId }, select: { id: true, fullName: true, email: true, role: true } });
     if (branch) await tx.branch.update({ where: { id: branch.id }, data: { branchEmail: request.newEmail, updatedBy: request.userId } });
     await tx.emailChangeVerification.update({ where: { id: request.id }, data: { verifiedAt: new Date() } });
     await tx.passwordResetToken.deleteMany({ where: { userId: request.userId, usedAt: null, createdBy: "EMAIL_CHANGE" } });
     await tx.passwordResetToken.create({ data: { userId: request.userId, tokenHash: verifiedResetTokenHash, expiresAt: verifiedResetExpiresAt, createdBy: "EMAIL_CHANGE" } });
-    if (branch) await tx.adminChangeHistory.create({ data: { branchId: branch.id, previousAdminId: request.userId, newAdminId: request.userId, oldEmail: request.oldEmail, newEmail: request.newEmail, operationType: "EMAIL_VERIFIED", changedBy: request.createdBy, metadata: { verified: true } } });
-    return { user, branch };
+    const historyBranches = branch ? [{ id: branch.id, branchName: branch.branchName }] : assignedBranches.map(({ branch: assignedBranch }) => assignedBranch);
+    if (historyBranches.length) await tx.adminChangeHistory.createMany({ data: historyBranches.map((historyBranch) => ({ branchId: historyBranch.id, previousAdminId: request.userId, newAdminId: request.userId, oldEmail: request.oldEmail, newEmail: request.newEmail, operationType: "EMAIL_VERIFIED", changedBy: request.createdBy, metadata: { verified: true, accountRole: request.user.role } })) });
+    return { user, branch: branch || historyBranches[0] || null };
   });
   void createNotification({ kind: "EMAIL_CHANGED", tone: "green", title: "Email Address Updated", message: `Your CISPRO login email is now ${result.user.email}.`, actionLabel: "View Account", targetUserId: result.user.id, targetBranchId: result.branch?.id, targetBranchName: result.branch?.branchName }).catch((error) => console.warn("Email change notification failed", error));
   return { verified: true, email: result.user.email, resetToken: verifiedResetToken };
@@ -331,4 +335,25 @@ export async function listAdminChangeHistory(branchRecordId) {
       changedByUser: { select: { id: true, userCode: true, fullName: true, email: true } },
     },
   });
+}
+
+export async function listUserChangeHistory(userId) {
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, role: true, managedBranch: { select: { id: true } }, salesAdminBranches: { select: { branchId: true } } } });
+  if (!user || !["BRANCH_ADMIN", "SALES_ADMIN"].includes(user.role)) throw new AppError("Administrator account not found", 404);
+  const branchIds = [user.managedBranch?.id, ...user.salesAdminBranches.map(({ branchId }) => branchId)].filter(Boolean);
+  const history = await prisma.adminChangeHistory.findMany({
+    where: { OR: [{ previousAdminId: userId }, { newAdminId: userId }, ...(branchIds.length ? [{ branchId: { in: branchIds } }] : [])] },
+    orderBy: { createdAt: "desc" },
+    include: { previousAdmin: { select: { id: true, userCode: true, fullName: true, email: true } }, newAdmin: { select: { id: true, userCode: true, fullName: true, email: true } }, changedByUser: { select: { id: true, userCode: true, fullName: true, email: true } } },
+  });
+  const verifiedEmailChanges = await prisma.emailChangeVerification.findMany({
+    where: { userId, verifiedAt: { not: null } },
+    select: { id: true, oldEmail: true, newEmail: true, verifiedAt: true, createdAt: true },
+    orderBy: { verifiedAt: "desc" },
+  });
+  const recordedEmailChanges = new Set(history.filter((item) => item.operationType === "EMAIL_VERIFIED").map((item) => `${item.oldEmail}|${item.newEmail}`));
+  const legacyEmailHistory = verifiedEmailChanges
+    .filter((item) => !recordedEmailChanges.has(`${item.oldEmail}|${item.newEmail}`))
+    .map((item) => ({ id: `email-change-${item.id}`, operationType: "EMAIL_VERIFIED", status: "COMPLETED", oldEmail: item.oldEmail, newEmail: item.newEmail, createdAt: item.verifiedAt || item.createdAt }));
+  return [...history, ...legacyEmailHistory].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
