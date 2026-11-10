@@ -40,9 +40,9 @@ async function withDatabaseRetry(operation, attempts = 3) {
   throw lastError;
 }
 
-async function resolveBranches(values) {
+async function resolveBranches(values, options = {}) {
   const ids = [...new Set((Array.isArray(values) ? values : []).map(clean).filter(Boolean))];
-  if (!ids.length) throw new AppError("Select at least one branch", 400);
+  if (!ids.length) { if (options.allowEmpty) return []; throw new AppError("Select at least one branch", 400); }
   const branches = await prisma.branch.findMany({ where: { OR: ids.flatMap((id) => [{ id }, { branchId: id }]) }, select: { id: true, branchId: true, branchName: true, status: true } });
   const found = new Set(branches.flatMap((branch) => [branch.id, branch.branchId]));
   if (ids.some((id) => !found.has(id))) throw new AppError("One or more selected branches are invalid", 400);
@@ -66,7 +66,9 @@ async function nextSalesAdminId(client = prisma) {
 async function createSalesAdmin(payload, auth) {
   const fullName = required(payload.fullName || payload.name, "Sales Admin name");
   if (!/^[\p{L}][\p{L} .'-]*$/u.test(fullName)) throw new AppError("Sales Admin name contains invalid characters", 400);
-  const email = emailValue(payload.email); const phone = phoneValue(payload.phone); const country = clean(payload.country) || null; const state = clean(payload.state) || null; const city = clean(payload.city) || null; const address = clean(payload.address) || null; const branches = await resolveBranches(payload.branchIds || payload.branches);
+  const email = emailValue(payload.email); const phone = phoneValue(payload.phone); const country = clean(payload.country) || null; const state = clean(payload.state) || null; const city = clean(payload.city) || null; const address = clean(payload.address) || null; const branches = await resolveBranches(payload.branchIds || payload.branches, { allowEmpty: payload.allowUnassigned === true });
+  const requestedSalesAdminId = clean(payload.salesAdminId || payload.userCode).toUpperCase();
+  if (requestedSalesAdminId && !/^CISSALES\d{3,}$/.test(requestedSalesAdminId)) throw new AppError("Sales Admin ID must use the format CISSALES001", 400);
   const status = clean(payload.status || "ACTIVE").toUpperCase();
   if (!["ACTIVE", "INACTIVE"].includes(status)) throw new AppError("Status must be Active or Inactive", 400);
   const temporaryPassword = `${crypto.randomBytes(9).toString("base64url")}Aa1!`;
@@ -74,7 +76,9 @@ async function createSalesAdmin(payload, auth) {
     const duplicate = await tx.user.findFirst({ where: { OR: [{ email: { equals: email, mode: "insensitive" } }, { phone }] }, select: { email: true, phone: true } });
     if (duplicate?.email?.toLowerCase() === email) throw new AppError("Email address is already in use", 409);
     if (duplicate?.phone === phone) throw new AppError("Phone number is already in use", 409);
-    const salesAdminId = await nextSalesAdminId(tx);
+    const salesAdminId = requestedSalesAdminId || await nextSalesAdminId(tx);
+    const duplicateUserCode = await tx.user.findUnique({ where: { userCode: salesAdminId }, select: { id: true } });
+    if (duplicateUserCode) throw new AppError("Sales Admin ID is already in use", 409);
     return tx.user.create({ data: { userCode: salesAdminId, fullName, email, phone, country, state, city, address, role: "SALES_ADMIN", active: status === "ACTIVE", passwordHash: await hashPassword(temporaryPassword), passwordChangedAt: null, createdBy: auth.userId, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
   });
   try { const token = await issueResetToken(user.id, "CREDENTIAL_EMAIL"); await sendSalesAdminCredentialsEmail({ to: email, fullName, salesAdminId: user.userCode, temporaryPassword, branchNames: branches.map((branch) => branch.branchName), resetToken: token }); } catch (error) { await prisma.user.delete({ where: { id: user.id } }); throw new AppError("Account was not created because the activation email could not be sent", error?.status || 502); }
