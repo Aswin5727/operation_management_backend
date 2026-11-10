@@ -9,8 +9,8 @@ const createUserRoleAccountHandler = asyncHandler(async (req, res) => {
 
 
 
-const listBranchAccessUsersHandler = asyncHandler(async (_req, res) => {
-  res.status(200).json({ data: await listBranchAccessUsers() });
+const listBranchAccessUsersHandler = asyncHandler(async (req, res) => {
+  res.status(200).json({ data: await listBranchAccessUsers(req.query.accountType) });
 });
 
 const assignBranchAccessHandler = asyncHandler(async (req, res) => {
