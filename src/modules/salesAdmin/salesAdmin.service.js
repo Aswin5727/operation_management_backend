@@ -282,7 +282,21 @@ function dateOnlyKey(value) {
 
 async function getDashboard(userId, query = {}, auth = {}) {
   let profile;
-  if (String(auth.role || "").toUpperCase() === "SALES_ADMIN") {
+  if (String(auth.role || "").toUpperCase() === "SUPER_ADMIN") {
+    const salesBranchId = clean(query.salesBranchId);
+    if (!salesBranchId) throw new AppError("Sales Admin context is required", 400);
+    const targetSalesAdmin = await prisma.user.findFirst({
+      where: {
+        role: "SALES_ADMIN",
+        active: true,
+        salesAdminBranches: { some: { branchId: salesBranchId } },
+      },
+      select: { id: true },
+    });
+    if (!targetSalesAdmin) throw new AppError("No active Sales Admin is assigned to this branch", 404);
+    userId = targetSalesAdmin.id;
+    profile = await getSalesAdminProfile(userId);
+  } else if (String(auth.role || "").toUpperCase() === "SALES_ADMIN") {
     profile = await getSalesAdminProfile(userId);
   } else if (
     String(auth.role || "").toUpperCase() === "BRANCH_ADMIN"

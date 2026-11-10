@@ -11,7 +11,7 @@ router.patch("/:id", authenticate, authorize("SUPER_ADMIN"), updateSalesAdminHan
 router.delete("/:id", authenticate, authorize("SUPER_ADMIN"), deleteSalesAdminHandler);
 router.get("/me", authenticate, authorize("SALES_ADMIN"), profileHandler);
 router.put("/me", authenticate, authorize("SALES_ADMIN"), updateProfileHandler);
-router.get("/dashboard", authenticate, authorize("SALES_ADMIN", "BRANCH_ADMIN"), authorizeSalesAccess, dashboardHandler);
+router.get("/dashboard", authenticate, authorize("SALES_ADMIN", "BRANCH_ADMIN", "SUPER_ADMIN"), authorizeSalesAccess, dashboardHandler);
 const salesAdmissionAccess = [authenticate, authorize("SALES_ADMIN", "BRANCH_ADMIN", "SUPER_ADMIN"), authorizeSalesAccess];
 router.get("/admissions", ...salesAdmissionAccess, admissionsHandler);
 router.get("/admissions/students/:studentId/fee-details", ...salesAdmissionAccess, studentFeeDetailsHandler);
