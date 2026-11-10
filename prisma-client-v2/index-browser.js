@@ -200,6 +200,35 @@ exports.Prisma.SalesAdminBranchScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.EmailChangeVerificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  oldEmail: 'oldEmail',
+  newEmail: 'newEmail',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  temporaryPasswordHash: 'temporaryPasswordHash',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AdminChangeHistoryScalarFieldEnum = {
+  id: 'id',
+  branchId: 'branchId',
+  previousAdminId: 'previousAdminId',
+  newAdminId: 'newAdminId',
+  previousAccountType: 'previousAccountType',
+  newAccountType: 'newAccountType',
+  oldEmail: 'oldEmail',
+  newEmail: 'newEmail',
+  changedBy: 'changedBy',
+  operationType: 'operationType',
+  status: 'status',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.LoginEventScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1815,7 +1844,10 @@ exports.NotificationKind = exports.$Enums.NotificationKind = {
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
   SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
   CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED',
-  LEAD_DELETED: 'LEAD_DELETED'
+  LEAD_DELETED: 'LEAD_DELETED',
+  ACCOUNT_ROLE_UPDATED: 'ACCOUNT_ROLE_UPDATED',
+  EMAIL_CHANGED: 'EMAIL_CHANGED',
+  BRANCH_ADMIN_REPLACED: 'BRANCH_ADMIN_REPLACED'
 };
 
 exports.SalesCrmBatchRequestStatus = exports.$Enums.SalesCrmBatchRequestStatus = {
@@ -1922,6 +1954,8 @@ exports.Prisma.ModelName = {
   UserDashboardWidget: 'UserDashboardWidget',
   Branch: 'Branch',
   SalesAdminBranch: 'SalesAdminBranch',
+  EmailChangeVerification: 'EmailChangeVerification',
+  AdminChangeHistory: 'AdminChangeHistory',
   LoginEvent: 'LoginEvent',
   Notification: 'Notification',
   SalesCrmReportSubmission: 'SalesCrmReportSubmission',

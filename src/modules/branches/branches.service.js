@@ -11,6 +11,7 @@ import {
 import {
   createBranchCreatedNotification,
   createBranchInvitationResentNotification,
+  createNotification,
 } from "../notifications/notifications.service.js";
 import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
 
@@ -562,12 +563,53 @@ export async function updateBranch(branchRecordId, payload, actor) {
           updatedBy: actorId,
         },
       });
+
+      const previousAccountType = existing.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN";
+      const nextAccountType = parsed.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN";
+      if (previousAccountType !== nextAccountType || existing.branchEmail !== parsed.branchEmail) {
+        await tx.adminChangeHistory.create({
+          data: {
+            branchId: existing.id,
+            previousAdminId: existing.adminUserId,
+            newAdminId: existing.adminUserId,
+            previousAccountType,
+            newAccountType: nextAccountType,
+            oldEmail: existing.branchEmail,
+            newEmail: parsed.branchEmail,
+            changedBy: actorId,
+            operationType: previousAccountType !== nextAccountType ? "ROLE_UPDATED" : "EMAIL_UPDATED",
+            metadata: { emailVerification: "LEGACY_IMMEDIATE_UPDATE" },
+          },
+        });
+      }
     }
 
     return branch;
   });
 
   const updatedBranch = await loadBranch(updated.id);
+  if (existing.adminUserId && existing.adminUserId !== updatedBranch.adminUserId) {
+    // Defensive guard: branch updates must never silently change the assigned user.
+    throw new AppError("Branch administrator assignment changed unexpectedly", 500);
+  }
+  if (existing.adminUserId && (existing.roleAccess !== updatedBranch.roleAccess || existing.branchEmail !== updatedBranch.branchEmail)) {
+    const nextAccountType = updatedBranch.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "Branch Admin + Sales Admin" : "Branch Admin";
+    const previousAccountType = existing.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "Branch Admin + Sales Admin" : "Branch Admin";
+    void createNotification({
+      kind: existing.roleAccess !== updatedBranch.roleAccess ? "ACCOUNT_ROLE_UPDATED" : "EMAIL_CHANGED",
+      tone: "blue",
+      title: existing.roleAccess !== updatedBranch.roleAccess ? "Account Role Updated" : "Email Address Updated",
+      message: existing.roleAccess !== updatedBranch.roleAccess
+        ? `Your account permissions were updated by the Super Admin. Your previous role was ${previousAccountType}, and your new role is ${nextAccountType}.`
+        : `Your login email was updated by the Super Admin to ${updatedBranch.branchEmail}.`,
+      actionLabel: "View Account",
+      createdBy: actorId,
+      targetUserId: existing.adminUserId,
+      targetBranchId: updatedBranch.id,
+      targetBranchEmail: updatedBranch.branchEmail,
+      targetBranchName: updatedBranch.branchName,
+    }).catch((error) => console.warn("Branch admin change notification failed", error));
+  }
   return toBranchSummary(updatedBranch);
 }
 

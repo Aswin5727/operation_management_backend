@@ -28,6 +28,9 @@ const NOTIFICATION_KIND_MAP = {
   LEAD_FOLLOW_UP_OVERDUE: "lead-follow-up-overdue",
   SALES_CRM_MONTHLY_REPORT: "sales-crm-monthly-report",
   PENDING_STUDENT_ADMISSION_REMINDER: "pending-student-admission-reminder",
+  ACCOUNT_ROLE_UPDATED: "account-role-updated",
+  EMAIL_CHANGED: "email-changed",
+  BRANCH_ADMIN_REPLACED: "branch-admin-replaced",
 };
 
 const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
@@ -44,6 +47,9 @@ const BRANCH_ADMIN_VISIBLE_NOTIFICATION_KINDS = new Set([
   "FACULTY_SKILL_OVERDUE",
   "STUDENT_MOTIVATION",
   "STUDENT_DISCONTINUATION",
+  "ACCOUNT_ROLE_UPDATED",
+  "EMAIL_CHANGED",
+  "BRANCH_ADMIN_REPLACED",
   "SALES_CRM_ADMISSION",
   "SALES_CRM_BATCH_REQUEST",
   "LEAD_FOLLOW_UP_SCHEDULED",
@@ -266,15 +272,18 @@ async function buildBranchAdminScope(user = {}) {
 
   user.roleAccess = branch.roleAccess || "BRANCH_ADMIN_ONLY";
 
-  // Branch ID is the canonical tenant boundary. Older notifications may not
-  // have email/name populated, so requiring all three fields hides valid rows.
-  // Keep email as a fallback only when the branch record cannot be resolved.
-  const scope = branch.id
-    ? { targetBranchId: normalizeString(branch.id) }
-    : {
-        targetBranchId: normalizeString(branch.branchId),
-        targetBranchEmail: normalizeEmail(branch.branchEmail),
-      };
+  // Match all branch identifiers because older notifications may have stored
+  // the human-facing branch code while newer rows store the canonical UUID.
+  // Email is also included so a second browser/session for the same branch
+  // receives the same branch-scoped notification.
+  const branchIdentityScopes = [
+    branch.id ? { targetBranchId: normalizeString(branch.id) } : null,
+    branch.branchId ? { targetBranchId: normalizeString(branch.branchId) } : null,
+    branch.branchEmail ? { targetBranchEmail: normalizeEmail(branch.branchEmail) } : null,
+  ].filter(Boolean);
+  const scope = branchIdentityScopes.length === 1
+    ? branchIdentityScopes[0]
+    : { OR: branchIdentityScopes };
 
   BRANCH_ADMIN_SCOPE_CACHE.set(cacheKey, {
     scope,

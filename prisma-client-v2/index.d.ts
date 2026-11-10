@@ -39,6 +39,16 @@ export type Branch = $Result.DefaultSelection<Prisma.$BranchPayload>
  */
 export type SalesAdminBranch = $Result.DefaultSelection<Prisma.$SalesAdminBranchPayload>
 /**
+ * Model EmailChangeVerification
+ * 
+ */
+export type EmailChangeVerification = $Result.DefaultSelection<Prisma.$EmailChangeVerificationPayload>
+/**
+ * Model AdminChangeHistory
+ * 
+ */
+export type AdminChangeHistory = $Result.DefaultSelection<Prisma.$AdminChangeHistoryPayload>
+/**
  * Model LoginEvent
  * 
  */
@@ -587,7 +597,10 @@ export const NotificationKind: {
   SALES_CRM_BATCH_REQUEST: 'SALES_CRM_BATCH_REQUEST',
   SALES_CRM_BATCH_REQUEST_UPDATE: 'SALES_CRM_BATCH_REQUEST_UPDATE',
   CALL_RECORDING_SHARED: 'CALL_RECORDING_SHARED',
-  LEAD_DELETED: 'LEAD_DELETED'
+  LEAD_DELETED: 'LEAD_DELETED',
+  ACCOUNT_ROLE_UPDATED: 'ACCOUNT_ROLE_UPDATED',
+  EMAIL_CHANGED: 'EMAIL_CHANGED',
+  BRANCH_ADMIN_REPLACED: 'BRANCH_ADMIN_REPLACED'
 };
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
@@ -906,6 +919,26 @@ export class PrismaClient<
     * ```
     */
   get salesAdminBranch(): Prisma.SalesAdminBranchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.emailChangeVerification`: Exposes CRUD operations for the **EmailChangeVerification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailChangeVerifications
+    * const emailChangeVerifications = await prisma.emailChangeVerification.findMany()
+    * ```
+    */
+  get emailChangeVerification(): Prisma.EmailChangeVerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.adminChangeHistory`: Exposes CRUD operations for the **AdminChangeHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdminChangeHistories
+    * const adminChangeHistories = await prisma.adminChangeHistory.findMany()
+    * ```
+    */
+  get adminChangeHistory(): Prisma.AdminChangeHistoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.loginEvent`: Exposes CRUD operations for the **LoginEvent** model.
@@ -2165,6 +2198,8 @@ export namespace Prisma {
     UserDashboardWidget: 'UserDashboardWidget',
     Branch: 'Branch',
     SalesAdminBranch: 'SalesAdminBranch',
+    EmailChangeVerification: 'EmailChangeVerification',
+    AdminChangeHistory: 'AdminChangeHistory',
     LoginEvent: 'LoginEvent',
     Notification: 'Notification',
     SalesCrmReportSubmission: 'SalesCrmReportSubmission',
@@ -2262,7 +2297,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadIdSequence" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt" | "completedStudentImportJob" | "completedStudentImportRow"
+      modelProps: "user" | "dashboardWidget" | "userDashboardWidget" | "branch" | "salesAdminBranch" | "emailChangeVerification" | "adminChangeHistory" | "loginEvent" | "notification" | "salesCrmReportSubmission" | "salesAdminAdmissionReminder" | "salesCrmBatchRequest" | "courseEditRequest" | "passwordResetToken" | "course" | "branchCourse" | "branchCourseModule" | "branchCourseSubmodule" | "courseModule" | "batch" | "batchFacultyAssignment" | "branchBatch" | "academicTest" | "academicTestItem" | "academicTestBatch" | "academicQuestionPaper" | "academicQuestion" | "academicTestProject" | "academicScheduledTest" | "academicTestCycle" | "batchCycle" | "academicTestSubmission" | "academicProjectSubmission" | "academicTestAnswer" | "courseStatusHistory" | "batchStatusHistory" | "studentProfile" | "branchStudent" | "branchStudentCourse" | "branchStudentAttendance" | "branchCalendarHoliday" | "branchCalendarLeave" | "branchStudentInstallment" | "facultySkill" | "facultySkillAssignment" | "facultySkillTopic" | "facultySkillAssignmentAudit" | "facultyProfile" | "facultyCourseAssignment" | "facultyBatchEntry" | "facultyAttendanceSession" | "facultyAttendanceDay" | "facultyAttendanceBatchWork" | "facultyTodayWorkEntry" | "facultyTodayWorkStudentEntry" | "studentAttendance" | "branchFaculty" | "facultyLeaveRequest" | "facultyWeekOffRequest" | "branchFacultyCourse" | "facultyLeaveAffectedSession" | "facultyLeaveCombinedSession" | "branchInstallmentTemplate" | "assessment" | "assessmentSubmission" | "exam" | "examSchedule" | "examQuestion" | "examAttempt" | "examAnswer" | "lead" | "leadIdSequence" | "leadFollowUp" | "leadStageHistory" | "leadActivity" | "leadRecording" | "leadRecordingShare" | "leadRecordingShareItem" | "followUpReminder" | "motivationMailHistory" | "studentDiscontinuationRequest" | "facultyReportShare" | "academicTestReportHistory" | "academicTestReportSubmission" | "branchStudentPayment" | "branchStudentLedgerEntry" | "branchCourseImportReceipt" | "completedStudentImportJob" | "completedStudentImportRow"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2633,6 +2668,154 @@ export namespace Prisma {
           count: {
             args: Prisma.SalesAdminBranchCountArgs<ExtArgs>
             result: $Utils.Optional<SalesAdminBranchCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailChangeVerification: {
+        payload: Prisma.$EmailChangeVerificationPayload<ExtArgs>
+        fields: Prisma.EmailChangeVerificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailChangeVerificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailChangeVerificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailChangeVerificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailChangeVerificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          findMany: {
+            args: Prisma.EmailChangeVerificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>[]
+          }
+          create: {
+            args: Prisma.EmailChangeVerificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          createMany: {
+            args: Prisma.EmailChangeVerificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailChangeVerificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailChangeVerificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          update: {
+            args: Prisma.EmailChangeVerificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailChangeVerificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailChangeVerificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmailChangeVerificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmailChangeVerificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailChangeVerificationPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailChangeVerificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailChangeVerification>
+          }
+          groupBy: {
+            args: Prisma.EmailChangeVerificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailChangeVerificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailChangeVerificationCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailChangeVerificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      AdminChangeHistory: {
+        payload: Prisma.$AdminChangeHistoryPayload<ExtArgs>
+        fields: Prisma.AdminChangeHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminChangeHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminChangeHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminChangeHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminChangeHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.AdminChangeHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.AdminChangeHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.AdminChangeHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminChangeHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminChangeHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          update: {
+            args: Prisma.AdminChangeHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminChangeHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminChangeHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminChangeHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminChangeHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminChangeHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminChangeHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdminChangeHistory>
+          }
+          groupBy: {
+            args: Prisma.AdminChangeHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminChangeHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminChangeHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminChangeHistoryCountAggregateOutputType> | number
           }
         }
       }
@@ -8817,6 +9000,8 @@ export namespace Prisma {
     userDashboardWidget?: UserDashboardWidgetOmit
     branch?: BranchOmit
     salesAdminBranch?: SalesAdminBranchOmit
+    emailChangeVerification?: EmailChangeVerificationOmit
+    adminChangeHistory?: AdminChangeHistoryOmit
     loginEvent?: LoginEventOmit
     notification?: NotificationOmit
     salesCrmReportSubmission?: SalesCrmReportSubmissionOmit
@@ -9010,6 +9195,10 @@ export namespace Prisma {
     followUpReminders: number
     leadRecordingSharesSent: number
     leadRecordingSharesReceived: number
+    adminChangesPrevious: number
+    adminChangesNew: number
+    adminChangesBy: number
+    emailChangeVerifications: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9044,6 +9233,10 @@ export namespace Prisma {
     followUpReminders?: boolean | UserCountOutputTypeCountFollowUpRemindersArgs
     leadRecordingSharesSent?: boolean | UserCountOutputTypeCountLeadRecordingSharesSentArgs
     leadRecordingSharesReceived?: boolean | UserCountOutputTypeCountLeadRecordingSharesReceivedArgs
+    adminChangesPrevious?: boolean | UserCountOutputTypeCountAdminChangesPreviousArgs
+    adminChangesNew?: boolean | UserCountOutputTypeCountAdminChangesNewArgs
+    adminChangesBy?: boolean | UserCountOutputTypeCountAdminChangesByArgs
+    emailChangeVerifications?: boolean | UserCountOutputTypeCountEmailChangeVerificationsArgs
   }
 
   // Custom InputTypes
@@ -9274,6 +9467,34 @@ export namespace Prisma {
     where?: LeadRecordingShareWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminChangesPreviousArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminChangeHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminChangesNewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminChangeHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAdminChangesByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminChangeHistoryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEmailChangeVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailChangeVerificationWhereInput
+  }
+
 
   /**
    * Count Type DashboardWidgetCountOutputType
@@ -9328,6 +9549,7 @@ export namespace Prisma {
     salesCrmBatchRequests: number
     leads: number
     leadRecordingShares: number
+    adminChangeHistory: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9348,6 +9570,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: boolean | BranchCountOutputTypeCountSalesCrmBatchRequestsArgs
     leads?: boolean | BranchCountOutputTypeCountLeadsArgs
     leadRecordingShares?: boolean | BranchCountOutputTypeCountLeadRecordingSharesArgs
+    adminChangeHistory?: boolean | BranchCountOutputTypeCountAdminChangeHistoryArgs
   }
 
   // Custom InputTypes
@@ -9478,6 +9701,13 @@ export namespace Prisma {
    */
   export type BranchCountOutputTypeCountLeadRecordingSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeadRecordingShareWhereInput
+  }
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountAdminChangeHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminChangeHistoryWhereInput
   }
 
 
@@ -11444,6 +11674,10 @@ export namespace Prisma {
     followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
     leadRecordingSharesSent?: boolean | User$leadRecordingSharesSentArgs<ExtArgs>
     leadRecordingSharesReceived?: boolean | User$leadRecordingSharesReceivedArgs<ExtArgs>
+    adminChangesPrevious?: boolean | User$adminChangesPreviousArgs<ExtArgs>
+    adminChangesNew?: boolean | User$adminChangesNewArgs<ExtArgs>
+    adminChangesBy?: boolean | User$adminChangesByArgs<ExtArgs>
+    emailChangeVerifications?: boolean | User$emailChangeVerificationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -11566,6 +11800,10 @@ export namespace Prisma {
     followUpReminders?: boolean | User$followUpRemindersArgs<ExtArgs>
     leadRecordingSharesSent?: boolean | User$leadRecordingSharesSentArgs<ExtArgs>
     leadRecordingSharesReceived?: boolean | User$leadRecordingSharesReceivedArgs<ExtArgs>
+    adminChangesPrevious?: boolean | User$adminChangesPreviousArgs<ExtArgs>
+    adminChangesNew?: boolean | User$adminChangesNewArgs<ExtArgs>
+    adminChangesBy?: boolean | User$adminChangesByArgs<ExtArgs>
+    emailChangeVerifications?: boolean | User$emailChangeVerificationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11607,6 +11845,10 @@ export namespace Prisma {
       followUpReminders: Prisma.$FollowUpReminderPayload<ExtArgs>[]
       leadRecordingSharesSent: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
       leadRecordingSharesReceived: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
+      adminChangesPrevious: Prisma.$AdminChangeHistoryPayload<ExtArgs>[]
+      adminChangesNew: Prisma.$AdminChangeHistoryPayload<ExtArgs>[]
+      adminChangesBy: Prisma.$AdminChangeHistoryPayload<ExtArgs>[]
+      emailChangeVerifications: Prisma.$EmailChangeVerificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12061,6 +12303,10 @@ export namespace Prisma {
     followUpReminders<T extends User$followUpRemindersArgs<ExtArgs> = {}>(args?: Subset<T, User$followUpRemindersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FollowUpReminderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadRecordingSharesSent<T extends User$leadRecordingSharesSentArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingSharesSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadRecordingSharesReceived<T extends User$leadRecordingSharesReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$leadRecordingSharesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminChangesPrevious<T extends User$adminChangesPreviousArgs<ExtArgs> = {}>(args?: Subset<T, User$adminChangesPreviousArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminChangesNew<T extends User$adminChangesNewArgs<ExtArgs> = {}>(args?: Subset<T, User$adminChangesNewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminChangesBy<T extends User$adminChangesByArgs<ExtArgs> = {}>(args?: Subset<T, User$adminChangesByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    emailChangeVerifications<T extends User$emailChangeVerificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$emailChangeVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13287,6 +13533,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminChangesPrevious
+   */
+  export type User$adminChangesPreviousArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    where?: AdminChangeHistoryWhereInput
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminChangesNew
+   */
+  export type User$adminChangesNewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    where?: AdminChangeHistoryWhereInput
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.adminChangesBy
+   */
+  export type User$adminChangesByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    where?: AdminChangeHistoryWhereInput
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.emailChangeVerifications
+   */
+  export type User$emailChangeVerificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    where?: EmailChangeVerificationWhereInput
+    orderBy?: EmailChangeVerificationOrderByWithRelationInput | EmailChangeVerificationOrderByWithRelationInput[]
+    cursor?: EmailChangeVerificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmailChangeVerificationScalarFieldEnum | EmailChangeVerificationScalarFieldEnum[]
   }
 
   /**
@@ -15864,6 +16206,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
     leadRecordingShares?: boolean | Branch$leadRecordingSharesArgs<ExtArgs>
+    adminChangeHistory?: boolean | Branch$adminChangeHistoryArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["branch"]>
 
@@ -15958,6 +16301,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: boolean | Branch$salesCrmBatchRequestsArgs<ExtArgs>
     leads?: boolean | Branch$leadsArgs<ExtArgs>
     leadRecordingShares?: boolean | Branch$leadRecordingSharesArgs<ExtArgs>
+    adminChangeHistory?: boolean | Branch$adminChangeHistoryArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BranchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15988,6 +16332,7 @@ export namespace Prisma {
       salesCrmBatchRequests: Prisma.$SalesCrmBatchRequestPayload<ExtArgs>[]
       leads: Prisma.$LeadPayload<ExtArgs>[]
       leadRecordingShares: Prisma.$LeadRecordingSharePayload<ExtArgs>[]
+      adminChangeHistory: Prisma.$AdminChangeHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -16422,6 +16767,7 @@ export namespace Prisma {
     salesCrmBatchRequests<T extends Branch$salesCrmBatchRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$salesCrmBatchRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesCrmBatchRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leads<T extends Branch$leadsArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leadRecordingShares<T extends Branch$leadRecordingSharesArgs<ExtArgs> = {}>(args?: Subset<T, Branch$leadRecordingSharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadRecordingSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    adminChangeHistory<T extends Branch$adminChangeHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Branch$adminChangeHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17296,6 +17642,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LeadRecordingShareScalarFieldEnum | LeadRecordingShareScalarFieldEnum[]
+  }
+
+  /**
+   * Branch.adminChangeHistory
+   */
+  export type Branch$adminChangeHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    where?: AdminChangeHistoryWhereInput
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
   }
 
   /**
@@ -18372,6 +18742,2378 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SalesAdminBranchInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailChangeVerification
+   */
+
+  export type AggregateEmailChangeVerification = {
+    _count: EmailChangeVerificationCountAggregateOutputType | null
+    _min: EmailChangeVerificationMinAggregateOutputType | null
+    _max: EmailChangeVerificationMaxAggregateOutputType | null
+  }
+
+  export type EmailChangeVerificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    oldEmail: string | null
+    newEmail: string | null
+    tokenHash: string | null
+    expiresAt: Date | null
+    verifiedAt: Date | null
+    temporaryPasswordHash: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type EmailChangeVerificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    oldEmail: string | null
+    newEmail: string | null
+    tokenHash: string | null
+    expiresAt: Date | null
+    verifiedAt: Date | null
+    temporaryPasswordHash: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type EmailChangeVerificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    oldEmail: number
+    newEmail: number
+    tokenHash: number
+    expiresAt: number
+    verifiedAt: number
+    temporaryPasswordHash: number
+    createdBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EmailChangeVerificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    oldEmail?: true
+    newEmail?: true
+    tokenHash?: true
+    expiresAt?: true
+    verifiedAt?: true
+    temporaryPasswordHash?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type EmailChangeVerificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    oldEmail?: true
+    newEmail?: true
+    tokenHash?: true
+    expiresAt?: true
+    verifiedAt?: true
+    temporaryPasswordHash?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type EmailChangeVerificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    oldEmail?: true
+    newEmail?: true
+    tokenHash?: true
+    expiresAt?: true
+    verifiedAt?: true
+    temporaryPasswordHash?: true
+    createdBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EmailChangeVerificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailChangeVerification to aggregate.
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailChangeVerifications to fetch.
+     */
+    orderBy?: EmailChangeVerificationOrderByWithRelationInput | EmailChangeVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailChangeVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailChangeVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailChangeVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailChangeVerifications
+    **/
+    _count?: true | EmailChangeVerificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailChangeVerificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailChangeVerificationMaxAggregateInputType
+  }
+
+  export type GetEmailChangeVerificationAggregateType<T extends EmailChangeVerificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailChangeVerification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailChangeVerification[P]>
+      : GetScalarType<T[P], AggregateEmailChangeVerification[P]>
+  }
+
+
+
+
+  export type EmailChangeVerificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailChangeVerificationWhereInput
+    orderBy?: EmailChangeVerificationOrderByWithAggregationInput | EmailChangeVerificationOrderByWithAggregationInput[]
+    by: EmailChangeVerificationScalarFieldEnum[] | EmailChangeVerificationScalarFieldEnum
+    having?: EmailChangeVerificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailChangeVerificationCountAggregateInputType | true
+    _min?: EmailChangeVerificationMinAggregateInputType
+    _max?: EmailChangeVerificationMaxAggregateInputType
+  }
+
+  export type EmailChangeVerificationGroupByOutputType = {
+    id: string
+    userId: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date
+    verifiedAt: Date | null
+    temporaryPasswordHash: string | null
+    createdBy: string | null
+    createdAt: Date
+    _count: EmailChangeVerificationCountAggregateOutputType | null
+    _min: EmailChangeVerificationMinAggregateOutputType | null
+    _max: EmailChangeVerificationMaxAggregateOutputType | null
+  }
+
+  type GetEmailChangeVerificationGroupByPayload<T extends EmailChangeVerificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailChangeVerificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailChangeVerificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailChangeVerificationGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailChangeVerificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailChangeVerificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    temporaryPasswordHash?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailChangeVerification"]>
+
+  export type EmailChangeVerificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    temporaryPasswordHash?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailChangeVerification"]>
+
+  export type EmailChangeVerificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    temporaryPasswordHash?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["emailChangeVerification"]>
+
+  export type EmailChangeVerificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    tokenHash?: boolean
+    expiresAt?: boolean
+    verifiedAt?: boolean
+    temporaryPasswordHash?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type EmailChangeVerificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "oldEmail" | "newEmail" | "tokenHash" | "expiresAt" | "verifiedAt" | "temporaryPasswordHash" | "createdBy" | "createdAt", ExtArgs["result"]["emailChangeVerification"]>
+  export type EmailChangeVerificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EmailChangeVerificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EmailChangeVerificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EmailChangeVerificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailChangeVerification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      oldEmail: string
+      newEmail: string
+      tokenHash: string
+      expiresAt: Date
+      verifiedAt: Date | null
+      temporaryPasswordHash: string | null
+      createdBy: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["emailChangeVerification"]>
+    composites: {}
+  }
+
+  type EmailChangeVerificationGetPayload<S extends boolean | null | undefined | EmailChangeVerificationDefaultArgs> = $Result.GetResult<Prisma.$EmailChangeVerificationPayload, S>
+
+  type EmailChangeVerificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmailChangeVerificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmailChangeVerificationCountAggregateInputType | true
+    }
+
+  export interface EmailChangeVerificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailChangeVerification'], meta: { name: 'EmailChangeVerification' } }
+    /**
+     * Find zero or one EmailChangeVerification that matches the filter.
+     * @param {EmailChangeVerificationFindUniqueArgs} args - Arguments to find a EmailChangeVerification
+     * @example
+     * // Get one EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailChangeVerificationFindUniqueArgs>(args: SelectSubset<T, EmailChangeVerificationFindUniqueArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmailChangeVerification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmailChangeVerificationFindUniqueOrThrowArgs} args - Arguments to find a EmailChangeVerification
+     * @example
+     * // Get one EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailChangeVerificationFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailChangeVerificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailChangeVerification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationFindFirstArgs} args - Arguments to find a EmailChangeVerification
+     * @example
+     * // Get one EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailChangeVerificationFindFirstArgs>(args?: SelectSubset<T, EmailChangeVerificationFindFirstArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmailChangeVerification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationFindFirstOrThrowArgs} args - Arguments to find a EmailChangeVerification
+     * @example
+     * // Get one EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailChangeVerificationFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailChangeVerificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmailChangeVerifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailChangeVerifications
+     * const emailChangeVerifications = await prisma.emailChangeVerification.findMany()
+     * 
+     * // Get first 10 EmailChangeVerifications
+     * const emailChangeVerifications = await prisma.emailChangeVerification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailChangeVerificationWithIdOnly = await prisma.emailChangeVerification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailChangeVerificationFindManyArgs>(args?: SelectSubset<T, EmailChangeVerificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmailChangeVerification.
+     * @param {EmailChangeVerificationCreateArgs} args - Arguments to create a EmailChangeVerification.
+     * @example
+     * // Create one EmailChangeVerification
+     * const EmailChangeVerification = await prisma.emailChangeVerification.create({
+     *   data: {
+     *     // ... data to create a EmailChangeVerification
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailChangeVerificationCreateArgs>(args: SelectSubset<T, EmailChangeVerificationCreateArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmailChangeVerifications.
+     * @param {EmailChangeVerificationCreateManyArgs} args - Arguments to create many EmailChangeVerifications.
+     * @example
+     * // Create many EmailChangeVerifications
+     * const emailChangeVerification = await prisma.emailChangeVerification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailChangeVerificationCreateManyArgs>(args?: SelectSubset<T, EmailChangeVerificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailChangeVerifications and returns the data saved in the database.
+     * @param {EmailChangeVerificationCreateManyAndReturnArgs} args - Arguments to create many EmailChangeVerifications.
+     * @example
+     * // Create many EmailChangeVerifications
+     * const emailChangeVerification = await prisma.emailChangeVerification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailChangeVerifications and only return the `id`
+     * const emailChangeVerificationWithIdOnly = await prisma.emailChangeVerification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailChangeVerificationCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailChangeVerificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmailChangeVerification.
+     * @param {EmailChangeVerificationDeleteArgs} args - Arguments to delete one EmailChangeVerification.
+     * @example
+     * // Delete one EmailChangeVerification
+     * const EmailChangeVerification = await prisma.emailChangeVerification.delete({
+     *   where: {
+     *     // ... filter to delete one EmailChangeVerification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailChangeVerificationDeleteArgs>(args: SelectSubset<T, EmailChangeVerificationDeleteArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmailChangeVerification.
+     * @param {EmailChangeVerificationUpdateArgs} args - Arguments to update one EmailChangeVerification.
+     * @example
+     * // Update one EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailChangeVerificationUpdateArgs>(args: SelectSubset<T, EmailChangeVerificationUpdateArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmailChangeVerifications.
+     * @param {EmailChangeVerificationDeleteManyArgs} args - Arguments to filter EmailChangeVerifications to delete.
+     * @example
+     * // Delete a few EmailChangeVerifications
+     * const { count } = await prisma.emailChangeVerification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailChangeVerificationDeleteManyArgs>(args?: SelectSubset<T, EmailChangeVerificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailChangeVerifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailChangeVerifications
+     * const emailChangeVerification = await prisma.emailChangeVerification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailChangeVerificationUpdateManyArgs>(args: SelectSubset<T, EmailChangeVerificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailChangeVerifications and returns the data updated in the database.
+     * @param {EmailChangeVerificationUpdateManyAndReturnArgs} args - Arguments to update many EmailChangeVerifications.
+     * @example
+     * // Update many EmailChangeVerifications
+     * const emailChangeVerification = await prisma.emailChangeVerification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmailChangeVerifications and only return the `id`
+     * const emailChangeVerificationWithIdOnly = await prisma.emailChangeVerification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmailChangeVerificationUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailChangeVerificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmailChangeVerification.
+     * @param {EmailChangeVerificationUpsertArgs} args - Arguments to update or create a EmailChangeVerification.
+     * @example
+     * // Update or create a EmailChangeVerification
+     * const emailChangeVerification = await prisma.emailChangeVerification.upsert({
+     *   create: {
+     *     // ... data to create a EmailChangeVerification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailChangeVerification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailChangeVerificationUpsertArgs>(args: SelectSubset<T, EmailChangeVerificationUpsertArgs<ExtArgs>>): Prisma__EmailChangeVerificationClient<$Result.GetResult<Prisma.$EmailChangeVerificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmailChangeVerifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationCountArgs} args - Arguments to filter EmailChangeVerifications to count.
+     * @example
+     * // Count the number of EmailChangeVerifications
+     * const count = await prisma.emailChangeVerification.count({
+     *   where: {
+     *     // ... the filter for the EmailChangeVerifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailChangeVerificationCountArgs>(
+      args?: Subset<T, EmailChangeVerificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailChangeVerificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailChangeVerification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailChangeVerificationAggregateArgs>(args: Subset<T, EmailChangeVerificationAggregateArgs>): Prisma.PrismaPromise<GetEmailChangeVerificationAggregateType<T>>
+
+    /**
+     * Group by EmailChangeVerification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailChangeVerificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailChangeVerificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailChangeVerificationGroupByArgs['orderBy'] }
+        : { orderBy?: EmailChangeVerificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailChangeVerificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailChangeVerificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailChangeVerification model
+   */
+  readonly fields: EmailChangeVerificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailChangeVerification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailChangeVerificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailChangeVerification model
+   */
+  interface EmailChangeVerificationFieldRefs {
+    readonly id: FieldRef<"EmailChangeVerification", 'String'>
+    readonly userId: FieldRef<"EmailChangeVerification", 'String'>
+    readonly oldEmail: FieldRef<"EmailChangeVerification", 'String'>
+    readonly newEmail: FieldRef<"EmailChangeVerification", 'String'>
+    readonly tokenHash: FieldRef<"EmailChangeVerification", 'String'>
+    readonly expiresAt: FieldRef<"EmailChangeVerification", 'DateTime'>
+    readonly verifiedAt: FieldRef<"EmailChangeVerification", 'DateTime'>
+    readonly temporaryPasswordHash: FieldRef<"EmailChangeVerification", 'String'>
+    readonly createdBy: FieldRef<"EmailChangeVerification", 'String'>
+    readonly createdAt: FieldRef<"EmailChangeVerification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailChangeVerification findUnique
+   */
+  export type EmailChangeVerificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailChangeVerification to fetch.
+     */
+    where: EmailChangeVerificationWhereUniqueInput
+  }
+
+  /**
+   * EmailChangeVerification findUniqueOrThrow
+   */
+  export type EmailChangeVerificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailChangeVerification to fetch.
+     */
+    where: EmailChangeVerificationWhereUniqueInput
+  }
+
+  /**
+   * EmailChangeVerification findFirst
+   */
+  export type EmailChangeVerificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailChangeVerification to fetch.
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailChangeVerifications to fetch.
+     */
+    orderBy?: EmailChangeVerificationOrderByWithRelationInput | EmailChangeVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailChangeVerifications.
+     */
+    cursor?: EmailChangeVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailChangeVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailChangeVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailChangeVerifications.
+     */
+    distinct?: EmailChangeVerificationScalarFieldEnum | EmailChangeVerificationScalarFieldEnum[]
+  }
+
+  /**
+   * EmailChangeVerification findFirstOrThrow
+   */
+  export type EmailChangeVerificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailChangeVerification to fetch.
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailChangeVerifications to fetch.
+     */
+    orderBy?: EmailChangeVerificationOrderByWithRelationInput | EmailChangeVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailChangeVerifications.
+     */
+    cursor?: EmailChangeVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailChangeVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailChangeVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailChangeVerifications.
+     */
+    distinct?: EmailChangeVerificationScalarFieldEnum | EmailChangeVerificationScalarFieldEnum[]
+  }
+
+  /**
+   * EmailChangeVerification findMany
+   */
+  export type EmailChangeVerificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter, which EmailChangeVerifications to fetch.
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailChangeVerifications to fetch.
+     */
+    orderBy?: EmailChangeVerificationOrderByWithRelationInput | EmailChangeVerificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailChangeVerifications.
+     */
+    cursor?: EmailChangeVerificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailChangeVerifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailChangeVerifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailChangeVerifications.
+     */
+    distinct?: EmailChangeVerificationScalarFieldEnum | EmailChangeVerificationScalarFieldEnum[]
+  }
+
+  /**
+   * EmailChangeVerification create
+   */
+  export type EmailChangeVerificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmailChangeVerification.
+     */
+    data: XOR<EmailChangeVerificationCreateInput, EmailChangeVerificationUncheckedCreateInput>
+  }
+
+  /**
+   * EmailChangeVerification createMany
+   */
+  export type EmailChangeVerificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailChangeVerifications.
+     */
+    data: EmailChangeVerificationCreateManyInput | EmailChangeVerificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailChangeVerification createManyAndReturn
+   */
+  export type EmailChangeVerificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmailChangeVerifications.
+     */
+    data: EmailChangeVerificationCreateManyInput | EmailChangeVerificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailChangeVerification update
+   */
+  export type EmailChangeVerificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmailChangeVerification.
+     */
+    data: XOR<EmailChangeVerificationUpdateInput, EmailChangeVerificationUncheckedUpdateInput>
+    /**
+     * Choose, which EmailChangeVerification to update.
+     */
+    where: EmailChangeVerificationWhereUniqueInput
+  }
+
+  /**
+   * EmailChangeVerification updateMany
+   */
+  export type EmailChangeVerificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailChangeVerifications.
+     */
+    data: XOR<EmailChangeVerificationUpdateManyMutationInput, EmailChangeVerificationUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailChangeVerifications to update
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * Limit how many EmailChangeVerifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailChangeVerification updateManyAndReturn
+   */
+  export type EmailChangeVerificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * The data used to update EmailChangeVerifications.
+     */
+    data: XOR<EmailChangeVerificationUpdateManyMutationInput, EmailChangeVerificationUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailChangeVerifications to update
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * Limit how many EmailChangeVerifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmailChangeVerification upsert
+   */
+  export type EmailChangeVerificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmailChangeVerification to update in case it exists.
+     */
+    where: EmailChangeVerificationWhereUniqueInput
+    /**
+     * In case the EmailChangeVerification found by the `where` argument doesn't exist, create a new EmailChangeVerification with this data.
+     */
+    create: XOR<EmailChangeVerificationCreateInput, EmailChangeVerificationUncheckedCreateInput>
+    /**
+     * In case the EmailChangeVerification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailChangeVerificationUpdateInput, EmailChangeVerificationUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailChangeVerification delete
+   */
+  export type EmailChangeVerificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+    /**
+     * Filter which EmailChangeVerification to delete.
+     */
+    where: EmailChangeVerificationWhereUniqueInput
+  }
+
+  /**
+   * EmailChangeVerification deleteMany
+   */
+  export type EmailChangeVerificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailChangeVerifications to delete
+     */
+    where?: EmailChangeVerificationWhereInput
+    /**
+     * Limit how many EmailChangeVerifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmailChangeVerification without action
+   */
+  export type EmailChangeVerificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailChangeVerification
+     */
+    select?: EmailChangeVerificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmailChangeVerification
+     */
+    omit?: EmailChangeVerificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmailChangeVerificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AdminChangeHistory
+   */
+
+  export type AggregateAdminChangeHistory = {
+    _count: AdminChangeHistoryCountAggregateOutputType | null
+    _min: AdminChangeHistoryMinAggregateOutputType | null
+    _max: AdminChangeHistoryMaxAggregateOutputType | null
+  }
+
+  export type AdminChangeHistoryMinAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    previousAdminId: string | null
+    newAdminId: string | null
+    previousAccountType: string | null
+    newAccountType: string | null
+    oldEmail: string | null
+    newEmail: string | null
+    changedBy: string | null
+    operationType: string | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminChangeHistoryMaxAggregateOutputType = {
+    id: string | null
+    branchId: string | null
+    previousAdminId: string | null
+    newAdminId: string | null
+    previousAccountType: string | null
+    newAccountType: string | null
+    oldEmail: string | null
+    newEmail: string | null
+    changedBy: string | null
+    operationType: string | null
+    status: string | null
+    createdAt: Date | null
+  }
+
+  export type AdminChangeHistoryCountAggregateOutputType = {
+    id: number
+    branchId: number
+    previousAdminId: number
+    newAdminId: number
+    previousAccountType: number
+    newAccountType: number
+    oldEmail: number
+    newEmail: number
+    changedBy: number
+    operationType: number
+    status: number
+    metadata: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AdminChangeHistoryMinAggregateInputType = {
+    id?: true
+    branchId?: true
+    previousAdminId?: true
+    newAdminId?: true
+    previousAccountType?: true
+    newAccountType?: true
+    oldEmail?: true
+    newEmail?: true
+    changedBy?: true
+    operationType?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type AdminChangeHistoryMaxAggregateInputType = {
+    id?: true
+    branchId?: true
+    previousAdminId?: true
+    newAdminId?: true
+    previousAccountType?: true
+    newAccountType?: true
+    oldEmail?: true
+    newEmail?: true
+    changedBy?: true
+    operationType?: true
+    status?: true
+    createdAt?: true
+  }
+
+  export type AdminChangeHistoryCountAggregateInputType = {
+    id?: true
+    branchId?: true
+    previousAdminId?: true
+    newAdminId?: true
+    previousAccountType?: true
+    newAccountType?: true
+    oldEmail?: true
+    newEmail?: true
+    changedBy?: true
+    operationType?: true
+    status?: true
+    metadata?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AdminChangeHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminChangeHistory to aggregate.
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminChangeHistories to fetch.
+     */
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminChangeHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminChangeHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdminChangeHistories
+    **/
+    _count?: true | AdminChangeHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminChangeHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminChangeHistoryMaxAggregateInputType
+  }
+
+  export type GetAdminChangeHistoryAggregateType<T extends AdminChangeHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdminChangeHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdminChangeHistory[P]>
+      : GetScalarType<T[P], AggregateAdminChangeHistory[P]>
+  }
+
+
+
+
+  export type AdminChangeHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminChangeHistoryWhereInput
+    orderBy?: AdminChangeHistoryOrderByWithAggregationInput | AdminChangeHistoryOrderByWithAggregationInput[]
+    by: AdminChangeHistoryScalarFieldEnum[] | AdminChangeHistoryScalarFieldEnum
+    having?: AdminChangeHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminChangeHistoryCountAggregateInputType | true
+    _min?: AdminChangeHistoryMinAggregateInputType
+    _max?: AdminChangeHistoryMaxAggregateInputType
+  }
+
+  export type AdminChangeHistoryGroupByOutputType = {
+    id: string
+    branchId: string
+    previousAdminId: string | null
+    newAdminId: string | null
+    previousAccountType: string | null
+    newAccountType: string | null
+    oldEmail: string | null
+    newEmail: string | null
+    changedBy: string | null
+    operationType: string
+    status: string
+    metadata: JsonValue | null
+    createdAt: Date
+    _count: AdminChangeHistoryCountAggregateOutputType | null
+    _min: AdminChangeHistoryMinAggregateOutputType | null
+    _max: AdminChangeHistoryMaxAggregateOutputType | null
+  }
+
+  type GetAdminChangeHistoryGroupByPayload<T extends AdminChangeHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminChangeHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminChangeHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminChangeHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminChangeHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminChangeHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    previousAdminId?: boolean
+    newAdminId?: boolean
+    previousAccountType?: boolean
+    newAccountType?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    changedBy?: boolean
+    operationType?: boolean
+    status?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminChangeHistory"]>
+
+  export type AdminChangeHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    previousAdminId?: boolean
+    newAdminId?: boolean
+    previousAccountType?: boolean
+    newAccountType?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    changedBy?: boolean
+    operationType?: boolean
+    status?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminChangeHistory"]>
+
+  export type AdminChangeHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    branchId?: boolean
+    previousAdminId?: boolean
+    newAdminId?: boolean
+    previousAccountType?: boolean
+    newAccountType?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    changedBy?: boolean
+    operationType?: boolean
+    status?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["adminChangeHistory"]>
+
+  export type AdminChangeHistorySelectScalar = {
+    id?: boolean
+    branchId?: boolean
+    previousAdminId?: boolean
+    newAdminId?: boolean
+    previousAccountType?: boolean
+    newAccountType?: boolean
+    oldEmail?: boolean
+    newEmail?: boolean
+    changedBy?: boolean
+    operationType?: boolean
+    status?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+  }
+
+  export type AdminChangeHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "branchId" | "previousAdminId" | "newAdminId" | "previousAccountType" | "newAccountType" | "oldEmail" | "newEmail" | "changedBy" | "operationType" | "status" | "metadata" | "createdAt", ExtArgs["result"]["adminChangeHistory"]>
+  export type AdminChangeHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }
+  export type AdminChangeHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }
+  export type AdminChangeHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    previousAdmin?: boolean | AdminChangeHistory$previousAdminArgs<ExtArgs>
+    newAdmin?: boolean | AdminChangeHistory$newAdminArgs<ExtArgs>
+    changedByUser?: boolean | AdminChangeHistory$changedByUserArgs<ExtArgs>
+  }
+
+  export type $AdminChangeHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdminChangeHistory"
+    objects: {
+      branch: Prisma.$BranchPayload<ExtArgs>
+      previousAdmin: Prisma.$UserPayload<ExtArgs> | null
+      newAdmin: Prisma.$UserPayload<ExtArgs> | null
+      changedByUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      branchId: string
+      previousAdminId: string | null
+      newAdminId: string | null
+      previousAccountType: string | null
+      newAccountType: string | null
+      oldEmail: string | null
+      newEmail: string | null
+      changedBy: string | null
+      operationType: string
+      status: string
+      metadata: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["adminChangeHistory"]>
+    composites: {}
+  }
+
+  type AdminChangeHistoryGetPayload<S extends boolean | null | undefined | AdminChangeHistoryDefaultArgs> = $Result.GetResult<Prisma.$AdminChangeHistoryPayload, S>
+
+  type AdminChangeHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminChangeHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminChangeHistoryCountAggregateInputType | true
+    }
+
+  export interface AdminChangeHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdminChangeHistory'], meta: { name: 'AdminChangeHistory' } }
+    /**
+     * Find zero or one AdminChangeHistory that matches the filter.
+     * @param {AdminChangeHistoryFindUniqueArgs} args - Arguments to find a AdminChangeHistory
+     * @example
+     * // Get one AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminChangeHistoryFindUniqueArgs>(args: SelectSubset<T, AdminChangeHistoryFindUniqueArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdminChangeHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminChangeHistoryFindUniqueOrThrowArgs} args - Arguments to find a AdminChangeHistory
+     * @example
+     * // Get one AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminChangeHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminChangeHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminChangeHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryFindFirstArgs} args - Arguments to find a AdminChangeHistory
+     * @example
+     * // Get one AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminChangeHistoryFindFirstArgs>(args?: SelectSubset<T, AdminChangeHistoryFindFirstArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminChangeHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryFindFirstOrThrowArgs} args - Arguments to find a AdminChangeHistory
+     * @example
+     * // Get one AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminChangeHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminChangeHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdminChangeHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdminChangeHistories
+     * const adminChangeHistories = await prisma.adminChangeHistory.findMany()
+     * 
+     * // Get first 10 AdminChangeHistories
+     * const adminChangeHistories = await prisma.adminChangeHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminChangeHistoryWithIdOnly = await prisma.adminChangeHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminChangeHistoryFindManyArgs>(args?: SelectSubset<T, AdminChangeHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdminChangeHistory.
+     * @param {AdminChangeHistoryCreateArgs} args - Arguments to create a AdminChangeHistory.
+     * @example
+     * // Create one AdminChangeHistory
+     * const AdminChangeHistory = await prisma.adminChangeHistory.create({
+     *   data: {
+     *     // ... data to create a AdminChangeHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminChangeHistoryCreateArgs>(args: SelectSubset<T, AdminChangeHistoryCreateArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdminChangeHistories.
+     * @param {AdminChangeHistoryCreateManyArgs} args - Arguments to create many AdminChangeHistories.
+     * @example
+     * // Create many AdminChangeHistories
+     * const adminChangeHistory = await prisma.adminChangeHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminChangeHistoryCreateManyArgs>(args?: SelectSubset<T, AdminChangeHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdminChangeHistories and returns the data saved in the database.
+     * @param {AdminChangeHistoryCreateManyAndReturnArgs} args - Arguments to create many AdminChangeHistories.
+     * @example
+     * // Create many AdminChangeHistories
+     * const adminChangeHistory = await prisma.adminChangeHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdminChangeHistories and only return the `id`
+     * const adminChangeHistoryWithIdOnly = await prisma.adminChangeHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminChangeHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminChangeHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdminChangeHistory.
+     * @param {AdminChangeHistoryDeleteArgs} args - Arguments to delete one AdminChangeHistory.
+     * @example
+     * // Delete one AdminChangeHistory
+     * const AdminChangeHistory = await prisma.adminChangeHistory.delete({
+     *   where: {
+     *     // ... filter to delete one AdminChangeHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminChangeHistoryDeleteArgs>(args: SelectSubset<T, AdminChangeHistoryDeleteArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdminChangeHistory.
+     * @param {AdminChangeHistoryUpdateArgs} args - Arguments to update one AdminChangeHistory.
+     * @example
+     * // Update one AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminChangeHistoryUpdateArgs>(args: SelectSubset<T, AdminChangeHistoryUpdateArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdminChangeHistories.
+     * @param {AdminChangeHistoryDeleteManyArgs} args - Arguments to filter AdminChangeHistories to delete.
+     * @example
+     * // Delete a few AdminChangeHistories
+     * const { count } = await prisma.adminChangeHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminChangeHistoryDeleteManyArgs>(args?: SelectSubset<T, AdminChangeHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminChangeHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdminChangeHistories
+     * const adminChangeHistory = await prisma.adminChangeHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminChangeHistoryUpdateManyArgs>(args: SelectSubset<T, AdminChangeHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminChangeHistories and returns the data updated in the database.
+     * @param {AdminChangeHistoryUpdateManyAndReturnArgs} args - Arguments to update many AdminChangeHistories.
+     * @example
+     * // Update many AdminChangeHistories
+     * const adminChangeHistory = await prisma.adminChangeHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdminChangeHistories and only return the `id`
+     * const adminChangeHistoryWithIdOnly = await prisma.adminChangeHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminChangeHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminChangeHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdminChangeHistory.
+     * @param {AdminChangeHistoryUpsertArgs} args - Arguments to update or create a AdminChangeHistory.
+     * @example
+     * // Update or create a AdminChangeHistory
+     * const adminChangeHistory = await prisma.adminChangeHistory.upsert({
+     *   create: {
+     *     // ... data to create a AdminChangeHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdminChangeHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminChangeHistoryUpsertArgs>(args: SelectSubset<T, AdminChangeHistoryUpsertArgs<ExtArgs>>): Prisma__AdminChangeHistoryClient<$Result.GetResult<Prisma.$AdminChangeHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdminChangeHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryCountArgs} args - Arguments to filter AdminChangeHistories to count.
+     * @example
+     * // Count the number of AdminChangeHistories
+     * const count = await prisma.adminChangeHistory.count({
+     *   where: {
+     *     // ... the filter for the AdminChangeHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminChangeHistoryCountArgs>(
+      args?: Subset<T, AdminChangeHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminChangeHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdminChangeHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminChangeHistoryAggregateArgs>(args: Subset<T, AdminChangeHistoryAggregateArgs>): Prisma.PrismaPromise<GetAdminChangeHistoryAggregateType<T>>
+
+    /**
+     * Group by AdminChangeHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminChangeHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminChangeHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminChangeHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: AdminChangeHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminChangeHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminChangeHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdminChangeHistory model
+   */
+  readonly fields: AdminChangeHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdminChangeHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminChangeHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    previousAdmin<T extends AdminChangeHistory$previousAdminArgs<ExtArgs> = {}>(args?: Subset<T, AdminChangeHistory$previousAdminArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    newAdmin<T extends AdminChangeHistory$newAdminArgs<ExtArgs> = {}>(args?: Subset<T, AdminChangeHistory$newAdminArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    changedByUser<T extends AdminChangeHistory$changedByUserArgs<ExtArgs> = {}>(args?: Subset<T, AdminChangeHistory$changedByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdminChangeHistory model
+   */
+  interface AdminChangeHistoryFieldRefs {
+    readonly id: FieldRef<"AdminChangeHistory", 'String'>
+    readonly branchId: FieldRef<"AdminChangeHistory", 'String'>
+    readonly previousAdminId: FieldRef<"AdminChangeHistory", 'String'>
+    readonly newAdminId: FieldRef<"AdminChangeHistory", 'String'>
+    readonly previousAccountType: FieldRef<"AdminChangeHistory", 'String'>
+    readonly newAccountType: FieldRef<"AdminChangeHistory", 'String'>
+    readonly oldEmail: FieldRef<"AdminChangeHistory", 'String'>
+    readonly newEmail: FieldRef<"AdminChangeHistory", 'String'>
+    readonly changedBy: FieldRef<"AdminChangeHistory", 'String'>
+    readonly operationType: FieldRef<"AdminChangeHistory", 'String'>
+    readonly status: FieldRef<"AdminChangeHistory", 'String'>
+    readonly metadata: FieldRef<"AdminChangeHistory", 'Json'>
+    readonly createdAt: FieldRef<"AdminChangeHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdminChangeHistory findUnique
+   */
+  export type AdminChangeHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminChangeHistory to fetch.
+     */
+    where: AdminChangeHistoryWhereUniqueInput
+  }
+
+  /**
+   * AdminChangeHistory findUniqueOrThrow
+   */
+  export type AdminChangeHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminChangeHistory to fetch.
+     */
+    where: AdminChangeHistoryWhereUniqueInput
+  }
+
+  /**
+   * AdminChangeHistory findFirst
+   */
+  export type AdminChangeHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminChangeHistory to fetch.
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminChangeHistories to fetch.
+     */
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminChangeHistories.
+     */
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminChangeHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminChangeHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminChangeHistories.
+     */
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AdminChangeHistory findFirstOrThrow
+   */
+  export type AdminChangeHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminChangeHistory to fetch.
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminChangeHistories to fetch.
+     */
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminChangeHistories.
+     */
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminChangeHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminChangeHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminChangeHistories.
+     */
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AdminChangeHistory findMany
+   */
+  export type AdminChangeHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which AdminChangeHistories to fetch.
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminChangeHistories to fetch.
+     */
+    orderBy?: AdminChangeHistoryOrderByWithRelationInput | AdminChangeHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdminChangeHistories.
+     */
+    cursor?: AdminChangeHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminChangeHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminChangeHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminChangeHistories.
+     */
+    distinct?: AdminChangeHistoryScalarFieldEnum | AdminChangeHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * AdminChangeHistory create
+   */
+  export type AdminChangeHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AdminChangeHistory.
+     */
+    data: XOR<AdminChangeHistoryCreateInput, AdminChangeHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * AdminChangeHistory createMany
+   */
+  export type AdminChangeHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdminChangeHistories.
+     */
+    data: AdminChangeHistoryCreateManyInput | AdminChangeHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminChangeHistory createManyAndReturn
+   */
+  export type AdminChangeHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdminChangeHistories.
+     */
+    data: AdminChangeHistoryCreateManyInput | AdminChangeHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AdminChangeHistory update
+   */
+  export type AdminChangeHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AdminChangeHistory.
+     */
+    data: XOR<AdminChangeHistoryUpdateInput, AdminChangeHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which AdminChangeHistory to update.
+     */
+    where: AdminChangeHistoryWhereUniqueInput
+  }
+
+  /**
+   * AdminChangeHistory updateMany
+   */
+  export type AdminChangeHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdminChangeHistories.
+     */
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminChangeHistories to update
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * Limit how many AdminChangeHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminChangeHistory updateManyAndReturn
+   */
+  export type AdminChangeHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update AdminChangeHistories.
+     */
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminChangeHistories to update
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * Limit how many AdminChangeHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AdminChangeHistory upsert
+   */
+  export type AdminChangeHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AdminChangeHistory to update in case it exists.
+     */
+    where: AdminChangeHistoryWhereUniqueInput
+    /**
+     * In case the AdminChangeHistory found by the `where` argument doesn't exist, create a new AdminChangeHistory with this data.
+     */
+    create: XOR<AdminChangeHistoryCreateInput, AdminChangeHistoryUncheckedCreateInput>
+    /**
+     * In case the AdminChangeHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminChangeHistoryUpdateInput, AdminChangeHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * AdminChangeHistory delete
+   */
+  export type AdminChangeHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which AdminChangeHistory to delete.
+     */
+    where: AdminChangeHistoryWhereUniqueInput
+  }
+
+  /**
+   * AdminChangeHistory deleteMany
+   */
+  export type AdminChangeHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminChangeHistories to delete
+     */
+    where?: AdminChangeHistoryWhereInput
+    /**
+     * Limit how many AdminChangeHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminChangeHistory.previousAdmin
+   */
+  export type AdminChangeHistory$previousAdminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AdminChangeHistory.newAdmin
+   */
+  export type AdminChangeHistory$newAdminArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AdminChangeHistory.changedByUser
+   */
+  export type AdminChangeHistory$changedByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AdminChangeHistory without action
+   */
+  export type AdminChangeHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminChangeHistory
+     */
+    select?: AdminChangeHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminChangeHistory
+     */
+    omit?: AdminChangeHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdminChangeHistoryInclude<ExtArgs> | null
   }
 
 
@@ -122020,6 +124762,41 @@ export namespace Prisma {
   export type SalesAdminBranchScalarFieldEnum = (typeof SalesAdminBranchScalarFieldEnum)[keyof typeof SalesAdminBranchScalarFieldEnum]
 
 
+  export const EmailChangeVerificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    oldEmail: 'oldEmail',
+    newEmail: 'newEmail',
+    tokenHash: 'tokenHash',
+    expiresAt: 'expiresAt',
+    verifiedAt: 'verifiedAt',
+    temporaryPasswordHash: 'temporaryPasswordHash',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt'
+  };
+
+  export type EmailChangeVerificationScalarFieldEnum = (typeof EmailChangeVerificationScalarFieldEnum)[keyof typeof EmailChangeVerificationScalarFieldEnum]
+
+
+  export const AdminChangeHistoryScalarFieldEnum: {
+    id: 'id',
+    branchId: 'branchId',
+    previousAdminId: 'previousAdminId',
+    newAdminId: 'newAdminId',
+    previousAccountType: 'previousAccountType',
+    newAccountType: 'newAccountType',
+    oldEmail: 'oldEmail',
+    newEmail: 'newEmail',
+    changedBy: 'changedBy',
+    operationType: 'operationType',
+    status: 'status',
+    metadata: 'metadata',
+    createdAt: 'createdAt'
+  };
+
+  export type AdminChangeHistoryScalarFieldEnum = (typeof AdminChangeHistoryScalarFieldEnum)[keyof typeof AdminChangeHistoryScalarFieldEnum]
+
+
   export const LoginEventScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -123928,20 +126705,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'LoginEventType'
-   */
-  export type EnumLoginEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoginEventType'>
-    
-
-
-  /**
-   * Reference to a field of type 'LoginEventType[]'
-   */
-  export type ListEnumLoginEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoginEventType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -123952,6 +126715,20 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'LoginEventType'
+   */
+  export type EnumLoginEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoginEventType'>
+    
+
+
+  /**
+   * Reference to a field of type 'LoginEventType[]'
+   */
+  export type ListEnumLoginEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoginEventType[]'>
     
 
 
@@ -124230,6 +127007,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderListRelationFilter
     leadRecordingSharesSent?: LeadRecordingShareListRelationFilter
     leadRecordingSharesReceived?: LeadRecordingShareListRelationFilter
+    adminChangesPrevious?: AdminChangeHistoryListRelationFilter
+    adminChangesNew?: AdminChangeHistoryListRelationFilter
+    adminChangesBy?: AdminChangeHistoryListRelationFilter
+    emailChangeVerifications?: EmailChangeVerificationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -124291,6 +127072,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderOrderByRelationAggregateInput
     leadRecordingSharesSent?: LeadRecordingShareOrderByRelationAggregateInput
     leadRecordingSharesReceived?: LeadRecordingShareOrderByRelationAggregateInput
+    adminChangesPrevious?: AdminChangeHistoryOrderByRelationAggregateInput
+    adminChangesNew?: AdminChangeHistoryOrderByRelationAggregateInput
+    adminChangesBy?: AdminChangeHistoryOrderByRelationAggregateInput
+    emailChangeVerifications?: EmailChangeVerificationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -124355,6 +127140,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderListRelationFilter
     leadRecordingSharesSent?: LeadRecordingShareListRelationFilter
     leadRecordingSharesReceived?: LeadRecordingShareListRelationFilter
+    adminChangesPrevious?: AdminChangeHistoryListRelationFilter
+    adminChangesNew?: AdminChangeHistoryListRelationFilter
+    adminChangesBy?: AdminChangeHistoryListRelationFilter
+    emailChangeVerifications?: EmailChangeVerificationListRelationFilter
   }, "id" | "userCode" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -124609,6 +127398,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
     leadRecordingShares?: LeadRecordingShareListRelationFilter
+    adminChangeHistory?: AdminChangeHistoryListRelationFilter
   }
 
   export type BranchOrderByWithRelationInput = {
@@ -124650,6 +127440,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestOrderByRelationAggregateInput
     leads?: LeadOrderByRelationAggregateInput
     leadRecordingShares?: LeadRecordingShareOrderByRelationAggregateInput
+    adminChangeHistory?: AdminChangeHistoryOrderByRelationAggregateInput
   }
 
   export type BranchWhereUniqueInput = Prisma.AtLeast<{
@@ -124694,6 +127485,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestListRelationFilter
     leads?: LeadListRelationFilter
     leadRecordingShares?: LeadRecordingShareListRelationFilter
+    adminChangeHistory?: AdminChangeHistoryListRelationFilter
   }, "id" | "branchId" | "branchEmail" | "branchPhone" | "adminUserId">
 
   export type BranchOrderByWithAggregationInput = {
@@ -124800,6 +127592,190 @@ export namespace Prisma {
     salesAdminId?: StringWithAggregatesFilter<"SalesAdminBranch"> | string
     branchId?: StringWithAggregatesFilter<"SalesAdminBranch"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SalesAdminBranch"> | Date | string
+  }
+
+  export type EmailChangeVerificationWhereInput = {
+    AND?: EmailChangeVerificationWhereInput | EmailChangeVerificationWhereInput[]
+    OR?: EmailChangeVerificationWhereInput[]
+    NOT?: EmailChangeVerificationWhereInput | EmailChangeVerificationWhereInput[]
+    id?: StringFilter<"EmailChangeVerification"> | string
+    userId?: StringFilter<"EmailChangeVerification"> | string
+    oldEmail?: StringFilter<"EmailChangeVerification"> | string
+    newEmail?: StringFilter<"EmailChangeVerification"> | string
+    tokenHash?: StringFilter<"EmailChangeVerification"> | string
+    expiresAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailChangeVerification"> | Date | string | null
+    temporaryPasswordHash?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdBy?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type EmailChangeVerificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    temporaryPasswordHash?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type EmailChangeVerificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tokenHash?: string
+    AND?: EmailChangeVerificationWhereInput | EmailChangeVerificationWhereInput[]
+    OR?: EmailChangeVerificationWhereInput[]
+    NOT?: EmailChangeVerificationWhereInput | EmailChangeVerificationWhereInput[]
+    userId?: StringFilter<"EmailChangeVerification"> | string
+    oldEmail?: StringFilter<"EmailChangeVerification"> | string
+    newEmail?: StringFilter<"EmailChangeVerification"> | string
+    expiresAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailChangeVerification"> | Date | string | null
+    temporaryPasswordHash?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdBy?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "tokenHash">
+
+  export type EmailChangeVerificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrderInput | SortOrder
+    temporaryPasswordHash?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: EmailChangeVerificationCountOrderByAggregateInput
+    _max?: EmailChangeVerificationMaxOrderByAggregateInput
+    _min?: EmailChangeVerificationMinOrderByAggregateInput
+  }
+
+  export type EmailChangeVerificationScalarWhereWithAggregatesInput = {
+    AND?: EmailChangeVerificationScalarWhereWithAggregatesInput | EmailChangeVerificationScalarWhereWithAggregatesInput[]
+    OR?: EmailChangeVerificationScalarWhereWithAggregatesInput[]
+    NOT?: EmailChangeVerificationScalarWhereWithAggregatesInput | EmailChangeVerificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailChangeVerification"> | string
+    userId?: StringWithAggregatesFilter<"EmailChangeVerification"> | string
+    oldEmail?: StringWithAggregatesFilter<"EmailChangeVerification"> | string
+    newEmail?: StringWithAggregatesFilter<"EmailChangeVerification"> | string
+    tokenHash?: StringWithAggregatesFilter<"EmailChangeVerification"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"EmailChangeVerification"> | Date | string
+    verifiedAt?: DateTimeNullableWithAggregatesFilter<"EmailChangeVerification"> | Date | string | null
+    temporaryPasswordHash?: StringNullableWithAggregatesFilter<"EmailChangeVerification"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"EmailChangeVerification"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailChangeVerification"> | Date | string
+  }
+
+  export type AdminChangeHistoryWhereInput = {
+    AND?: AdminChangeHistoryWhereInput | AdminChangeHistoryWhereInput[]
+    OR?: AdminChangeHistoryWhereInput[]
+    NOT?: AdminChangeHistoryWhereInput | AdminChangeHistoryWhereInput[]
+    id?: StringFilter<"AdminChangeHistory"> | string
+    branchId?: StringFilter<"AdminChangeHistory"> | string
+    previousAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    previousAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    oldEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    changedBy?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    operationType?: StringFilter<"AdminChangeHistory"> | string
+    status?: StringFilter<"AdminChangeHistory"> | string
+    metadata?: JsonNullableFilter<"AdminChangeHistory">
+    createdAt?: DateTimeFilter<"AdminChangeHistory"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    previousAdmin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    newAdmin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    changedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type AdminChangeHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    previousAdminId?: SortOrderInput | SortOrder
+    newAdminId?: SortOrderInput | SortOrder
+    previousAccountType?: SortOrderInput | SortOrder
+    newAccountType?: SortOrderInput | SortOrder
+    oldEmail?: SortOrderInput | SortOrder
+    newEmail?: SortOrderInput | SortOrder
+    changedBy?: SortOrderInput | SortOrder
+    operationType?: SortOrder
+    status?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    branch?: BranchOrderByWithRelationInput
+    previousAdmin?: UserOrderByWithRelationInput
+    newAdmin?: UserOrderByWithRelationInput
+    changedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type AdminChangeHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AdminChangeHistoryWhereInput | AdminChangeHistoryWhereInput[]
+    OR?: AdminChangeHistoryWhereInput[]
+    NOT?: AdminChangeHistoryWhereInput | AdminChangeHistoryWhereInput[]
+    branchId?: StringFilter<"AdminChangeHistory"> | string
+    previousAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    previousAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    oldEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    changedBy?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    operationType?: StringFilter<"AdminChangeHistory"> | string
+    status?: StringFilter<"AdminChangeHistory"> | string
+    metadata?: JsonNullableFilter<"AdminChangeHistory">
+    createdAt?: DateTimeFilter<"AdminChangeHistory"> | Date | string
+    branch?: XOR<BranchScalarRelationFilter, BranchWhereInput>
+    previousAdmin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    newAdmin?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    changedByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type AdminChangeHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    previousAdminId?: SortOrderInput | SortOrder
+    newAdminId?: SortOrderInput | SortOrder
+    previousAccountType?: SortOrderInput | SortOrder
+    newAccountType?: SortOrderInput | SortOrder
+    oldEmail?: SortOrderInput | SortOrder
+    newEmail?: SortOrderInput | SortOrder
+    changedBy?: SortOrderInput | SortOrder
+    operationType?: SortOrder
+    status?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AdminChangeHistoryCountOrderByAggregateInput
+    _max?: AdminChangeHistoryMaxOrderByAggregateInput
+    _min?: AdminChangeHistoryMinOrderByAggregateInput
+  }
+
+  export type AdminChangeHistoryScalarWhereWithAggregatesInput = {
+    AND?: AdminChangeHistoryScalarWhereWithAggregatesInput | AdminChangeHistoryScalarWhereWithAggregatesInput[]
+    OR?: AdminChangeHistoryScalarWhereWithAggregatesInput[]
+    NOT?: AdminChangeHistoryScalarWhereWithAggregatesInput | AdminChangeHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AdminChangeHistory"> | string
+    branchId?: StringWithAggregatesFilter<"AdminChangeHistory"> | string
+    previousAdminId?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    newAdminId?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    previousAccountType?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    newAccountType?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    oldEmail?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    newEmail?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    changedBy?: StringNullableWithAggregatesFilter<"AdminChangeHistory"> | string | null
+    operationType?: StringWithAggregatesFilter<"AdminChangeHistory"> | string
+    status?: StringWithAggregatesFilter<"AdminChangeHistory"> | string
+    metadata?: JsonNullableWithAggregatesFilter<"AdminChangeHistory">
+    createdAt?: DateTimeWithAggregatesFilter<"AdminChangeHistory"> | Date | string
   }
 
   export type LoginEventWhereInput = {
@@ -134302,6 +137278,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -134363,6 +137343,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -134424,6 +137408,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -134485,6 +137473,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -134765,6 +137757,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateInput = {
@@ -134805,6 +137798,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUpdateInput = {
@@ -134845,6 +137839,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateInput = {
@@ -134885,6 +137880,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateManyInput = {
@@ -134999,6 +137995,204 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     salesAdminId?: StringFieldUpdateOperationsInput | string
     branchId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationCreateInput = {
+    id?: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutEmailChangeVerificationsInput
+  }
+
+  export type EmailChangeVerificationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type EmailChangeVerificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEmailChangeVerificationsNestedInput
+  }
+
+  export type EmailChangeVerificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationCreateManyInput = {
+    id?: string
+    userId: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type EmailChangeVerificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryCreateInput = {
+    id?: string
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    branch: BranchCreateNestedOneWithoutAdminChangeHistoryInput
+    previousAdmin?: UserCreateNestedOneWithoutAdminChangesPreviousInput
+    newAdmin?: UserCreateNestedOneWithoutAdminChangesNewInput
+    changedByUser?: UserCreateNestedOneWithoutAdminChangesByInput
+  }
+
+  export type AdminChangeHistoryUncheckedCreateInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutAdminChangeHistoryNestedInput
+    previousAdmin?: UserUpdateOneWithoutAdminChangesPreviousNestedInput
+    newAdmin?: UserUpdateOneWithoutAdminChangesNewNestedInput
+    changedByUser?: UserUpdateOneWithoutAdminChangesByNestedInput
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryCreateManyInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -146122,6 +149316,18 @@ export namespace Prisma {
     none?: LeadRecordingShareWhereInput
   }
 
+  export type AdminChangeHistoryListRelationFilter = {
+    every?: AdminChangeHistoryWhereInput
+    some?: AdminChangeHistoryWhereInput
+    none?: AdminChangeHistoryWhereInput
+  }
+
+  export type EmailChangeVerificationListRelationFilter = {
+    every?: EmailChangeVerificationWhereInput
+    some?: EmailChangeVerificationWhereInput
+    none?: EmailChangeVerificationWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -146232,6 +149438,14 @@ export namespace Prisma {
   }
 
   export type LeadRecordingShareOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AdminChangeHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmailChangeVerificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -146771,11 +149985,43 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
-  export type EnumLoginEventTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLoginEventTypeFilter<$PrismaModel> | $Enums.LoginEventType
+  export type EmailChangeVerificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    temporaryPasswordHash?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailChangeVerificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    temporaryPasswordHash?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmailChangeVerificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    tokenHash?: SortOrder
+    expiresAt?: SortOrder
+    verifiedAt?: SortOrder
+    temporaryPasswordHash?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -146799,6 +150045,85 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AdminChangeHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    previousAdminId?: SortOrder
+    newAdminId?: SortOrder
+    previousAccountType?: SortOrder
+    newAccountType?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    changedBy?: SortOrder
+    operationType?: SortOrder
+    status?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminChangeHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    previousAdminId?: SortOrder
+    newAdminId?: SortOrder
+    previousAccountType?: SortOrder
+    newAccountType?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    changedBy?: SortOrder
+    operationType?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AdminChangeHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    branchId?: SortOrder
+    previousAdminId?: SortOrder
+    newAdminId?: SortOrder
+    previousAccountType?: SortOrder
+    newAccountType?: SortOrder
+    oldEmail?: SortOrder
+    newEmail?: SortOrder
+    changedBy?: SortOrder
+    operationType?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type EnumLoginEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoginEventTypeFilter<$PrismaModel> | $Enums.LoginEventType
   }
 
   export type LoginEventCountOrderByAggregateInput = {
@@ -146843,32 +150168,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLoginEventTypeFilter<$PrismaModel>
     _max?: NestedEnumLoginEventTypeFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumNotificationKindFilter<$PrismaModel = never> = {
@@ -153318,6 +156617,34 @@ export namespace Prisma {
     connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
   }
 
+  export type AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput> | AdminChangeHistoryCreateWithoutPreviousAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput | AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyPreviousAdminInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryCreateNestedManyWithoutNewAdminInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput> | AdminChangeHistoryCreateWithoutNewAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutNewAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutNewAdminInput | AdminChangeHistoryCreateOrConnectWithoutNewAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyNewAdminInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput> | AdminChangeHistoryCreateWithoutChangedByUserInput[] | AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput | AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput[]
+    createMany?: AdminChangeHistoryCreateManyChangedByUserInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type EmailChangeVerificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput> | EmailChangeVerificationCreateWithoutUserInput[] | EmailChangeVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailChangeVerificationCreateOrConnectWithoutUserInput | EmailChangeVerificationCreateOrConnectWithoutUserInput[]
+    createMany?: EmailChangeVerificationCreateManyUserInputEnvelope
+    connect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -153545,6 +156872,34 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutRecipientInput | LeadRecordingShareCreateOrConnectWithoutRecipientInput[]
     createMany?: LeadRecordingShareCreateManyRecipientInputEnvelope
     connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput> | AdminChangeHistoryCreateWithoutPreviousAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput | AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyPreviousAdminInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput> | AdminChangeHistoryCreateWithoutNewAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutNewAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutNewAdminInput | AdminChangeHistoryCreateOrConnectWithoutNewAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyNewAdminInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput> | AdminChangeHistoryCreateWithoutChangedByUserInput[] | AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput | AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput[]
+    createMany?: AdminChangeHistoryCreateManyChangedByUserInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
+  export type EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput> | EmailChangeVerificationCreateWithoutUserInput[] | EmailChangeVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailChangeVerificationCreateOrConnectWithoutUserInput | EmailChangeVerificationCreateOrConnectWithoutUserInput[]
+    createMany?: EmailChangeVerificationCreateManyUserInputEnvelope
+    connect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -154033,6 +157388,62 @@ export namespace Prisma {
     deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
+  export type AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput> | AdminChangeHistoryCreateWithoutPreviousAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput | AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutPreviousAdminInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutPreviousAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyPreviousAdminInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutPreviousAdminInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutPreviousAdminInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutPreviousAdminInput | AdminChangeHistoryUpdateManyWithWhereWithoutPreviousAdminInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput> | AdminChangeHistoryCreateWithoutNewAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutNewAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutNewAdminInput | AdminChangeHistoryCreateOrConnectWithoutNewAdminInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutNewAdminInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutNewAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyNewAdminInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutNewAdminInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutNewAdminInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutNewAdminInput | AdminChangeHistoryUpdateManyWithWhereWithoutNewAdminInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput> | AdminChangeHistoryCreateWithoutChangedByUserInput[] | AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput | AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutChangedByUserInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutChangedByUserInput[]
+    createMany?: AdminChangeHistoryCreateManyChangedByUserInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutChangedByUserInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutChangedByUserInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutChangedByUserInput | AdminChangeHistoryUpdateManyWithWhereWithoutChangedByUserInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type EmailChangeVerificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput> | EmailChangeVerificationCreateWithoutUserInput[] | EmailChangeVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailChangeVerificationCreateOrConnectWithoutUserInput | EmailChangeVerificationCreateOrConnectWithoutUserInput[]
+    upsert?: EmailChangeVerificationUpsertWithWhereUniqueWithoutUserInput | EmailChangeVerificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EmailChangeVerificationCreateManyUserInputEnvelope
+    set?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    disconnect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    delete?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    connect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    update?: EmailChangeVerificationUpdateWithWhereUniqueWithoutUserInput | EmailChangeVerificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EmailChangeVerificationUpdateManyWithWhereWithoutUserInput | EmailChangeVerificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EmailChangeVerificationScalarWhereInput | EmailChangeVerificationScalarWhereInput[]
+  }
+
   export type BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput = {
     create?: XOR<BatchFacultyAssignmentCreateWithoutFacultyInput, BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput> | BatchFacultyAssignmentCreateWithoutFacultyInput[] | BatchFacultyAssignmentUncheckedCreateWithoutFacultyInput[]
     connectOrCreate?: BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput | BatchFacultyAssignmentCreateOrConnectWithoutFacultyInput[]
@@ -154487,6 +157898,62 @@ export namespace Prisma {
     deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput> | AdminChangeHistoryCreateWithoutPreviousAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput | AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutPreviousAdminInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutPreviousAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyPreviousAdminInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutPreviousAdminInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutPreviousAdminInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutPreviousAdminInput | AdminChangeHistoryUpdateManyWithWhereWithoutPreviousAdminInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput> | AdminChangeHistoryCreateWithoutNewAdminInput[] | AdminChangeHistoryUncheckedCreateWithoutNewAdminInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutNewAdminInput | AdminChangeHistoryCreateOrConnectWithoutNewAdminInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutNewAdminInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutNewAdminInput[]
+    createMany?: AdminChangeHistoryCreateManyNewAdminInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutNewAdminInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutNewAdminInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutNewAdminInput | AdminChangeHistoryUpdateManyWithWhereWithoutNewAdminInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput> | AdminChangeHistoryCreateWithoutChangedByUserInput[] | AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput | AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutChangedByUserInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutChangedByUserInput[]
+    createMany?: AdminChangeHistoryCreateManyChangedByUserInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutChangedByUserInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutChangedByUserInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutChangedByUserInput | AdminChangeHistoryUpdateManyWithWhereWithoutChangedByUserInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
+  export type EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput> | EmailChangeVerificationCreateWithoutUserInput[] | EmailChangeVerificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EmailChangeVerificationCreateOrConnectWithoutUserInput | EmailChangeVerificationCreateOrConnectWithoutUserInput[]
+    upsert?: EmailChangeVerificationUpsertWithWhereUniqueWithoutUserInput | EmailChangeVerificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EmailChangeVerificationCreateManyUserInputEnvelope
+    set?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    disconnect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    delete?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    connect?: EmailChangeVerificationWhereUniqueInput | EmailChangeVerificationWhereUniqueInput[]
+    update?: EmailChangeVerificationUpdateWithWhereUniqueWithoutUserInput | EmailChangeVerificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EmailChangeVerificationUpdateManyWithWhereWithoutUserInput | EmailChangeVerificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EmailChangeVerificationScalarWhereInput | EmailChangeVerificationScalarWhereInput[]
+  }
+
   export type DashboardWidgetCreateallowedRolesInput = {
     set: string[]
   }
@@ -154691,6 +158158,13 @@ export namespace Prisma {
     connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
   }
 
+  export type AdminChangeHistoryCreateNestedManyWithoutBranchInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput> | AdminChangeHistoryCreateWithoutBranchInput[] | AdminChangeHistoryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutBranchInput | AdminChangeHistoryCreateOrConnectWithoutBranchInput[]
+    createMany?: AdminChangeHistoryCreateManyBranchInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+  }
+
   export type BranchCourseUncheckedCreateNestedManyWithoutBranchInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -154808,6 +158282,13 @@ export namespace Prisma {
     connectOrCreate?: LeadRecordingShareCreateOrConnectWithoutBranchInput | LeadRecordingShareCreateOrConnectWithoutBranchInput[]
     createMany?: LeadRecordingShareCreateManyBranchInputEnvelope
     connect?: LeadRecordingShareWhereUniqueInput | LeadRecordingShareWhereUniqueInput[]
+  }
+
+  export type AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput> | AdminChangeHistoryCreateWithoutBranchInput[] | AdminChangeHistoryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutBranchInput | AdminChangeHistoryCreateOrConnectWithoutBranchInput[]
+    createMany?: AdminChangeHistoryCreateManyBranchInputEnvelope
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
   }
 
   export type EnumRecordStatusFieldUpdateOperationsInput = {
@@ -155066,6 +158547,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
+  export type AdminChangeHistoryUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput> | AdminChangeHistoryCreateWithoutBranchInput[] | AdminChangeHistoryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutBranchInput | AdminChangeHistoryCreateOrConnectWithoutBranchInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutBranchInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: AdminChangeHistoryCreateManyBranchInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutBranchInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutBranchInput | AdminChangeHistoryUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
   export type BranchCourseUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<BranchCourseCreateWithoutBranchInput, BranchCourseUncheckedCreateWithoutBranchInput> | BranchCourseCreateWithoutBranchInput[] | BranchCourseUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: BranchCourseCreateOrConnectWithoutBranchInput | BranchCourseCreateOrConnectWithoutBranchInput[]
@@ -155304,6 +158799,20 @@ export namespace Prisma {
     deleteMany?: LeadRecordingShareScalarWhereInput | LeadRecordingShareScalarWhereInput[]
   }
 
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput> | AdminChangeHistoryCreateWithoutBranchInput[] | AdminChangeHistoryUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AdminChangeHistoryCreateOrConnectWithoutBranchInput | AdminChangeHistoryCreateOrConnectWithoutBranchInput[]
+    upsert?: AdminChangeHistoryUpsertWithWhereUniqueWithoutBranchInput | AdminChangeHistoryUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: AdminChangeHistoryCreateManyBranchInputEnvelope
+    set?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    disconnect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    delete?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    connect?: AdminChangeHistoryWhereUniqueInput | AdminChangeHistoryWhereUniqueInput[]
+    update?: AdminChangeHistoryUpdateWithWhereUniqueWithoutBranchInput | AdminChangeHistoryUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: AdminChangeHistoryUpdateManyWithWhereWithoutBranchInput | AdminChangeHistoryUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSalesAdminBranchesInput = {
     create?: XOR<UserCreateWithoutSalesAdminBranchesInput, UserUncheckedCreateWithoutSalesAdminBranchesInput>
     connectOrCreate?: UserCreateOrConnectWithoutSalesAdminBranchesInput
@@ -155330,6 +158839,82 @@ export namespace Prisma {
     upsert?: BranchUpsertWithoutSalesAdminBranchesInput
     connect?: BranchWhereUniqueInput
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutSalesAdminBranchesInput, BranchUpdateWithoutSalesAdminBranchesInput>, BranchUncheckedUpdateWithoutSalesAdminBranchesInput>
+  }
+
+  export type UserCreateNestedOneWithoutEmailChangeVerificationsInput = {
+    create?: XOR<UserCreateWithoutEmailChangeVerificationsInput, UserUncheckedCreateWithoutEmailChangeVerificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEmailChangeVerificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutEmailChangeVerificationsNestedInput = {
+    create?: XOR<UserCreateWithoutEmailChangeVerificationsInput, UserUncheckedCreateWithoutEmailChangeVerificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEmailChangeVerificationsInput
+    upsert?: UserUpsertWithoutEmailChangeVerificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEmailChangeVerificationsInput, UserUpdateWithoutEmailChangeVerificationsInput>, UserUncheckedUpdateWithoutEmailChangeVerificationsInput>
+  }
+
+  export type BranchCreateNestedOneWithoutAdminChangeHistoryInput = {
+    create?: XOR<BranchCreateWithoutAdminChangeHistoryInput, BranchUncheckedCreateWithoutAdminChangeHistoryInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminChangeHistoryInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdminChangesPreviousInput = {
+    create?: XOR<UserCreateWithoutAdminChangesPreviousInput, UserUncheckedCreateWithoutAdminChangesPreviousInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesPreviousInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdminChangesNewInput = {
+    create?: XOR<UserCreateWithoutAdminChangesNewInput, UserUncheckedCreateWithoutAdminChangesNewInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesNewInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAdminChangesByInput = {
+    create?: XOR<UserCreateWithoutAdminChangesByInput, UserUncheckedCreateWithoutAdminChangesByInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesByInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BranchUpdateOneRequiredWithoutAdminChangeHistoryNestedInput = {
+    create?: XOR<BranchCreateWithoutAdminChangeHistoryInput, BranchUncheckedCreateWithoutAdminChangeHistoryInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAdminChangeHistoryInput
+    upsert?: BranchUpsertWithoutAdminChangeHistoryInput
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAdminChangeHistoryInput, BranchUpdateWithoutAdminChangeHistoryInput>, BranchUncheckedUpdateWithoutAdminChangeHistoryInput>
+  }
+
+  export type UserUpdateOneWithoutAdminChangesPreviousNestedInput = {
+    create?: XOR<UserCreateWithoutAdminChangesPreviousInput, UserUncheckedCreateWithoutAdminChangesPreviousInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesPreviousInput
+    upsert?: UserUpsertWithoutAdminChangesPreviousInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminChangesPreviousInput, UserUpdateWithoutAdminChangesPreviousInput>, UserUncheckedUpdateWithoutAdminChangesPreviousInput>
+  }
+
+  export type UserUpdateOneWithoutAdminChangesNewNestedInput = {
+    create?: XOR<UserCreateWithoutAdminChangesNewInput, UserUncheckedCreateWithoutAdminChangesNewInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesNewInput
+    upsert?: UserUpsertWithoutAdminChangesNewInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminChangesNewInput, UserUpdateWithoutAdminChangesNewInput>, UserUncheckedUpdateWithoutAdminChangesNewInput>
+  }
+
+  export type UserUpdateOneWithoutAdminChangesByNestedInput = {
+    create?: XOR<UserCreateWithoutAdminChangesByInput, UserUncheckedCreateWithoutAdminChangesByInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAdminChangesByInput
+    upsert?: UserUpsertWithoutAdminChangesByInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAdminChangesByInput, UserUpdateWithoutAdminChangesByInput>, UserUncheckedUpdateWithoutAdminChangesByInput>
   }
 
   export type UserCreateNestedOneWithoutLoginEventsInput = {
@@ -161946,23 +165531,6 @@ export namespace Prisma {
     _min?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
     _max?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
   }
-
-  export type NestedEnumLoginEventTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLoginEventTypeFilter<$PrismaModel> | $Enums.LoginEventType
-  }
-
-  export type NestedEnumLoginEventTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumLoginEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.LoginEventType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumLoginEventTypeFilter<$PrismaModel>
-    _max?: NestedEnumLoginEventTypeFilter<$PrismaModel>
-  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -161985,6 +165553,23 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumLoginEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoginEventTypeFilter<$PrismaModel> | $Enums.LoginEventType
+  }
+
+  export type NestedEnumLoginEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoginEventType | EnumLoginEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoginEventType[] | ListEnumLoginEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoginEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.LoginEventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLoginEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumLoginEventTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumNotificationKindFilter<$PrismaModel = never> = {
@@ -162447,6 +166032,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutAdminUserInput = {
@@ -162486,6 +166072,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutAdminUserInput = {
@@ -163996,6 +167583,160 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AdminChangeHistoryCreateWithoutPreviousAdminInput = {
+    id?: string
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    branch: BranchCreateNestedOneWithoutAdminChangeHistoryInput
+    newAdmin?: UserCreateNestedOneWithoutAdminChangesNewInput
+    changedByUser?: UserCreateNestedOneWithoutAdminChangesByInput
+  }
+
+  export type AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput = {
+    id?: string
+    branchId: string
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateOrConnectWithoutPreviousAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    create: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput>
+  }
+
+  export type AdminChangeHistoryCreateManyPreviousAdminInputEnvelope = {
+    data: AdminChangeHistoryCreateManyPreviousAdminInput | AdminChangeHistoryCreateManyPreviousAdminInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AdminChangeHistoryCreateWithoutNewAdminInput = {
+    id?: string
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    branch: BranchCreateNestedOneWithoutAdminChangeHistoryInput
+    previousAdmin?: UserCreateNestedOneWithoutAdminChangesPreviousInput
+    changedByUser?: UserCreateNestedOneWithoutAdminChangesByInput
+  }
+
+  export type AdminChangeHistoryUncheckedCreateWithoutNewAdminInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateOrConnectWithoutNewAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    create: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput>
+  }
+
+  export type AdminChangeHistoryCreateManyNewAdminInputEnvelope = {
+    data: AdminChangeHistoryCreateManyNewAdminInput | AdminChangeHistoryCreateManyNewAdminInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AdminChangeHistoryCreateWithoutChangedByUserInput = {
+    id?: string
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    branch: BranchCreateNestedOneWithoutAdminChangeHistoryInput
+    previousAdmin?: UserCreateNestedOneWithoutAdminChangesPreviousInput
+    newAdmin?: UserCreateNestedOneWithoutAdminChangesNewInput
+  }
+
+  export type AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateOrConnectWithoutChangedByUserInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    create: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput>
+  }
+
+  export type AdminChangeHistoryCreateManyChangedByUserInputEnvelope = {
+    data: AdminChangeHistoryCreateManyChangedByUserInput | AdminChangeHistoryCreateManyChangedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmailChangeVerificationCreateWithoutUserInput = {
+    id?: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type EmailChangeVerificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type EmailChangeVerificationCreateOrConnectWithoutUserInput = {
+    where: EmailChangeVerificationWhereUniqueInput
+    create: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type EmailChangeVerificationCreateManyUserInputEnvelope = {
+    data: EmailChangeVerificationCreateManyUserInput | EmailChangeVerificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type BatchFacultyAssignmentUpsertWithWhereUniqueWithoutFacultyInput = {
     where: BatchFacultyAssignmentWhereUniqueInput
     update: XOR<BatchFacultyAssignmentUpdateWithoutFacultyInput, BatchFacultyAssignmentUncheckedUpdateWithoutFacultyInput>
@@ -164080,6 +167821,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutAdminUserInput = {
@@ -164119,6 +167861,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type FacultyAttendanceSessionUpsertWithWhereUniqueWithoutFacultyUserInput = {
@@ -165167,6 +168910,105 @@ export namespace Prisma {
     data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutRecipientInput>
   }
 
+  export type AdminChangeHistoryUpsertWithWhereUniqueWithoutPreviousAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    update: XOR<AdminChangeHistoryUpdateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedUpdateWithoutPreviousAdminInput>
+    create: XOR<AdminChangeHistoryCreateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedCreateWithoutPreviousAdminInput>
+  }
+
+  export type AdminChangeHistoryUpdateWithWhereUniqueWithoutPreviousAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    data: XOR<AdminChangeHistoryUpdateWithoutPreviousAdminInput, AdminChangeHistoryUncheckedUpdateWithoutPreviousAdminInput>
+  }
+
+  export type AdminChangeHistoryUpdateManyWithWhereWithoutPreviousAdminInput = {
+    where: AdminChangeHistoryScalarWhereInput
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminInput>
+  }
+
+  export type AdminChangeHistoryScalarWhereInput = {
+    AND?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+    OR?: AdminChangeHistoryScalarWhereInput[]
+    NOT?: AdminChangeHistoryScalarWhereInput | AdminChangeHistoryScalarWhereInput[]
+    id?: StringFilter<"AdminChangeHistory"> | string
+    branchId?: StringFilter<"AdminChangeHistory"> | string
+    previousAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAdminId?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    previousAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newAccountType?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    oldEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    newEmail?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    changedBy?: StringNullableFilter<"AdminChangeHistory"> | string | null
+    operationType?: StringFilter<"AdminChangeHistory"> | string
+    status?: StringFilter<"AdminChangeHistory"> | string
+    metadata?: JsonNullableFilter<"AdminChangeHistory">
+    createdAt?: DateTimeFilter<"AdminChangeHistory"> | Date | string
+  }
+
+  export type AdminChangeHistoryUpsertWithWhereUniqueWithoutNewAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    update: XOR<AdminChangeHistoryUpdateWithoutNewAdminInput, AdminChangeHistoryUncheckedUpdateWithoutNewAdminInput>
+    create: XOR<AdminChangeHistoryCreateWithoutNewAdminInput, AdminChangeHistoryUncheckedCreateWithoutNewAdminInput>
+  }
+
+  export type AdminChangeHistoryUpdateWithWhereUniqueWithoutNewAdminInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    data: XOR<AdminChangeHistoryUpdateWithoutNewAdminInput, AdminChangeHistoryUncheckedUpdateWithoutNewAdminInput>
+  }
+
+  export type AdminChangeHistoryUpdateManyWithWhereWithoutNewAdminInput = {
+    where: AdminChangeHistoryScalarWhereInput
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminInput>
+  }
+
+  export type AdminChangeHistoryUpsertWithWhereUniqueWithoutChangedByUserInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    update: XOR<AdminChangeHistoryUpdateWithoutChangedByUserInput, AdminChangeHistoryUncheckedUpdateWithoutChangedByUserInput>
+    create: XOR<AdminChangeHistoryCreateWithoutChangedByUserInput, AdminChangeHistoryUncheckedCreateWithoutChangedByUserInput>
+  }
+
+  export type AdminChangeHistoryUpdateWithWhereUniqueWithoutChangedByUserInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    data: XOR<AdminChangeHistoryUpdateWithoutChangedByUserInput, AdminChangeHistoryUncheckedUpdateWithoutChangedByUserInput>
+  }
+
+  export type AdminChangeHistoryUpdateManyWithWhereWithoutChangedByUserInput = {
+    where: AdminChangeHistoryScalarWhereInput
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserInput>
+  }
+
+  export type EmailChangeVerificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: EmailChangeVerificationWhereUniqueInput
+    update: XOR<EmailChangeVerificationUpdateWithoutUserInput, EmailChangeVerificationUncheckedUpdateWithoutUserInput>
+    create: XOR<EmailChangeVerificationCreateWithoutUserInput, EmailChangeVerificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type EmailChangeVerificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: EmailChangeVerificationWhereUniqueInput
+    data: XOR<EmailChangeVerificationUpdateWithoutUserInput, EmailChangeVerificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EmailChangeVerificationUpdateManyWithWhereWithoutUserInput = {
+    where: EmailChangeVerificationScalarWhereInput
+    data: XOR<EmailChangeVerificationUpdateManyMutationInput, EmailChangeVerificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EmailChangeVerificationScalarWhereInput = {
+    AND?: EmailChangeVerificationScalarWhereInput | EmailChangeVerificationScalarWhereInput[]
+    OR?: EmailChangeVerificationScalarWhereInput[]
+    NOT?: EmailChangeVerificationScalarWhereInput | EmailChangeVerificationScalarWhereInput[]
+    id?: StringFilter<"EmailChangeVerification"> | string
+    userId?: StringFilter<"EmailChangeVerification"> | string
+    oldEmail?: StringFilter<"EmailChangeVerification"> | string
+    newEmail?: StringFilter<"EmailChangeVerification"> | string
+    tokenHash?: StringFilter<"EmailChangeVerification"> | string
+    expiresAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+    verifiedAt?: DateTimeNullableFilter<"EmailChangeVerification"> | Date | string | null
+    temporaryPasswordHash?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdBy?: StringNullableFilter<"EmailChangeVerification"> | string | null
+    createdAt?: DateTimeFilter<"EmailChangeVerification"> | Date | string
+  }
+
   export type UserDashboardWidgetCreateWithoutWidgetInput = {
     id?: string
     isVisible?: boolean
@@ -165269,6 +169111,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDashboardWidgetPreferencesInput = {
@@ -165329,6 +169175,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDashboardWidgetPreferencesInput = {
@@ -165434,6 +169284,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDashboardWidgetPreferencesInput = {
@@ -165494,6 +169348,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DashboardWidgetUpsertWithoutPreferencesInput = {
@@ -165589,6 +169447,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedBranchInput = {
@@ -165649,6 +169511,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedBranchInput = {
@@ -166792,6 +170658,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AdminChangeHistoryCreateWithoutBranchInput = {
+    id?: string
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    previousAdmin?: UserCreateNestedOneWithoutAdminChangesPreviousInput
+    newAdmin?: UserCreateNestedOneWithoutAdminChangesNewInput
+    changedByUser?: UserCreateNestedOneWithoutAdminChangesByInput
+  }
+
+  export type AdminChangeHistoryUncheckedCreateWithoutBranchInput = {
+    id?: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateOrConnectWithoutBranchInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    create: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput>
+  }
+
+  export type AdminChangeHistoryCreateManyBranchInputEnvelope = {
+    data: AdminChangeHistoryCreateManyBranchInput | AdminChangeHistoryCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutManagedBranchInput = {
     update: XOR<UserUpdateWithoutManagedBranchInput, UserUncheckedUpdateWithoutManagedBranchInput>
     create: XOR<UserCreateWithoutManagedBranchInput, UserUncheckedCreateWithoutManagedBranchInput>
@@ -166861,6 +170767,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedBranchInput = {
@@ -166921,6 +170831,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchCourseUpsertWithWhereUniqueWithoutBranchInput = {
@@ -167532,6 +171446,22 @@ export namespace Prisma {
     data: XOR<LeadRecordingShareUpdateManyMutationInput, LeadRecordingShareUncheckedUpdateManyWithoutBranchInput>
   }
 
+  export type AdminChangeHistoryUpsertWithWhereUniqueWithoutBranchInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    update: XOR<AdminChangeHistoryUpdateWithoutBranchInput, AdminChangeHistoryUncheckedUpdateWithoutBranchInput>
+    create: XOR<AdminChangeHistoryCreateWithoutBranchInput, AdminChangeHistoryUncheckedCreateWithoutBranchInput>
+  }
+
+  export type AdminChangeHistoryUpdateWithWhereUniqueWithoutBranchInput = {
+    where: AdminChangeHistoryWhereUniqueInput
+    data: XOR<AdminChangeHistoryUpdateWithoutBranchInput, AdminChangeHistoryUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type AdminChangeHistoryUpdateManyWithWhereWithoutBranchInput = {
+    where: AdminChangeHistoryScalarWhereInput
+    data: XOR<AdminChangeHistoryUpdateManyMutationInput, AdminChangeHistoryUncheckedUpdateManyWithoutBranchInput>
+  }
+
   export type UserCreateWithoutSalesAdminBranchesInput = {
     id?: string
     userCode: string
@@ -167590,6 +171520,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -167650,6 +171584,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -167694,6 +171632,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutSalesAdminBranchesInput = {
@@ -167733,6 +171672,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutSalesAdminBranchesInput = {
@@ -167809,6 +171749,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -167869,6 +171813,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchUpsertWithoutSalesAdminBranchesInput = {
@@ -167919,6 +171867,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutSalesAdminBranchesInput = {
@@ -167958,6 +171907,1271 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type UserCreateWithoutEmailChangeVerificationsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEmailChangeVerificationsInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEmailChangeVerificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEmailChangeVerificationsInput, UserUncheckedCreateWithoutEmailChangeVerificationsInput>
+  }
+
+  export type UserUpsertWithoutEmailChangeVerificationsInput = {
+    update: XOR<UserUpdateWithoutEmailChangeVerificationsInput, UserUncheckedUpdateWithoutEmailChangeVerificationsInput>
+    create: XOR<UserCreateWithoutEmailChangeVerificationsInput, UserUncheckedCreateWithoutEmailChangeVerificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEmailChangeVerificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEmailChangeVerificationsInput, UserUncheckedUpdateWithoutEmailChangeVerificationsInput>
+  }
+
+  export type UserUpdateWithoutEmailChangeVerificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEmailChangeVerificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+  }
+
+  export type BranchCreateWithoutAdminChangeHistoryInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    adminUser?: UserCreateNestedOneWithoutManagedBranchInput
+    branchCourses?: BranchCourseCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentCreateNestedManyWithoutBranchInput
+    courses?: CourseCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
+    leads?: LeadCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutAdminChangeHistoryInput = {
+    id?: string
+    branchId: string
+    branchName: string
+    branchAdminName: string
+    branchEmail: string
+    branchPhone: string
+    branchAddress: string
+    status?: $Enums.RecordStatus
+    roleAccess?: $Enums.BranchRoleAccess
+    adminUserId?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timezone?: string
+    branchCity?: string
+    branchCountry?: string
+    branchCountryCode?: string
+    branchState?: string
+    branchStateCode?: string
+    branchCourses?: BranchCourseUncheckedCreateNestedManyWithoutBranchInput
+    branchBatches?: BranchBatchUncheckedCreateNestedManyWithoutBranchInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedCreateNestedManyWithoutBranchInput
+    branchFaculties?: BranchFacultyUncheckedCreateNestedManyWithoutBranchInput
+    branchStudents?: BranchStudentUncheckedCreateNestedManyWithoutBranchInput
+    studentEnrollments?: BranchStudentCourseUncheckedCreateNestedManyWithoutBranchInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedCreateNestedManyWithoutBranchInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedCreateNestedManyWithoutBranchInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedCreateNestedManyWithoutBranchInput
+    payments?: BranchStudentPaymentUncheckedCreateNestedManyWithoutBranchInput
+    courses?: CourseUncheckedCreateNestedManyWithoutBranchInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutBranchInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutBranchInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
+    leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutAdminChangeHistoryInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutAdminChangeHistoryInput, BranchUncheckedCreateWithoutAdminChangeHistoryInput>
+  }
+
+  export type UserCreateWithoutAdminChangesPreviousInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminChangesPreviousInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminChangesPreviousInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminChangesPreviousInput, UserUncheckedCreateWithoutAdminChangesPreviousInput>
+  }
+
+  export type UserCreateWithoutAdminChangesNewInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminChangesNewInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminChangesNewInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminChangesNewInput, UserUncheckedCreateWithoutAdminChangesNewInput>
+  }
+
+  export type UserCreateWithoutAdminChangesByInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAdminChangesByInput = {
+    id?: string
+    userCode: string
+    fullName: string
+    email: string
+    phone?: string | null
+    country?: string | null
+    state?: string | null
+    city?: string | null
+    address?: string | null
+    role: $Enums.UserRole
+    active?: boolean
+    passwordHash: string
+    passwordChangedAt?: Date | string | null
+    refreshTokenVersion?: number
+    failedLoginCount?: number
+    failedLoginWindowExpiresAt?: Date | string | null
+    lockedUntil?: Date | string | null
+    lastLoginAt?: Date | string | null
+    lastLogoutAt?: Date | string | null
+    lastLoginIp?: string | null
+    lastLoginUserAgent?: string | null
+    createdBy?: string | null
+    updatedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedCreateNestedManyWithoutFacultyInput
+    managedBranch?: BranchUncheckedCreateNestedOneWithoutAdminUserInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedCreateNestedManyWithoutFacultyUserInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedCreateNestedManyWithoutFacultyUserInput
+    loginEvents?: LoginEventUncheckedCreateNestedManyWithoutUserInput
+    targetedNotifications?: NotificationUncheckedCreateNestedManyWithoutTargetUserInput
+    passwordResetTokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    markedStudentAttendances?: StudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedCreateNestedManyWithoutFacultyUserInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedCreateNestedManyWithoutUserInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedCreateNestedManyWithoutFacultyUserInput
+    createdExams?: ExamUncheckedCreateNestedManyWithoutFacultyInput
+    examAttempts?: ExamAttemptUncheckedCreateNestedManyWithoutStudentUserInput
+    createdAssessments?: AssessmentUncheckedCreateNestedManyWithoutFacultyInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedCreateNestedManyWithoutEvaluatorInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedCreateNestedManyWithoutFacultyUserInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedCreateNestedManyWithoutFacultyInput
+    salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutSalesAdminInput
+    assignedLeads?: LeadUncheckedCreateNestedManyWithoutAssignedToInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    createdLeads?: LeadUncheckedCreateNestedManyWithoutCreatedByInput
+    updatedLeads?: LeadUncheckedCreateNestedManyWithoutUpdatedByInput
+    leadIdSequence?: LeadIdSequenceUncheckedCreateNestedOneWithoutOwnerInput
+    leadFollowUps?: LeadFollowUpUncheckedCreateNestedManyWithoutCreatedByInput
+    leadActivities?: LeadActivityUncheckedCreateNestedManyWithoutCreatedByInput
+    leadStageChanges?: LeadStageHistoryUncheckedCreateNestedManyWithoutCreatedByInput
+    leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
+    followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAdminChangesByInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAdminChangesByInput, UserUncheckedCreateWithoutAdminChangesByInput>
+  }
+
+  export type BranchUpsertWithoutAdminChangeHistoryInput = {
+    update: XOR<BranchUpdateWithoutAdminChangeHistoryInput, BranchUncheckedUpdateWithoutAdminChangeHistoryInput>
+    create: XOR<BranchCreateWithoutAdminChangeHistoryInput, BranchUncheckedCreateWithoutAdminChangeHistoryInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutAdminChangeHistoryInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutAdminChangeHistoryInput, BranchUncheckedUpdateWithoutAdminChangeHistoryInput>
+  }
+
+  export type BranchUpdateWithoutAdminChangeHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    adminUser?: UserUpdateOneWithoutManagedBranchNestedInput
+    branchCourses?: BranchCourseUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUpdateManyWithoutBranchNestedInput
+    courses?: CourseUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
+    leads?: LeadUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutAdminChangeHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    branchName?: StringFieldUpdateOperationsInput | string
+    branchAdminName?: StringFieldUpdateOperationsInput | string
+    branchEmail?: StringFieldUpdateOperationsInput | string
+    branchPhone?: StringFieldUpdateOperationsInput | string
+    branchAddress?: StringFieldUpdateOperationsInput | string
+    status?: EnumRecordStatusFieldUpdateOperationsInput | $Enums.RecordStatus
+    roleAccess?: EnumBranchRoleAccessFieldUpdateOperationsInput | $Enums.BranchRoleAccess
+    adminUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    branchCity?: StringFieldUpdateOperationsInput | string
+    branchCountry?: StringFieldUpdateOperationsInput | string
+    branchCountryCode?: StringFieldUpdateOperationsInput | string
+    branchState?: StringFieldUpdateOperationsInput | string
+    branchStateCode?: StringFieldUpdateOperationsInput | string
+    branchCourses?: BranchCourseUncheckedUpdateManyWithoutBranchNestedInput
+    branchBatches?: BranchBatchUncheckedUpdateManyWithoutBranchNestedInput
+    branchInstallmentTemplates?: BranchInstallmentTemplateUncheckedUpdateManyWithoutBranchNestedInput
+    branchFaculties?: BranchFacultyUncheckedUpdateManyWithoutBranchNestedInput
+    branchStudents?: BranchStudentUncheckedUpdateManyWithoutBranchNestedInput
+    studentEnrollments?: BranchStudentCourseUncheckedUpdateManyWithoutBranchNestedInput
+    calendarHolidays?: BranchCalendarHolidayUncheckedUpdateManyWithoutBranchNestedInput
+    calendarLeaves?: BranchCalendarLeaveUncheckedUpdateManyWithoutBranchNestedInput
+    ledgerEntries?: BranchStudentLedgerEntryUncheckedUpdateManyWithoutBranchNestedInput
+    payments?: BranchStudentPaymentUncheckedUpdateManyWithoutBranchNestedInput
+    courses?: CourseUncheckedUpdateManyWithoutBranchNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutBranchNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutBranchNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
+    salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
+    leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+  }
+
+  export type UserUpsertWithoutAdminChangesPreviousInput = {
+    update: XOR<UserUpdateWithoutAdminChangesPreviousInput, UserUncheckedUpdateWithoutAdminChangesPreviousInput>
+    create: XOR<UserCreateWithoutAdminChangesPreviousInput, UserUncheckedCreateWithoutAdminChangesPreviousInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminChangesPreviousInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminChangesPreviousInput, UserUncheckedUpdateWithoutAdminChangesPreviousInput>
+  }
+
+  export type UserUpdateWithoutAdminChangesPreviousInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminChangesPreviousInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutAdminChangesNewInput = {
+    update: XOR<UserUpdateWithoutAdminChangesNewInput, UserUncheckedUpdateWithoutAdminChangesNewInput>
+    create: XOR<UserCreateWithoutAdminChangesNewInput, UserUncheckedCreateWithoutAdminChangesNewInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminChangesNewInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminChangesNewInput, UserUncheckedUpdateWithoutAdminChangesNewInput>
+  }
+
+  export type UserUpdateWithoutAdminChangesNewInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminChangesNewInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutAdminChangesByInput = {
+    update: XOR<UserUpdateWithoutAdminChangesByInput, UserUncheckedUpdateWithoutAdminChangesByInput>
+    create: XOR<UserCreateWithoutAdminChangesByInput, UserUncheckedCreateWithoutAdminChangesByInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAdminChangesByInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAdminChangesByInput, UserUncheckedUpdateWithoutAdminChangesByInput>
+  }
+
+  export type UserUpdateWithoutAdminChangesByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAdminChangesByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userCode?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    active?: BoolFieldUpdateOperationsInput | boolean
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refreshTokenVersion?: IntFieldUpdateOperationsInput | number
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    failedLoginWindowExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLogoutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    batchFacultyAssignments?: BatchFacultyAssignmentUncheckedUpdateManyWithoutFacultyNestedInput
+    managedBranch?: BranchUncheckedUpdateOneWithoutAdminUserNestedInput
+    facultyAttendanceSessions?: FacultyAttendanceSessionUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceDays?: FacultyAttendanceDayUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyAttendanceBatchWork?: FacultyAttendanceBatchWorkUncheckedUpdateManyWithoutFacultyUserNestedInput
+    facultyTodayWorkEntries?: FacultyTodayWorkEntryUncheckedUpdateManyWithoutFacultyUserNestedInput
+    loginEvents?: LoginEventUncheckedUpdateManyWithoutUserNestedInput
+    targetedNotifications?: NotificationUncheckedUpdateManyWithoutTargetUserNestedInput
+    passwordResetTokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    markedStudentAttendances?: StudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    markedBranchStudentAttendances?: BranchStudentAttendanceUncheckedUpdateManyWithoutFacultyUserNestedInput
+    dashboardWidgetPreferences?: UserDashboardWidgetUncheckedUpdateManyWithoutUserNestedInput
+    facultyLeaveRequests?: FacultyLeaveRequestUncheckedUpdateManyWithoutFacultyUserNestedInput
+    createdExams?: ExamUncheckedUpdateManyWithoutFacultyNestedInput
+    examAttempts?: ExamAttemptUncheckedUpdateManyWithoutStudentUserNestedInput
+    createdAssessments?: AssessmentUncheckedUpdateManyWithoutFacultyNestedInput
+    evaluatedSubmissions?: AssessmentSubmissionUncheckedUpdateManyWithoutEvaluatorNestedInput
+    facultySkillAssignments?: FacultySkillAssignmentUncheckedUpdateManyWithoutFacultyUserNestedInput
+    academicTestReportSubmissions?: AcademicTestReportSubmissionUncheckedUpdateManyWithoutFacultyNestedInput
+    salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutSalesAdminNestedInput
+    assignedLeads?: LeadUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    assignedSalesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    createdLeads?: LeadUncheckedUpdateManyWithoutCreatedByNestedInput
+    updatedLeads?: LeadUncheckedUpdateManyWithoutUpdatedByNestedInput
+    leadIdSequence?: LeadIdSequenceUncheckedUpdateOneWithoutOwnerNestedInput
+    leadFollowUps?: LeadFollowUpUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadActivities?: LeadActivityUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadStageChanges?: LeadStageHistoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
+    followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
+    leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLoginEventsInput = {
@@ -168018,6 +173232,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLoginEventsInput = {
@@ -168078,6 +173296,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLoginEventsInput = {
@@ -168154,6 +173376,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginEventsInput = {
@@ -168214,6 +173440,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CourseEditRequestCreateWithoutNotificationsInput = {
@@ -168333,6 +173563,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTargetedNotificationsInput = {
@@ -168393,6 +173627,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTargetedNotificationsInput = {
@@ -168534,6 +173772,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTargetedNotificationsInput = {
@@ -168594,6 +173836,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadCreateWithoutSalesCrmBatchRequestsInput = {
@@ -168742,6 +173988,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutSalesCrmBatchRequestsInput = {
@@ -168781,6 +174028,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutSalesCrmBatchRequestsInput = {
@@ -168931,6 +174179,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -168991,6 +174243,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -169056,6 +174312,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -169116,6 +174376,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -169371,6 +174635,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutSalesCrmBatchRequestsInput = {
@@ -169410,6 +174675,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutSalesCrmBatchRequestsInput = {
@@ -169572,6 +174838,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSalesCrmBatchRequestsInput = {
@@ -169632,6 +174902,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -169703,6 +174977,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedSalesCrmBatchRequestsInput = {
@@ -169763,6 +175041,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchBatchUpsertWithoutResolvedSalesCrmRequestsInput = {
@@ -170014,6 +175296,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -170074,6 +175360,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -170150,6 +175440,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -170210,6 +175504,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BatchCreateWithoutCourseInput = {
@@ -170363,6 +175661,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCoursesInput = {
@@ -170402,6 +175701,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCoursesInput = {
@@ -170791,6 +176091,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCoursesInput = {
@@ -170830,6 +176131,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseModuleUpsertWithWhereUniqueWithoutCourseInput = {
@@ -171095,6 +176397,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchCoursesInput = {
@@ -171134,6 +176437,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchCoursesInput = {
@@ -172182,6 +177486,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchCoursesInput = {
@@ -172221,6 +177526,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchInstallmentTemplateUpsertWithoutBranchCourseInput = {
@@ -173624,6 +178930,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBatchFacultyAssignmentsInput = {
@@ -173684,6 +178994,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBatchFacultyAssignmentsInput = {
@@ -173815,6 +179129,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchFacultyAssignmentsInput = {
@@ -173875,6 +179193,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchCreateWithoutBranchBatchesInput = {
@@ -173914,6 +179236,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchBatchesInput = {
@@ -173953,6 +179276,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchBatchesInput = {
@@ -174494,6 +179818,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchBatchesInput = {
@@ -174533,6 +179858,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutBranchBatchesInput = {
@@ -178539,6 +183865,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchStudentsInput = {
@@ -178578,6 +183905,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchStudentsInput = {
@@ -179503,6 +184831,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchStudentsInput = {
@@ -179542,6 +184871,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type LeadUpsertWithoutConvertedStudentInput = {
@@ -180276,6 +185606,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutStudentEnrollmentsInput = {
@@ -180315,6 +185646,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutStudentEnrollmentsInput = {
@@ -180673,6 +186005,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutStudentEnrollmentsInput = {
@@ -180712,6 +186045,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutStudentEnrollmentsInput = {
@@ -181026,6 +186360,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMarkedBranchStudentAttendancesInput = {
@@ -181086,6 +186424,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMarkedBranchStudentAttendancesInput = {
@@ -181331,6 +186673,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedBranchStudentAttendancesInput = {
@@ -181391,6 +186737,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchCreateWithoutCalendarHolidaysInput = {
@@ -181430,6 +186780,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarHolidaysInput = {
@@ -181469,6 +186820,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarHolidaysInput = {
@@ -181524,6 +186876,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarHolidaysInput = {
@@ -181563,6 +186916,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCreateWithoutCalendarLeavesInput = {
@@ -181602,6 +186956,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutCalendarLeavesInput = {
@@ -181641,6 +186996,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutCalendarLeavesInput = {
@@ -181696,6 +187052,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutCalendarLeavesInput = {
@@ -181735,6 +187092,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentCreateWithoutInstallmentsInput = {
@@ -182234,6 +187592,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -182273,6 +187632,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -182393,6 +187753,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultySkillAssignmentsInput = {
@@ -182453,6 +187817,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultySkillAssignmentsInput = {
@@ -182575,6 +187943,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -182614,6 +187983,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyUpsertWithoutSkillAssignmentsInput = {
@@ -182746,6 +188116,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultySkillAssignmentsInput = {
@@ -182806,6 +188180,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FacultySkillUpsertWithoutAssignmentsInput = {
@@ -183741,6 +189119,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceSessionsInput = {
@@ -183801,6 +189183,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceSessionsInput = {
@@ -183909,6 +189295,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceSessionsInput = {
@@ -183969,6 +189359,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FacultyAttendanceBatchWorkUpsertWithWhereUniqueWithoutSessionInput = {
@@ -184045,6 +189439,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceDaysInput = {
@@ -184105,6 +189503,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceDaysInput = {
@@ -184181,6 +189583,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceDaysInput = {
@@ -184241,6 +189647,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type FacultyAttendanceSessionCreateWithoutBatchWorkInput = {
@@ -184336,6 +189746,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyAttendanceBatchWorkInput = {
@@ -184396,6 +189810,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyAttendanceBatchWorkInput = {
@@ -184513,6 +189931,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyAttendanceBatchWorkInput = {
@@ -184573,6 +189995,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -184633,6 +190059,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyTodayWorkEntriesInput = {
@@ -184693,6 +190123,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyTodayWorkEntriesInput = {
@@ -184898,6 +190332,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyTodayWorkEntriesInput = {
@@ -184958,6 +190396,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchCourseUpsertWithoutFacultyTodayWorkEntriesInput = {
@@ -185761,6 +191203,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMarkedStudentAttendancesInput = {
@@ -185821,6 +191267,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMarkedStudentAttendancesInput = {
@@ -186006,6 +191456,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMarkedStudentAttendancesInput = {
@@ -186066,6 +191520,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StudentProfileUpsertWithoutAttendanceRecordsInput = {
@@ -186305,6 +191763,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchFacultiesInput = {
@@ -186344,6 +191803,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchFacultiesInput = {
@@ -186737,6 +192197,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchFacultiesInput = {
@@ -186776,6 +192237,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type CourseUpsertWithoutBranchFacultiesInput = {
@@ -186967,6 +192429,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -187027,6 +192493,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -187071,6 +192541,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutFacultyLeaveRequestsInput = {
@@ -187110,6 +192581,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutFacultyLeaveRequestsInput = {
@@ -187186,6 +192658,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -187246,6 +192722,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchUpsertWithoutFacultyLeaveRequestsInput = {
@@ -187296,6 +192776,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutFacultyLeaveRequestsInput = {
@@ -187335,6 +192816,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchFacultyCreateWithoutCourseAssignmentsInput = {
@@ -187666,6 +193148,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutBranchInstallmentTemplatesInput = {
@@ -187705,6 +193188,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutBranchInstallmentTemplatesInput = {
@@ -187845,6 +193329,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutBranchInstallmentTemplatesInput = {
@@ -187884,6 +193369,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutInstallmentTemplateInput = {
@@ -188287,6 +193773,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAssessmentsInput = {
@@ -188347,6 +193837,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAssessmentsInput = {
@@ -189015,6 +194509,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAssessmentsInput = {
@@ -189075,6 +194573,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AssessmentSubmissionUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -189607,6 +195109,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedSubmissionsInput = {
@@ -189667,6 +195173,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedSubmissionsInput = {
@@ -189969,6 +195479,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedSubmissionsInput = {
@@ -190029,6 +195543,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchCourseCreateWithoutExamsInput = {
@@ -190213,6 +195731,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedExamsInput = {
@@ -190273,6 +195795,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedExamsInput = {
@@ -190867,6 +196393,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedExamsInput = {
@@ -190927,6 +196457,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ExamScheduleUpsertWithWhereUniqueWithoutExamInput = {
@@ -192125,6 +197659,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutExamAttemptsInput = {
@@ -192185,6 +197723,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutExamAttemptsInput = {
@@ -192544,6 +198086,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExamAttemptsInput = {
@@ -192604,6 +198150,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ExamAnswerUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -192819,6 +198369,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLeadsInput = {
@@ -192858,6 +198409,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLeadsInput = {
@@ -193008,6 +198560,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssignedLeadsInput = {
@@ -193068,6 +198624,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssignedLeadsInput = {
@@ -193133,6 +198693,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedLeadsInput = {
@@ -193193,6 +198757,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedLeadsInput = {
@@ -193258,6 +198826,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUpdatedLeadsInput = {
@@ -193318,6 +198890,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUpdatedLeadsInput = {
@@ -193782,6 +199358,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLeadsInput = {
@@ -193821,6 +199398,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchCourseUpsertWithoutLeadsInput = {
@@ -193983,6 +199561,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
@@ -194043,6 +199625,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutCreatedLeadsInput = {
@@ -194114,6 +199700,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
@@ -194174,6 +199764,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUpdatedLeadsInput = {
@@ -194245,6 +199839,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUpdatedLeadsInput = {
@@ -194305,6 +199903,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadFollowUpUpsertWithWhereUniqueWithoutLeadInput = {
@@ -194646,6 +200248,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadIdSequenceInput = {
@@ -194706,6 +200312,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadIdSequenceInput = {
@@ -194782,6 +200392,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadIdSequenceInput = {
@@ -194842,6 +200456,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadCreateWithoutFollowUpsInput = {
@@ -195011,6 +200629,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadFollowUpsInput = {
@@ -195071,6 +200693,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadFollowUpsInput = {
@@ -195296,6 +200922,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadFollowUpsInput = {
@@ -195356,6 +200986,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadRecordingUpsertWithWhereUniqueWithoutFollowUpInput = {
@@ -195541,6 +201175,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadStageChangesInput = {
@@ -195601,6 +201239,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadStageChangesInput = {
@@ -195792,6 +201434,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadStageChangesInput = {
@@ -195852,6 +201498,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadCreateWithoutActivitiesInput = {
@@ -196021,6 +201671,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadActivitiesInput = {
@@ -196081,6 +201735,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadActivitiesInput = {
@@ -196272,6 +201930,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadActivitiesInput = {
@@ -196332,6 +201994,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadCreateWithoutRecordingsInput = {
@@ -196534,6 +202200,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadRecordingsInput = {
@@ -196594,6 +202264,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadRecordingsInput = {
@@ -196850,6 +202524,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadRecordingsInput = {
@@ -196910,6 +202588,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadRecordingShareItemUpsertWithWhereUniqueWithoutRecordingInput = {
@@ -197086,6 +202768,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLeadRecordingSharesInput = {
@@ -197125,6 +202808,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedCreateNestedManyWithoutBranchInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLeadRecordingSharesInput = {
@@ -197190,6 +202874,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadRecordingSharesSentInput = {
@@ -197250,6 +202938,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadRecordingSharesSentInput = {
@@ -197315,6 +203007,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLeadRecordingSharesReceivedInput = {
@@ -197375,6 +203071,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLeadRecordingSharesReceivedInput = {
@@ -197571,6 +203271,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLeadRecordingSharesInput = {
@@ -197610,6 +203311,7 @@ export namespace Prisma {
     salesAdminBranches?: SalesAdminBranchUncheckedUpdateManyWithoutBranchNestedInput
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserUpsertWithoutLeadRecordingSharesSentInput = {
@@ -197681,6 +203383,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadRecordingSharesSentInput = {
@@ -197741,6 +203447,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutLeadRecordingSharesReceivedInput = {
@@ -197812,6 +203522,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLeadRecordingSharesReceivedInput = {
@@ -197872,6 +203586,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LeadRecordingShareItemUpsertWithWhereUniqueWithoutShareInput = {
@@ -198193,6 +203911,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingCreateNestedManyWithoutCreatedByInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowUpRemindersInput = {
@@ -198253,6 +203975,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedCreateNestedManyWithoutCreatedByInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowUpRemindersInput = {
@@ -198444,6 +204170,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUpdateManyWithoutCreatedByNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowUpRemindersInput = {
@@ -198504,6 +204234,10 @@ export namespace Prisma {
     leadRecordings?: LeadRecordingUncheckedUpdateManyWithoutCreatedByNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchStudentCreateWithoutMotivationMailHistoryInput = {
@@ -199739,6 +205473,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAcademicTestReportSubmissionsInput = {
@@ -199799,6 +205537,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedCreateNestedManyWithoutRecipientInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedCreateNestedManyWithoutSenderInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedCreateNestedManyWithoutRecipientInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedCreateNestedManyWithoutPreviousAdminInput
+    adminChangesNew?: AdminChangeHistoryUncheckedCreateNestedManyWithoutNewAdminInput
+    adminChangesBy?: AdminChangeHistoryUncheckedCreateNestedManyWithoutChangedByUserInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAcademicTestReportSubmissionsInput = {
@@ -199904,6 +205646,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAcademicTestReportSubmissionsInput = {
@@ -199964,6 +205710,10 @@ export namespace Prisma {
     followUpReminders?: FollowUpReminderUncheckedUpdateManyWithoutRecipientNestedInput
     leadRecordingSharesSent?: LeadRecordingShareUncheckedUpdateManyWithoutSenderNestedInput
     leadRecordingSharesReceived?: LeadRecordingShareUncheckedUpdateManyWithoutRecipientNestedInput
+    adminChangesPrevious?: AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminNestedInput
+    adminChangesNew?: AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminNestedInput
+    adminChangesBy?: AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserNestedInput
+    emailChangeVerifications?: EmailChangeVerificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BranchStudentCreateWithoutPaymentsInput = {
@@ -200166,6 +205916,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutPaymentsInput = {
@@ -200205,6 +205956,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutPaymentsInput = {
@@ -200468,6 +206220,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutPaymentsInput = {
@@ -200507,6 +206260,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentInstallmentUpsertWithoutPaymentsInput = {
@@ -200591,6 +206345,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestCreateNestedManyWithoutBranchInput
     leads?: LeadCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryCreateNestedManyWithoutBranchInput
   }
 
   export type BranchUncheckedCreateWithoutLedgerEntriesInput = {
@@ -200630,6 +206385,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedCreateNestedManyWithoutBranchInput
     leads?: LeadUncheckedCreateNestedManyWithoutBranchInput
     leadRecordingShares?: LeadRecordingShareUncheckedCreateNestedManyWithoutBranchInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedCreateNestedManyWithoutBranchInput
   }
 
   export type BranchCreateOrConnectWithoutLedgerEntriesInput = {
@@ -200848,6 +206604,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUpdateManyWithoutBranchNestedInput
     leads?: LeadUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -200887,6 +206644,7 @@ export namespace Prisma {
     salesCrmBatchRequests?: SalesCrmBatchRequestUncheckedUpdateManyWithoutBranchNestedInput
     leads?: LeadUncheckedUpdateManyWithoutBranchNestedInput
     leadRecordingShares?: LeadRecordingShareUncheckedUpdateManyWithoutBranchNestedInput
+    adminChangeHistory?: AdminChangeHistoryUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type BranchStudentUpsertWithoutLedgerEntriesInput = {
@@ -201804,6 +207562,63 @@ export namespace Prisma {
     message?: string | null
     idempotencyKey: string
     sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateManyPreviousAdminInput = {
+    id?: string
+    branchId: string
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateManyNewAdminInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateManyChangedByUserInput = {
+    id?: string
+    branchId: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type EmailChangeVerificationCreateManyUserInput = {
+    id?: string
+    oldEmail: string
+    newEmail: string
+    tokenHash: string
+    expiresAt: Date | string
+    verifiedAt?: Date | string | null
+    temporaryPasswordHash?: string | null
+    createdBy?: string | null
     createdAt?: Date | string
   }
 
@@ -203590,6 +209405,177 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AdminChangeHistoryUpdateWithoutPreviousAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutAdminChangeHistoryNestedInput
+    newAdmin?: UserUpdateOneWithoutAdminChangesNewNestedInput
+    changedByUser?: UserUpdateOneWithoutAdminChangesByNestedInput
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateWithoutPreviousAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutPreviousAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUpdateWithoutNewAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutAdminChangeHistoryNestedInput
+    previousAdmin?: UserUpdateOneWithoutAdminChangesPreviousNestedInput
+    changedByUser?: UserUpdateOneWithoutAdminChangesByNestedInput
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateWithoutNewAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutNewAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUpdateWithoutChangedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    branch?: BranchUpdateOneRequiredWithoutAdminChangeHistoryNestedInput
+    previousAdmin?: UserUpdateOneWithoutAdminChangesPreviousNestedInput
+    newAdmin?: UserUpdateOneWithoutAdminChangesNewNestedInput
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateWithoutChangedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutChangedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    branchId?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailChangeVerificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    oldEmail?: StringFieldUpdateOperationsInput | string
+    newEmail?: StringFieldUpdateOperationsInput | string
+    tokenHash?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    temporaryPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserDashboardWidgetCreateManyWidgetInput = {
     id?: string
     userId: string
@@ -204048,6 +210034,21 @@ export namespace Prisma {
     message?: string | null
     idempotencyKey: string
     sharedAt?: Date | string
+    createdAt?: Date | string
+  }
+
+  export type AdminChangeHistoryCreateManyBranchInput = {
+    id?: string
+    previousAdminId?: string | null
+    newAdminId?: string | null
+    previousAccountType?: string | null
+    newAccountType?: string | null
+    oldEmail?: string | null
+    newEmail?: string | null
+    changedBy?: string | null
+    operationType: string
+    status?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -205439,6 +211440,51 @@ export namespace Prisma {
     message?: NullableStringFieldUpdateOperationsInput | string | null
     idempotencyKey?: StringFieldUpdateOperationsInput | string
     sharedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousAdmin?: UserUpdateOneWithoutAdminChangesPreviousNestedInput
+    newAdmin?: UserUpdateOneWithoutAdminChangesNewNestedInput
+    changedByUser?: UserUpdateOneWithoutAdminChangesByNestedInput
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminChangeHistoryUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    previousAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    newAdminId?: NullableStringFieldUpdateOperationsInput | string | null
+    previousAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    newAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    oldEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    newEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    changedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    operationType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

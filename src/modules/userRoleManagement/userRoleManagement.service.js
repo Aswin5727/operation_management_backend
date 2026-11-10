@@ -4,10 +4,11 @@ import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
 import { hashPassword } from "../../common/utils/password.js";
-import { sendBranchCredentialsEmail } from "../../common/services/resendEmail.js";
+import { sendBranchCredentialsEmail, sendEmailChangeVerificationEmail } from "../../common/services/resendEmail.js";
 import { createSalesAdmin } from "../salesAdmin/salesAdmin.service.js";
 import { createBranch } from "../branches/branches.service.js";
 import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
+import { createNotification } from "../notifications/notifications.service.js";
 
 const ACCOUNT_TYPES = new Set(["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN", "SALES_ADMIN"]);
 const text = (value) => String(value ?? "").trim();
@@ -159,4 +160,175 @@ export async function assignBranchAccess(branchRecordId, payload = {}, actor = {
     return { branch: updatedBranch, user, accessType: "BRANCH_ADMIN" };
   });
   return { branch: { ...result.branch, roleAccessLabel: BRANCH_ROLE_ACCESS_LABELS[result.branch.roleAccess || BRANCH_ROLE_ACCESS.BRANCH_ADMIN_ONLY] }, user: { id: result.user.id, userCode: result.user.userCode, fullName: result.user.fullName, role: result.user.role }, accessType: result.accessType };
+}
+
+export async function replaceBranchAdmin(branchRecordId, payload = {}, actor = {}) {
+  const fullName = required(payload.fullName || payload.name, "Branch Admin name");
+  if (!/^[\p{L}][\p{L} .'-]*$/u.test(fullName)) throw new AppError("Branch Admin name contains invalid characters", 400);
+  const email = normalizeEmail(payload.email);
+  const phone = normalizePhone(payload.phone);
+  const accountType = normalizeAccountType(payload.accountType || "BRANCH_ADMIN");
+  if (!["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN"].includes(accountType)) throw new AppError("Replacement account must be a Branch Admin", 400);
+  const actorId = actor?.userId || actor?.id || null;
+  const temporaryPassword = `${crypto.randomBytes(9).toString("base64url")}Aa1!`;
+  const passwordHash = await hashPassword(temporaryPassword);
+  const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
+
+  const result = await prisma.$transaction(async (tx) => {
+    const branch = await tx.branch.findUnique({
+      where: { id: branchRecordId },
+      include: { adminUser: { select: { id: true, userCode: true, fullName: true, email: true, role: true, active: true } } },
+    });
+    if (!branch) throw new AppError("Branch not found", 404);
+    const duplicate = await tx.user.findFirst({
+      where: { id: { not: branch.adminUserId || "" }, OR: [{ email: { equals: email, mode: "insensitive" } }, { phone }] },
+      select: { email: true, phone: true },
+    });
+    if (duplicate?.email?.toLowerCase() === email) throw new AppError("Email address is already in use", 409);
+    if (duplicate?.phone === phone) throw new AppError("Phone number is already in use", 409);
+    const conflictingBranch = await tx.branch.findFirst({ where: { id: { not: branch.id }, OR: [{ branchEmail: { equals: email, mode: "insensitive" } }, { branchPhone: phone }] }, select: { id: true } });
+    if (conflictingBranch) throw new AppError("Email or phone number is already used by another branch", 409);
+
+    if (branch.adminUserId) {
+      await tx.user.update({
+        where: { id: branch.adminUserId },
+        data: { active: false, refreshTokenVersion: { increment: 1 }, userCode: `ARCHIVED-${branch.branchId}-${Date.now()}`, updatedBy: actorId },
+      });
+    }
+    const newUser = await tx.user.create({
+      data: {
+        userCode: branch.branchId,
+        fullName,
+        email,
+        phone,
+        country: text(payload.country) || null,
+        state: text(payload.state) || null,
+        city: text(payload.city) || null,
+        address: text(payload.address) || null,
+        role: "BRANCH_ADMIN",
+        active: true,
+        passwordHash,
+        createdBy: actorId,
+        updatedBy: actorId,
+      },
+      select: { id: true, userCode: true, fullName: true, email: true, role: true },
+    });
+    await tx.passwordResetToken.create({ data: { userId: newUser.id, tokenHash, expiresAt, createdBy: actorId } });
+    const updatedBranch = await tx.branch.update({
+      where: { id: branch.id },
+      data: {
+        adminUserId: newUser.id,
+        branchAdminName: fullName,
+        branchEmail: email,
+        branchPhone: phone,
+        branchCountry: text(payload.country) || branch.branchCountry,
+        branchState: text(payload.state) || branch.branchState,
+        branchCity: text(payload.city) || branch.branchCity,
+        branchAddress: text(payload.address) || branch.branchAddress,
+        roleAccess: accountType === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN_ONLY",
+        updatedBy: actorId,
+      },
+      select: { id: true, branchId: true, branchName: true, branchEmail: true, roleAccess: true, adminUserId: true },
+    });
+    await tx.adminChangeHistory.create({
+      data: {
+        branchId: branch.id,
+        previousAdminId: branch.adminUserId,
+        newAdminId: newUser.id,
+        previousAccountType: branch.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN",
+        newAccountType: accountType,
+        oldEmail: branch.branchEmail,
+        newEmail: email,
+        changedBy: actorId,
+        operationType: "ADMIN_REPLACED",
+        metadata: { previousAdminActive: Boolean(branch.adminUser?.active) },
+      },
+    });
+    return { branch: updatedBranch, user: newUser, previousAdmin: branch.adminUser, resetToken, temporaryPassword };
+  });
+
+  let invitationSent = false;
+  try {
+    await sendBranchCredentialsEmail({ to: email, fullName, temporaryPassword, resetToken, branchId: result.branch.branchId, branchName: result.branch.branchName, roleAccess: result.branch.roleAccess });
+    invitationSent = true;
+  } catch (error) {
+    console.warn("Replacement Branch Admin invitation failed", error);
+  }
+  void createNotification({
+    kind: "BRANCH_ADMIN_REPLACED",
+    tone: "blue",
+    title: "Branch Admin Replaced",
+    message: `${fullName} is now the Branch Admin for ${result.branch.branchName}.`,
+    actionLabel: "View Branch",
+    createdBy: actorId,
+    targetUserId: result.user.id,
+    targetBranchId: result.branch.branchId,
+    targetBranchName: result.branch.branchName,
+    targetBranchEmail: result.branch.branchEmail,
+  }).catch((error) => console.warn("Branch admin replacement notification failed", error));
+  return { invitationSent, branch: result.branch, user: result.user, previousAdmin: result.previousAdmin ? { id: result.previousAdmin.id, email: result.previousAdmin.email } : null };
+}
+
+export async function requestEmailChange(userId, payload = {}, actor = {}) {
+  const newEmail = normalizeEmail(payload.email);
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, fullName: true, email: true, role: true } });
+  if (!user || !["BRANCH_ADMIN", "SALES_ADMIN"].includes(user.role)) throw new AppError("Administrator account not found", 404);
+  if (user.email.toLowerCase() === newEmail) return { verificationRequired: false, email: user.email };
+  const duplicate = await prisma.user.findFirst({ where: { id: { not: user.id }, email: { equals: newEmail, mode: "insensitive" } }, select: { id: true } });
+  if (duplicate) throw new AppError("Email address is already in use", 409);
+  const token = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+  const temporaryPassword = `${crypto.randomBytes(9).toString("base64url")}Aa1!`;
+  const temporaryPasswordHash = await hashPassword(temporaryPassword);
+  const { resetToken, tokenHash: resetTokenHash, expiresAt: resetExpiresAt } = createResetTokenArtifacts();
+  await prisma.$transaction(async (tx) => {
+    await tx.emailChangeVerification.deleteMany({ where: { userId: user.id, verifiedAt: null } });
+    await tx.passwordResetToken.deleteMany({ where: { userId: user.id, usedAt: null, createdBy: "EMAIL_CHANGE" } });
+    await tx.passwordResetToken.create({ data: { userId: user.id, tokenHash: resetTokenHash, expiresAt: resetExpiresAt, createdBy: "EMAIL_CHANGE" } });
+    await tx.emailChangeVerification.create({ data: { userId: user.id, oldEmail: user.email, newEmail, tokenHash, expiresAt, temporaryPasswordHash, createdBy: actor?.userId || actor?.id || null } });
+  });
+  try {
+    await sendEmailChangeVerificationEmail({ to: newEmail, fullName: user.fullName, verificationToken: token, temporaryPassword, resetToken, resetExpiryMinutes: config.credentialResetTokenExpiresMinutes });
+  } catch (error) {
+    await prisma.emailChangeVerification.deleteMany({ where: { userId: user.id, tokenHash } });
+    await prisma.passwordResetToken.deleteMany({ where: { userId: user.id, tokenHash: resetTokenHash } });
+    throw new AppError("Verification email could not be sent", error?.status || 502);
+  }
+  return { verificationRequired: true, email: newEmail };
+}
+
+export async function verifyEmailChange(token) {
+  const tokenHash = crypto.createHash("sha256").update(String(token || "").trim()).digest("hex");
+  const request = await prisma.emailChangeVerification.findUnique({ where: { tokenHash }, include: { user: { select: { id: true, fullName: true, email: true, role: true } } } });
+  if (!request || request.verifiedAt || request.expiresAt.getTime() < Date.now()) throw new AppError("Email verification link is invalid or expired", 400);
+  const { resetToken: verifiedResetToken, tokenHash: verifiedResetTokenHash, expiresAt: verifiedResetExpiresAt } = createResetTokenArtifacts();
+  const result = await prisma.$transaction(async (tx) => {
+    const duplicate = await tx.user.findFirst({ where: { id: { not: request.userId }, email: { equals: request.newEmail, mode: "insensitive" } }, select: { id: true } });
+    if (duplicate) throw new AppError("Email address is already in use", 409);
+    const branch = await tx.branch.findUnique({ where: { adminUserId: request.userId }, select: { id: true, branchEmail: true, branchName: true } });
+    const user = await tx.user.update({ where: { id: request.userId }, data: { email: request.newEmail, ...(request.temporaryPasswordHash ? { passwordHash: request.temporaryPasswordHash, passwordChangedAt: null } : {}), refreshTokenVersion: { increment: 1 }, updatedBy: request.userId }, select: { id: true, fullName: true, email: true, role: true } });
+    if (branch) await tx.branch.update({ where: { id: branch.id }, data: { branchEmail: request.newEmail, updatedBy: request.userId } });
+    await tx.emailChangeVerification.update({ where: { id: request.id }, data: { verifiedAt: new Date() } });
+    await tx.passwordResetToken.deleteMany({ where: { userId: request.userId, usedAt: null, createdBy: "EMAIL_CHANGE" } });
+    await tx.passwordResetToken.create({ data: { userId: request.userId, tokenHash: verifiedResetTokenHash, expiresAt: verifiedResetExpiresAt, createdBy: "EMAIL_CHANGE" } });
+    if (branch) await tx.adminChangeHistory.create({ data: { branchId: branch.id, previousAdminId: request.userId, newAdminId: request.userId, oldEmail: request.oldEmail, newEmail: request.newEmail, operationType: "EMAIL_VERIFIED", changedBy: request.createdBy, metadata: { verified: true } } });
+    return { user, branch };
+  });
+  void createNotification({ kind: "EMAIL_CHANGED", tone: "green", title: "Email Address Updated", message: `Your CISPRO login email is now ${result.user.email}.`, actionLabel: "View Account", targetUserId: result.user.id, targetBranchId: result.branch?.id, targetBranchName: result.branch?.branchName }).catch((error) => console.warn("Email change notification failed", error));
+  return { verified: true, email: result.user.email, resetToken: verifiedResetToken };
+}
+
+export async function listAdminChangeHistory(branchRecordId) {
+  const branch = await prisma.branch.findUnique({ where: { id: branchRecordId }, select: { id: true } });
+  if (!branch) throw new AppError("Branch not found", 404);
+  return prisma.adminChangeHistory.findMany({
+    where: { branchId: branchRecordId },
+    orderBy: { createdAt: "desc" },
+    include: {
+      previousAdmin: { select: { id: true, userCode: true, fullName: true, email: true } },
+      newAdmin: { select: { id: true, userCode: true, fullName: true, email: true } },
+      changedByUser: { select: { id: true, userCode: true, fullName: true, email: true } },
+    },
+  });
 }

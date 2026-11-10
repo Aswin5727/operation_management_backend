@@ -462,6 +462,36 @@ export async function sendPasswordResetEmail({ to, resetToken, expiryMinutes = 2
   });
 }
 
+export async function sendEmailChangeVerificationEmail({ to, fullName, verificationToken, temporaryPassword, resetToken, expiryMinutes = 30, resetExpiryMinutes = 60 }) {
+  const verificationLink = buildAppUrl("/verify-email-change", { token: verificationToken, temporaryPassword });
+  const resetLink = buildResetLink(resetToken, temporaryPassword, { redirect: "/login" });
+  const loginLink = buildLoginLink();
+  const safeName = escapeHtml(fullName || "User");
+  const html = alertTemplate({
+    eyebrow: "Security Verification",
+    title: "Verify your new email address",
+    subtitle: `Hello ${safeName}, confirm this email address to finish updating your CISPRO login.` ,
+    summary: "After verification, use the new email address to access your CISPRO account.",
+    primaryActionLabel: "Verify Email Address",
+    primaryActionLink: verificationLink,
+    note: `Verification expires in ${expiryMinutes} minutes. After verification, use the reset password link below to set your permanent password.`,
+  });
+  return sendEmail({
+    to,
+    subject: "Verify your new CISPRO email address and login details",
+    html,
+    text: [
+      `Verify your new CISPRO email address: ${verificationLink}`,
+      `This link expires in ${expiryMinutes} minutes.`,
+      "",
+      `New login email: ${to}`,
+      `Reset password link: ${resetLink}`,
+      `Login link: ${loginLink}`,
+      "Verify the email first. Then use the temporary password to log in, or use the reset password link to create a permanent password.",
+    ].join("\n"),
+  });
+}
+
 export async function sendSalesAdminCredentialsEmail({ to, fullName, salesAdminId, temporaryPassword, branchNames = [], resetToken }) {
   const loginLink = buildLoginLink();
   const resetLink = buildResetLink(resetToken, temporaryPassword, { redirect: "/login" });
