@@ -301,7 +301,15 @@ export async function requestEmailChange(userId, payload = {}, actor = {}) {
 export async function verifyEmailChange(token) {
   const tokenHash = crypto.createHash("sha256").update(String(token || "").trim()).digest("hex");
   const request = await prisma.emailChangeVerification.findUnique({ where: { tokenHash }, include: { user: { select: { id: true, fullName: true, email: true, role: true } } } });
-  if (!request || request.verifiedAt || request.expiresAt.getTime() < Date.now()) throw new AppError("Email verification link is invalid or expired", 400);
+  if (!request || request.expiresAt.getTime() < Date.now()) throw new AppError("Email verification link is invalid or expired", 400);
+  if (request.verifiedAt) {
+    const { resetToken, tokenHash: resetTokenHash, expiresAt: resetExpiresAt } = createResetTokenArtifacts();
+    await prisma.$transaction(async (tx) => {
+      await tx.passwordResetToken.deleteMany({ where: { userId: request.userId, usedAt: null, createdBy: "EMAIL_CHANGE" } });
+      await tx.passwordResetToken.create({ data: { userId: request.userId, tokenHash: resetTokenHash, expiresAt: resetExpiresAt, createdBy: "EMAIL_CHANGE" } });
+    });
+    return { verified: true, email: request.user.email, resetToken };
+  }
   const { resetToken: verifiedResetToken, tokenHash: verifiedResetTokenHash, expiresAt: verifiedResetExpiresAt } = createResetTokenArtifacts();
   const result = await prisma.$transaction(async (tx) => {
     const duplicate = await tx.user.findFirst({ where: { id: { not: request.userId }, email: { equals: request.newEmail, mode: "insensitive" } }, select: { id: true } });
