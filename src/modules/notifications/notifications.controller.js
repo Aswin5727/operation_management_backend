@@ -6,10 +6,10 @@ import {
 } from "./notifications.service.js";
 
 const listNotificationsHandler = asyncHandler(async (req, res) => {
-  const [result, unreadCount] = await Promise.all([
-    listNotifications(req.query || {}, req.user || {}),
-    getUnreadNotificationCount(req.user || {}),
-  ]);
+  const result = await listNotifications(req.query || {}, req.user || {});
+  const unreadCount = req.query?.targetUserId && req.user?.role === "SUPER_ADMIN"
+    ? result.meta?.unreadCount || 0
+    : await getUnreadNotificationCount(req.user || {});
 
   res.status(200).json({
     data: result.data,

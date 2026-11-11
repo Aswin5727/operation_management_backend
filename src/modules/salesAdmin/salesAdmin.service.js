@@ -587,13 +587,14 @@ async function getSalesScope(actorOrUserId) {
     ? { userId: actorOrUserId, role: "SALES_ADMIN" }
     : (actorOrUserId || {});
   const role = String(actor.role || "").toUpperCase();
+  const scopedUserId = role === "SUPER_ADMIN" && actor.impersonatedSalesAdminId ? actor.impersonatedSalesAdminId : actor.userId;
   if (role === "BRANCH_ADMIN") {
     const branch = await prisma.branch.findUnique({ where: { id: actor.branchId }, select: { id: true, branchId: true, branchName: true, status: true } });
     if (!branch || branch.status !== "ACTIVE") throw new AppError("You do not have access to this branch", 403);
     return { actor, userId: actor.userId, branchIds: [branch.id], branches: [branch] };
   }
-  const branches = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: actor.userId, branch: { status: "ACTIVE" } }, select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } });
-  return { actor, userId: actor.userId, branchIds: branches.map(({ branch }) => branch.id), branches: branches.map(({ branch }) => branch) };
+  const branches = await prisma.salesAdminBranch.findMany({ where: { salesAdminId: scopedUserId, branch: { status: "ACTIVE" } }, select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } });
+  return { actor, userId: scopedUserId, branchIds: branches.map(({ branch }) => branch.id), branches: branches.map(({ branch }) => branch) };
 }
 
 async function getAdmissionLeadForSalesAdmin(actorOrUserId, leadKey) {
@@ -796,15 +797,20 @@ async function listAdmissionBatchesByBranches(branchIds = []) {
 
 async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   const scope = await getSalesScope(actorOrUserId);
-  const userId = scope.userId;
-  const branchIds = scope.branchIds;
+  const actorRole = String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase();
+  const requestedSalesAdminId = actorRole === "SUPER_ADMIN" ? clean(query.salesAdminId) : "";
+  const selectedBranches = requestedSalesAdminId
+    ? await prisma.salesAdminBranch.findMany({ where: { salesAdminId: requestedSalesAdminId, branch: { status: "ACTIVE" } }, select: { branch: { select: { id: true, branchId: true, branchName: true, status: true } } } })
+    : [];
+  const userId = requestedSalesAdminId || scope.userId;
+  const branchIds = requestedSalesAdminId ? selectedBranches.map(({ branch }) => branch.id) : scope.branchIds;
 
   const branchId = clean(query.branchId);
   if (branchId && !branchIds.includes(branchId)) throw new AppError("You do not have access to this branch", 403);
   const scopedBranchIds = branchId ? [branchId] : branchIds;
   const status = clean(query.status || "ALL").toUpperCase();
   if (!["ALL", "PENDING", "IN_PROGRESS", "PENDING_HOT", "ADMITTED"].includes(status)) throw new AppError("Invalid admission status filter", 400);
-  const isBranchAdmin = String((typeof actorOrUserId === "object" ? actorOrUserId?.role : "SALES_ADMIN") || "").toUpperCase() === "BRANCH_ADMIN";
+  const isBranchAdmin = actorRole === "BRANCH_ADMIN";
   const branchAdminAssignmentScope = isBranchAdmin ? { OR: [{ assignedToId: userId }, { assignedToId: null }] } : null;
   const where = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
   if (branchAdminAssignmentScope) where.AND = [branchAdminAssignmentScope];
