@@ -449,6 +449,7 @@ async function login({ identifier, password, ipAddress, userAgent }) {
         title: "Sales Admin logged in",
         message: `${refreshedUser.fullName || "Sales Admin"} logged in successfully and is now active.`,
         actionLabel: "View Sales Admin",
+        targetUserId: refreshedUser.id,
         createdBy: refreshedUser.id,
         facultyName: refreshedUser.fullName || "",
       }).catch((error) => {

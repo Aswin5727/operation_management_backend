@@ -392,7 +392,7 @@ export function buildNotificationWhere({
 
   if (role === "SALES_ADMIN") {
     return {
-      targetUserId: user.id,
+      OR: [{ targetUserId: user.id }, { createdBy: user.id }],
       ...(normalizedKind ? { kind: normalizedKind } : { kind: { in: Array.from(visibleKinds) } }),
       ...(unreadOnly ? { read: false } : {}),
     };
@@ -1440,15 +1440,27 @@ export async function listNotifications(query = {}, user = {}) {
   const dateWhere = normalizeString(user?.role).toUpperCase() === "SALES_ADMIN"
     ? await getSalesAdminDateFilter(query, user)
     : null;
+  const targetUserWhere = normalizeString(user?.role).toUpperCase() === "SUPER_ADMIN" && normalizeString(query.targetUserId)
+    ? {
+        OR: [
+          { targetUserId: normalizeString(query.targetUserId) },
+          { createdBy: normalizeString(query.targetUserId) },
+        ],
+      }
+    : null;
   if (normalizeString(user?.role).toUpperCase() !== "SALES_ADMIN" && (query.datePreset || query.fromDate || query.toDate)) {
     throw new AppError("Date filters are available only for Sales Admin notifications", 400);
   }
-  const where = combineNotificationWhere(baseWhere, statusWhere, dateWhere);
-  const filteredUnreadWhere = combineNotificationWhere(
-    buildNotificationWhere({ user, branchScope, visibleKinds, unreadOnly: true, kind }),
-    leadFollowUpOwnershipFilter,
-    dateWhere,
-  );
+  const where = targetUserWhere
+    ? combineNotificationWhere(targetUserWhere, statusWhere)
+    : combineNotificationWhere(baseWhere, statusWhere, dateWhere);
+  const filteredUnreadWhere = targetUserWhere
+    ? combineNotificationWhere(targetUserWhere, { read: false })
+    : combineNotificationWhere(
+        buildNotificationWhere({ user, branchScope, visibleKinds, unreadOnly: true, kind }),
+        leadFollowUpOwnershipFilter,
+        dateWhere,
+      );
   const sort = normalizeString(query.sort).toLowerCase();
   if (sort && !["newest", "oldest"].includes(sort)) throw new AppError("Notification sort is invalid", 400);
   const orderBy = { createdAt: sort === "oldest" ? "asc" : "desc" };

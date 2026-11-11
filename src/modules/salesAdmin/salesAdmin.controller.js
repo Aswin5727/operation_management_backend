@@ -13,9 +13,9 @@ const dashboardHandler = asyncHandler(async (req, res) => res.status(200).json(a
 const admissionsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminAdmissions(req.auth, req.query || {})));
 const studentFeeDetailsHandler = asyncHandler(async (req, res) => res.status(200).json({ data: { feeDetails: await getSalesAdminStudentFeeDetails(req.auth, req.params.studentId) } }));
 const pendingAdmissionReminderHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getPendingHotAdmissionReminder(req.auth) }));
-const admissionLeadHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAdmissionLead(req.auth, req.params.leadId) }));
-const availableBatchesHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAvailableBatches(req.auth, req.params.leadId) }));
-const startAdmissionHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await startSalesAdminAdmission(req.auth, req.params.leadId) }));
+const admissionLeadHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAdmissionLead({ ...req.auth, impersonatedSalesAdminId: req.query?.salesAdminId || null }, req.params.leadId) }));
+const availableBatchesHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await getSalesAdminAvailableBatches({ ...req.auth, impersonatedSalesAdminId: req.query?.salesAdminId || null }, req.params.leadId) }));
+const startAdmissionHandler = asyncHandler(async (req, res) => res.status(200).json({ data: await startSalesAdminAdmission({ ...req.auth, impersonatedSalesAdminId: req.query?.salesAdminId || null }, req.params.leadId) }));
 const convertAdmissionHandler = asyncHandler(async (req, res) => res.status(201).json({ data: await convertSalesAdminLead(req.auth, req.params.leadId, req.body || {}) }));
 const createBatchRequestHandler = asyncHandler(async (req, res) => res.status(201).json({ message: "Batch request sent to the branch", data: await createSalesAdminBatchRequest(req.auth, req.params.leadId) }));
 const listBatchRequestsHandler = asyncHandler(async (req, res) => res.status(200).json(await listSalesAdminBatchRequests(req.auth)));
