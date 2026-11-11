@@ -1,0 +1,51 @@
+﻿const MODULE_ACCESS_GROUPS = [
+  {
+    key: "COMMON",
+    label: "Common access",
+    modules: [
+      { key: "DASHBOARD", label: "Dashboard", description: "View the role dashboard", locked: true },
+      { key: "NOTIFICATIONS", label: "Notifications", description: "View account notifications", locked: true },
+      { key: "PROFILE", label: "Profile", description: "View and update profile details", locked: true },
+      { key: "SETTINGS", label: "Settings", description: "Manage account settings", locked: true },
+    ],
+  },
+  {
+    key: "ACADEMIC",
+    label: "Academic operations",
+    modules: [
+      { key: "STUDENT_MANAGEMENT", label: "Student Management", description: "Manage students and course records" },
+      { key: "ACADEMIC_OPERATIONS", label: "Academic Operations", description: "Manage courses, batches and academic workflows" },
+      { key: "FEE_ACCOUNTS", label: "Fee & Accounts", description: "Manage payments, installments and account records" },
+      { key: "REPORTS_ANALYTICS", label: "Reports & Analytics", description: "View and download operational reports" },
+      { key: "HELPDESK_SUPPORT", label: "Helpdesk & Support", description: "Manage support requests" },
+    ],
+  },
+  {
+    key: "SALES_CRM",
+    label: "Sales CRM",
+    modules: [
+      { key: "LEAD_MANAGEMENT", label: "Lead Management", description: "Manage leads and follow-ups" },
+      { key: "ADMISSION_MANAGEMENT", label: "Admission Management", description: "Manage admissions and conversions" },
+      { key: "SALES_CRM_REPORTS", label: "Sales CRM Reports", description: "View sales and conversion reports" },
+    ],
+  },
+];
+
+const COMMON_MODULE_KEYS = MODULE_ACCESS_GROUPS[0].modules.map((module) => module.key);
+const ALL_MODULE_KEYS = MODULE_ACCESS_GROUPS.flatMap((group) => group.modules.map((module) => module.key));
+const ROLE_DEFAULT_MODULE_ACCESS = {
+  BRANCH_ADMIN: [...COMMON_MODULE_KEYS, "STUDENT_MANAGEMENT", "ACADEMIC_OPERATIONS", "FEE_ACCOUNTS", "REPORTS_ANALYTICS", "HELPDESK_SUPPORT"],
+  BRANCH_ADMIN_SALES_ADMIN: [...COMMON_MODULE_KEYS, "STUDENT_MANAGEMENT", "ACADEMIC_OPERATIONS", "FEE_ACCOUNTS", "REPORTS_ANALYTICS", "HELPDESK_SUPPORT", "LEAD_MANAGEMENT", "ADMISSION_MANAGEMENT", "SALES_CRM_REPORTS"],
+  SALES_ADMIN: [...COMMON_MODULE_KEYS, "LEAD_MANAGEMENT", "ADMISSION_MANAGEMENT", "SALES_CRM_REPORTS"],
+};
+
+function normalizeModuleAccess(value, accountType) {
+  const role = String(accountType || "BRANCH_ADMIN").trim().toUpperCase();
+  const fallback = ROLE_DEFAULT_MODULE_ACCESS[role] || ROLE_DEFAULT_MODULE_ACCESS.BRANCH_ADMIN;
+  const requested = Array.isArray(value) ? value : fallback;
+  const valid = new Set(requested.map((item) => String(item || "").trim().toUpperCase()).filter((item) => ALL_MODULE_KEYS.includes(item)));
+  COMMON_MODULE_KEYS.forEach((key) => valid.add(key));
+  return ALL_MODULE_KEYS.filter((key) => valid.has(key));
+}
+
+export { ALL_MODULE_KEYS, COMMON_MODULE_KEYS, MODULE_ACCESS_GROUPS, ROLE_DEFAULT_MODULE_ACCESS, normalizeModuleAccess };

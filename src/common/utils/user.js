@@ -1,3 +1,4 @@
+import { normalizeModuleAccess } from "../constants/moduleAccess.js";
 function requiresPasswordReset(user) {
   const role = String(user?.role || "").trim().toUpperCase();
   return (
@@ -20,6 +21,7 @@ function toSafeUser(user) {
     email: user.email,
     phone: user.phone,
     role: user.role,
+    moduleAccess: normalizeModuleAccess(user.moduleAccess, user.role === "BRANCH_ADMIN" && user.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : user.role),
     ...(user.role === "BRANCH_ADMIN" ? { roleAccess: user.roleAccess || "BRANCH_ADMIN_ONLY" } : {}),
     active: user.active,
     status: user.status || (user.active ? "ACTIVE" : "INACTIVE"),

@@ -3,6 +3,7 @@ import AppError from "../errors/AppError.js";
 import { verifyAccessToken } from "../utils/tokens.js";
 import { ACCESS_COOKIE_NAME } from "../constants/auth.js";
 import { findBranchForAdmin, isInactiveBranch, isInactiveSalesAdmin } from "../utils/branchAccess.js";
+import { normalizeModuleAccess } from "../constants/moduleAccess.js";
 
 function getBearerToken(req) {
   const header = req.headers.authorization || "";
@@ -34,6 +35,27 @@ async function findUserForAuthentication(userId) {
   );
 }
 
+function requiredModuleForPath(pathname = "") {
+  const path = String(pathname || "").toLowerCase();
+  if (path.includes("/branch-students")) return ["STUDENT_MANAGEMENT", "ADMISSION_MANAGEMENT"];
+  if (path.includes("/branch-courses") || path.includes("/branch-batches")) return ["ACADEMIC_OPERATIONS", "ADMISSION_MANAGEMENT"];
+  if (path.includes("/branch-faculty") || path.includes("/branch-installment-templates") || path.includes("/academic-tests") || path.includes("/academic-test-preparation") || path.includes("/faculty-skills") || path.includes("/exams")) return ["ACADEMIC_OPERATIONS"];
+  if (path.includes("/payments") || path.includes("/student-payments") || path.includes("/fee")) return "FEE_ACCOUNTS";
+  if (path.includes("/reports") || path.includes("/report")) return path.includes("sales-crm") ? "SALES_CRM_REPORTS" : "REPORTS_ANALYTICS";
+  if (path.includes("/leads") || path.includes("/sales-crm") || path.includes("/lead-recording-shares") || path.includes("/sales-crm-report-submissions")) return "LEAD_MANAGEMENT";
+  return null;
+}
+
+function assertModuleAccess(req, user) {
+  const role = String(user?.role || "").trim().toUpperCase();
+  if (!["BRANCH_ADMIN", "SALES_ADMIN"].includes(role)) return;
+  const moduleKey = requiredModuleForPath(req.originalUrl || req.baseUrl || req.path);
+  if (!moduleKey) return;
+  const accountType = role === "BRANCH_ADMIN" && user.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : role;
+  const access = normalizeModuleAccess(user.moduleAccess, accountType);
+  const requiredModules = Array.isArray(moduleKey) ? moduleKey : [moduleKey];
+  if (!requiredModules.some((key) => access.includes(key))) throw new AppError("This module is not enabled for your account. Contact the Super Admin.", 403);
+}
 async function authenticate(req, _res, next) {
   try {
     const token = getBearerToken(req);
@@ -66,8 +88,10 @@ async function authenticate(req, _res, next) {
       readOnly: readOnlyUser,
       salesAdminStatus: user.role === "SALES_ADMIN" ? (user.status || (user.active ? "ACTIVE" : "INACTIVE")) : null,
       roleAccess: user.role === "BRANCH_ADMIN" ? user.roleAccess : null,
+      moduleAccess: Array.isArray(user.moduleAccess) ? user.moduleAccess : null,
     };
     req.user = user;
+    assertModuleAccess(req, user);
 
     if (readOnlyUser && !["GET", "HEAD", "OPTIONS"].includes(req.method)) {
       throw new AppError(

@@ -14,6 +14,7 @@ import {
   createNotification,
 } from "../notifications/notifications.service.js";
 import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
+import { normalizeModuleAccess } from "../../common/constants/moduleAccess.js";
 
 const RECORD_STATUSES = new Set(["ACTIVE", "INACTIVE"]);
 
@@ -453,6 +454,7 @@ export async function createBranch(payload, actor) {
   const actorId = actor?.userId ?? actor?.id ?? null;
   const temporaryPassword = generateTemporaryPassword();
   const passwordHash = await hashPassword(temporaryPassword);
+  const moduleAccess = normalizeModuleAccess(payload.moduleAccess, parsed.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN");
   const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
 
   const created = await prisma.$transaction(async (tx) => {
@@ -463,6 +465,7 @@ export async function createBranch(payload, actor) {
         email: parsed.branchEmail,
         phone: parsed.branchPhone,
         role: "BRANCH_ADMIN",
+        moduleAccess,
         active: true,
         passwordHash,
         createdBy: actorId,
@@ -541,6 +544,7 @@ export async function updateBranch(branchRecordId, payload, actor) {
   }
 
   const actorId = actor?.userId ?? actor?.id ?? null;
+  const moduleAccess = payload.moduleAccess !== undefined ? normalizeModuleAccess(payload.moduleAccess, parsed.roleAccess === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN") : null;
 
   const updated = await prisma.$transaction(async (tx) => {
     const branch = await tx.branch.update({
@@ -560,6 +564,7 @@ export async function updateBranch(branchRecordId, payload, actor) {
           email: parsed.branchEmail,
           phone: parsed.branchPhone,
           active: true,
+          ...(moduleAccess ? { moduleAccess } : {}),
           updatedBy: actorId,
         },
       });

@@ -18,6 +18,7 @@ model User {
   city                           String?
   address                        String?
   role                           UserRole
+  moduleAccess                   Json?
   active                         Boolean                      @default(true)
   status                         String                       @default("ACTIVE")
   passwordHash                   String

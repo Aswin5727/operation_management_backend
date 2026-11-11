@@ -9,6 +9,7 @@ import { createSalesAdmin } from "../salesAdmin/salesAdmin.service.js";
 import { createBranch } from "../branches/branches.service.js";
 import { BRANCH_ROLE_ACCESS, BRANCH_ROLE_ACCESS_LABELS, parseBranchRoleAccess } from "../../common/constants/branchRoleAccess.js";
 import { createNotification } from "../notifications/notifications.service.js";
+import { normalizeModuleAccess } from "../../common/constants/moduleAccess.js";
 
 const ACCOUNT_TYPES = new Set(["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN", "SALES_ADMIN"]);
 const text = (value) => String(value ?? "").trim();
@@ -50,6 +51,7 @@ async function createBranchAccount({ accountType, payload, actor }) {
   const actorId = actor?.userId || actor?.id || null;
   const temporaryPassword = `${crypto.randomBytes(9).toString("base64url")}Aa1!`;
   const passwordHash = await hashPassword(temporaryPassword);
+  const moduleAccess = normalizeModuleAccess(payload.moduleAccess, accountType);
   const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
 
   const result = await prisma.$transaction(async (tx) => {
@@ -65,7 +67,7 @@ async function createBranchAccount({ accountType, payload, actor }) {
     const userCode = branch?.branchId || await nextUnassignedBranchAdminCode(tx);
     await assertUniqueUser(tx, { email, phone, userCode });
 
-    const user = await tx.user.create({ data: { userCode, fullName, email, phone, country: text(payload.country) || null, state: text(payload.state) || null, city: text(payload.city) || null, address: text(payload.address) || null, role: "BRANCH_ADMIN", active: true, passwordHash, passwordChangedAt: null, createdBy: actorId, updatedBy: actorId }, select: { id: true, userCode: true, fullName: true, email: true, role: true } });
+    const user = await tx.user.create({ data: { userCode, fullName, email, phone, country: text(payload.country) || null, state: text(payload.state) || null, city: text(payload.city) || null, address: text(payload.address) || null, role: "BRANCH_ADMIN", moduleAccess, active: true, passwordHash, passwordChangedAt: null, createdBy: actorId, updatedBy: actorId }, select: { id: true, userCode: true, fullName: true, email: true, role: true } });
     await tx.passwordResetToken.create({ data: { userId: user.id, tokenHash, expiresAt, createdBy: actorId } });
     const updatedBranch = branch
       ? await tx.branch.update({ where: { id: branch.id }, data: { adminUserId: user.id, branchAdminName: fullName, branchEmail: email, branchPhone: phone, roleAccess: accountType === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN_ONLY", updatedBy: actorId }, select: { id: true, branchId: true, branchName: true, roleAccess: true } })
@@ -98,6 +100,7 @@ async function createBranchRoleAccount({ accountType, payload, actor }) {
     branchAddress: payload.branchAddress || payload.address,
     status: payload.status || "ACTIVE",
     roleAccess: payload.roleAccess || (accountType === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN_ONLY"),
+    moduleAccess: normalizeModuleAccess(payload.moduleAccess, accountType),
   };
   const branch = await createBranch(branchPayload, actor);
   return {
@@ -117,7 +120,7 @@ async function createBranchRoleAccount({ accountType, payload, actor }) {
 export async function createUserRoleAccount(payload = {}, actor = {}) {
   const accountType = normalizeAccountType(payload.accountType);
   if (accountType === "SALES_ADMIN") {
-    const result = await createSalesAdmin({ ...payload, allowUnassigned: true, branchIds: Array.isArray(payload.branchIds) ? payload.branchIds : [payload.branchId].filter(Boolean) }, actor);
+    const result = await createSalesAdmin({ ...payload, moduleAccess: normalizeModuleAccess(payload.moduleAccess, accountType), allowUnassigned: true, branchIds: Array.isArray(payload.branchIds) ? payload.branchIds : [payload.branchId].filter(Boolean) }, actor);
     return { accountType, ...result };
   }
   if (payload.branchName || payload.branchAdminName || payload.branchEmail) return createBranchRoleAccount({ accountType, payload, actor });
@@ -133,11 +136,11 @@ export async function listBranchAccessUsers(accountType = "") {
   const users = await prisma.user.findMany({
     where: { role: { in: ["BRANCH_ADMIN", "SALES_ADMIN"] }, ...(normalizedAccountType === "SALES_ADMIN" ? {} : { active: true }) },
     orderBy: { fullName: "asc" },
-    select: { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, status: true, managedBranch: { select: { id: true, branchId: true, branchName: true, branchAdminName: true, branchEmail: true, branchPhone: true, branchCountryCode: true, branchCountry: true, branchStateCode: true, branchState: true, branchCity: true, branchAddress: true, status: true, roleAccess: true, adminUserId: true } }, salesAdminBranches: { select: { branchId: true, branch: { select: { id: true, branchId: true, branchName: true, branchCountry: true, branchState: true, branchCity: true, branchAddress: true, status: true } } } } },
+    select: { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, moduleAccess: true, active: true, status: true, managedBranch: { select: { id: true, branchId: true, branchName: true, branchAdminName: true, branchEmail: true, branchPhone: true, branchCountryCode: true, branchCountry: true, branchStateCode: true, branchState: true, branchCity: true, branchAddress: true, status: true, roleAccess: true, adminUserId: true } }, salesAdminBranches: { select: { branchId: true, branch: { select: { id: true, branchId: true, branchName: true, branchCountry: true, branchState: true, branchCity: true, branchAddress: true, status: true } } } } },
   });
   return users.map((user) => {
     const isCombined = user.role === "BRANCH_ADMIN" && user.managedBranch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN";
-    return { id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, country: user.country, state: user.state, city: user.city, address: user.address, role: user.role, active: user.active, status: user.status || (user.active ? "ACTIVE" : "INACTIVE"), accountType: isCombined ? "BRANCH_ADMIN_SALES_ADMIN" : user.role, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId), assignedBranches: user.salesAdminBranches.map((item) => ({ ...item.branch, salesAdminStatus: user.status || (user.active ? "ACTIVE" : "INACTIVE"), salesAdminActive: user.active })) };
+    return { id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, country: user.country, state: user.state, city: user.city, address: user.address, role: user.role, moduleAccess: normalizeModuleAccess(user.moduleAccess, isCombined ? "BRANCH_ADMIN_SALES_ADMIN" : user.role), active: user.active, status: user.status || (user.active ? "ACTIVE" : "INACTIVE"), accountType: isCombined ? "BRANCH_ADMIN_SALES_ADMIN" : user.role, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId), assignedBranches: user.salesAdminBranches.map((item) => ({ ...item.branch, salesAdminStatus: user.status || (user.active ? "ACTIVE" : "INACTIVE"), salesAdminActive: user.active })) };
   }).filter((user) => !normalizedAccountType || (normalizedAccountType === "BRANCH_ADMIN" ? ["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN"].includes(user.accountType) : user.accountType === "SALES_ADMIN"));
 }
 
@@ -174,6 +177,7 @@ export async function replaceBranchAdmin(branchRecordId, payload = {}, actor = {
   const actorId = actor?.userId || actor?.id || null;
   const temporaryPassword = `${crypto.randomBytes(9).toString("base64url")}Aa1!`;
   const passwordHash = await hashPassword(temporaryPassword);
+  const moduleAccess = normalizeModuleAccess(payload.moduleAccess, accountType);
   const { resetToken, tokenHash, expiresAt } = createResetTokenArtifacts();
 
   const result = await prisma.$transaction(async (tx) => {
@@ -208,6 +212,7 @@ export async function replaceBranchAdmin(branchRecordId, payload = {}, actor = {
         city: text(payload.city) || null,
         address: text(payload.address) || null,
         role: "BRANCH_ADMIN",
+        moduleAccess,
         active: true,
         passwordHash,
         createdBy: actorId,

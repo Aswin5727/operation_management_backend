@@ -51,6 +51,7 @@ const AUTH_USER_SELECT = {
   email: true,
   phone: true,
   role: true,
+  moduleAccess: true,
   active: true,
   status: true,
   passwordHash: true,

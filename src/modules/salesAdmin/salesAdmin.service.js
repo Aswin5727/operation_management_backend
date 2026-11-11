@@ -1,4 +1,4 @@
-﻿import crypto from "node:crypto";
+import crypto from "node:crypto";
 import prisma from "../../config/prisma.js";
 import config from "../../config/env.js";
 import AppError from "../../common/errors/AppError.js";
@@ -11,9 +11,16 @@ import { listBranchBatches } from "../branchBatches/branchBatches.service.js";
 import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
 import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
 import { calculateAdmissionFeeDetails } from "./admissionFeeDetails.js";
+import { normalizeModuleAccess } from "../../common/constants/moduleAccess.js";
 
-const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, status: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true, timezone: true } } } } };
+const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, status: true, moduleAccess: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true, timezone: true } } } } };
 const clean = (value) => String(value ?? "").trim();
+const normalizeSalesAdminId = (value) => {
+  const normalized = clean(value).toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (/^CISSALES\d{3,}$/.test(normalized)) return normalized;
+  if (/^CISSALE\d{3,}$/.test(normalized)) return normalized.replace(/^CISSALE/, "CISSALES");
+  return normalized;
+};
 const required = (value, label) => { const result = clean(value); if (!result) throw new AppError(`${label} is required`, 400); return result; };
 const emailValue = (value) => { const email = required(value, "Email address").toLowerCase(); if (!/^\S+@\S+\.\S+$/.test(email)) throw new AppError("Enter a valid email address", 400); return email; };
 const phoneValue = (value) => { const phone = required(value, "Phone number"); if (!/^\d{10}$/.test(phone)) throw new AppError("Phone number must contain exactly 10 digits", 400); return phone; };
@@ -67,7 +74,7 @@ async function createSalesAdmin(payload, auth) {
   const fullName = required(payload.fullName || payload.name, "Sales Admin name");
   if (!/^[\p{L}][\p{L} .'-]*$/u.test(fullName)) throw new AppError("Sales Admin name contains invalid characters", 400);
   const email = emailValue(payload.email); const phone = phoneValue(payload.phone); const country = clean(payload.country) || null; const state = clean(payload.state) || null; const city = clean(payload.city) || null; const address = clean(payload.address) || null; const branches = await resolveBranches(payload.branchIds || payload.branches, { allowEmpty: payload.allowUnassigned === true });
-  const requestedSalesAdminId = clean(payload.salesAdminId || payload.userCode).toUpperCase();
+  const requestedSalesAdminId = normalizeSalesAdminId(payload.salesAdminId || payload.userCode);
   if (requestedSalesAdminId && !/^CISSALES\d{3,}$/.test(requestedSalesAdminId)) throw new AppError("Sales Admin ID must use the format CISSALES001", 400);
   const status = clean(payload.status || "ACTIVE").toUpperCase();
   if (!["ACTIVE", "INACTIVE"].includes(status)) throw new AppError("Status must be Active or Inactive", 400);
@@ -79,7 +86,7 @@ async function createSalesAdmin(payload, auth) {
     const salesAdminId = requestedSalesAdminId || await nextSalesAdminId(tx);
     const duplicateUserCode = await tx.user.findUnique({ where: { userCode: salesAdminId }, select: { id: true } });
     if (duplicateUserCode) throw new AppError("Sales Admin ID is already in use", 409);
-    return tx.user.create({ data: { userCode: salesAdminId, fullName, email, phone, country, state, city, address, role: "SALES_ADMIN", active: status === "ACTIVE", status, passwordHash: await hashPassword(temporaryPassword), passwordChangedAt: null, createdBy: auth.userId, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
+    return tx.user.create({ data: { userCode: salesAdminId, fullName, email, phone, country, state, city, address, role: "SALES_ADMIN", active: status === "ACTIVE", status, moduleAccess: normalizeModuleAccess(payload.moduleAccess, "SALES_ADMIN"), passwordHash: await hashPassword(temporaryPassword), passwordChangedAt: null, createdBy: auth.userId, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
   });
   try { const token = await issueResetToken(user.id, "CREDENTIAL_EMAIL"); await sendSalesAdminCredentialsEmail({ to: email, fullName, salesAdminId: user.userCode, temporaryPassword, branchNames: branches.map((branch) => branch.branchName), resetToken: token }); } catch (error) { await prisma.user.delete({ where: { id: user.id } }); throw new AppError("Account was not created because the activation email could not be sent", error?.status || 502); }
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, salesAdminId: user.userCode, branches: user.salesAdminBranches.map(({ branch }) => branch), invitationSent: true };
@@ -165,7 +172,7 @@ async function updateSalesAdmin(userId, payload, auth) {
   if (duplicate?.phone === phone) throw new AppError("Phone number is already in use", 409);
   const user = await prisma.$transaction(async (tx) => {
     await tx.salesAdminBranch.deleteMany({ where: { salesAdminId: userId } });
-    return tx.user.update({ where: { id: userId }, data: { fullName, email, phone, country, state, city, address, active: status === "ACTIVE", status, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
+    return tx.user.update({ where: { id: userId }, data: { fullName, email, phone, country, state, city, address, active: status === "ACTIVE", status, ...(payload.moduleAccess !== undefined ? { moduleAccess: normalizeModuleAccess(payload.moduleAccess, "SALES_ADMIN") } : {}), updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
   });
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, branches: user.salesAdminBranches.map(({ branch }) => branch) };
 }

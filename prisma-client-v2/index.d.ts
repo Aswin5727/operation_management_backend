@@ -11370,6 +11370,7 @@ export namespace Prisma {
     city: number
     address: number
     role: number
+    moduleAccess: number
     active: number
     status: number
     passwordHash: number
@@ -11469,6 +11470,7 @@ export namespace Prisma {
     city?: true
     address?: true
     role?: true
+    moduleAccess?: true
     active?: true
     status?: true
     passwordHash?: true
@@ -11585,6 +11587,7 @@ export namespace Prisma {
     city: string | null
     address: string | null
     role: $Enums.UserRole
+    moduleAccess: JsonValue | null
     active: boolean
     status: string
     passwordHash: string
@@ -11633,6 +11636,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     role?: boolean
+    moduleAccess?: boolean
     active?: boolean
     status?: boolean
     passwordHash?: boolean
@@ -11700,6 +11704,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     role?: boolean
+    moduleAccess?: boolean
     active?: boolean
     status?: boolean
     passwordHash?: boolean
@@ -11729,6 +11734,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     role?: boolean
+    moduleAccess?: boolean
     active?: boolean
     status?: boolean
     passwordHash?: boolean
@@ -11758,6 +11764,7 @@ export namespace Prisma {
     city?: boolean
     address?: boolean
     role?: boolean
+    moduleAccess?: boolean
     active?: boolean
     status?: boolean
     passwordHash?: boolean
@@ -11776,7 +11783,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "country" | "state" | "city" | "address" | "role" | "active" | "status" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "country" | "state" | "city" | "address" | "role" | "moduleAccess" | "active" | "status" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
@@ -11872,6 +11879,7 @@ export namespace Prisma {
       city: string | null
       address: string | null
       role: $Enums.UserRole
+      moduleAccess: Prisma.JsonValue | null
       active: boolean
       status: string
       passwordHash: string
@@ -12358,6 +12366,7 @@ export namespace Prisma {
     readonly city: FieldRef<"User", 'String'>
     readonly address: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
+    readonly moduleAccess: FieldRef<"User", 'Json'>
     readonly active: FieldRef<"User", 'Boolean'>
     readonly status: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
@@ -124691,6 +124700,7 @@ export namespace Prisma {
     city: 'city',
     address: 'address',
     role: 'role',
+    moduleAccess: 'moduleAccess',
     active: 'active',
     status: 'status',
     passwordHash: 'passwordHash',
@@ -126605,14 +126615,6 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -126620,6 +126622,14 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -126652,6 +126662,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserRole[]'
    */
   export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -126715,20 +126739,6 @@ export namespace Prisma {
    * Reference to a field of type 'BranchRoleAccess[]'
    */
   export type ListEnumBranchRoleAccessFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BranchRoleAccess[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -126973,6 +126983,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    moduleAccess?: JsonNullableFilter<"User">
     active?: BoolFilter<"User"> | boolean
     status?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
@@ -127039,6 +127050,7 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     role?: SortOrder
+    moduleAccess?: SortOrderInput | SortOrder
     active?: SortOrder
     status?: SortOrder
     passwordHash?: SortOrder
@@ -127108,6 +127120,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    moduleAccess?: JsonNullableFilter<"User">
     active?: BoolFilter<"User"> | boolean
     status?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
@@ -127174,6 +127187,7 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     role?: SortOrder
+    moduleAccess?: SortOrderInput | SortOrder
     active?: SortOrder
     status?: SortOrder
     passwordHash?: SortOrder
@@ -127211,6 +127225,7 @@ export namespace Prisma {
     city?: StringNullableWithAggregatesFilter<"User"> | string | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    moduleAccess?: JsonNullableWithAggregatesFilter<"User">
     active?: BoolWithAggregatesFilter<"User"> | boolean
     status?: StringWithAggregatesFilter<"User"> | string
     passwordHash?: StringWithAggregatesFilter<"User"> | string
@@ -137249,6 +137264,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -137315,6 +137331,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -137381,6 +137398,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -137447,6 +137465,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -137513,6 +137532,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -137542,6 +137562,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -137571,6 +137592,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -149131,6 +149153,29 @@ export namespace Prisma {
     notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
@@ -149486,6 +149531,7 @@ export namespace Prisma {
     city?: SortOrder
     address?: SortOrder
     role?: SortOrder
+    moduleAccess?: SortOrder
     active?: SortOrder
     status?: SortOrder
     passwordHash?: SortOrder
@@ -149616,6 +149662,32 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -150052,29 +150124,6 @@ export namespace Prisma {
     createdBy?: SortOrder
     createdAt?: SortOrder
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type AdminChangeHistoryCountOrderByAggregateInput = {
     id?: SortOrder
@@ -150120,32 +150169,6 @@ export namespace Prisma {
     operationType?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumLoginEventTypeFilter<$PrismaModel = never> = {
@@ -165463,6 +165486,29 @@ export namespace Prisma {
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
@@ -165559,29 +165605,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
     _max?: NestedEnumBranchRoleAccessFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumLoginEventTypeFilter<$PrismaModel = never> = {
@@ -169093,6 +169116,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -169158,6 +169182,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -169268,6 +169293,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -169333,6 +169359,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -169433,6 +169460,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -169498,6 +169526,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -170755,6 +170784,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -170820,6 +170850,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -171510,6 +171541,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -171575,6 +171607,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -171741,6 +171774,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -171806,6 +171840,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -171962,6 +171997,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172027,6 +172063,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172108,6 +172145,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -172173,6 +172211,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -172323,6 +172362,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172388,6 +172428,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172458,6 +172499,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172523,6 +172565,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172593,6 +172636,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172658,6 +172702,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -172830,6 +172875,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -172895,6 +172941,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -172971,6 +173018,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173036,6 +173084,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173112,6 +173161,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173177,6 +173227,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173242,6 +173293,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -173307,6 +173359,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -173388,6 +173441,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173453,6 +173507,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173577,6 +173632,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -173642,6 +173698,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -173788,6 +173845,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -173853,6 +173911,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -174197,6 +174256,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -174262,6 +174322,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -174332,6 +174393,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -174397,6 +174459,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -174860,6 +174923,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -174925,6 +174989,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -175001,6 +175066,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -175066,6 +175132,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -175322,6 +175389,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -175387,6 +175455,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -175468,6 +175537,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -175533,6 +175603,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -178960,6 +179031,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -179025,6 +179097,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -179161,6 +179234,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -179226,6 +179300,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -186394,6 +186469,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -186459,6 +186535,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -186709,6 +186786,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -186774,6 +186852,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -187791,6 +187870,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -187856,6 +187936,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -188156,6 +188237,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -188221,6 +188303,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -189161,6 +189244,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189226,6 +189310,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189339,6 +189424,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -189404,6 +189490,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -189485,6 +189572,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189550,6 +189638,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189631,6 +189720,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -189696,6 +189786,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -189796,6 +189887,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189861,6 +189953,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -189983,6 +190076,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -190048,6 +190142,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -190113,6 +190208,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -190178,6 +190274,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -190388,6 +190485,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -190453,6 +190551,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -191261,6 +191360,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -191326,6 +191426,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -191516,6 +191617,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -191581,6 +191683,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -192491,6 +192594,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -192556,6 +192660,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -192722,6 +192827,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -192787,6 +192893,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -193839,6 +193946,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -193904,6 +194012,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -194577,6 +194686,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -194642,6 +194752,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -195179,6 +195290,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -195244,6 +195356,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -195551,6 +195664,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -195616,6 +195730,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -195805,6 +195920,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -195870,6 +195986,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -196469,6 +196586,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -196534,6 +196652,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -197737,6 +197856,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -197802,6 +197922,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198166,6 +198287,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -198231,6 +198353,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -198642,6 +198765,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198707,6 +198831,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198777,6 +198902,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198842,6 +198968,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198912,6 +199039,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -198977,6 +199105,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -199649,6 +199778,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -199714,6 +199844,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -199790,6 +199921,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -199855,6 +199987,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -199931,6 +200064,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -199996,6 +200130,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -200342,6 +200477,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -200407,6 +200543,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -200488,6 +200625,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -200553,6 +200691,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -200727,6 +200866,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -200792,6 +200932,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -201022,6 +201163,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -201087,6 +201229,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -201277,6 +201420,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -201342,6 +201486,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -201538,6 +201683,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -201603,6 +201749,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -201777,6 +201924,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -201842,6 +201990,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -202038,6 +202187,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -202103,6 +202253,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -202310,6 +202461,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -202375,6 +202527,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -202636,6 +202789,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -202701,6 +202855,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -202988,6 +203143,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -203053,6 +203209,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -203123,6 +203280,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -203188,6 +203346,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -203501,6 +203660,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -203566,6 +203726,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -203642,6 +203803,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -203707,6 +203869,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -204033,6 +204196,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -204098,6 +204262,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -204294,6 +204459,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -204359,6 +204525,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -205599,6 +205766,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -205664,6 +205832,7 @@ export namespace Prisma {
     city?: string | null
     address?: string | null
     role: $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: boolean
     status?: string
     passwordHash: string
@@ -205774,6 +205943,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
@@ -205839,6 +206009,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    moduleAccess?: NullableJsonNullValueInput | InputJsonValue
     active?: BoolFieldUpdateOperationsInput | boolean
     status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
