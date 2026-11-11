@@ -135,7 +135,7 @@ export async function listBranchAccessUsers(accountType = "") {
   });
   return users.map((user) => {
     const isCombined = user.role === "BRANCH_ADMIN" && user.managedBranch?.roleAccess === "BRANCH_ADMIN_SALES_ADMIN";
-    return { id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, country: user.country, state: user.state, city: user.city, address: user.address, role: user.role, active: user.active, status: user.status || (user.active ? "ACTIVE" : "INACTIVE"), accountType: isCombined ? "BRANCH_ADMIN_SALES_ADMIN" : user.role, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId), assignedBranches: user.salesAdminBranches.map((item) => item.branch) };
+    return { id: user.id, userCode: user.userCode, fullName: user.fullName, email: user.email, phone: user.phone, country: user.country, state: user.state, city: user.city, address: user.address, role: user.role, active: user.active, status: user.status || (user.active ? "ACTIVE" : "INACTIVE"), accountType: isCombined ? "BRANCH_ADMIN_SALES_ADMIN" : user.role, managedBranch: user.managedBranch, assignedBranchIds: user.salesAdminBranches.map((item) => item.branchId), assignedBranches: user.salesAdminBranches.map((item) => ({ ...item.branch, salesAdminStatus: user.status || (user.active ? "ACTIVE" : "INACTIVE"), salesAdminActive: user.active })) };
   }).filter((user) => !normalizedAccountType || (normalizedAccountType === "BRANCH_ADMIN" ? ["BRANCH_ADMIN", "BRANCH_ADMIN_SALES_ADMIN"].includes(user.accountType) : user.accountType === "SALES_ADMIN"));
 }
 

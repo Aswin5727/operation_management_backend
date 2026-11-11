@@ -297,7 +297,6 @@ async function getDashboard(userId, query = {}, auth = {}) {
     const targetSalesAdmin = await prisma.user.findFirst({
       where: {
         role: "SALES_ADMIN",
-        active: true,
         salesAdminBranches: { some: { branchId: salesBranchId } },
       },
       select: { id: true },
