@@ -41,7 +41,8 @@ function requiredModuleForPath(pathname = "") {
   if (path.includes("/branch-courses") || path.includes("/branch-batches")) return ["ACADEMIC_OPERATIONS", "ADMISSION_MANAGEMENT"];
   if (path.includes("/branch-faculty") || path.includes("/branch-installment-templates") || path.includes("/academic-tests") || path.includes("/academic-test-preparation") || path.includes("/faculty-skills") || path.includes("/exams")) return ["ACADEMIC_OPERATIONS"];
   if (path.includes("/payments") || path.includes("/student-payments") || path.includes("/fee")) return "FEE_ACCOUNTS";
-  if (path.includes("/reports") || path.includes("/report")) return path.includes("sales-crm") ? "SALES_CRM_REPORTS" : "REPORTS_ANALYTICS";
+  // Branch Admins can read Lead Monthly Report through Reports & Analytics. Other Sales CRM routes remain gated by LEAD_MANAGEMENT.
+  if (path.includes("/reports") || path.includes("/report")) return path.includes("sales-crm") ? ["SALES_CRM_REPORTS", "REPORTS_ANALYTICS"] : "REPORTS_ANALYTICS";
   if (path.includes("/leads") || path.includes("/sales-crm") || path.includes("/lead-recording-shares") || path.includes("/sales-crm-report-submissions")) return "LEAD_MANAGEMENT";
   return null;
 }
