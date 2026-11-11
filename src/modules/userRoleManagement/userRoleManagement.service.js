@@ -99,7 +99,7 @@ async function createBranchRoleAccount({ accountType, payload, actor }) {
     branchCity: payload.branchCity || payload.city,
     branchAddress: payload.branchAddress || payload.address,
     status: payload.status || "ACTIVE",
-    roleAccess: payload.roleAccess || (accountType === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN_ONLY"),
+    roleAccess: accountType === "BRANCH_ADMIN_SALES_ADMIN" ? "BRANCH_ADMIN_SALES_ADMIN" : "BRANCH_ADMIN_ONLY",
     moduleAccess: normalizeModuleAccess(payload.moduleAccess, accountType),
   };
   const branch = await createBranch(branchPayload, actor);

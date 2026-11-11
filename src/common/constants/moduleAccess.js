@@ -32,6 +32,8 @@
 ];
 
 const COMMON_MODULE_KEYS = MODULE_ACCESS_GROUPS[0].modules.map((module) => module.key);
+const ACADEMIC_MODULE_KEYS = MODULE_ACCESS_GROUPS.find((group) => group.key === "ACADEMIC").modules.map((module) => module.key);
+const SALES_CRM_MODULE_KEYS = MODULE_ACCESS_GROUPS.find((group) => group.key === "SALES_CRM").modules.map((module) => module.key);
 const ALL_MODULE_KEYS = MODULE_ACCESS_GROUPS.flatMap((group) => group.modules.map((module) => module.key));
 const ROLE_DEFAULT_MODULE_ACCESS = {
   BRANCH_ADMIN: [...COMMON_MODULE_KEYS, "STUDENT_MANAGEMENT", "ACADEMIC_OPERATIONS", "FEE_ACCOUNTS", "REPORTS_ANALYTICS", "HELPDESK_SUPPORT"],
@@ -39,13 +41,20 @@ const ROLE_DEFAULT_MODULE_ACCESS = {
   SALES_ADMIN: [...COMMON_MODULE_KEYS, "LEAD_MANAGEMENT", "ADMISSION_MANAGEMENT", "SALES_CRM_REPORTS"],
 };
 
+const ACCOUNT_TYPE_MODULE_KEYS = {
+  BRANCH_ADMIN: [...COMMON_MODULE_KEYS, ...ACADEMIC_MODULE_KEYS],
+  BRANCH_ADMIN_SALES_ADMIN: [...COMMON_MODULE_KEYS, ...ACADEMIC_MODULE_KEYS, ...SALES_CRM_MODULE_KEYS],
+  SALES_ADMIN: [...COMMON_MODULE_KEYS, ...SALES_CRM_MODULE_KEYS],
+};
+
 function normalizeModuleAccess(value, accountType) {
   const role = String(accountType || "BRANCH_ADMIN").trim().toUpperCase();
+  const permitted = new Set(ACCOUNT_TYPE_MODULE_KEYS[role] || ACCOUNT_TYPE_MODULE_KEYS.BRANCH_ADMIN);
   const fallback = ROLE_DEFAULT_MODULE_ACCESS[role] || ROLE_DEFAULT_MODULE_ACCESS.BRANCH_ADMIN;
   const requested = Array.isArray(value) ? value : fallback;
-  const valid = new Set(requested.map((item) => String(item || "").trim().toUpperCase()).filter((item) => ALL_MODULE_KEYS.includes(item)));
+  const valid = new Set(requested.map((item) => String(item || "").trim().toUpperCase()).filter((item) => permitted.has(item)));
   COMMON_MODULE_KEYS.forEach((key) => valid.add(key));
-  return ALL_MODULE_KEYS.filter((key) => valid.has(key));
+  return ALL_MODULE_KEYS.filter((key) => valid.has(key) && permitted.has(key));
 }
 
-export { ALL_MODULE_KEYS, COMMON_MODULE_KEYS, MODULE_ACCESS_GROUPS, ROLE_DEFAULT_MODULE_ACCESS, normalizeModuleAccess };
+export { ACADEMIC_MODULE_KEYS, ALL_MODULE_KEYS, ACCOUNT_TYPE_MODULE_KEYS, COMMON_MODULE_KEYS, MODULE_ACCESS_GROUPS, ROLE_DEFAULT_MODULE_ACCESS, SALES_CRM_MODULE_KEYS, normalizeModuleAccess };
