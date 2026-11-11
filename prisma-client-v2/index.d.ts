@@ -11313,6 +11313,7 @@ export namespace Prisma {
     address: string | null
     role: $Enums.UserRole | null
     active: boolean | null
+    status: string | null
     passwordHash: string | null
     passwordChangedAt: Date | null
     refreshTokenVersion: number | null
@@ -11341,6 +11342,7 @@ export namespace Prisma {
     address: string | null
     role: $Enums.UserRole | null
     active: boolean | null
+    status: string | null
     passwordHash: string | null
     passwordChangedAt: Date | null
     refreshTokenVersion: number | null
@@ -11369,6 +11371,7 @@ export namespace Prisma {
     address: number
     role: number
     active: number
+    status: number
     passwordHash: number
     passwordChangedAt: number
     refreshTokenVersion: number
@@ -11409,6 +11412,7 @@ export namespace Prisma {
     address?: true
     role?: true
     active?: true
+    status?: true
     passwordHash?: true
     passwordChangedAt?: true
     refreshTokenVersion?: true
@@ -11437,6 +11441,7 @@ export namespace Prisma {
     address?: true
     role?: true
     active?: true
+    status?: true
     passwordHash?: true
     passwordChangedAt?: true
     refreshTokenVersion?: true
@@ -11465,6 +11470,7 @@ export namespace Prisma {
     address?: true
     role?: true
     active?: true
+    status?: true
     passwordHash?: true
     passwordChangedAt?: true
     refreshTokenVersion?: true
@@ -11580,6 +11586,7 @@ export namespace Prisma {
     address: string | null
     role: $Enums.UserRole
     active: boolean
+    status: string
     passwordHash: string
     passwordChangedAt: Date | null
     refreshTokenVersion: number
@@ -11627,6 +11634,7 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     active?: boolean
+    status?: boolean
     passwordHash?: boolean
     passwordChangedAt?: boolean
     refreshTokenVersion?: boolean
@@ -11693,6 +11701,7 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     active?: boolean
+    status?: boolean
     passwordHash?: boolean
     passwordChangedAt?: boolean
     refreshTokenVersion?: boolean
@@ -11721,6 +11730,7 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     active?: boolean
+    status?: boolean
     passwordHash?: boolean
     passwordChangedAt?: boolean
     refreshTokenVersion?: boolean
@@ -11749,6 +11759,7 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     active?: boolean
+    status?: boolean
     passwordHash?: boolean
     passwordChangedAt?: boolean
     refreshTokenVersion?: boolean
@@ -11765,7 +11776,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "country" | "state" | "city" | "address" | "role" | "active" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userCode" | "fullName" | "email" | "phone" | "country" | "state" | "city" | "address" | "role" | "active" | "status" | "passwordHash" | "passwordChangedAt" | "refreshTokenVersion" | "failedLoginCount" | "failedLoginWindowExpiresAt" | "lockedUntil" | "lastLoginAt" | "lastLogoutAt" | "lastLoginIp" | "lastLoginUserAgent" | "createdBy" | "updatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     batchFacultyAssignments?: boolean | User$batchFacultyAssignmentsArgs<ExtArgs>
     managedBranch?: boolean | User$managedBranchArgs<ExtArgs>
@@ -11862,6 +11873,7 @@ export namespace Prisma {
       address: string | null
       role: $Enums.UserRole
       active: boolean
+      status: string
       passwordHash: string
       passwordChangedAt: Date | null
       refreshTokenVersion: number
@@ -12347,6 +12359,7 @@ export namespace Prisma {
     readonly address: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly active: FieldRef<"User", 'Boolean'>
+    readonly status: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
     readonly passwordChangedAt: FieldRef<"User", 'DateTime'>
     readonly refreshTokenVersion: FieldRef<"User", 'Int'>
@@ -124679,6 +124692,7 @@ export namespace Prisma {
     address: 'address',
     role: 'role',
     active: 'active',
+    status: 'status',
     passwordHash: 'passwordHash',
     passwordChangedAt: 'passwordChangedAt',
     refreshTokenVersion: 'refreshTokenVersion',
@@ -126960,6 +126974,7 @@ export namespace Prisma {
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     active?: BoolFilter<"User"> | boolean
+    status?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
     passwordChangedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     refreshTokenVersion?: IntFilter<"User"> | number
@@ -127025,6 +127040,7 @@ export namespace Prisma {
     address?: SortOrderInput | SortOrder
     role?: SortOrder
     active?: SortOrder
+    status?: SortOrder
     passwordHash?: SortOrder
     passwordChangedAt?: SortOrderInput | SortOrder
     refreshTokenVersion?: SortOrder
@@ -127093,6 +127109,7 @@ export namespace Prisma {
     address?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     active?: BoolFilter<"User"> | boolean
+    status?: StringFilter<"User"> | string
     passwordHash?: StringFilter<"User"> | string
     passwordChangedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     refreshTokenVersion?: IntFilter<"User"> | number
@@ -127158,6 +127175,7 @@ export namespace Prisma {
     address?: SortOrderInput | SortOrder
     role?: SortOrder
     active?: SortOrder
+    status?: SortOrder
     passwordHash?: SortOrder
     passwordChangedAt?: SortOrderInput | SortOrder
     refreshTokenVersion?: SortOrder
@@ -127194,6 +127212,7 @@ export namespace Prisma {
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     active?: BoolWithAggregatesFilter<"User"> | boolean
+    status?: StringWithAggregatesFilter<"User"> | string
     passwordHash?: StringWithAggregatesFilter<"User"> | string
     passwordChangedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     refreshTokenVersion?: IntWithAggregatesFilter<"User"> | number
@@ -137231,6 +137250,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -137296,6 +137316,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -137361,6 +137382,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -137426,6 +137448,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -137491,6 +137514,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -137519,6 +137543,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -137547,6 +137572,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -149461,6 +149487,7 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
+    status?: SortOrder
     passwordHash?: SortOrder
     passwordChangedAt?: SortOrder
     refreshTokenVersion?: SortOrder
@@ -149494,6 +149521,7 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
+    status?: SortOrder
     passwordHash?: SortOrder
     passwordChangedAt?: SortOrder
     refreshTokenVersion?: SortOrder
@@ -149522,6 +149550,7 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     active?: SortOrder
+    status?: SortOrder
     passwordHash?: SortOrder
     passwordChangedAt?: SortOrder
     refreshTokenVersion?: SortOrder
@@ -169065,6 +169094,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -169129,6 +169159,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -169238,6 +169269,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -169302,6 +169334,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -169401,6 +169434,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -169465,6 +169499,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -170721,6 +170756,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -170785,6 +170821,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -171474,6 +171511,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -171538,6 +171576,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -171703,6 +171742,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -171767,6 +171807,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -171922,6 +171963,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -171986,6 +172028,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172066,6 +172109,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -172130,6 +172174,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -172279,6 +172324,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172343,6 +172389,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172412,6 +172459,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172476,6 +172524,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172545,6 +172594,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172609,6 +172659,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -172780,6 +172831,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -172844,6 +172896,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -172919,6 +172972,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -172983,6 +173037,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173058,6 +173113,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173122,6 +173178,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173186,6 +173243,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -173250,6 +173308,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -173330,6 +173389,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173394,6 +173454,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173517,6 +173578,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -173581,6 +173643,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -173726,6 +173789,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -173790,6 +173854,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -174133,6 +174198,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -174197,6 +174263,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -174266,6 +174333,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -174330,6 +174398,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -174792,6 +174861,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -174856,6 +174926,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -174931,6 +175002,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -174995,6 +175067,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -175250,6 +175323,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -175314,6 +175388,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -175394,6 +175469,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -175458,6 +175534,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -178884,6 +178961,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -178948,6 +179026,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -179083,6 +179162,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -179147,6 +179227,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -186314,6 +186395,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -186378,6 +186460,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -186627,6 +186710,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -186691,6 +186775,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -187707,6 +187792,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -187771,6 +187857,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -188070,6 +188157,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -188134,6 +188222,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189073,6 +189162,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189137,6 +189227,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189249,6 +189340,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189313,6 +189405,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189393,6 +189486,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189457,6 +189551,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189537,6 +189632,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189601,6 +189697,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189700,6 +189797,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189764,6 +189862,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -189885,6 +189984,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -189949,6 +190049,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -190013,6 +190114,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -190077,6 +190179,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -190286,6 +190389,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -190350,6 +190454,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -191157,6 +191262,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -191221,6 +191327,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -191410,6 +191517,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -191474,6 +191582,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -192383,6 +192492,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -192447,6 +192557,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -192612,6 +192723,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -192676,6 +192788,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -193727,6 +193840,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -193791,6 +193905,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -194463,6 +194578,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -194527,6 +194643,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -195063,6 +195180,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -195127,6 +195245,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -195433,6 +195552,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -195497,6 +195617,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -195685,6 +195806,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -195749,6 +195871,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -196347,6 +196470,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -196411,6 +196535,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -197613,6 +197738,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -197677,6 +197803,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198040,6 +198167,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -198104,6 +198232,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -198514,6 +198643,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198578,6 +198708,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198647,6 +198778,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198711,6 +198843,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198780,6 +198913,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -198844,6 +198978,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -199515,6 +199650,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -199579,6 +199715,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -199654,6 +199791,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -199718,6 +199856,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -199793,6 +199932,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -199857,6 +199997,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -200202,6 +200343,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -200266,6 +200408,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -200346,6 +200489,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -200410,6 +200554,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -200583,6 +200728,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -200647,6 +200793,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -200876,6 +201023,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -200940,6 +201088,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -201129,6 +201278,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -201193,6 +201343,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -201388,6 +201539,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -201452,6 +201604,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -201625,6 +201778,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -201689,6 +201843,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -201884,6 +202039,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -201948,6 +202104,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -202154,6 +202311,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -202218,6 +202376,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -202478,6 +202637,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -202542,6 +202702,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -202828,6 +202989,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -202892,6 +203054,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -202961,6 +203124,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -203025,6 +203189,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -203337,6 +203502,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -203401,6 +203567,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -203476,6 +203643,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -203540,6 +203708,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -203865,6 +204034,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -203929,6 +204099,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -204124,6 +204295,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -204188,6 +204360,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -205427,6 +205600,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -205491,6 +205665,7 @@ export namespace Prisma {
     address?: string | null
     role: $Enums.UserRole
     active?: boolean
+    status?: string
     passwordHash: string
     passwordChangedAt?: Date | string | null
     refreshTokenVersion?: number
@@ -205600,6 +205775,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number
@@ -205664,6 +205840,7 @@ export namespace Prisma {
     address?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     active?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
     passwordChangedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refreshTokenVersion?: IntFieldUpdateOperationsInput | number

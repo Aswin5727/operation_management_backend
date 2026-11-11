@@ -2,7 +2,7 @@ import prisma from "../../config/prisma.js";
 import AppError from "../errors/AppError.js";
 import { verifyAccessToken } from "../utils/tokens.js";
 import { ACCESS_COOKIE_NAME } from "../constants/auth.js";
-import { findBranchForAdmin, isInactiveBranch } from "../utils/branchAccess.js";
+import { findBranchForAdmin, isInactiveBranch, isInactiveSalesAdmin } from "../utils/branchAccess.js";
 
 function getBearerToken(req) {
   const header = req.headers.authorization || "";
@@ -48,8 +48,10 @@ async function authenticate(req, _res, next) {
 
     const branch = await findBranchForAdmin(user);
     const inactiveBranchAdmin = isInactiveBranch(branch);
+    const inactiveSalesAdmin = isInactiveSalesAdmin(user);
+    const readOnlyUser = inactiveBranchAdmin || inactiveSalesAdmin;
 
-    if (!user || ((!user.active && !inactiveBranchAdmin) || user.refreshTokenVersion !== payload.tokenVersion)) {
+    if (!user || ((!user.active && !readOnlyUser) || user.refreshTokenVersion !== payload.tokenVersion)) {
       throw new AppError("Session expired", 401);
     }
 
@@ -61,13 +63,19 @@ async function authenticate(req, _res, next) {
       tokenVersion: user.refreshTokenVersion,
       branchId: branch?.id || null,
       branchStatus: branch?.status || null,
-      readOnly: inactiveBranchAdmin,
+      readOnly: readOnlyUser,
+      salesAdminStatus: user.role === "SALES_ADMIN" ? (user.status || (user.active ? "ACTIVE" : "INACTIVE")) : null,
       roleAccess: user.role === "BRANCH_ADMIN" ? user.roleAccess : null,
     };
     req.user = user;
 
-    if (inactiveBranchAdmin && !["GET", "HEAD", "OPTIONS"].includes(req.method)) {
-      throw new AppError("This branch is inactive. You can view data, but changes are not allowed.", 403);
+    if (readOnlyUser && !["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+      throw new AppError(
+        inactiveSalesAdmin
+          ? "Your account is currently inactive. You have view-only access. Please contact the Super Admin to reactivate your account."
+          : "This branch is inactive. You can view data, but changes are not allowed.",
+        403,
+      );
     }
 
     const userRole = String(user.role || '').trim().toUpperCase();

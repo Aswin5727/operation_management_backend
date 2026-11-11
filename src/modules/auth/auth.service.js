@@ -27,7 +27,7 @@ import {
   recordFacultyLogoutSession,
 } from "../attendance/attendance.service.js";
 import { requiresPasswordReset } from "../../common/utils/user.js";
-import { findBranchForAdmin, isInactiveBranch } from "../../common/utils/branchAccess.js";
+import { findBranchForAdmin, isInactiveBranch, isInactiveSalesAdmin } from "../../common/utils/branchAccess.js";
 
 function normalizeIdentifier(identifier) {
   return String(identifier || "").trim().toLowerCase();
@@ -52,6 +52,7 @@ const AUTH_USER_SELECT = {
   phone: true,
   role: true,
   active: true,
+  status: true,
   passwordHash: true,
   passwordChangedAt: true,
   refreshTokenVersion: true,
@@ -193,8 +194,9 @@ async function login({ identifier, password, ipAddress, userAgent }) {
 
   const branch = await findBranchForAdmin(user);
   const inactiveBranchAdmin = isInactiveBranch(branch);
+  const inactiveSalesAdmin = isInactiveSalesAdmin(user);
 
-  if (!user.active && !inactiveBranchAdmin) {
+  if (!user.active && !inactiveBranchAdmin && !inactiveSalesAdmin) {
 
     throw new AppError("Account is inactive", 403);
   }
@@ -476,8 +478,9 @@ async function refreshSession({ refreshToken, ipAddress, userAgent }) {
 
   const branch = await findBranchForAdmin(user);
   const inactiveBranchAdmin = isInactiveBranch(branch);
+  const inactiveSalesAdmin = isInactiveSalesAdmin(user);
 
-  if (!user || ((!user.active && !inactiveBranchAdmin) || user.refreshTokenVersion !== payload.tokenVersion)) {
+  if (!user || ((!user.active && !inactiveBranchAdmin && !inactiveSalesAdmin) || user.refreshTokenVersion !== payload.tokenVersion)) {
     throw new AppError("Session expired", 401);
   }
 

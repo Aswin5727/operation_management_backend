@@ -2,11 +2,12 @@
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import { authorize } from "../../common/middlewares/authorize.js";
 import { authorizeSalesAccess } from "../../common/middlewares/authorizeSalesAccess.js";
-import { admissionsHandler, studentFeeDetailsHandler, admissionLeadHandler, availableBatchesHandler, pendingAdmissionReminderHandler, startAdmissionHandler, convertAdmissionHandler, createSalesAdminHandler, dashboardHandler, deleteSalesAdminHandler, listSalesAdminsHandler, profileHandler, updateProfileHandler, resetPasswordHandler, updateSalesAdminHandler, createBatchRequestHandler, listBatchRequestsHandler, resendBatchRequestHandler } from "./salesAdmin.controller.js";
+import { admissionsHandler, studentFeeDetailsHandler, admissionLeadHandler, availableBatchesHandler, pendingAdmissionReminderHandler, startAdmissionHandler, convertAdmissionHandler, createSalesAdminHandler, dashboardHandler, deleteSalesAdminHandler, listSalesAdminsHandler, profileHandler, updateProfileHandler, resetPasswordHandler, updateSalesAdminHandler, updateSalesAdminStatusHandler, createBatchRequestHandler, listBatchRequestsHandler, resendBatchRequestHandler } from "./salesAdmin.controller.js";
 const router = express.Router();
 router.post("/", authenticate, authorize("SUPER_ADMIN"), createSalesAdminHandler);
 router.get("/", authenticate, authorize("SUPER_ADMIN"), listSalesAdminsHandler);
 router.post("/:id/reset-password", authenticate, authorize("SUPER_ADMIN"), resetPasswordHandler);
+router.patch("/:id/status", authenticate, authorize("SUPER_ADMIN"), updateSalesAdminStatusHandler);
 router.patch("/:id", authenticate, authorize("SUPER_ADMIN"), updateSalesAdminHandler);
 router.delete("/:id", authenticate, authorize("SUPER_ADMIN"), deleteSalesAdminHandler);
 router.get("/me", authenticate, authorize("SALES_ADMIN"), profileHandler);

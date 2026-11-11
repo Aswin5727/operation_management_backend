@@ -356,7 +356,7 @@ export async function getLeadOptions(actor, query = {}) {
   const requestedBranchId = text(query.branchId);
   if (requestedBranchId) await assertBranchAccess(requestedBranchId, actor, allowed);
   const nextLeadId = leadIdOwner ? await peekAdminLeadId(prisma, leadIdOwner.id, leadIdOwner.fullName) : '';
-  return { branches, courses, assignees: assignees.map(({ salesAdminBranches, ...user }) => ({ ...user, branchIds: salesAdminBranches.map((row) => row.branchId) })), nextLeadId, currentUserId: actor.userId };
+  return { branches, courses, assignees: assignees.map(({ salesAdminBranches, ...user }) => ({ ...user, branchIds: salesAdminBranches.map((row) => row.branchId) })), nextLeadId, currentUserId: actor.userId, readOnly: Boolean(actor?.readOnly), salesAdminStatus: actor?.salesAdminStatus || null };
 }
 
 const leadRecordingRoot = path.resolve(process.cwd(), "uploads", "lead-recordings");

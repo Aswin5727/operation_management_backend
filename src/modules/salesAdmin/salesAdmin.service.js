@@ -12,7 +12,7 @@ import { listBranchFaculty } from "../branchFaculty/branchFaculty.service.js";
 import { listBranchInstallmentTemplates } from "../branchInstallmentTemplates/branchInstallmentTemplates.service.js";
 import { calculateAdmissionFeeDetails } from "./admissionFeeDetails.js";
 
-const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true, timezone: true } } } } };
+const USER_SELECT = { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, status: true, passwordChangedAt: true, lastLoginAt: true, createdAt: true, salesAdminBranches: { select: { branch: { select: { id: true, branchId: true, branchName: true, status: true, timezone: true } } } } };
 const clean = (value) => String(value ?? "").trim();
 const required = (value, label) => { const result = clean(value); if (!result) throw new AppError(`${label} is required`, 400); return result; };
 const emailValue = (value) => { const email = required(value, "Email address").toLowerCase(); if (!/^\S+@\S+\.\S+$/.test(email)) throw new AppError("Enter a valid email address", 400); return email; };
@@ -79,7 +79,7 @@ async function createSalesAdmin(payload, auth) {
     const salesAdminId = requestedSalesAdminId || await nextSalesAdminId(tx);
     const duplicateUserCode = await tx.user.findUnique({ where: { userCode: salesAdminId }, select: { id: true } });
     if (duplicateUserCode) throw new AppError("Sales Admin ID is already in use", 409);
-    return tx.user.create({ data: { userCode: salesAdminId, fullName, email, phone, country, state, city, address, role: "SALES_ADMIN", active: status === "ACTIVE", passwordHash: await hashPassword(temporaryPassword), passwordChangedAt: null, createdBy: auth.userId, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
+    return tx.user.create({ data: { userCode: salesAdminId, fullName, email, phone, country, state, city, address, role: "SALES_ADMIN", active: status === "ACTIVE", status, passwordHash: await hashPassword(temporaryPassword), passwordChangedAt: null, createdBy: auth.userId, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
   });
   try { const token = await issueResetToken(user.id, "CREDENTIAL_EMAIL"); await sendSalesAdminCredentialsEmail({ to: email, fullName, salesAdminId: user.userCode, temporaryPassword, branchNames: branches.map((branch) => branch.branchName), resetToken: token }); } catch (error) { await prisma.user.delete({ where: { id: user.id } }); throw new AppError("Account was not created because the activation email could not be sent", error?.status || 502); }
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, salesAdminId: user.userCode, branches: user.salesAdminBranches.map(({ branch }) => branch), invitationSent: true };
@@ -90,7 +90,7 @@ async function listSalesAdmins(includeCombinedBranchAdmins = false, startDateVal
   const rangeEnd = endDateValue ? new Date(`${endDateValue}T23:59:59.999Z`) : null;
   const hasDateRange = rangeStart && rangeEnd && !Number.isNaN(rangeStart.getTime()) && !Number.isNaN(rangeEnd.getTime()) && rangeStart <= rangeEnd;
   const users = await prisma.user.findMany({ where: { role: "SALES_ADMIN" }, orderBy: { createdAt: "desc" }, select: USER_SELECT });
-  const salesRows = users.map((user) => ({ ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address, branches: user.salesAdminBranches.map(({ branch }) => branch) }));
+  const salesRows = users.map((user) => ({ ...toSafeUser(user), status: user.status || (user.active ? "ACTIVE" : "INACTIVE"), country: user.country, state: user.state, city: user.city, address: user.address, branches: user.salesAdminBranches.map(({ branch }) => branch) }));
   if (!includeCombinedBranchAdmins) return { data: salesRows };
   const combinedBranches = await prisma.branch.findMany({ where: { status: "ACTIVE", roleAccess: "BRANCH_ADMIN_SALES_ADMIN", adminUserId: { not: null } }, orderBy: { createdAt: "desc" }, select: { id: true, branchId: true, branchName: true, status: true, timezone: true, branchCountry: true, branchState: true, branchCity: true, branchAddress: true, adminUser: { select: { id: true, userCode: true, fullName: true, email: true, phone: true, country: true, state: true, city: true, address: true, role: true, active: true, createdAt: true, updatedAt: true, passwordChangedAt: true, lastLoginAt: true } } } });
   const branchRows = combinedBranches.filter((branch) => branch.adminUser?.active && branch.adminUser?.role === "BRANCH_ADMIN").map((branch) => ({ ...toSafeUser(branch.adminUser), country: branch.adminUser.country || branch.branchCountry || "", state: branch.adminUser.state || branch.branchState || "", city: branch.adminUser.city || branch.branchCity || "", address: branch.adminUser.address || branch.branchAddress || "", branches: [{ id: branch.id, branchId: branch.branchId, branchName: branch.branchName, status: branch.status, timezone: branch.timezone, branchCountry: branch.branchCountry, branchState: branch.branchState, branchCity: branch.branchCity, branchAddress: branch.branchAddress }], accountType: "BRANCH_ADMIN_SALES_ADMIN" }));
@@ -165,7 +165,7 @@ async function updateSalesAdmin(userId, payload, auth) {
   if (duplicate?.phone === phone) throw new AppError("Phone number is already in use", 409);
   const user = await prisma.$transaction(async (tx) => {
     await tx.salesAdminBranch.deleteMany({ where: { salesAdminId: userId } });
-    return tx.user.update({ where: { id: userId }, data: { fullName, email, phone, country, state, city, address, active: status === "ACTIVE", updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
+    return tx.user.update({ where: { id: userId }, data: { fullName, email, phone, country, state, city, address, active: status === "ACTIVE", status, updatedBy: auth.userId, salesAdminBranches: { create: branches.map((branch) => ({ branchId: branch.id })) } }, select: USER_SELECT });
   });
   return { user: { ...toSafeUser(user), country: user.country, state: user.state, city: user.city, address: user.address }, branches: user.salesAdminBranches.map(({ branch }) => branch) };
 }
@@ -175,6 +175,15 @@ async function deleteSalesAdmin(userId) {
   if (!user) throw new AppError("Sales Admin account not found", 404);
   await prisma.user.delete({ where: { id: userId } });
   return { deleted: true };
+}
+
+async function updateSalesAdminStatus(userId, payload, auth) {
+  const status = clean(payload.status).toUpperCase();
+  if (!["ACTIVE", "INACTIVE"].includes(status)) throw new AppError("Status must be Active or Inactive", 400);
+  const existing = await prisma.user.findFirst({ where: { id: userId, role: "SALES_ADMIN" }, select: { id: true } });
+  if (!existing) throw new AppError("Sales Admin account not found", 404);
+  const user = await prisma.user.update({ where: { id: userId }, data: { status, active: status === "ACTIVE", updatedBy: auth.userId }, select: USER_SELECT });
+  return { user: { ...toSafeUser(user), status, country: user.country, state: user.state, city: user.city, address: user.address }, status };
 }
 
 async function resetSalesAdminPassword(userId, auth) {
@@ -908,5 +917,5 @@ async function convertSalesAdminLead(auth, leadKey, payload = {}) {
   );
 }
 
-export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, updateOwnSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, checkPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
+export { createSalesAdmin, listSalesAdmins, updateSalesAdmin, updateSalesAdminStatus, deleteSalesAdmin, resetSalesAdminPassword, getSalesAdminProfile, updateOwnSalesAdminProfile, getDashboard, listSalesAdminAdmissions, getSalesAdminAdmissionLead, getSalesAdminAvailableBatches, getSalesAdminStudentFeeDetails, getPendingHotAdmissionReminder, checkPendingHotAdmissionReminder, startSalesAdminAdmission, convertSalesAdminLead };
 
