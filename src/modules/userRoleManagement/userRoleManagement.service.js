@@ -349,8 +349,11 @@ export async function listUserChangeHistory(userId) {
   const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, role: true, managedBranch: { select: { id: true } }, salesAdminBranches: { select: { branchId: true } } } });
   if (!user || !["BRANCH_ADMIN", "SALES_ADMIN"].includes(user.role)) throw new AppError("Administrator account not found", 404);
   const branchIds = [user.managedBranch?.id, ...user.salesAdminBranches.map(({ branchId }) => branchId)].filter(Boolean);
+  const historyWhere = user.role === "SALES_ADMIN"
+    ? { OR: [{ previousAdminId: userId }, { newAdminId: userId }] }
+    : { OR: [{ previousAdminId: userId }, { newAdminId: userId }, ...(branchIds.length ? [{ branchId: { in: branchIds } }] : [])] };
   const history = await prisma.adminChangeHistory.findMany({
-    where: { OR: [{ previousAdminId: userId }, { newAdminId: userId }, ...(branchIds.length ? [{ branchId: { in: branchIds } }] : [])] },
+    where: historyWhere,
     orderBy: { createdAt: "desc" },
     include: { previousAdmin: { select: { id: true, userCode: true, fullName: true, email: true } }, newAdmin: { select: { id: true, userCode: true, fullName: true, email: true } }, changedByUser: { select: { id: true, userCode: true, fullName: true, email: true } } },
   });
