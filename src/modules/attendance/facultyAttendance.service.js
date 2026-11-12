@@ -4,6 +4,7 @@ import { getCurrentBranchProfile } from "../branches/branches.service.js";
 
 const TIME_ZONE = "Asia/Kolkata";
 const APPROVED = "APPROVED";
+const WEEK_DAYS = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
 function text(value) { return String(value ?? "").trim(); }
 function today() { return new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE }).format(new Date()); }
@@ -33,6 +34,37 @@ function approvedWindow(record) {
 async function findApprovedInterruptions(userId, date) {
   const rows = await prisma.facultyLeaveRequest.findMany({ where: { facultyUserId: userId, fromDate: { lte: date }, toDate: { gte: date }, status: APPROVED, durationType: { in: ["HALF_DAY", "PERMISSION"] } }, orderBy: { createdAt: "asc" } });
   return rows.map((row) => ({ row, window: approvedWindow(row) })).filter((item) => item.window);
+}
+async function dailyExemption(user, date) {
+  const email = text(user?.email).toLowerCase();
+  const userCode = text(user?.userCode);
+  const [faculty, leave, temporaryWeekOff, temporaryWeekOffAway] = await Promise.all([
+    prisma.branchFaculty.findFirst({
+      where: { status: "ACTIVE", OR: [{ facultyId: userCode }, ...(email ? [{ email: { equals: email, mode: "insensitive" } }] : [])] },
+      select: { weeklyOffDay: true },
+    }),
+    prisma.facultyLeaveRequest.findFirst({
+      where: { facultyUserId: user.id, fromDate: { lte: date }, toDate: { gte: date }, status: APPROVED },
+      select: { id: true, durationType: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.facultyWeekOffRequest.findFirst({
+      where: { facultyUserId: user.id, requestedWeekOffDate: date, status: APPROVED },
+      select: { id: true },
+    }),
+    prisma.facultyWeekOffRequest.findFirst({
+      where: { facultyUserId: user.id, defaultWeekOffDate: date, status: APPROVED },
+      select: { id: true },
+    }),
+  ]);
+  const fullDayLeave = leave && !["HALF_DAY", "PERMISSION"].includes(text(leave.durationType).toUpperCase());
+  if (fullDayLeave) return { exempt: true, reason: "APPROVED_LEAVE", leaveId: leave.id };
+  if (temporaryWeekOff) return { exempt: true, reason: "APPROVED_TEMPORARY_WEEK_OFF", weekOffRequestId: temporaryWeekOff.id };
+  const weekday = WEEK_DAYS[new Date(`${date}T00:00:00Z`).getUTCDay()];
+  if (!temporaryWeekOffAway && faculty?.weeklyOffDay && text(faculty.weeklyOffDay).toUpperCase() === weekday) {
+    return { exempt: true, reason: "REGULAR_WEEK_OFF" };
+  }
+  return { exempt: false, reason: null };
 }
 async function sessions(userId, date) { return prisma.facultyAttendanceSession.findMany({ where: { facultyUserId: userId, attendanceDate: date, sessionSource: "ATTENDANCE" }, orderBy: [{ loginAt: "asc" }, { createdAt: "asc" }] }); }
 function activeSession(rows) { return [...rows].reverse().find((row) => !row.logoutAt) || null; }
@@ -71,18 +103,20 @@ function workingSeconds(rows, records) {
 function serializeInterruption(item) { return item ? { interruptionType: item.window.type, interruptionStartTime: item.window.startTime, interruptionEndTime: item.window.endTime, interruptionReason: item.window.reason } : { interruptionType: "NONE", interruptionStartTime: null, interruptionEndTime: null, interruptionReason: "" }; }
 
 async function buildFacultyAttendanceStatus(user, persist = true) {
-  const date = today(); const rows = await sessions(user.id, date); const records = await findApprovedInterruptions(user.id, date); const nowValue = currentMinutes(); const open = activeSession(rows); const active = interruptionState(rows, records, nowValue);
+  const date = today(); const rows = await sessions(user.id, date); const records = await findApprovedInterruptions(user.id, date); const exemption = await dailyExemption(user, date); const nowValue = currentMinutes(); const open = activeSession(rows); const active = interruptionState(rows, records, nowValue);
   const loginRequired = Boolean(open && !active && latestEndedNeedsLogin(rows, records, nowValue));
-  const status = rows.length && !open ? "LOGGED_OUT" : active ? "ON_PERMISSION" : loginRequired ? "LOGIN_REQUIRED" : open ? "LOGGED_IN" : "NOT_LOGGED_IN";
+  const last = rows[rows.length - 1];
+  const resumedAfterWebsiteLogout = Boolean(rows.length && !open && last?.logoutType === "WEBSITE_LOGOUT");
+  const status = exemption.exempt && !open ? "NOT_LOGGED_IN" : rows.length && !open ? (resumedAfterWebsiteLogout ? "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE" : "WORKLOG_COMPLETED") : active ? "ON_PERMISSION" : loginRequired ? "LOGIN_REQUIRED" : open ? "LOGGED_IN" : "NOT_LOGGED_IN";
   const interruption = active || (loginRequired ? records.filter(({ window }) => nowValue >= window.end).sort((a, b) => b.window.end - a.window.end)[0] : null);
   const interruptionData = serializeInterruption(interruption);
   const remainingSeconds = active ? Math.max(0, (active.window.end - nowValue) * 60) : 0;
   const firstLoginAt = rows[0]?.loginAt || null;
-  const finalLogoutAt = status === "LOGGED_OUT" ? rows[rows.length - 1]?.logoutAt || null : null;
+  const finalLogoutAt = ["WORKLOG_COMPLETED", "AUTO_CLOSED"].includes(status) ? rows[rows.length - 1]?.logoutAt || null : null;
   if (persist) {
     await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status, firstLoginAt, finalLogoutAt }, update: { status, firstLoginAt, finalLogoutAt } });
   }
-  return { status, faculty: { id: user.id, name: user.fullName, facultyId: user.userCode }, attendanceDate: date, currentServerTime: new Date().toISOString(), firstLoginAt, finalLogoutAt, currentSession: open, workingSeconds: workingSeconds(rows, records), remainingSeconds, ...interruptionData, canLogin: status === "NOT_LOGGED_IN" || status === "LOGIN_REQUIRED", canLogout: status === "LOGGED_IN" };
+  return { status, faculty: { id: user.id, name: user.fullName, facultyId: user.userCode }, attendanceDate: date, currentServerTime: new Date().toISOString(), firstLoginAt, finalLogoutAt, currentSession: open, sessions: rows, workingSeconds: workingSeconds(rows, records), remainingSeconds, ...interruptionData, exemption, mandatoryLoginRequired: !exemption.exempt && ["NOT_LOGGED_IN", "LOGIN_REQUIRED"].includes(status), canLogin: !exemption.exempt && (status === "NOT_LOGGED_IN" || status === "LOGIN_REQUIRED" || status === "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE"), canLogout: status === "LOGGED_IN" };
 }
 
 export async function getFacultyAttendanceStatus(user) {
@@ -243,7 +277,7 @@ export async function getBranchFacultyAttendanceHistory(actor, facultyReference,
 
 export async function facultyAttendanceLogin(user) {
   const state = await getFacultyAttendanceStatus(user);
-  if (!state.canLogin) throw new AppError(state.status === "LOGGED_OUT" ? "Attendance day is already closed" : state.status === "ON_PERMISSION" ? "Cannot login during an active interruption" : "Faculty attendance is already logged in", 409);
+  if (!state.canLogin) throw new AppError(["WORKLOG_COMPLETED", "AUTO_CLOSED"].includes(state.status) ? "Attendance day is already closed" : state.status === "ON_PERMISSION" ? "Cannot login during an active interruption" : state.exemption?.exempt ? "Work Log login is not required for this date" : "Faculty attendance is already logged in", 409);
   const date = today();
   const existingRows = await sessions(user.id, date);
   const open = activeSession(existingRows);
@@ -262,6 +296,53 @@ export async function facultyAttendanceLogin(user) {
   await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: date } }, create: { facultyUserId: user.id, attendanceDate: date, status: "LOGGED_IN", firstLoginAt: created.loginAt }, update: { status: "LOGGED_IN" } });
   return getFacultyAttendanceStatus(user, created);
 }
+
+export async function recordFacultyWebsiteLogoutSession(userId, attendanceDate = today()) {
+  const open = await prisma.facultyAttendanceSession.findFirst({
+    where: { facultyUserId: userId, attendanceDate, sessionSource: "ATTENDANCE", logoutAt: null },
+    orderBy: { loginAt: "desc" },
+  });
+  if (!open) return null;
+  const logoutAt = new Date();
+  await prisma.$transaction(async (tx) => {
+    await tx.facultyAttendanceSession.update({ where: { id: open.id }, data: { logoutAt, logoutType: "WEBSITE_LOGOUT", logoutReason: "Website logout; Work Log remains resumable" } });
+    await tx.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: userId, attendanceDate } }, create: { facultyUserId: userId, attendanceDate, status: "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE", firstLoginAt: open.loginAt }, update: { status: "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE", finalLogoutAt: null } });
+  });
+  return open.id;
+}
+
+export async function resumeFacultyAttendanceSession(user, attendanceDate = today()) {
+  const rows = await sessions(user.id, attendanceDate);
+  if (activeSession(rows) || rows[rows.length - 1]?.logoutType !== "WEBSITE_LOGOUT") return null;
+  const created = await prisma.facultyAttendanceSession.create({ data: { facultyUserId: user.id, attendanceDate, loginAt: new Date(), sessionSource: "ATTENDANCE" } });
+  await prisma.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate } }, create: { facultyUserId: user.id, attendanceDate, status: "LOGGED_IN", firstLoginAt: rows[0]?.loginAt || created.loginAt }, update: { status: "LOGGED_IN", firstLoginAt: rows[0]?.loginAt || created.loginAt, finalLogoutAt: null } });
+  return created.id;
+}
+
+export async function autoCloseStaleFacultyAttendanceSessions() {
+  const currentDate = today();
+  const openSessions = await prisma.facultyAttendanceSession.findMany({
+    where: { sessionSource: "ATTENDANCE", logoutAt: null, attendanceDate: { lt: currentDate } },
+    include: { facultyUser: { select: { lastLogoutAt: true } } },
+  });
+  let closed = 0;
+  for (const session of openSessions) {
+    const lastLogout = session.facultyUser?.lastLogoutAt;
+    const fallback = lastLogout && new Intl.DateTimeFormat("en-CA", { timeZone: TIME_ZONE }).format(lastLogout) === session.attendanceDate
+      ? lastLogout
+      : dateTimeForMinutes(session.attendanceDate, 1439);
+    const result = await prisma.$transaction(async (tx) => {
+      const updated = await tx.facultyAttendanceSession.updateMany({ where: { id: session.id, logoutAt: null }, data: { logoutAt: fallback, logoutType: "AUTO_CLOSED", logoutReason: "Automatically closed after confirmed website logout/day rollover" } });
+      if (updated.count) {
+        await tx.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: session.facultyUserId, attendanceDate: session.attendanceDate } }, create: { facultyUserId: session.facultyUserId, attendanceDate: session.attendanceDate, status: "AUTO_CLOSED", firstLoginAt: session.loginAt, finalLogoutAt: fallback }, update: { status: "AUTO_CLOSED", finalLogoutAt: fallback } });
+      }
+      return updated.count;
+    });
+    closed += result;
+  }
+  return { closed };
+}
+
 export async function facultyAttendanceBatches(user) {
   const email = text(user.email).toLowerCase();
   const profile = await prisma.branchFaculty.findFirst({ where: { OR: [{ facultyId: user.userCode }, { email: { equals: email, mode: "insensitive" } }] }, select: { facultyId: true } });
@@ -283,7 +364,7 @@ export async function facultyAttendanceBatches(user) {
 export async function facultyAttendanceLogout(user, payload = {}) {
   const state = await getFacultyAttendanceStatus(user);
   if (state.status === "ON_PERMISSION") throw new AppError("Cannot logout during Permission or Half Day", 409);
-  if (state.status !== "LOGGED_IN") throw new AppError(state.status === "LOGGED_OUT" ? "Attendance day is already closed" : "No active faculty attendance login session found", 409);
+  if (state.status !== "LOGGED_IN") throw new AppError(["WORKLOG_COMPLETED", "AUTO_CLOSED"].includes(state.status) ? "Attendance day is already closed" : "No active faculty attendance login session found", 409);
   const open = await prisma.facultyAttendanceSession.findFirst({ where: { facultyUserId: user.id, attendanceDate: today(), sessionSource: "ATTENDANCE", logoutAt: null }, orderBy: { loginAt: "desc" } });
   if (!open) throw new AppError("No active faculty attendance login session found", 409);
   const assigned = await facultyAttendanceBatches(user); const allowed = new Map(assigned.flatMap((batch) => [[batch.id, batch], [batch.batchId, batch]])); const submitted = Array.isArray(payload.batchWork) ? payload.batchWork : [];
@@ -291,12 +372,12 @@ export async function facultyAttendanceLogout(user, payload = {}) {
   const report = submitted.map((item) => `${allowed.get(text(item.batchId)).batchName}: ${text(item.workSummary)}`).join("\n");
   const logoutAt = new Date();
   await prisma.$transaction(async (tx) => {
-    await tx.facultyAttendanceSession.update({ where: { id: open.id }, data: { logoutAt, logoutType: "normal", workReport: report || null } });
+    await tx.facultyAttendanceSession.update({ where: { id: open.id }, data: { logoutAt, logoutType: "MANUAL", workReport: report || null } });
     for (const item of submitted) {
       const batch = allowed.get(text(item.batchId));
       await tx.facultyAttendanceBatchWork.upsert({ where: { attendanceSessionId_batchId: { attendanceSessionId: open.id, batchId: batch.batchId || batch.id } }, create: { attendanceSessionId: open.id, facultyUserId: user.id, attendanceDate: today(), branchId: batch.branchId, batchId: batch.batchId || batch.id, workSummary: text(item.workSummary) }, update: { workSummary: text(item.workSummary), updatedAt: logoutAt } });
     }
-    await tx.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: today() } }, create: { facultyUserId: user.id, attendanceDate: today(), status: "LOGGED_OUT", firstLoginAt: open.loginAt, finalLogoutAt: logoutAt }, update: { status: "LOGGED_OUT", finalLogoutAt: logoutAt } });
+    await tx.facultyAttendanceDay.upsert({ where: { facultyUserId_attendanceDate: { facultyUserId: user.id, attendanceDate: today() } }, create: { facultyUserId: user.id, attendanceDate: today(), status: "WORKLOG_COMPLETED", firstLoginAt: open.loginAt, finalLogoutAt: logoutAt }, update: { status: "WORKLOG_COMPLETED", finalLogoutAt: logoutAt } });
   });
   return getFacultyAttendanceStatus(user);
 }

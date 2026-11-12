@@ -143,6 +143,7 @@ function buildFacultySessionRows(sessions = [], facultyProfile, facultyUser, lea
       permissionHours: formatPermissionMinutes(leave?.permissionHours),
       leaveReason: leave?.reason || "",
       logoutType: Array.from(new Set(daySessions.map((session) => toDisplayValue(session.logoutType, "")).filter(Boolean))).join(", "),
+      workLogStatus: daySessions.some((session) => String(session.logoutType).toUpperCase() === "AUTO_CLOSED") ? "AUTO_CLOSED" : daySessions.some((session) => String(session.logoutType).toUpperCase() === "MANUAL") ? "WORKLOG_COMPLETED" : "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE",
       logoutReason: Array.from(new Set(daySessions.map((session) => session.logoutReason || "").filter(Boolean))).join("; "),
       workReport: daySessions.map((session) => session.workReport || "").filter(Boolean).join("; "),
       workCompleted: daySessions.map((session) => session.workCompleted || "").filter(Boolean).join("; "),
@@ -157,22 +158,34 @@ function buildAllFacultySessionRows(sessions = [], facultyProfiles = []) {
     facultyProfiles.map((profile) => [String(profile.facultyEmail || "").toLowerCase(), profile]),
   );
 
-  return assignSerialByDate(sessions.map((session) => {
+  const grouped = new Map();
+  sessions.forEach((session) => {
+    const key = `${session.facultyUserId}:${session.attendanceDate}`;
+    const current = grouped.get(key) || { sessions: [], session };
+    current.sessions.push(session);
+    grouped.set(key, current);
+  });
+  return assignSerialByDate(Array.from(grouped.values()).map(({ sessions: daySessions, session }) => {
     const email = String(session.facultyUser?.email || "").toLowerCase();
     const facultyProfile = profileByEmail.get(email);
-
+    const first = daySessions[0];
+    const last = daySessions[daySessions.length - 1];
+    const workingMs = daySessions.filter((item) => item.loginAt && item.logoutAt)
+      .reduce((sum, item) => sum + Math.max(0, new Date(item.logoutAt).getTime() - new Date(item.loginAt).getTime()), 0);
+    const logoutTypes = Array.from(new Set(daySessions.map((item) => toDisplayValue(item.logoutType, "")).filter(Boolean))).join(", ");
     return {
       attendanceDate: session.attendanceDate,
       facultyName: facultyProfile?.facultyName || session.facultyUser?.fullName || "",
       facultyEmail: session.facultyUser?.email || facultyProfile?.facultyEmail || "",
       courseName: getFacultyCourseNames(facultyProfile),
-      loginAt: formatDateTime(session.loginAt),
-      logoutAt: formatDateTime(session.logoutAt),
-      duration: formatDuration(session.loginAt, session.logoutAt),
-      logoutType: toDisplayValue(session.logoutType, ""),
-      logoutReason: session.logoutReason || "",
-      workReport: session.workReport || "",
-      workCompleted: session.workCompleted || "",
+      loginAt: formatDateTime(first.loginAt),
+      logoutAt: formatDateTime(last.logoutAt),
+      duration: workingMs ? formatDuration(new Date(0), new Date(workingMs)) : "",
+      logoutType: logoutTypes,
+      workLogStatus: daySessions.some((item) => String(item.logoutType).toUpperCase() === "AUTO_CLOSED") ? "AUTO_CLOSED" : daySessions.some((item) => String(item.logoutType).toUpperCase() === "MANUAL") ? "WORKLOG_COMPLETED" : "WEBSITE_LOGGED_OUT_WORKLOG_ACTIVE",
+      logoutReason: Array.from(new Set(daySessions.map((item) => item.logoutReason || "").filter(Boolean))).join("; "),
+      workReport: daySessions.map((item) => item.workReport || "").filter(Boolean).join("; "),
+      workCompleted: daySessions.map((item) => item.workCompleted || "").filter(Boolean).join("; "),
     };
   }));
 }
@@ -352,6 +365,7 @@ async function generateFacultyAttendanceReport(query = {}) {
           { header: "Leave Duration", key: "leaveTime", width: 22 },
           { header: "Permission Hours", key: "permissionHours", width: 18 },
           { header: "Leave Reason", key: "leaveReason", width: 30 },
+          { header: "Work Log Status", key: "workLogStatus", width: 24 },
           { header: "Logout Reason", key: "logoutReason", width: 28 },
           { header: "Work Report", key: "workReport", width: 34 },
           { header: "Work Completed", key: "workCompleted", width: 34 },
@@ -395,6 +409,7 @@ async function generateAllFacultyAttendanceReport(query = {}) {
           { header: "Logout At", key: "logoutAt", width: 24 },
           { header: "Duration", key: "duration", width: 16 },
           { header: "Logout Type", key: "logoutType", width: 16 },
+          { header: "Work Log Status", key: "workLogStatus", width: 24 },
           { header: "Logout Reason", key: "logoutReason", width: 28 },
           { header: "Work Report", key: "workReport", width: 34 },
           { header: "Work Completed", key: "workCompleted", width: 34 },

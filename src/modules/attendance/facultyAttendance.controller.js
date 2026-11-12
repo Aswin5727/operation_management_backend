@@ -7,6 +7,7 @@ import {
   getFacultyAttendanceStatus,
   getBranchFacultyAttendanceStatus,
   getBranchFacultyAttendanceHistory,
+  recordFacultyWebsiteLogoutSession,
 } from "./facultyAttendance.service.js";
 
 function send(res, message, data) { return res.json({ status: "success", message, data }); }
@@ -17,4 +18,5 @@ export const getBranchFacultyAttendanceHistoryHandler = asyncHandler(async (req,
 export const getFacultyAttendanceBatchesHandler = asyncHandler(async (req, res) => send(res, "Faculty attendance batches fetched successfully", await facultyAttendanceBatches(req.user)));
 export const recordFacultyAttendanceApiLoginHandler = asyncHandler(async (req, res) => send(res, "Faculty attendance login saved successfully", await facultyAttendanceLogin(req.user)));
 export const recordFacultyAttendanceApiLogoutHandler = asyncHandler(async (req, res) => send(res, "Faculty attendance logout saved successfully", await facultyAttendanceLogout(req.user, req.body || {})));
+export const recordFacultyWebsiteLogoutHandler = asyncHandler(async (req, res) => send(res, "Website logout recorded; Work Log remains resumable", await recordFacultyWebsiteLogoutSession(req.user.id)));
 export const getFacultyAttendancePermissionHandler = asyncHandler(async (req, res) => send(res, "Faculty attendance interruption fetched successfully", await facultyAttendancePermission(req.user)));
