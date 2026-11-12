@@ -55,29 +55,51 @@ function matchPaymentPlanTemplates(templates, value) {
     : Number(plan.installmentCount) === alias.installmentCount);
 }
 
-// Course imports should expose every active, branch-level payment template to
-// the imported course. The workbook may still contain explicit plan rows; those
-// rows win, while the remaining active templates are appended below. Keep the
-// merge stable and deduplicate by both template id and display name so the
-// student payment-plan dropdown never shows the same plan twice.
-function mergeActiveBranchPaymentPlans(course, templates) {
+function excelPaymentPlan(value, row) {
+  const name = String(value ?? '').trim();
+  const alias = paymentPlanAlias(name);
+  const installmentCount = alias?.installmentCount || (alias?.planType === 'FULL_PAYMENT' ? 1 : 1);
+  return {
+    id: `excel-payment-plan-${row}`,
+    type: 'custom',
+    planType: installmentCount <= 1 ? 'FULL_PAYMENT' : 'CUSTOM',
+    templateName: name,
+    installmentCount,
+    dueRule: 'Admission',
+    allowCustomization: true,
+    status: 'ACTIVE',
+  };
+}
+
+// Keep only the payment plans explicitly assigned to the course in the Excel
+// workbook. Branch-level templates are available for future edits, but must
+// not be silently assigned to every imported course.
+function mergeActiveBranchPaymentPlans(course) {
   const plans = Array.isArray(course?.data?.paymentPlans) ? course.data.paymentPlans : [];
   const merged = [];
   const seenIds = new Set();
   const seenNames = new Set();
 
   const add = (plan) => {
-    const templateId = textKey(plan?.templateId || plan?.id);
+    const custom = String(plan?.type || '').toLowerCase() === 'custom';
+    const templateId = custom ? '' : textKey(plan?.templateId || plan?.id);
     const templateName = textKey(plan?.templateName || plan?.planName);
     if (!templateId && !templateName) return;
     if ((templateId && seenIds.has(templateId)) || (templateName && seenNames.has(templateName))) return;
     if (templateId) seenIds.add(templateId);
     if (templateName) seenNames.add(templateName);
-    merged.push({ ...plan, templateId: plan.templateId || plan.id, type: "template" });
+    const normalized = { ...plan };
+    if (custom) {
+      delete normalized.templateId;
+      normalized.type = 'custom';
+    } else {
+      normalized.templateId = plan.templateId || plan.id;
+      normalized.type = 'template';
+    }
+    merged.push(normalized);
   };
 
   plans.forEach(add);
-  (Array.isArray(templates) ? templates : []).forEach(add);
   course.data.paymentPlans = merged;
 }
 export const workbookHash = (buffer) => createHash("sha256").update(buffer).digest("hex");
@@ -349,25 +371,20 @@ export async function validateCourseWorkbook(buffer, profile, db = prisma, edits
     const course = parent(code, "Payment Plans", row);
     if (!textKey(name)) { errorAt(errors, "Payment Plans", row, "Payment Plan Name", "Payment Plan Name is required"); continue; }
     const matches = matchPaymentPlanTemplates(templates, name);
-    if (matches.length !== 1) {
-      const message = matches.length
-        ? "This name matches multiple active branch templates. Enter a unique plan name to identify the intended template."
-        : availablePaymentPlans.length
-          ? "No active branch payment template or supported alias matches this name. Choose an available plan from the list."
-          : templates.length
-            ? "No uniquely named active payment plans are available. Rename duplicate templates before importing."
-            : "No active payment plans are configured for this branch. Add an active branch payment plan before importing.";
-      errorAt(errors, "Payment Plans", row, "Payment Plan Name", message);
-      continue;
-    }
     if (!course) continue;
-    if (course.data.paymentPlans.some((plan) => plan.templateId === matches[0].id)) { errorAt(errors, "Payment Plans", row, "Payment Plan Name", "Duplicate payment plan for this course"); continue; }
-    course.data.paymentPlans.push({ ...matches[0], templateId: matches[0].id, type: "template" });
+    if (matches.length === 1) {
+      if (course.data.paymentPlans.some((plan) => plan.templateId === matches[0].id)) { errorAt(errors, "Payment Plans", row, "Payment Plan Name", "Duplicate payment plan for this course"); continue; }
+      course.data.paymentPlans.push({ ...matches[0], templateId: matches[0].id, type: "template" });
+    } else {
+      const custom = excelPaymentPlan(name, `${course.row}-${row}`);
+      if (course.data.paymentPlans.some((plan) => textKey(plan.templateName) === textKey(custom.templateName))) { errorAt(errors, "Payment Plans", row, "Payment Plan Name", "Duplicate payment plan for this course"); continue; }
+      course.data.paymentPlans.push(custom);
+    }
   }
   const preview = [];
   for (const course of courses) {
     const { data, row } = course;
-    mergeActiveBranchPaymentPlans(course, templates);
+    mergeActiveBranchPaymentPlans(course);
     if (!data.modules.length) errorAt(errors, "Course Modules", 0, "Module Name", "Add at least one module for course " + data.courseCode);
     for (const module of data.modules) if (!module.submodules.length) errorAt(errors, "Course Submodules", 0, "Submodule Name", "Add at least one submodule for module \"" + module.name + "\" in course " + data.courseCode);
     if (!data.paymentPlans.length) errorAt(errors, "Payment Plans", 0, "Payment Plan Name", "Add a valid active payment plan for course " + data.courseCode);
@@ -437,8 +454,87 @@ export async function previewCourseWorkbook(buffer, profile, db = prisma, edits 
   // Existing branch course codes and names must remain duplicates during
   // preview. Import receipts are used only by the guarded import transaction;
   // they must never make an already-existing course look valid to the user.
-  return validateCourseWorkbook(buffer, profile, db, normalizedEdits);
+  const hash = courseUploadHash(buffer, normalizedEdits);
+  const receipt = db.branchCourseImportReceipt?.findUnique
+    ? await db.branchCourseImportReceipt.findUnique({ where: { branchId_uploadHash: { branchId: profile.id, uploadHash: hash } }, select: { summary: true } })
+    : null;
+  const allowExistingCourseCodes = Array.isArray(receipt?.summary?.courses)
+    ? receipt.summary.courses.map((course) => course.courseCode).filter(Boolean)
+    : [];
+  return validateCourseWorkbook(buffer, profile, db, normalizedEdits, { allowExistingCourseCodes });
 }
+
+async function activateImportedPaymentPlans(tx, payloads, profile, actorId) {
+  const plans = new Map();
+  for (const payload of payloads) {
+    for (const plan of Array.isArray(payload?.paymentPlans) ? payload.paymentPlans : []) {
+      if (String(plan?.type || '').toLowerCase() !== 'custom') continue;
+      const name = String(plan.templateName || plan.planName || '').trim();
+      if (!name) continue;
+      const key = textKey(name);
+      if (!plans.has(key)) {
+        plan.templateName = name;
+        plans.set(key, plan);
+      }
+    }
+  }
+
+  for (const plan of plans.values()) {
+    const existing = await tx.branchInstallmentTemplate.findFirst({
+      where: { branchId: profile.id, branchCourseId: null, templateName: { equals: plan.templateName, mode: 'insensitive' } },
+    });
+    const data = {
+      templateName: plan.templateName,
+      planType: plan.planType || (Number(plan.installmentCount) <= 1 ? 'FULL_PAYMENT' : 'CUSTOM'),
+      installmentCount: Math.max(1, Number(plan.installmentCount) || 1),
+      installments: Array.isArray(plan.installments) ? plan.installments : [],
+      dueRule: plan.dueRule || 'Admission',
+      allowCustomization: plan.allowCustomization !== false,
+      status: 'ACTIVE',
+      updatedBy: actorId,
+    };
+    if (existing) {
+      const activeTemplate = await tx.branchInstallmentTemplate.update({ where: { id: existing.id }, data });
+      plan.id = activeTemplate.id;
+      plan.templateId = activeTemplate.id;
+      plan.type = 'template';
+    } else {
+      const activeTemplate = await tx.branchInstallmentTemplate.create({ data: { ...data, branchId: profile.id, branchCourseId: null, createdBy: actorId } });
+      plan.id = activeTemplate.id;
+      plan.templateId = activeTemplate.id;
+      plan.type = 'template';
+    }
+  }
+}
+
+async function syncExistingImportedCourses(tx, payloads, profile, actorId) {
+  await activateImportedPaymentPlans(tx, payloads, profile, actorId);
+  for (const payload of payloads) {
+    const course = await tx.branchCourse.findFirst({ where: { branchId: profile.id, courseCode: payload.courseCode } });
+    if (!course) continue;
+    const paymentPlans = Array.isArray(payload.paymentPlans) ? payload.paymentPlans : [];
+    await tx.branchCourse.update({
+      where: { id: course.id },
+      data: { paymentPlans, paymentPlanSelections: paymentPlans, updatedBy: actorId },
+    });
+    const primary = paymentPlans[0];
+    if (!primary) continue;
+    const templateData = {
+      templateName: primary.templateName || primary.planName || 'Payment Plan',
+      planType: primary.planType || (Number(primary.installmentCount) <= 1 ? 'FULL_PAYMENT' : 'CUSTOM'),
+      installmentCount: Math.max(1, Number(primary.installmentCount) || 1),
+      installments: Array.isArray(primary.installments) ? primary.installments : [],
+      dueRule: primary.dueRule || 'Admission',
+      allowCustomization: primary.allowCustomization !== false,
+      status: 'ACTIVE',
+      updatedBy: actorId,
+    };
+    const linkedTemplate = await tx.branchInstallmentTemplate.findFirst({ where: { branchId: profile.id, branchCourseId: course.id } });
+    if (linkedTemplate) await tx.branchInstallmentTemplate.update({ where: { id: linkedTemplate.id }, data: templateData });
+    else await tx.branchInstallmentTemplate.create({ data: { ...templateData, branchId: profile.id, branchCourseId: course.id, createdBy: actorId } });
+  }
+}
+
 export async function importCourseWorkbook({ buffer, profile, actorId, previewHash, edits = {}, db = prisma }) {
   const normalizedEdits = normalizeCourseEdits(edits);
   const hash = courseUploadHash(buffer, normalizedEdits);
@@ -469,8 +565,13 @@ export async function importCourseWorkbook({ buffer, profile, actorId, previewHa
           else missing.push(importedCourse);
         }
         if (!missing.length) {
+          const result = await validateCourseWorkbook(buffer, profile, tx, normalizedEdits, {
+            allowExistingCourseCodes: receiptCourses.map((course) => course.courseCode).filter(Boolean),
+          });
+          if (!result.valid) return { ...publicCoursePreview(result), imported: false };
+          await syncExistingImportedCourses(tx, result.payloads, profile, actorId);
           const courses = receiptCourses.map((course) => resolved.get(course.id || textKey(course.courseCode))).filter(Boolean);
-          return { ...receipt.summary, courses, alreadyImported: true };
+          return { ...receipt.summary, courses, alreadyImported: true, plansSynced: true };
         }
 
         // A receipt makes this exact workbook safe to retry. Keep surviving rows and
@@ -486,6 +587,7 @@ export async function importCourseWorkbook({ buffer, profile, actorId, previewHa
           try { return missingCodes.has(textKey(normalizeCourseCode(String(course.courseCode), profile.branchId))); } catch { return false; }
         });
         if (payloads.length !== missing.length) throw new AppError("Some deleted courses could not be matched to the original workbook. Revalidate the file and try again.", 409);
+        await activateImportedPaymentPlans(tx, payloads, profile, actorId);
         for (const payload of payloads) {
           const course = await createBranchCourseInTransaction(tx, payload, profile, actorId);
           const restored = { id: course.id, courseCode: course.courseCode, name: course.name };
@@ -501,6 +603,7 @@ export async function importCourseWorkbook({ buffer, profile, actorId, previewHa
       const result = await validateCourseWorkbook(buffer, profile, tx, normalizedEdits);
       if (!result.valid) return { ...publicCoursePreview(result), imported: false };
       const imported = [];
+      await activateImportedPaymentPlans(tx, result.payloads, profile, actorId);
       for (const payload of result.payloads) {
         const course = await createBranchCourseInTransaction(tx, payload, profile, actorId);
         imported.push({ id: course.id, courseCode: course.courseCode, name: course.name });
