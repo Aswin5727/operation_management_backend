@@ -3,6 +3,7 @@ import {
   getCurrentFacultyAttendanceOverview,
   getCurrentStudentAttendanceOverview,
   markFacultyStudentAttendance,
+  editBranchStudentAttendance,
   recordFacultyAttendanceLogin,
   recordFacultyAttendanceLogout,
 } from "./attendance.service.js";
@@ -37,6 +38,11 @@ export const getFacultyAttendanceOverviewHandler = asyncHandler(async (req, res)
 export const markFacultyStudentAttendanceHandler = asyncHandler(async (req, res) => {
   const overview = await markFacultyStudentAttendance(req.user, req.body || {});
   return sendSuccess(res, "Attendance saved successfully", overview);
+});
+
+export const editBranchStudentAttendanceHandler = asyncHandler(async (req, res) => {
+  const overview = await editBranchStudentAttendance(req.user, req.body || {});
+  return sendSuccess(res, "Attendance edited successfully", overview);
 });
 
 export const recordFacultyAttendanceLoginHandler = asyncHandler(async (req, res) => {

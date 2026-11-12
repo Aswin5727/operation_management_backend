@@ -5,7 +5,7 @@ import AppError from "../../common/errors/AppError.js";
 import { createNotification } from "../notifications/notifications.service.js";
 import { assertStudentsNotDiscontinued } from "../../common/utils/studentDiscontinuationGuard.js";
 
-const ATTENDANCE_STATUSES = new Set(["PRESENT", "ABSENT"]);
+const ATTENDANCE_STATUSES = new Set(["PRESENT", "ABSENT", "LATE"]);
 const LOCAL_TIME_ZONE = "Asia/Calcutta";
 const FACULTY_SESSION_SOURCES = {
   ATTENDANCE: "ATTENDANCE",
@@ -54,6 +54,19 @@ function parseTime(value) {
   return hour * 60 + minute;
 }
 
+function parseBatchTiming(value) {
+  const matches = normalizeString(value).match(/(.+?)\s*-\s*(.+)$/);
+  if (!matches) return null;
+  const start = parseTime(matches[1]);
+  const end = parseTime(matches[2]);
+  return start == null || end == null ? null : { start, end };
+}
+
+function currentMinutes() {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: LOCAL_TIME_ZONE, hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+  return Number(parts.find((part) => part.type === "hour")?.value || 0) * 60 + Number(parts.find((part) => part.type === "minute")?.value || 0);
+}
+
 function parseAttendanceStatus(value) {
   const status = normalizeString(value).toUpperCase();
 
@@ -61,6 +74,12 @@ function parseAttendanceStatus(value) {
     throw new AppError("Invalid attendance status", 400);
   }
 
+  return status;
+}
+
+function parseEditableAttendanceStatus(value) {
+  const status = normalizeString(value).toUpperCase();
+  if (!["PRESENT", "ABSENT", "LATE", "UNMARKED"].includes(status)) throw new AppError("Invalid attendance status", 400);
   return status;
 }
 
@@ -484,6 +503,7 @@ function mapBranchAttendanceStudent(student, attendance) {
     attendanceMarkedAt: attendance?.markedAt || null,
     attendanceMarkedAtLabel: formatDateTime(attendance?.markedAt),
     attendanceNotes: attendance?.notes || "",
+    attendanceLateReason: attendance?.lateReason || "",
   };
 }
 
@@ -505,12 +525,23 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
         studentId: normalizeString(entry?.studentId),
         status: parseAttendanceStatus(entry?.status),
         notes: normalizeString(entry?.notes),
+        lateReason: normalizeString(entry?.lateReason || entry?.reason),
       }))
       .filter((entry) => entry.studentId),
     (entry) => entry.studentId,
   );
 
   if (!submittedStudents.length) throw new AppError("Valid student attendance entries are required", 400);
+
+  const timing = parseBatchTiming(batch.batchTiming);
+  const isToday = date === getTodayValue();
+  const isLateWindow = isToday && timing && currentMinutes() >= timing.end;
+  if (isToday && timing && currentMinutes() < timing.start) throw new AppError(`Attendance opens at ${normalizeString(batch.batchTiming).split("-")[0].trim()}`, 403);
+  if (isLateWindow) {
+    for (const entry of submittedStudents) {
+      if (!entry.lateReason) throw new AppError("Late reason is required for late attendance", 400);
+    }
+  }
 
   const students = await prisma.branchStudent.findMany({
     where: {
@@ -527,7 +558,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
         ] },
       ],
     },
-    select: { id: true, studentId: true },
+    select: { id: true, studentId: true, studentName: true, courseName: true, batchName: true, batchTiming: true },
   });
   await assertStudentsNotDiscontinued(students.map((student) => student.id));
   const studentByIdentifier = new Map(students.flatMap((student) => [[student.id, student], [student.studentId, student]]));
@@ -539,18 +570,29 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
     await assertAttendanceAllowed(tx, students, date, batch.branchId);
     for (const entry of submittedStudents) {
       const student = studentByIdentifier.get(entry.studentId);
+      const existingAttendance = await tx.branchStudentAttendance.findFirst({
+        where: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId, batchId: batch.batchId },
+      });
+      if (isLateWindow && existingAttendance?.lateReason) {
+        await tx.$executeRaw`
+          INSERT INTO "BranchStudentAttendanceEdit"
+            ("id", "attendanceId", "branchStudentId", "studentId", "studentName", "courseId", "courseName", "batchId", "batchName", "batchTiming", "attendanceDate", "previousStatus", "updatedStatus", "attendanceType", "lateReason", "editedByUserId", "editedByName", "editedAt", "editReason")
+          VALUES
+            (${crypto.randomUUID()}, ${existingAttendance.id}, ${student.id}, ${student.studentId}, ${student.studentName}, ${batch.courseId}, ${student.courseName || batch.courseName || null}, ${batch.batchId}, ${student.batchName || batch.batchName}, ${student.batchTiming || batch.batchTiming || null}, ${date}, ${existingAttendance.status}, ${existingAttendance.status}, 'LATE_ATTENDANCE', ${existingAttendance.lateReason}, ${user?.id || null}, ${normalizeString(user?.fullName || user?.name || user?.email) || "User"}, ${existingAttendance.markedAt || new Date()}, 'Previous late attendance preserved')
+        `;
+      }
       const facultyUserId = normalizeString(user?.id) || null;
       const moduleId = normalizeString(payload.moduleId) || null;
       const moduleName = normalizeString(payload.moduleName) || null;
       const submoduleId = normalizeString(payload.submoduleId || firstSubmodule?.id) || null;
       const submoduleName = normalizeString(payload.submoduleName || firstSubmodule?.name) || null;
-      const notes = entry.notes || null;
+      const notes = entry.notes || (entry.status === "LATE" ? entry.lateReason : null) || null;
       // Keep parallel course/batch attendance rows independent.
       await tx.$executeRaw`
         INSERT INTO "BranchStudentAttendance"
-          ("id", "branchStudentId", "facultyUserId", "courseId", "batchId", "moduleId", "moduleName", "submoduleId", "submoduleName", "attendanceDate", "status", "notes", "markedAt", "createdAt", "updatedAt")
+          ("id", "branchStudentId", "facultyUserId", "courseId", "batchId", "moduleId", "moduleName", "submoduleId", "submoduleName", "attendanceDate", "status", "notes", "lateReason", "markedAt", "createdAt", "updatedAt")
         VALUES
-          (${crypto.randomUUID()}, ${student.id}, ${facultyUserId}, ${batch.courseId}, ${batch.batchId}, ${moduleId}, ${moduleName}, ${submoduleId}, ${submoduleName}, ${date}, ${entry.status}::"AttendanceStatus", ${notes}, NOW(), NOW(), NOW())
+          (${crypto.randomUUID()}, ${student.id}, ${facultyUserId}, ${batch.courseId}, ${batch.batchId}, ${moduleId}, ${moduleName}, ${submoduleId}, ${submoduleName}, ${date}, ${entry.status}::"AttendanceStatus", ${notes}, ${entry.lateReason || null}, NOW(), NOW(), NOW())
         ON CONFLICT ("branchStudentId", "attendanceDate", "courseId", "batchId") DO UPDATE SET
           "facultyUserId" = EXCLUDED."facultyUserId",
           "courseId" = EXCLUDED."courseId",
@@ -561,6 +603,7 @@ async function markBranchStudentAttendance(user, payload, date, batch) {
           "submoduleName" = EXCLUDED."submoduleName",
           "status" = EXCLUDED."status",
           "notes" = EXCLUDED."notes",
+          "lateReason" = EXCLUDED."lateReason",
           "markedAt" = NOW(),
           "updatedAt" = NOW()
       `;
@@ -693,7 +736,7 @@ async function getBranchFacultyAttendanceOverview(user, date, facultyId = "", op
   const attendanceRecords = studentIds.length
     ? await prisma.branchStudentAttendance.findMany({
         where: { branchStudentId: { in: studentIds }, attendanceDate: { gte: getRecentMonths(6)[0]?.start || date } },
-        select: { branchStudentId: true, courseId: true, batchId: true, attendanceDate: true, status: true, markedAt: true, notes: true },
+        select: { branchStudentId: true, courseId: true, batchId: true, attendanceDate: true, status: true, markedAt: true, notes: true, lateReason: true },
       })
     : [];
   const instituteExclusions = await attendanceExclusions(prisma, students, date);
@@ -1140,6 +1183,66 @@ export async function markFacultyStudentAttendance(user, payload = {}) {
   );
 
   return getCurrentFacultyAttendanceOverview(user, date, facultyId);
+}
+
+export async function editBranchStudentAttendance(user, payload = {}) {
+  const date = parseDateString(payload.date);
+  if (date !== getTodayValue()) throw new AppError("Only today's attendance can be edited", 403);
+  const courseId = normalizeString(payload.courseId);
+  const batchName = normalizeString(payload.batchName);
+  const editReason = normalizeString(payload.editReason || payload.reason);
+  const entries = Array.isArray(payload.students) ? payload.students : [];
+  if (!courseId || !batchName || !editReason || !entries.length) throw new AppError("Course, batch, edit reason and attendance entries are required", 400);
+
+  let batch = await findBranchAttendanceBatch(user, payload, normalizeString(payload.facultyId), date);
+  if (!batch && ["BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"].includes(String(user?.role || "").toUpperCase())) {
+    batch = await prisma.branchBatch.findFirst({
+      where: { status: "ACTIVE", courseId, batchName: { equals: batchName, mode: "insensitive" }, ...(payload.batchId ? { OR: [{ id: normalizeString(payload.batchId) }, { batchId: normalizeString(payload.batchId) }] } : {}) },
+      select: { id: true, branchId: true, batchId: true, batchName: true, batchTiming: true, courseId: true, courseName: true, facultyName: true },
+    });
+  }
+  if (!batch) throw new AppError("You do not have permission to edit attendance for this batch", 403);
+
+  const requested = uniqueByKey(entries.map((entry) => ({
+    studentId: normalizeString(entry?.studentId),
+    status: parseEditableAttendanceStatus(entry?.status),
+    lateReason: normalizeString(entry?.lateReason || entry?.reason),
+  })).filter((entry) => entry.studentId), (entry) => entry.studentId);
+  if (!requested.length) throw new AppError("Valid attendance entries are required", 400);
+  if (requested.some((entry) => entry.status === "LATE" && !entry.lateReason)) throw new AppError("Late reason is required", 400);
+
+  const students = await prisma.branchStudent.findMany({
+    where: { branchId: batch.branchId, recordStatus: "ACTIVE", OR: [{ id: { in: requested.map((entry) => entry.studentId) } }, { studentId: { in: requested.map((entry) => entry.studentId) } }] },
+    select: { id: true, studentId: true, studentName: true, courseId: true, courseName: true, batchId: true, batchName: true, batchTiming: true, facultyName: true },
+  });
+  const byKey = new Map(students.flatMap((student) => [[student.id, student], [student.studentId, student]]));
+  if (students.length !== requested.length) throw new AppError("One or more students do not belong to this batch", 400);
+
+  await prisma.$transaction(async (tx) => {
+    for (const entry of requested) {
+      const student = byKey.get(entry.studentId);
+      const current = await tx.branchStudentAttendance.findFirst({ where: { branchStudentId: student.id, attendanceDate: date, courseId: batch.courseId, batchId: batch.batchId } });
+      const previousStatus = current?.status || "UNMARKED";
+      const historyLateReason = previousStatus === "LATE"
+        ? (current?.lateReason || entry.lateReason || null)
+        : (entry.status === "LATE" ? entry.lateReason : null);
+      const actorName = normalizeString(user?.fullName || user?.name || user?.email) || "User";
+      await tx.$executeRaw`
+        INSERT INTO "BranchStudentAttendanceEdit"
+          ("id", "attendanceId", "branchStudentId", "studentId", "studentName", "courseId", "courseName", "batchId", "batchName", "batchTiming", "attendanceDate", "previousStatus", "updatedStatus", "attendanceType", "lateReason", "editedByUserId", "editedByName", "editedAt", "editReason")
+        VALUES
+          (${crypto.randomUUID()}, ${current?.id || null}, ${student.id}, ${student.studentId}, ${student.studentName}, ${batch.courseId}, ${student.courseName || batch.courseName || null}, ${batch.batchId}, ${student.batchName || batch.batchName}, ${student.batchTiming || batch.batchTiming || null}, ${date}, ${previousStatus}, ${entry.status}, 'EDITED', ${historyLateReason}, ${user?.id || null}, ${actorName}, NOW(), ${editReason})
+      `;
+      if (entry.status === "UNMARKED") {
+        if (current) await tx.branchStudentAttendance.delete({ where: { id: current.id } });
+      } else if (current) {
+        await tx.branchStudentAttendance.update({ where: { id: current.id }, data: { status: entry.status, lateReason: entry.status === "LATE" ? entry.lateReason || current.lateReason || null : current.lateReason || null, editedAt: new Date(), editedByUserId: user?.id || null, markedAt: new Date() } });
+      } else {
+        await tx.branchStudentAttendance.create({ data: { branchStudentId: student.id, facultyUserId: user?.id || null, courseId: batch.courseId, batchId: batch.batchId, attendanceDate: date, status: entry.status, lateReason: entry.lateReason || null, editedAt: new Date(), editedByUserId: user?.id || null } });
+      }
+    }
+  });
+  return getCurrentFacultyAttendanceOverview(user, date, "", { courseId: batch.courseId, batchId: batch.batchId });
 }
 
 export async function getCurrentStudentAttendanceOverview(user, dateValue) {
