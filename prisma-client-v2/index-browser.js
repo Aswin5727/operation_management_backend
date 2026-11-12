@@ -897,9 +897,34 @@ exports.Prisma.BranchStudentAttendanceScalarFieldEnum = {
   status: 'status',
   progress: 'progress',
   notes: 'notes',
+  lateReason: 'lateReason',
+  editedAt: 'editedAt',
+  editedByUserId: 'editedByUserId',
   markedAt: 'markedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BranchStudentAttendanceEditScalarFieldEnum = {
+  id: 'id',
+  attendanceId: 'attendanceId',
+  branchStudentId: 'branchStudentId',
+  studentId: 'studentId',
+  studentName: 'studentName',
+  courseId: 'courseId',
+  courseName: 'courseName',
+  batchId: 'batchId',
+  batchName: 'batchName',
+  batchTiming: 'batchTiming',
+  attendanceDate: 'attendanceDate',
+  previousStatus: 'previousStatus',
+  updatedStatus: 'updatedStatus',
+  attendanceType: 'attendanceType',
+  lateReason: 'lateReason',
+  editedByUserId: 'editedByUserId',
+  editedByName: 'editedByName',
+  editedAt: 'editedAt',
+  editReason: 'editReason'
 };
 
 exports.Prisma.BranchCalendarHolidayScalarFieldEnum = {
@@ -1896,7 +1921,8 @@ exports.DiscountType = exports.$Enums.DiscountType = {
 
 exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   PRESENT: 'PRESENT',
-  ABSENT: 'ABSENT'
+  ABSENT: 'ABSENT',
+  LATE: 'LATE'
 };
 
 exports.LeadStatus = exports.$Enums.LeadStatus = {
@@ -1991,6 +2017,7 @@ exports.Prisma.ModelName = {
   BranchStudent: 'BranchStudent',
   BranchStudentCourse: 'BranchStudentCourse',
   BranchStudentAttendance: 'BranchStudentAttendance',
+  BranchStudentAttendanceEdit: 'BranchStudentAttendanceEdit',
   BranchCalendarHoliday: 'BranchCalendarHoliday',
   BranchCalendarLeave: 'BranchCalendarLeave',
   BranchStudentInstallment: 'BranchStudentInstallment',

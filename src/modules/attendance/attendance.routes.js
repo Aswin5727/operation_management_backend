@@ -11,6 +11,7 @@ import {
   getStudentCourseHandler,
   getFacultyAttendanceOverviewHandler,
   markFacultyStudentAttendanceHandler,
+  editBranchStudentAttendanceHandler,
   recordFacultyAttendanceLoginHandler,
   recordFacultyAttendanceLogoutHandler,
 } from "./attendance.controller.js";
@@ -45,6 +46,12 @@ router.post(
   authenticate,
   authorize("FACULTY", "BUSINESS_OWNER", "OPERATION_MANAGER"),
   markFacultyStudentAttendanceHandler,
+);
+router.post(
+  "/edit",
+  authenticate,
+  authorize("FACULTY", "BRANCH_ADMIN", "SUPER_ADMIN", "BUSINESS_OWNER", "OPERATION_MANAGER"),
+  editBranchStudentAttendanceHandler,
 );
 router.get("/student/me", authenticate, authorize("STUDENT"), getCurrentStudentAttendanceOverviewHandler);
 router.get("/student/me/overview", authenticate, authorize("STUDENT"), getStudentAttendanceOverviewHandler);

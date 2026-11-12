@@ -3,6 +3,7 @@ import {
   getCurrentFacultyAttendanceOverview,
   getCurrentStudentAttendanceOverview,
   markFacultyStudentAttendance,
+  editBranchStudentAttendance,
   recordFacultyAttendanceLogin,
   recordFacultyAttendanceLogout,
 } from "./attendance.service.js";
@@ -11,6 +12,9 @@ import {
   getStudentAttendanceOverviewById,
 } from "./studentAttendanceOverview.service.js";
 import { getStudentCourse } from "./studentCourse.service.js";
+
+
+
 
 function sendSuccess(res, message, data, meta = undefined, statusCode = 200) {
   const payload = {
@@ -37,6 +41,11 @@ export const getFacultyAttendanceOverviewHandler = asyncHandler(async (req, res)
 export const markFacultyStudentAttendanceHandler = asyncHandler(async (req, res) => {
   const overview = await markFacultyStudentAttendance(req.user, req.body || {});
   return sendSuccess(res, "Attendance saved successfully", overview);
+});
+
+export const editBranchStudentAttendanceHandler = asyncHandler(async (req, res) => {
+  const overview = await editBranchStudentAttendance(req.user, req.body || {});
+  return sendSuccess(res, "Attendance edited successfully", overview);
 });
 
 export const recordFacultyAttendanceLoginHandler = asyncHandler(async (req, res) => {

@@ -1074,6 +1074,7 @@ model BranchStudent {
   payments                       BranchStudentPayment[]
   ledgerEntries                  BranchStudentLedgerEntry[]
   calendarAttendanceRecords      BranchStudentAttendance[]
+  attendanceEditHistory          BranchStudentAttendanceEdit[]
   facultyTodayWorkStudentEntries FacultyTodayWorkStudentEntry[]
   examAttempts                   ExamAttempt[]
   assessmentSubmissions          AssessmentSubmission[]
@@ -1155,6 +1156,9 @@ model BranchStudentAttendance {
   status          AttendanceStatus
   progress        Float?
   notes           String?
+  lateReason      String?
+  editedAt        DateTime?
+  editedByUserId  String?
   markedAt        DateTime         @default(now())
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
@@ -1164,6 +1168,32 @@ model BranchStudentAttendance {
   @@unique([branchStudentId, attendanceDate, courseId, batchId])
   @@index([branchStudentId, attendanceDate])
   @@index([batchId, attendanceDate])
+}
+
+model BranchStudentAttendanceEdit {
+  id              String   @id @default(cuid())
+  attendanceId    String?
+  branchStudentId String
+  studentId       String?
+  studentName     String?
+  courseId        String?
+  courseName      String?
+  batchId         String?
+  batchName       String?
+  batchTiming     String?
+  attendanceDate  String
+  previousStatus  String
+  updatedStatus   String
+  attendanceType  String
+  lateReason      String?
+  editedByUserId   String?
+  editedByName     String?
+  editedAt         DateTime @default(now())
+  editReason      String
+  branchStudent   BranchStudent @relation(fields: [branchStudentId], references: [id], onDelete: Cascade)
+
+  @@index([branchStudentId, attendanceDate])
+  @@index([attendanceDate, batchId])
 }
 
 model BranchCalendarHoliday {
@@ -2365,6 +2395,7 @@ enum AssignmentStatus {
 enum AttendanceStatus {
   PRESENT
   ABSENT
+  LATE
 }
 
 enum CourseEditRequestStatus {

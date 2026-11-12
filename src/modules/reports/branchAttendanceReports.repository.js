@@ -143,11 +143,48 @@ async function findBranchBatch(batchKey, branchId) {
 
 async function recordsForStudents(students, fromDate, toDate, courseId = "") {
   const ids = students.map((student) => student.id);
-  return prisma.branchStudentAttendance.findMany({
+  const records = await prisma.branchStudentAttendance.findMany({
     where: { branchStudentId: { in: ids }, ...(courseId ? { courseId } : {}), ...dateFilter(fromDate, toDate) },
     orderBy: [{ attendanceDate: "asc" }, { markedAt: "asc" }],
     include: { facultyUser: { select: userSelect } },
   });
+  const histories = await prisma.branchStudentAttendanceEdit.findMany({
+    where: { branchStudentId: { in: ids }, ...dateFilter(fromDate, toDate), ...(courseId ? { courseId } : {}) },
+    orderBy: [{ editedAt: "asc" }],
+  });
+  const historyByKey = new Map();
+  histories.forEach((history) => {
+    const key = `${history.branchStudentId}|${history.attendanceDate}|${history.courseId || ""}|${history.batchId || ""}`;
+    const list = historyByKey.get(key) || [];
+    list.push(history);
+    historyByKey.set(key, list);
+  });
+  const enriched = records.map((record) => ({
+    ...record,
+    editHistory: historyByKey.get(`${record.branchStudentId}|${record.attendanceDate}|${record.courseId || ""}|${record.batchId || ""}`) || [],
+  }));
+  const recordKeys = new Set(enriched.map((record) => `${record.branchStudentId}|${record.attendanceDate}|${record.courseId || ""}|${record.batchId || ""}`));
+  histories.forEach((history) => {
+    const key = `${history.branchStudentId}|${history.attendanceDate}|${history.courseId || ""}|${history.batchId || ""}`;
+    if (recordKeys.has(key)) return;
+    enriched.push({
+      id: `edit-${history.id}`,
+      branchStudentId: history.branchStudentId,
+      courseId: history.courseId,
+      courseName: history.courseName,
+      batchId: history.batchId,
+      batchName: history.batchName,
+      batchTiming: history.batchTiming,
+      attendanceDate: history.attendanceDate,
+      status: "UNMARKED",
+      markedAt: null,
+      lateReason: history.lateReason,
+      facultyUser: null,
+      editHistory: historyByKey.get(key) || [],
+    });
+    recordKeys.add(key);
+  });
+  return enriched.sort((a, b) => String(a.attendanceDate).localeCompare(String(b.attendanceDate)));
 }
 
 export async function findBranchStudentAttendanceReportData({ studentId, branchId, fromDate, toDate, courseId = "" }) {

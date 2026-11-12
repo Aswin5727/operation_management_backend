@@ -87,6 +87,7 @@ test("preview groups identical module names by course and exposes final codes, p
   assert.equal(result.courses[0].courseCode, "CISSAICOU001");
   assert.deepEqual(result.courses[0].modules.map((module) => module.percentage), [33.33, 33.33, 33.34]);
   assert.deepEqual(result.courses[0].modules[0].submodules.map((module) => module.percentage), [33.33, 33.33, 33.34]);
+  assert.deepEqual(result.courses[0].paymentPlans.map((plan) => plan.templateName), ["3 Installments"]);
   assert.deepEqual(result.courses[0].paymentPlans[0].installments, [16000, 16000, 15000]);
 });
 test("same normalized course code invalidates both workbook rows even when course names differ", async () => {
@@ -111,7 +112,6 @@ for (const [name, change, expected] of [
   ["invalid module reference", (book) => { book.getWorksheet("Course Submodules").getCell("B2").value = "Unrelated"; }, /does not belong/],
   ["duplicate module", (book) => book.getWorksheet("Course Modules").addRow(["CISSAICOU001", " basics "]), /Duplicate module/],
   ["duplicate submodule", (book) => book.getWorksheet("Course Submodules").addRow(["CISSAICOU001", "Basics", " introduction "]), /Duplicate submodule/],
-  ["unknown payment plan", (book) => { book.getWorksheet("Payment Plans").getCell("B2").value = "Custom"; }, /No active branch/],
   ["duplicate payment plan", (book) => book.getWorksheet("Payment Plans").addRow(["CISSAICOU001", "3 Installments"]), /Duplicate payment plan/],
   ["formula cell", (book) => { book.getWorksheet("Courses").getCell("G2").value = { formula: "1+1", result: 2 }; }, /plain text/],
   ["empty submodule list", (book) => { const sheet = book.getWorksheet("Course Submodules"); sheet.eachRow((row, i) => { if (i > 1) row.values = []; }); }, /at least one submodule/],
@@ -123,22 +123,29 @@ for (const [name, change, expected] of [
     assert.ok(result.errors.every((error) => error.sheet && error.column && Number.isInteger(error.row)));
   });
 }
+test("payment plans supplied by Excel are accepted without an active branch template", async () => {
+  const result = await validateCourseWorkbook(await workbook(undefined, (book) => {
+    book.getWorksheet("Payment Plans").getCell("B2").value = "Custom Excel Plan";
+  }), profile, stub({ templates: [] }));
+  assert.equal(result.valid, true, JSON.stringify(result.errors));
+  assert.equal(result.courses[0].paymentPlans[0].templateName, "Custom Excel Plan");
+  assert.equal(result.courses[0].paymentPlans[0].type, "custom");
+  assert.equal(result.courses[0].paymentPlans[0].installmentCount, 1);
+});
 test("duplicate existing names, codes and ambiguous plan names are rejected", async () => {
   const result = await validateCourseWorkbook(await workbook(), profile, stub({ existing: [{ courseCode: "CISSAICOU001", name: "Course 1" }], templates: [template, { ...template, id: "duplicate" }] }));
-  for (const pattern of [/Course code already exists in this branch/, /Course name already exists/, /multiple active branch templates/]) assert.ok(result.errors.some((error) => pattern.test(error.message)));
+  for (const pattern of [/Course code already exists in this branch/, /Course name already exists/]) assert.ok(result.errors.some((error) => pattern.test(error.message)));
 });
 test("receipt retries can validate their prior course rows without bypassing workbook duplicates", async () => {
   const result = await validateCourseWorkbook(await workbook(), profile, stub({ existing: [{ courseCode: "CISSAICOU001", name: "Course 1" }] }), {}, { allowExistingCourseCodes: ["CISSAICOU001"] });
   assert.equal(result.valid, true, JSON.stringify(result.errors));
   assert.equal(result.payloads.length, 1);
 });
-test("preview marks an existing receipt course as duplicate", async () => {
+test("preview accepts an existing receipt course so its Excel plans can be synchronized", async () => {
   const db = stub({ existing: [{ courseCode: "CISSAICOU001", name: "Course 1" }] });
   db.branchCourseImportReceipt = { findUnique: async () => ({ summary: { courses: [{ courseCode: "CISSAICOU001" }] } }) };
   const result = await previewCourseWorkbook(await workbook(), profile, db);
-  assert.equal(result.valid, false, JSON.stringify(result.errors));
-  assert.deepEqual(result.duplicateRowsBySheet.Courses, [2]);
-  assert.ok(result.errors.some((error) => /Course code already exists in this branch/.test(error.message)));
+  assert.equal(result.valid, true, JSON.stringify(result.errors));
 });
 test("invalid archives and file extensions are rejected and errors export as plain cells", async () => {
   assert.throws(() => validateCourseUpload({ buffer: Buffer.from("not a workbook"), originalname: "file.xlsx" }));

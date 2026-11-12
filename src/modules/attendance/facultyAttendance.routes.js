@@ -9,6 +9,7 @@ import {
   recordFacultyAttendanceApiLoginHandler,
   recordFacultyAttendanceApiLogoutHandler,
   getFacultyAttendancePermissionHandler,
+  recordFacultyWebsiteLogoutHandler,
 } from "./facultyAttendance.controller.js";
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.get("/admin-status/:facultyReference", authenticate, authorize("BRANCH_AD
 router.get("/batches", authenticate, authorize(...facultyRoles), getFacultyAttendanceBatchesHandler);
 router.post("/login", authenticate, authorize(...facultyRoles), recordFacultyAttendanceApiLoginHandler);
 router.post("/logout", authenticate, authorize(...facultyRoles), recordFacultyAttendanceApiLogoutHandler);
+router.post("/website-logout", authenticate, authorize(...facultyRoles), recordFacultyWebsiteLogoutHandler);
 router.get("/permission", authenticate, authorize(...facultyRoles), getFacultyAttendancePermissionHandler);
 
 export default router;

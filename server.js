@@ -15,6 +15,7 @@ import { startBatchCycleLifecycleScheduler } from "./src/modules/batchCycles/bat
 import { startLeadFollowUpReminderScheduler } from "./src/modules/leads/followUpReminder.service.js";
 import { startCompletedStudentImportWorker } from "./src/modules/reports/completedStudentImport.job.js";
 import { startSalesAdminAdmissionReminderScheduler } from "./src/modules/salesAdmin/salesAdminAdmissionReminder.scheduler.js";
+import { startFacultyAttendanceReconciliationScheduler } from "./src/modules/attendance/facultyAttendance.scheduler.js";
 
 const DATABASE_WARMUP_MAX_ATTEMPTS = 3;
 const DATABASE_WARMUP_RETRY_MS = 1500;
@@ -91,6 +92,7 @@ async function startServer() {
   const batchCycleLifecycleTimer = await startBatchCycleLifecycleScheduler();
   const completedStudentImportTimer = startCompletedStudentImportWorker();
   const salesAdminAdmissionReminderTimer = startSalesAdminAdmissionReminderScheduler();
+  const facultyAttendanceReconciliationTimer = startFacultyAttendanceReconciliationScheduler();
   const server = app.listen(config.port, "0.0.0.0", () => {
     console.log(`Backend server running on port ${config.port}`);
   });
@@ -134,6 +136,10 @@ async function startServer() {
 
     if (salesAdminAdmissionReminderTimer) {
       clearInterval(salesAdminAdmissionReminderTimer);
+    }
+
+    if (facultyAttendanceReconciliationTimer) {
+      clearInterval(facultyAttendanceReconciliationTimer);
     }
 
     void prisma.$disconnect().catch((error) => {

@@ -839,11 +839,14 @@ async function listSalesAdminAdmissions(actorOrUserId, query = {}) {
   }
   const page = Math.max(1, Number.parseInt(query.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, Number.parseInt(query.limit, 10) || 20));
+  const requestedSortBy = clean(query.sortBy);
+  const sortBy = ["createdAt", "updatedAt", "studentName", "admissionStatus"].includes(requestedSortBy) ? requestedSortBy : "updatedAt";
+  const sortOrder = clean(query.sortOrder).toLowerCase() === "asc" ? "asc" : "desc";
   const allHotWhere = { branchId: { in: scopedBranchIds }, stage: "HOT", deletedAt: null };
   if (branchAdminAssignmentScope) allHotWhere.AND = [branchAdminAssignmentScope];
   const [total, rows, hotLeads, pendingAdmissions, completedAdmissions, collections, availableCourses, branchAdmin] = await Promise.all([
     prisma.lead.count({ where }),
-    prisma.lead.findMany({ where, include: admissionListInclude(), orderBy: { updatedAt: "desc" }, skip: (page - 1) * limit, take: limit }),
+    prisma.lead.findMany({ where, include: admissionListInclude(), orderBy: { [sortBy]: sortOrder }, skip: (page - 1) * limit, take: limit }),
     prisma.lead.count({ where: allHotWhere }),
     prisma.lead.count({ where: { ...allHotWhere, status: { not: "CONVERTED" }, admissionStatus: { in: ["PENDING", "IN_PROGRESS"] } } }),
     prisma.lead.count({ where: { ...allHotWhere, status: "CONVERTED" } }),

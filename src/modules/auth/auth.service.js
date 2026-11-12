@@ -24,8 +24,11 @@ import {
 } from "../notifications/notifications.service.js";
 import {
   recordFacultyLoginSession,
-  recordFacultyLogoutSession,
 } from "../attendance/attendance.service.js";
+import {
+  recordFacultyWebsiteLogoutSession,
+  resumeFacultyAttendanceSession,
+} from "../attendance/facultyAttendance.service.js";
 import { requiresPasswordReset } from "../../common/utils/user.js";
 import { findBranchForAdmin, isInactiveBranch, isInactiveSalesAdmin } from "../../common/utils/branchAccess.js";
 
@@ -441,6 +444,14 @@ async function login({ identifier, password, ipAddress, userAgent }) {
     });
   }
 
+  if (role === "FACULTY") {
+    try {
+      await resumeFacultyAttendanceSession(refreshedUser);
+    } catch (error) {
+      console.error("Failed to resume faculty Work Log session:", error);
+    }
+  }
+
   if (isFirstLogin && role === "SALES_ADMIN") {
     setImmediate(() => {
       void createNotification({
@@ -543,7 +554,7 @@ async function logout({ refreshToken, ipAddress, userAgent }) {
 
     if (String(user.role || "").toUpperCase() === "FACULTY") {
       setImmediate(() => {
-        void recordFacultyLogoutSession(user.id).catch((error) => {
+        void recordFacultyWebsiteLogoutSession(user.id).catch((error) => {
           console.error("Failed to record faculty logout attendance:", error);
         });
       });
