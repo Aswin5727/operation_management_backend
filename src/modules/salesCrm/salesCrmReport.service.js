@@ -116,7 +116,10 @@ async function allowedBranches(actor) {
       select: { branchId: true },
     })).map((row) => row.branchId);
   }
-  if (role === "BRANCHADMIN") return null;
+  if (role === "BRANCHADMIN") {
+    if (!actor?.branchId) throw new AppError("Branch profile not found", 404);
+    return [actor.branchId];
+  }
   throw new AppError("You do not have permission to view Sales CRM reports", 403);
 }
 
@@ -152,6 +155,15 @@ function buildWhere(scope, range, branches, query = {}) {
   return where;
 }
 
+function addBranchSalesAdminScope(where, branchId) {
+  if (!branchId) return;
+  // Branch Admin reports include only leads assigned to Sales Admin accounts
+  // currently mapped to the Branch Admin branch.
+  where.assignedTo = {
+    role: "SALES_ADMIN",
+    salesAdminBranches: { some: { branchId } },
+  };
+}
 /**
  * Build the report from a scoped cohort. Period metrics use the selected
  * period and the stage breakdown shows the current stage of that cohort.
@@ -166,6 +178,7 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
   const actorRole = normalizeRole(actor?.role);
   const isCombinedBranchAdmin = actorRole === "BRANCHADMIN";
   if (actorRole === "SALESADMIN") where.assignedToId = actor.userId;
+  if (isCombinedBranchAdmin) addBranchSalesAdminScope(where, branches?.[0]);
 
   const generatedAt = new Date();
 
@@ -269,7 +282,7 @@ export async function getMonthlySalesCrmReport(query = {}, actor = {}) {
       generatedAt,
       timezone: REPORT_TIMEZONE,
       scope,
-      branchId: String(query.branchId || "") || null,
+      branchId: branches?.length === 1 ? branches[0] : (String(query.branchId || "") || null),
       recordCount: totalRecords,
     },
     summary: {

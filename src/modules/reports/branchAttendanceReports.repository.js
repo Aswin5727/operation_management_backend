@@ -51,9 +51,13 @@ async function resolveBranchId(user, requestedBranchId = "") {
 }
 
 
-export async function listReportBranches() {
+export async function listReportBranches(user = {}) {
+  const role = roleOf(user);
+  const where = role === "BRANCH_ADMIN" && user?.branchId
+    ? { id: user.branchId, status: "ACTIVE" }
+    : { status: "ACTIVE" };
   return prisma.branch.findMany({
-    where: { status: "ACTIVE" },
+    where,
     orderBy: [{ branchName: "asc" }, { branchId: "asc" }],
     select: { id: true, branchId: true, branchName: true },
   });

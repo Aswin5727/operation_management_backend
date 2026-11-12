@@ -55,7 +55,7 @@ export const getBranchMonthlyReportHandler = asyncHandler(async (req, res) => { 
 
 
 export const getReportBranchesHandler = asyncHandler(async (req, res) => {
-  const branches = await listReportBranches();
+  const branches = await listReportBranches(req.auth || req.user);
   return res.status(200).json({ data: branches });
 });
 

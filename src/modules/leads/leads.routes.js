@@ -7,7 +7,13 @@ import { authorizeSalesAccess } from "../../common/middlewares/authorizeSalesAcc
 import { addFollowUpHandler, addLeadRecordingHandler, addLeadRecordingsHandler, checkLeadDuplicatesHandler, createLeadHandler, deleteLeadHandler, deleteLeadRecordingHandler, exportLeadReportHandler, getLeadHandler, getLeadRecordingHandler, leadOptionsHandler, listLeadActivitiesHandler, listLeadsHandler, updateLeadHandler } from "./leads.controller.js";
 
 const router = express.Router();
-router.use(authenticate, authorize(USER_ROLES.SALES_ADMIN, USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN), authorizeSalesAccess);
+const authorizeLeadRoutes = (req, res, next) => {
+  const role = String(req.auth?.role || req.user?.role || "").toUpperCase();
+  const isBranchLeadReport = role === "BRANCH_ADMIN" && req.path === "/report/export";
+  if (isBranchLeadReport) return next();
+  return authorizeSalesAccess(req, res, next);
+};
+router.use(authenticate, authorize(USER_ROLES.SALES_ADMIN, USER_ROLES.BRANCH_ADMIN, USER_ROLES.SUPER_ADMIN), authorizeLeadRoutes);
 router.get("/", listLeadsHandler);
 router.get("/options", leadOptionsHandler);
 router.get('/validate-duplicate', checkLeadDuplicatesHandler);
