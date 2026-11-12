@@ -18,7 +18,9 @@ model User {
   city                           String?
   address                        String?
   role                           UserRole
+  moduleAccess                   Json?
   active                         Boolean                      @default(true)
+  status                         String                       @default("ACTIVE")
   passwordHash                   String
   passwordChangedAt              DateTime?
   refreshTokenVersion            Int                          @default(0)
@@ -66,9 +68,14 @@ model User {
   followUpReminders              FollowUpReminder[]              @relation("FollowUpReminderRecipient")
   leadRecordingSharesSent        LeadRecordingShare[]             @relation("LeadRecordingShareSender")
   leadRecordingSharesReceived    LeadRecordingShare[]             @relation("LeadRecordingShareRecipient")
+  adminChangesPrevious           AdminChangeHistory[]             @relation("AdminChangePreviousUser")
+  adminChangesNew                AdminChangeHistory[]             @relation("AdminChangeNewUser")
+  adminChangesBy                 AdminChangeHistory[]             @relation("AdminChangeActor")
+  emailChangeVerifications       EmailChangeVerification[]
 
   @@index([role])
   @@index([active])
+  @@index([role, status])
 }
 
 model DashboardWidget {
@@ -141,6 +148,7 @@ model Branch {
   salesCrmBatchRequests      SalesCrmBatchRequest[]
   leads                      Lead[]
   leadRecordingShares        LeadRecordingShare[]
+  adminChangeHistory         AdminChangeHistory[]
 
   @@index([status])
   @@index([branchName])
@@ -163,6 +171,47 @@ model SalesAdminBranch {
   @@unique([salesAdminId, branchId])
   @@index([salesAdminId])
   @@index([branchId])
+}
+
+model EmailChangeVerification {
+  id          String   @id @default(cuid())
+  userId      String
+  oldEmail    String
+  newEmail    String
+  tokenHash   String   @unique
+  expiresAt   DateTime
+  verifiedAt  DateTime?
+  temporaryPasswordHash String?
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([newEmail])
+}
+
+model AdminChangeHistory {
+  id                  String   @id @default(cuid())
+  branchId            String
+  previousAdminId     String?
+  newAdminId          String?
+  previousAccountType String?
+  newAccountType      String?
+  oldEmail            String?
+  newEmail            String?
+  changedBy           String?
+  operationType       String
+  status              String   @default("COMPLETED")
+  metadata            Json?
+  createdAt           DateTime @default(now())
+  branch              Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  previousAdmin       User?    @relation("AdminChangePreviousUser", fields: [previousAdminId], references: [id], onDelete: SetNull)
+  newAdmin            User?    @relation("AdminChangeNewUser", fields: [newAdminId], references: [id], onDelete: SetNull)
+  changedByUser       User?    @relation("AdminChangeActor", fields: [changedBy], references: [id], onDelete: SetNull)
+
+  @@index([branchId, createdAt])
+  @@index([previousAdminId])
+  @@index([newAdminId])
 }
 
 model LoginEvent {
@@ -1038,6 +1087,7 @@ model BranchStudent {
   @@index([branchId])
   @@index([recordStatus])
   @@index([branchId, recordStatus])
+  @@index([branchId, recordStatus, studentName])
   @@index([studentName])
   @@index([emailAddress])
   @@index([admissionDate])
@@ -2132,6 +2182,9 @@ enum NotificationKind {
   SALES_CRM_BATCH_REQUEST_UPDATE
   CALL_RECORDING_SHARED
   LEAD_DELETED
+  ACCOUNT_ROLE_UPDATED
+  EMAIL_CHANGED
+  BRANCH_ADMIN_REPLACED
 }
 
 enum SalesCrmBatchRequestStatus {

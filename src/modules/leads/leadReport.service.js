@@ -208,6 +208,13 @@ function reportWhere(scope, period, allowedBranches, query) {
   return where;
 }
 
+function addBranchSalesAdminScope(where, branchId) {
+  if (!branchId) return;
+  where.assignedTo = {
+    role: "SALES_ADMIN",
+    salesAdminBranches: { some: { branchId } },
+  };
+}
 export async function generateLeadExcelReport(query = {}, actor) {
   const scope = text(query.scope || "all").toLowerCase();
   if (!["all", "admissions"].includes(scope)) throw new AppError("Choose a valid lead report type", 400);
@@ -215,6 +222,7 @@ export async function generateLeadExcelReport(query = {}, actor) {
   const allowedBranches = await permittedBranches(actor);
   const where = reportWhere(scope, period, allowedBranches, query);
   if (ROLE(actor) === "SALESADMIN") where.assignedToId = actor.userId;
+  if (ROLE(actor) === "BRANCHADMIN") addBranchSalesAdminScope(where, allowedBranches?.[0]);
   const leads = await prisma.lead.findMany({
     where,
     orderBy: [{ studentName: "asc" }, { leadDate: "asc" }],

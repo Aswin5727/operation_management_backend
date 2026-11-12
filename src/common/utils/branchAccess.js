@@ -20,4 +20,9 @@ function isInactiveBranch(branch) {
   return String(branch?.status || "ACTIVE").toUpperCase() === "INACTIVE";
 }
 
-export { findBranchForAdmin, isInactiveBranch };
+function isInactiveSalesAdmin(user) {
+  return String(user?.role || "").toUpperCase() === "SALES_ADMIN"
+    && String(user?.status || (user?.active === false ? "INACTIVE" : "ACTIVE")).toUpperCase() === "INACTIVE";
+}
+
+export { findBranchForAdmin, isInactiveBranch, isInactiveSalesAdmin };

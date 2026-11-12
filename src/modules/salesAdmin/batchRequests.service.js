@@ -100,6 +100,24 @@ function notificationForStatus(row, status, batch = null) {
   };
 }
 
+function notificationForNewBatchRequest(row) {
+  const studentLabel = row.lead?.convertedStudent?.studentId
+    ? `Student ID: ${row.lead.convertedStudent.studentId}.`
+    : `Lead ID: ${row.lead?.leadId || ""}.`;
+  return {
+    kind: "SALES_CRM_BATCH_REQUEST",
+    tone: "amber",
+    title: "Student Admission - Batch Required",
+    message: `A student is waiting for admission, but no suitable batch is currently available. Please create or assign a suitable batch.\nStudent: ${row.lead?.studentName || "Student"}. ${studentLabel}\nCourse: ${row.course?.name || "Course"}.\nBranch: ${row.branch?.branchName || "Branch"}.\nRequested by: ${row.requestedBy?.fullName || "Sales Admin"}.\nRequirements: ${row.requestDetails || "No suitable active batch is available."}`,
+    actionLabel: "View Request",
+    targetBranchId: row.branch?.id || row.branchId,
+    targetBranchName: row.branch?.branchName || null,
+    targetUserId: row.branch?.adminUserId || null,
+    createdBy: row.requestedById,
+    requestDescription: `${REQUEST_DESCRIPTION_PREFIX}${row.id}`,
+  };
+}
+
 async function getSalesScope(actorOrUserId) {
   const actor = typeof actorOrUserId === "string" ? { userId: actorOrUserId, role: "SALES_ADMIN" } : (actorOrUserId || {});
   const branchIds = String(actor.role || "").toUpperCase() === "BRANCH_ADMIN"
@@ -157,7 +175,11 @@ export async function createSalesAdminBatchRequest(actorOrUserId, leadKey) {
         title: "Student Admission - Batch Required",
         message: `A student is waiting for admission, but no suitable batch is currently available. Please create or assign a suitable batch.\nStudent: ${lead.studentName}. ${studentLabel}\nCourse: ${lead.course.name}.\nBranch: ${lead.branch.branchName}.\nRequested by: ${lead.assignedTo?.fullName || "Sales Admin"}.\nRequest date: ${displayDate(created.createdAt)}.\nRequirements: ${requestDetails}`,
         actionLabel: "View Request",
-        targetBranchId: lead.branchId,
+        // Notifications are scoped by the branch primary key. Use the
+        // included branch relation when available so the notification is
+        // visible to the Branch Admin even if a legacy lead contains a
+        // business branch identifier instead of the canonical relation id.
+        targetBranchId: lead.branch?.id || lead.branchId,
         targetBranchName: lead.branch.branchName,
         targetUserId: lead.branch.adminUserId || null,
         createdBy: userId,
@@ -175,6 +197,20 @@ export async function listSalesAdminBatchRequests(actorOrUserId) {
   const { userId, branchIds } = await getSalesScope(actorOrUserId);
   const rows = await prisma.salesCrmBatchRequest.findMany({ where: { requestedById: userId, branchId: { in: branchIds } }, include: requestInclude, orderBy: { createdAt: "desc" } });
   return { data: rows.map((row) => requestRow(row)), meta: { total: rows.length } };
+}
+
+export async function resendSalesAdminBatchRequest(actorOrUserId, requestId) {
+  const { userId, branchIds } = await getSalesScope(actorOrUserId);
+  const row = await prisma.salesCrmBatchRequest.findFirst({
+    where: { id: clean(requestId), requestedById: userId, branchId: { in: branchIds }, status: { in: ACTIVE_REQUEST_STATUSES } },
+    include: requestInclude,
+  });
+  if (!row) throw new AppError("Active batch request not found", 404);
+  await createNotification({
+    ...notificationForNewBatchRequest(row),
+    requestDescription: `${REQUEST_DESCRIPTION_PREFIX}${row.id}:RESEND:${Date.now()}`,
+  });
+  return requestRow(row);
 }
 
 export async function listBranchBatchRequests(actor, query = {}) {
