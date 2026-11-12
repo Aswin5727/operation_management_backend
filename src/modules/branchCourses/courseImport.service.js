@@ -461,7 +461,21 @@ export async function previewCourseWorkbook(buffer, profile, db = prisma, edits 
   const allowExistingCourseCodes = Array.isArray(receipt?.summary?.courses)
     ? receipt.summary.courses.map((course) => course.courseCode).filter(Boolean)
     : [];
-  return validateCourseWorkbook(buffer, profile, db, normalizedEdits, { allowExistingCourseCodes });
+  const result = await validateCourseWorkbook(buffer, profile, db, normalizedEdits, { allowExistingCourseCodes });
+  if (receipt && allowExistingCourseCodes.length && result.sheets?.Courses?.rows) {
+    const existingRows = db.branchCourse?.findMany
+      ? await db.branchCourse.findMany({ where: { branchId: profile.id, courseCode: { in: allowExistingCourseCodes } }, select: { courseCode: true } })
+      : [];
+    const existingCodes = new Set(existingRows.map((course) => textKey(course.courseCode)));
+    const receiptDuplicateRows = result.sheets.Courses.rows
+      .filter((row) => existingCodes.has(textKey(row.values?.['Course Code'])))
+      .map((row) => row.row);
+    result.duplicateRowsBySheet = {
+      ...result.duplicateRowsBySheet,
+      Courses: [...new Set([...(result.duplicateRowsBySheet?.Courses || []), ...receiptDuplicateRows])].sort((a, b) => a - b),
+    };
+  }
+  return result;
 }
 
 async function activateImportedPaymentPlans(tx, payloads, profile, actorId) {
